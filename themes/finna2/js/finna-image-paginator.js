@@ -562,7 +562,7 @@ FinnaPaginator.prototype.changeTriggerImage = function changeTriggerImage(imageP
   }
 
   if (!_.settings.isList) {
-    $('.image-details-container').hide();
+    $('.image-details-container').addClass('hidden');
     var details = $('.image-details-container[data-img-index="' + imagePopup.attr('index') + '"]');
     details.removeClass('hidden');
     var license = details.find('.truncate-field, .copyright');
