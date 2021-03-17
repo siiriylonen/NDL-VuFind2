@@ -598,7 +598,8 @@ class SolrEad3 extends SolrEad
                         'url' => $href,
                         'descId' => $descId,
                         'sort' => (string)$attr->label,
-                        'type' => $localtype
+                        'type' => $localtype,
+                        'pdf' => (string)$attr->linkrole === 'application/pdf'
                     ];
                 }
             }
@@ -621,6 +622,14 @@ class SolrEad3 extends SolrEad
                     'medium' => $medium['url'] ?? $large['url'] ?? null,
                     'large' => $large['url'] ?? $medium['url'] ?? null,
                 ];
+
+                $data['pdf'] = [
+                    'medium' => ($medium['url'] && $medium['pdf'])
+                        || (!$medium['url'] && $large['url'] && $large['pdf']),
+                    'large' => ($large['url'] && $large['pdf'])
+                        || (!$large['url'] && $medium['url'] && $medium['pdf'])
+                ];
+                $data['pdf']['small'] = $data['pdf']['medium'];
 
                 $result[] = $data;
             }
