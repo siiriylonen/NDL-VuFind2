@@ -62,6 +62,14 @@ class SolrEad3 extends SolrEad
         'thumbnail' => self::IMAGE_MEDIUM
     ];
 
+    // URLs that are displayed on ExternalData record tab
+    // (not below record title)
+    const EXTERNAL_DATA_URLS = [
+        'Bittikartta - Fullres - Jakelukappale',
+        'Bittikartta - Pikkukuva - Jakelukappale',
+        'OCR-data - Alto - Jakelukappale',
+    ];
+
     // Altformavail labels
     const ALTFORM_LOCATION = 'location';
     const ALTFORM_TYPE = 'type';
@@ -159,24 +167,41 @@ class SolrEad3 extends SolrEad
      */
     public function getURLs()
     {
-        $urls = [];
+        $urls = $localeUrls = [];
         $url = '';
         $record = $this->getXmlRecord();
-        foreach ($record->did->xpath('//daoset/dao') as $node) {
-            $attr = $node->attributes();
-            // Discard image urls
-            if (isset($attr->linktitle) || !$attr->href
-            ) {
+        $preferredLangCodes = $this->mapLanguageCode($this->preferredLanguage);
+        foreach ($record->did->xpath('//daoset') as $daoset) {
+            $localtype = (string)$daoset->attributes()->localtype;
+
+            if ($localtype && in_array($localtype, self::EXTERNAL_DATA_URLS)) {
                 continue;
             }
-            $url = (string)$attr->href;
-            $desc = $attr->linktitle ?? $url;
-            if (!$this->urlBlocked($url, $desc)) {
-                $urls[] = [
-                    'url' => $url,
-                    'desc' => (string)$desc
-                ];
+            foreach ($daoset->dao as $node) {
+                $attr = $node->attributes();
+                if ((string)$attr->linkrole === 'image/jpeg' || !$attr->href) {
+                    continue;
+                }
+                $lang = (string)$attr->lang;
+                $preferredLang = $lang && in_array($lang, $preferredLangCodes);
+
+                $url = (string)$attr->href;
+                $desc = $attr->linktitle ?? $node->descriptivenote->p ?? $url;
+
+                if (!$this->urlBlocked($url, $desc)) {
+                    $urlData = [
+                        'url' => $url,
+                        'desc' => (string)$desc
+                    ];
+                    $urls[] = $urlData;
+                    if ($preferredLang) {
+                        $localeUrls[] = $urlData;
+                    }
+                }
             }
+        }
+        if ($localeUrls) {
+            $urls = $localeUrls;
         }
         return $this->resolveUrlTypes($urls);
     }
