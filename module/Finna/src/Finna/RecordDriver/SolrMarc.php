@@ -1774,7 +1774,7 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
     }
 
     /**
-     * Get methodologoy from field 567.
+     * Get methodology from field 567.
      *
      * @return array
      */
