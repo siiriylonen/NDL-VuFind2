@@ -548,11 +548,26 @@ class SolrEad3 extends SolrEad
      */
     public function getExternalData()
     {
-        return [
-            'fullResImages' => $this->getFullResImages(),
-            'OCRImages' => $this->getOCRImages(),
-            'physicalItems' => $this->getPhysicalItems()
-        ];
+        $fullResImages = $this->getFullResImages();
+        $ocrImages = $this->getOCRImages();
+        $physicalItems = $this->getPhysicalItems();
+        $digitized
+            = !empty($fullResImages) || !empty($ocrImages)
+            || !empty($this->getAllImages());
+
+        $result = [];
+        if (!empty($fullResImages)) {
+            $result['items']['fullResImages'] = $fullResImages;
+        }
+        if (!empty($ocrImages)) {
+            $result['items']['OCRImages'] = $ocrImages;
+        }
+        if (!empty($physicalItems)) {
+            $result['items']['physicalItems'] = $physicalItems;
+        }
+        $result['digitized'] = $digitized;
+
+        return $result;
     }
 
     /**
@@ -607,11 +622,13 @@ class SolrEad3 extends SolrEad
                     }
                     if (isset($attr->localtype)) {
                         $localtype = (string)$attr->localtype;
-                    }
-                    if (!$localtype || !isset(self::IMAGE_MAP[$localtype])) {
+                        if (!isset(self::IMAGE_MAP[$localtype])) {
+                            continue;
+                        }
+                        $size = self::IMAGE_MAP[$localtype];
+                    } elseif (!$localtype) {
                         continue;
                     }
-                    $size = self::IMAGE_MAP[$localtype];
                     $size = $size === self::IMAGE_FULLRES
                         ? self::IMAGE_LARGE : $size;
                     if (!isset($images[$size])) {
