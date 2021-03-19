@@ -324,7 +324,7 @@ DeweyBrowse:
 
 LccBrowse:
   QueryFields:
-    callnumber-a:
+    callnumber-raw:
       - [onephrase, ~]
 
 CallNumber:
@@ -350,10 +350,10 @@ CallNumber:
       - [preg_replace, '/\*+$/', '']
       - [append, "*"]
   QueryFields:
-    callnumber:
+    callnumber-search:
       - [callnumber_exact, 1000]
       - [callnumber_fuzzy, ~]
-    dewey-full:
+    dewey-search:
       - [callnumber_exact, 1000]
       - [callnumber_fuzzy, ~]
 
