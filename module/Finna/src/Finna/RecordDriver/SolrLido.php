@@ -1164,8 +1164,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     /**
      * Get identifiers by type
      *
-     * @param string $xpathRule  XPath rule
-     * @param bool   includeType Whether to include identifier type in parenthesis
+     * @param string $xpathRule   XPath rule
+     * @param bool   $includeType Whether to include identifier type in parenthesis
      *
      * @return array
      */
