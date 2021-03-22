@@ -5,7 +5,7 @@
  * PHP version 7
  *
  * Copyright (C) Villanova University 2016.
- * Copyright (C) The National Library of Finland 2017.
+ * Copyright (C) The National Library of Finland 2017-2021.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -179,7 +179,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Filming Location Notes', 'Finding Aid', 'First Lyrics',
             'Foreign Distribution', 'Funding', 'Genre',
             'Inscriptions', 'Inspection Details', 'Interior Images',
-            'Inventory ID', 'ISSN', 'Item Description',
+            'Inventory ID', 'ISBN', 'ISSN', 'Item Description',
             'Item History', 'Keywords', 'Language',
             'Language Notes', 'Learning Resource Type', 'Location',
             'Manufacturer', 'Measurements', 'Medium of Performance',
