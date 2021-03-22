@@ -181,6 +181,17 @@ trait SolrFinnaTrait
     }
 
     /**
+     * Get text that can be displayed to represent this record in
+     * breadcrumbs.
+     *
+     * @return string Breadcrumb text to represent this record.
+     */
+    public function getBreadcrumb()
+    {
+        return $this->getTitle();
+    }
+
+    /**
      * Return building from index.
      *
      * @return array
