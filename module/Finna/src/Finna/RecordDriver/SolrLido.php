@@ -874,7 +874,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getLocalIdentifiers()
     {
-        return $this->getIdentifiersByType("@type != 'isbn' and @type != 'issn'");
+        return $this->getIdentifiersByType(
+            "@type != 'isbn' and @type != 'issn'",
+            true
+        );
     }
 
     /**
@@ -884,7 +887,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getISBNs()
     {
-        return $this->getIdentifiersByType("@type = 'isbn'");
+        return $this->getIdentifiersByType("@type = 'isbn'", false);
     }
 
     /**
@@ -894,7 +897,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getISSNs()
     {
-        return $this->getIdentifiersByType("@type = 'issn'");
+        return $this->getIdentifiersByType("@type = 'issn'", false);
     }
 
     /**
@@ -1165,8 +1168,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      *
      * @return array
      */
-    protected function getIdentifiersByType(string $xpathRule): array
-    {
+    protected function getIdentifiersByType(string $xpathRule, bool $includeType
+    ): array {
         $results = [];
         foreach ($this->getXmlRecord()->xpath(
             'lido/descriptiveMetadata/objectIdentificationWrap/repositoryWrap/'
@@ -1176,8 +1179,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             $type = $attributes->type ?? '';
             // sometimes type exists with empty value or space(s)
             $identifier = trim($node);
-            if ($type && $identifier) {
-                $results[] = "$identifier ($type)";
+            if ($identifier) {
+                if ($type && $includeType) {
+                    $identifier .= " ($type)";
+                }
+                $results[] = $identifier;
             }
         }
         return $results;
