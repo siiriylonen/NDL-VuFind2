@@ -874,20 +874,27 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getLocalIdentifiers()
     {
-        $results = [];
-        foreach ($this->getXmlRecord()->xpath(
-            'lido/descriptiveMetadata/objectIdentificationWrap/repositoryWrap/'
-            . 'repositorySet/workID'
-        ) as $node) {
-            $type = null;
-            $attributes = $node->attributes();
-            $type = $attributes->type ?? '';
-            // sometimes type exists with empty value or space(s)
-            if (($type) && trim((string)$node) != '') {
-                $results[] = (string)$node . ' (' . $type . ')';
-            }
-        }
-        return $results;
+        return $this->getIdentifiersByType("@type != 'isbn' and @type != 'issn'");
+    }
+
+    /**
+     * Get an array of ISBNs for the record.
+     *
+     * @return array
+     */
+    public function getISBNs()
+    {
+        return $this->getIdentifiersByType("@type = 'isbn'");
+    }
+
+    /**
+     * Get an array of ISBNs for the record.
+     *
+     * @return array
+     */
+    public function getISSNs()
+    {
+        return $this->getIdentifiersByType("@type = 'issn'");
     }
 
     /**
@@ -1149,6 +1156,31 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             return [$matches[1], $matches[2] == '9999' ? null : $matches[2]];
         }
         return null;
+    }
+
+    /**
+     * Get identifiers by type
+     *
+     * @param string $xpathRule XPath rule
+     *
+     * @return array
+     */
+    protected function getIdentifiersByType(string $xpathRule): array
+    {
+        $results = [];
+        foreach ($this->getXmlRecord()->xpath(
+            'lido/descriptiveMetadata/objectIdentificationWrap/repositoryWrap/'
+            . "repositorySet/workID[$xpathRule]"
+        ) as $node) {
+            $attributes = $node->attributes();
+            $type = $attributes->type ?? '';
+            // sometimes type exists with empty value or space(s)
+            $identifier = trim($node);
+            if ($type && $identifier) {
+                $results[] = "$identifier ($type)";
+            }
+        }
+        return $results;
     }
 
     /**
