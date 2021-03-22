@@ -73,8 +73,6 @@ class RecordDataFormatterFactory
     {
         $spec = new SpecBuilder();
 
-        $fields = $this->getDefaultCoreFields();
-
         foreach ($this->getDefaultCoreFields() as $key => $data) {
             if ($data[0] === true) {
                 list($multiLine, $dataMethod, $callback) = $data;
