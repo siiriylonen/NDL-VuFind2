@@ -196,7 +196,7 @@ class TurkuPayment extends Paytrail
         $orderNum = $params['transaction'];
         $timestamp = $params['TIMESTAMP'];
 
-        list($success, $data) = $this->getStartedTransaction($orderNum);
+        [$success, $data] = $this->getStartedTransaction($orderNum);
         if (!$success) {
             return $data;
         }

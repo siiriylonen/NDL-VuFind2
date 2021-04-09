@@ -211,9 +211,9 @@ trait SolrFinnaTrait
     {
         if (isset($this->fields['center_coords'])) {
             if (strstr($this->fields['center_coords'], ',') !== false) {
-                list($lat, $lon) = explode(',', $this->fields['center_coords'], 2);
+                [$lat, $lon] = explode(',', $this->fields['center_coords'], 2);
             } else {
-                list($lon, $lat) = explode(' ', $this->fields['center_coords'], 2);
+                [$lon, $lat] = explode(' ', $this->fields['center_coords'], 2);
             }
             return ['lon' => $lon, 'lat' => $lat];
         }
@@ -713,7 +713,7 @@ trait SolrFinnaTrait
                 $driver = $this->ils->getDriver(false);
                 if ($driver instanceof \VuFind\ILS\Driver\MultiBackend) {
                     $driverConfig = $this->ils->getDriverConfig();
-                    list($source) = explode('.', $this->getUniqueID());
+                    [$source] = explode('.', $this->getUniqueID());
                     return isset($driverConfig['Drivers'][$source]);
                 }
             }
@@ -803,7 +803,7 @@ trait SolrFinnaTrait
         $sourceFilter = !empty($this->searchSettings['Records']['sources'])
             ? explode(',', $this->searchSettings['Records']['sources']) : [];
         foreach ($ids as $id) {
-            list($source) = explode('.', $id);
+            [$source] = explode('.', $id);
             if ($sourceFilter && !in_array($source, $sourceFilter)) {
                 continue;
             }

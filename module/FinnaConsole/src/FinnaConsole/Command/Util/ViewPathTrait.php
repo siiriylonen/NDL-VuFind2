@@ -84,7 +84,7 @@ trait ViewPathTrait
             if (isset($this->datasourceConfig)
                 && isset($this->datasourceConfig[$institution]['mainView'])
             ) {
-                list($institution, $view)
+                [$institution, $view]
                     = explode(
                         '/',
                         $this->datasourceConfig[$institution]['mainView'], 2

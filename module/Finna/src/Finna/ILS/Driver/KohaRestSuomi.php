@@ -273,7 +273,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             }
         }
 
-        list($resultCode, $messagingPrefs) = $this->makeRequest(
+        [$resultCode, $messagingPrefs] = $this->makeRequest(
             ['v1', 'messaging_preferences'],
             ['borrowernumber' => $patron['id']],
             'GET',
@@ -372,7 +372,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
      */
     public function purgeTransactionHistory($patron)
     {
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'checkouts', 'history'],
             ['borrowernumber' => $patron['id']],
             'DELETE',
@@ -410,7 +410,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             'privacy' => (int)$state
         ];
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', $patron['id']],
             json_encode($request),
             'PATCH',
@@ -448,7 +448,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
         $request = [
             'mobile' => $phone
         ];
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', $patron['id']],
             json_encode($request),
             'PATCH',
@@ -491,7 +491,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
         foreach ($fields as $field) {
             $request[$field] = $number;
         }
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', $patron['id']],
             json_encode($request),
             'PATCH',
@@ -529,7 +529,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
         $request = [
             'email' => $email
         ];
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', $patron['id']],
             json_encode($request),
             'PATCH',
@@ -581,7 +581,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             }
         }
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', $patron['id']],
             json_encode($request),
             'PATCH',
@@ -661,7 +661,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             $messagingSettings[$prefId] = $result;
         }
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'messaging_preferences'],
             [
                 'borrowernumber' => $patron['id'],
@@ -710,7 +710,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             'branchcode' => $pickUpLocation
         ];
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'holds', $requestId],
             json_encode($request),
             'PUT',
@@ -744,7 +744,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             'suspend' => $frozen
         ];
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'holds', $requestId],
             json_encode($request),
             'PUT',
@@ -823,7 +823,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             ];
         }
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', $patron['id'], 'payment'],
             json_encode($request),
             'POST',
@@ -866,7 +866,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             ];
         }
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', 'password', 'recovery'],
             json_encode($request),
             'POST',
@@ -913,7 +913,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             ];
         }
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'patrons', 'password', 'recovery', 'complete'],
             json_encode($request),
             'POST',
@@ -1373,7 +1373,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             $request['itemnumber'] = (int)$itemId;
         }
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'holds'],
             json_encode($request),
             'POST',
@@ -1404,7 +1404,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
     {
         $holdings = [];
         if (!empty($this->config['Holdings']['use_holding_records'])) {
-            list($code, $holdingsResult) = $this->makeRequest(
+            [$code, $holdingsResult] = $this->makeRequest(
                 ['v1', 'biblios', $id, 'holdings'],
                 [],
                 'GET',
@@ -1426,7 +1426,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
             }
         }
 
-        list($code, $result) = $this->makeRequest(
+        [$code, $result] = $this->makeRequest(
             ['v1', 'availability', 'biblio', 'search'],
             ['biblionumber' => $id],
             'GET',
@@ -1544,7 +1544,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
         if (!$brief
             && !empty($this->config['Holdings']['use_serial_subscriptions'])
         ) {
-            list($code, $serialsResult) = $this->makeRequest(
+            [$code, $serialsResult] = $this->makeRequest(
                 ['v1', 'biblios', $id, 'serialsubscriptions'],
                 [],
                 'GET',
@@ -1574,7 +1574,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
                             if (!$issue['received']) {
                                 continue;
                             }
-                            list($year) = explode('-', $issue['publisheddate']);
+                            [$year] = explode('-', $issue['publisheddate']);
                             if ($year > $latestReceived) {
                                 $latestReceived = $year;
                             }
@@ -1584,7 +1584,7 @@ class KohaRestSuomi extends KohaRestSuomiVuFind
                         if (!$issue['received']) {
                             continue;
                         }
-                        list($year) = explode('-', $issue['publisheddate']);
+                        [$year] = explode('-', $issue['publisheddate']);
                         if ($yearFilter) {
                             // Limit to current and last year
                             if ($year && $year != $currentYear

@@ -1536,7 +1536,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
     protected function saveChangeRequestFeedback($patron, $profile, $data,
         $fields, $subject
     ) {
-        list($library, $username) = explode('.', $patron['cat_username']);
+        [$library, $username] = explode('.', $patron['cat_username']);
         $catalog = $this->getILS();
         $config = $catalog->getConfig('Feedback', $patron);
 

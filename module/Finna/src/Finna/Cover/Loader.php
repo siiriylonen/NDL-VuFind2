@@ -488,7 +488,7 @@ class Loader extends \VuFind\Cover\Loader
             return false;
         }
 
-        list($width, $height, $type) = @getimagesizefromstring($image);
+        [$width, $height, $type] = @getimagesizefromstring($image);
 
         $reqWidth = $this->width ?: $width;
         $reqHeight = $this->height ?: $height;

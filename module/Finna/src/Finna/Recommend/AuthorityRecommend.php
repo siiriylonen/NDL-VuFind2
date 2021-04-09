@@ -218,7 +218,7 @@ class AuthorityRecommend extends \VuFind\Recommend\AuthorityRecommend
 
                 if ($added) {
                     // New authority filter added, activate it
-                    list($activeId, $activeRole)
+                    [$activeId, $activeRole]
                         = $this->authorityHelper->extractRole($added[0]);
                     $this->session->activeId = $activeId;
                     $this->session->idsWithRoles[] = $added[0];

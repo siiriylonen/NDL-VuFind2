@@ -195,7 +195,7 @@ class ProxyUrl extends \VuFind\View\Helper\Root\ProxyUrl
             }
             $ranges = [];
             foreach ($permission['ipRange']->toArray() as $range) {
-                list($ip) = explode('#', $range, 2);
+                [$ip] = explode('#', $range, 2);
                 $ranges = array_merge($ranges, array_map('trim', explode(',', $ip)));
             }
 

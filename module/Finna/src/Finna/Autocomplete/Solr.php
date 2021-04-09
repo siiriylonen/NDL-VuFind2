@@ -120,7 +120,7 @@ class Solr extends \VuFind\Autocomplete\Solr
         $this->checkboxFacets = [];
         if (isset($facetConfig->CheckboxFacets)) {
             foreach ($facetConfig->CheckboxFacets as $facet => $label) {
-                list($field, $val) = explode(':', $facet, 2);
+                [$field, $val] = explode(':', $facet, 2);
                 $this->checkboxFacets[] = $field;
             }
         }
@@ -147,7 +147,7 @@ class Solr extends \VuFind\Autocomplete\Solr
         $this->facetSettings = $settings;
         $this->facetTranslations = $facetConfig->Results->toArray();
         foreach ($facetConfig->CheckboxFacets->toArray() as $field => $val) {
-            list($field, ) = explode(':', $field);
+            [$field, ] = explode(':', $field);
             $this->facetTranslations[$field] = $val;
         }
 
