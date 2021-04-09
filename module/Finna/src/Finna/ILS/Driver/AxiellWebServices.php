@@ -2715,6 +2715,20 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
      */
     public function updateAddress($patron, $details)
     {
+        if (isset($details['email'])) {
+            $result = $this->updateEmail($patron, $details['email']);
+            if (!$result['success']) {
+                return $result;
+            }
+        }
+
+        if (isset($details['phone'])) {
+            $result = $this->updatePhone($patron, $details['phone']);
+            if (!$result['success']) {
+                return $result;
+            }
+        }
+
         $username = $patron['cat_username'];
         $password = $patron['cat_password'];
 
