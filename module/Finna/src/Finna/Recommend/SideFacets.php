@@ -155,7 +155,7 @@ class SideFacets extends \VuFind\Recommend\SideFacets
                 ARRAY_FILTER_USE_KEY
             );
         }
-        return parent::init($params, $request);
+        parent::init($params, $request);
     }
 
     /**

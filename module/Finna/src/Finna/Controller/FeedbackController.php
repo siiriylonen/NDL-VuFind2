@@ -71,7 +71,7 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
      * Handles rendering and submit of dynamic forms.
      * Form configurations are specified in FeedbackForms.json
      *
-     * @return void
+     * @return mixed
      */
     public function formAction()
     {

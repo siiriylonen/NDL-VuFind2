@@ -28,6 +28,7 @@
  */
 namespace Finna\ILS\Driver;
 
+use VuFind\Date\DateException;
 use VuFind\Exception\ILS as ILSException;
 
 /**

@@ -76,9 +76,14 @@ trait ViewPathTrait
      */
     protected function resolveViewPath($institution, $view = false)
     {
+        if (!isset($this->viewBaseDir)) {
+            return false;
+        }
         if (!$view) {
             $view = $this->getDefaultViewPath();
-            if (isset($this->datasourceConfig[$institution]['mainView'])) {
+            if (isset($this->datasourceConfig)
+                && isset($this->datasourceConfig[$institution]['mainView'])
+            ) {
                 list($institution, $view)
                     = explode(
                         '/',

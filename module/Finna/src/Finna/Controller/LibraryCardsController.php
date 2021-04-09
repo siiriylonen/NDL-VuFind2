@@ -340,7 +340,8 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
     public function registrationFormAction()
     {
         // Verify hash
-        $sessionManager = $this->serviceLocator->get(\VuFind\SessionManager::class);
+        $sessionManager = $this->serviceLocator
+            ->get(\Laminas\Session\SessionManager::class);
         $session = new \Laminas\Session\Container('registerPatron', $sessionManager);
         $hash = $this->params()->fromQuery(
             'hash',
@@ -490,7 +491,8 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
     public function registrationDoneAction()
     {
         // Verify hash
-        $sessionManager = $this->serviceLocator->get(\VuFind\SessionManager::class);
+        $sessionManager = $this->serviceLocator
+            ->get(\Laminas\Session\SessionManager::class);
         $session = new \Laminas\Session\Container('registerPatron', $sessionManager);
         $hash = $this->params()->fromQuery(
             'hash',
@@ -844,7 +846,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
                 $subject,
                 $message
             );
-        } catch (MailException $e) {
+        } catch (\VuFind\Exception\Mail $e) {
             $this->flashMessenger()->addMessage($e->getMessage(), 'error');
         }
     }

@@ -65,6 +65,13 @@ class Solr extends \VuFind\Autocomplete\Solr
     protected $hierarchicalFacets;
 
     /**
+     * Checkbox facets
+     *
+     * @var array
+     */
+    protected $checkboxFacets;
+
+    /**
      * OR facets
      *
      * @var array
@@ -110,8 +117,8 @@ class Solr extends \VuFind\Autocomplete\Solr
             = isset($facetConfig->SpecialFacets->hierarchical)
             ? $facetConfig->SpecialFacets->hierarchical->toArray() : [];
 
+        $this->checkboxFacets = [];
         if (isset($facetConfig->CheckboxFacets)) {
-            $this->checkboxFacets = [];
             foreach ($facetConfig->CheckboxFacets as $facet => $label) {
                 list($field, $val) = explode(':', $facet, 2);
                 $this->checkboxFacets[] = $field;

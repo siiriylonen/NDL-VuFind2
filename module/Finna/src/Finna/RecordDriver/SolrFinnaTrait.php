@@ -391,11 +391,6 @@ trait SolrFinnaTrait
             ];
         }
 
-        // Check for cached data
-        if (isset($this->cachedMergeRecordData)) {
-            return $this->cachedMergeRecordData;
-        }
-
         // Check if this is a merged record
         if (empty($this->fields['merged_child_boolean'])) {
             return [];
@@ -404,6 +399,11 @@ trait SolrFinnaTrait
         // Find the dedup record
         if (null === $this->searchService) {
             return [];
+        }
+
+        // Check for cached data
+        if (isset($this->cache[__FUNCTION__])) {
+            return $this->cache[__FUNCTION__];
         }
 
         if (!empty($this->fields['dedup_id_str_mv'])) {
@@ -423,7 +423,7 @@ trait SolrFinnaTrait
             )->getRecords();
         }
         if (!isset($records[0])) {
-            $this->cachedMergeRecordData = [];
+            $this->cache[__FUNCTION__] = [];
             return [];
         }
         $dedupRecord = $records[0];
@@ -438,7 +438,7 @@ trait SolrFinnaTrait
                 true
             );
         }
-        $this->cachedMergeRecordData = $results;
+        $this->cache[__FUNCTION__] = $results;
         return $results;
     }
 
@@ -709,7 +709,7 @@ trait SolrFinnaTrait
     public function supportsAjaxStatus()
     {
         if (parent::supportsAjaxStatus()) {
-            if ($this->ils) {
+            if (!empty($this->ils)) {
                 $driver = $this->ils->getDriver(false);
                 if ($driver instanceof \VuFind\ILS\Driver\MultiBackend) {
                     $driverConfig = $this->ils->getDriverConfig();
@@ -1038,7 +1038,7 @@ trait SolrFinnaTrait
     public function getRealTimeTitleHold()
     {
         $biblioLevel = strtolower($this->tryMethod('getBibliographicLevel'));
-        if ($this->hasILS()) {
+        if (is_callable([$this, 'hasILS']) && $this->hasILS() && isset($this->ils)) {
             if ($this->ils->getTitleHoldsMode() === 'disabled') {
                 return false;
             }
@@ -1051,7 +1051,7 @@ trait SolrFinnaTrait
                     'monograph', 'monographpart',
                     'serialpart', 'collectionpart'
                 ];
-            if (in_array($biblioLevel, $bibLevels)) {
+            if (in_array($biblioLevel, $bibLevels) && isset($this->titleHoldLogic)) {
                 return $this->titleHoldLogic->getHold($this->getUniqueID());
             }
         }

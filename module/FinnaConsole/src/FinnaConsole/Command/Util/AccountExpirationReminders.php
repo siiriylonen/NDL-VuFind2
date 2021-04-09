@@ -198,6 +198,13 @@ class AccountExpirationReminders extends AbstractUtilCommand
     protected $reportOnly;
 
     /**
+     * Currently active view path
+     *
+     * @var string
+     */
+    protected $currentViewPath = '';
+
+    /**
      * Constructor
      *
      * @param \VuFind\Db\Table\User              $userTable   User table
