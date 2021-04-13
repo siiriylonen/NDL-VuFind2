@@ -1110,10 +1110,14 @@ class SolrEad3 extends SolrEad
      * The parents are listed starting from the root of the hierarchy,
      * i.e. the closest parent is at the end of the result array.
      *
+     * @param string[] $levels Optional list of level types to return
+     * (defaults to series and subseries)
+     *
      * @return array Array with id and title
      */
-    protected function getHierarchyParents()
-    {
+    protected function getHierarchyParents(
+        array $levels = self::SERIES_LEVELS
+    ) : array {
         $xml = $this->getXmlRecord();
         if (!isset($xml->{'add-data'}->parent)) {
             return [];
@@ -1121,7 +1125,7 @@ class SolrEad3 extends SolrEad
         $result = [];
         foreach ($xml->{'add-data'}->parent as $parent) {
             $attr = $parent->attributes();
-            if (!in_array((string)$attr->level, ['series','subseries'])) {
+            if (!in_array((string)$attr->level, $levels)) {
                 continue;
             }
             $result[] = [
@@ -1135,35 +1139,42 @@ class SolrEad3 extends SolrEad
     /**
      * Get the hierarchy_parent_id(s) associated with this item (empty if none).
      *
+     * @param string[] $levels Optional list of level types to return
+     * (defaults to series and subseries)
+     *
      * @return array
      */
-    public function getHierarchyParentID()
+    public function getHierarchyParentID(array $levels = self::SERIES_LEVELS) : array
     {
-        if ($parents = $this->getHierarchyParents()) {
+        if ($parents = $this->getHierarchyParents($levels)) {
             return array_map(
                 function ($parent) {
                     return $parent['id'];
                 }, $parents
             );
         }
-        return parent::getHierarchyParentID();
+        return parent::getHierarchyParentID($levels);
     }
 
     /**
      * Get the parent title(s) associated with this item (empty if none).
+     * (defaults to series and subseries)
+     *
+     * @param string[] $levels Optional list of level types to return
      *
      * @return array
      */
-    public function getHierarchyParentTitle()
-    {
-        if ($parents = $this->getHierarchyParents()) {
+    public function getHierarchyParentTitle(
+        array $levels = self::SERIES_LEVELS
+    ) : array {
+        if ($parents = $this->getHierarchyParents($levels)) {
             return array_map(
                 function ($parent) {
                     return $parent['title'];
                 }, $parents
             );
         }
-        return parent::getHierarchyParentTitle();
+        return parent::getHierarchyParentTitle($levels);
     }
 
     /**
