@@ -199,6 +199,8 @@ Subject:
       - geographic^50
       - genre^50
       - era
+      - topic_add_txt_mv
+      - geographic_add_txt_mv
 
 # This field definition is a compromise that supports both journal-level and
 # article-level data.  The disadvantage is that hits in article titles will
