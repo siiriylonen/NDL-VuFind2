@@ -156,6 +156,16 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault
     ];
 
     /**
+     * Roles to not display
+     *
+     * @var array
+     */
+    protected $filteredRoles = [
+        'prf',
+        'oth'
+    ];
+
+    /**
      * Uncredited name attributes
      *
      * @var array
@@ -165,6 +175,7 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault
         'elokuva-elokreditoimatonnayttelija-nimi'
     ];
 
+    /**
      * Descriptions
      *
      * @var array
@@ -704,7 +715,7 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault
                     } else {
                         $result['credited']['presenters'][] = $presenter;
                     }
-                } elseif ($role === 'prf') {
+                } elseif (empty($role)) {
                     if (!empty($presenter['uncredited'])
                         && $presenter['uncredited']
                     ) {
@@ -716,7 +727,7 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault
                 }
                 break;
             case 'elonet_kokoonpano':
-                if ($role === 'oth') {
+                if (empty($role)) {
                     $result['performingEnsemble']['presenters'][] = $presenter;
                 } else {
                     $result['actingEnsemble']['presenters'][] = $presenter;
@@ -724,7 +735,7 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault
 
                 break;
             default:
-                if ($role === 'oth') {
+                if (empty($role)) {
                     $result['other']['presenters'][] = $presenter;
                 } elseif ($role === 'avustajat') {
                     $result['assistant']['presenters'][] = $presenter;
@@ -1036,6 +1047,11 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault
                         break;
                     }
                 }
+            }
+
+            // Remove unwanted roles here
+            if (in_array($role, $this->filteredRoles)) {
+                $role = '';
             }
 
             ++$idx;
