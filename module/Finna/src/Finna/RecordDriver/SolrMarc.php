@@ -1625,21 +1625,12 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
         if (!$link) {
             return '';
         }
-        $parts = explode('-', $link);
-        if (count($parts) != 2) {
-            return '';
-        }
-        $linkedFieldCode = $parts[0];
-        $linkedFieldNum = $parts[1];
-        foreach ($marc->getFields($linkedFieldCode) as $linkedField) {
+        $linkage = $marc->parseLinkageField($link);
+        foreach ($marc->getFields($linkage['field']) as $linkedField) {
             $sub6 = $marc->getSubfield($linkedField, '6');
-            [$target] = explode('/', $sub6, 2);
-            $targetParts = explode('-', $target);
-            if (count($targetParts) !== 2) {
-                continue;
-            }
-            if ($targetParts[0] == $field['tag']
-                && $targetParts[1] === $linkedFieldNum
+            $targetLinkage = $marc->parseLinkageField($sub6);
+            if ($targetLinkage['field'] == $field['tag']
+                && $targetLinkage['occurrence'] === $linkage['occurrence']
             ) {
                 $data = $this->getSubfieldArray($linkedField, $subfields);
                 return implode(' ', $data);
