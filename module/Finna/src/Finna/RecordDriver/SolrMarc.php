@@ -1222,9 +1222,40 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
     }
 
     /**
+     * Get the full titles of the record in alternative scripts.
+     *
+     * @return array
+     */
+    public function getTitlesAltScript(): array
+    {
+        if (!($titles = parent::getTitlesAltScript())) {
+            $titles = $this->getMarcReader()
+                ->getLinkedFieldsSubfields('880', '240', ['a', 'b']);
+        }
+        return $this->stripTrailingPunctuation($titles);
+    }
+
+    /**
+     * Get the full titles of the record including section and part information in
+     * alternative scripts.
+     *
+     * @return array
+     */
+    public function getFullTitlesAltScript(): array
+    {
+        if (!($titles = parent::getFullTitlesAltScript())) {
+            $titles = $this->getMarcReader()
+                ->getLinkedFieldsSubfields('880', '240', ['a', 'b', 'n', 'p']);
+        }
+        return $this->stripTrailingPunctuation($titles);
+    }
+
+    /**
      * Get the short (pre-subtitle) title of the record in alternative script.
      *
      * @return string
+     *
+     * @deprecated Use getTitlesAltScript instead
      */
     public function getShortTitleAltScript()
     {
@@ -1238,6 +1269,8 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
      * Get the subtitle of the record in alternative script.
      *
      * @return string
+     *
+     * @deprecated Use getTitlesAltScript instead
      */
     public function getSubtitleAltScript()
     {
