@@ -140,22 +140,17 @@ class SolrEad3 extends SolrEad
     }
 
     /**
-     * Return building from index.
+     * Return buildings from index.
      *
      * @return array
      */
-    public function getBuilding()
+    public function getBuildings()
     {
-        $result = parent::getBuilding();
-
-        if (! $this->preferredLanguage) {
-            return $result;
-        }
-        if ($name = $this->getRepositoryName()) {
+        if ($this->preferredLanguage && $name = $this->getRepositoryName()) {
             return [$name];
         }
 
-        return $result;
+        return parent::getBuildings();
     }
 
     /**
@@ -1335,7 +1330,7 @@ class SolrEad3 extends SolrEad
                     $desc = (string)$attr->linktitle;
                     $sort = (string)$attr->label;
                     $items[] = [
-                        'label' => linktitle, $desc, 'url' => $href, 'sort' => $sort
+                        'label' => $desc, 'url' => $href, 'sort' => $sort
                     ];
                 }
             }
