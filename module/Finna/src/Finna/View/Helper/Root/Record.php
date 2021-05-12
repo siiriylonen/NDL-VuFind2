@@ -449,7 +449,7 @@ class Record extends \VuFind\View\Helper\Root\Record
            'author' => $data
         ];
 
-        return $this->renderTemplate('author-link-element.phtml', $params);
+        return trim($this->renderTemplate('author-link-element.phtml', $params));
     }
 
     /**
