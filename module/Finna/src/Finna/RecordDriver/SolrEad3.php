@@ -1454,10 +1454,10 @@ class SolrEad3 extends SolrEad
     /**
      * Helper function for returning a specific language version of a display label.
      *
-     * @param SimpleXMLElement $node                  XML node
-     * @param string           $childNodeName         Name of the child node that
+     * @param \SimpleXMLElement $node                  XML node
+     * @param string            $childNodeName         Name of the child node that
      * contains the display label.
-     * @param bool             $obeyPreferredLanguage If true, returns the
+     * @param bool              $obeyPreferredLanguage If true, returns the
      * translation that corresponds with the current locale.
      * If false, the default language version 'fin' is returned. If not found,
      * the first display label is retured.
