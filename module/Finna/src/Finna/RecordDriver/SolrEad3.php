@@ -86,8 +86,10 @@ class SolrEad3 extends SolrEad
         'Digitaalisen ilmentymän tyyppi' => self::ALTFORM_DIGITAL_TYPE,
         'Tallennusalusta' => self::ALTFORM_FORMAT,
         'Digitaalisen aineiston tiedostomuoto' => self::ALTFORM_FORMAT,
-        'Ilmentym&#xE4;n kuntoon perustuva k&#xE4;ytt&#xF6;rajoitus'
+        'Ilmentymän kuntoon perustuva käyttörajoitus'
             => self::ALTFORM_ACCESS,
+        'Manifestation\'s access restrictions' => self::ALTFORM_ACCESS,
+        'Bruk av manifestationen har begränsats pga' => self::ALTFORM_ACCESS,
         'Internet - ei fyysistä toimipaikkaa' => self::ALTFORM_ONLINE,
         'Lisätietoa kunnosta' => self::ALTFORM_CONDITION,
     ];
@@ -448,14 +450,16 @@ class SolrEad3 extends SolrEad
             )
         );
 
-        //$onlineType = 'Internet - ei fyysistä toimipaikkaa';
         $results = [];
+        $preferredLangCodes = $this->mapLanguageCode($this->preferredLanguage);
+
         foreach ($xml->altformavail->altformavail as $altform) {
             $itemId = (string)$altform->attributes()->id;
             if ($id && $id !== $itemId) {
                 continue;
             }
             $result = ['id' => $itemId, 'online' => in_array($itemId, $onlineIds)];
+            $accessRestrictions = [];
             $owner = null;
             foreach ($altform->list->defitem ?? [] as $defitem) {
                 $type = self::ALTFORM_MAP[(string)$defitem->label] ?? null;
@@ -482,7 +486,8 @@ class SolrEad3 extends SolrEad
                     $result['format'] = $val;
                     break;
                 case self::ALTFORM_ACCESS:
-                    $result['accessRestriction'] = $val;
+                    $lang = (string)$defitem->item->attributes()->lang ?? 'fin';
+                    $accessRestrictions[$lang] = $val;
                     break;
                 case self::ALTFORM_CONDITION:
                     if ($info = (string)$defitem->label) {
@@ -491,6 +496,15 @@ class SolrEad3 extends SolrEad
                     $info .= $val;
                     $result['info'] = $info;
                     break;
+                }
+            }
+            if ($accessRestrictions) {
+                $result['accessRestriction'] = reset($accessRestrictions);
+                foreach ($accessRestrictions as $lang => $restriction) {
+                    if (in_array($lang, $preferredLangCodes)) {
+                        $result['accessRestriction'] = $restriction;
+                        break;
+                    }
                 }
             }
             if ($id) {
