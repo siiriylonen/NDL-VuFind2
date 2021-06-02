@@ -1048,6 +1048,9 @@ class SolrEad3 extends SolrEad
                 )
             );
         }
+        $headings = array_merge(
+            $headings, $this->getRelatedPlacesExtended(['aihe'], [])
+        );
 
         // The default index schema doesn't currently store subject headings in a
         // broken-down format, so we'll just send each value as a single chunk.
@@ -1058,7 +1061,8 @@ class SolrEad3 extends SolrEad
                 $data = [
                     'heading' => [$i['data']],
                     'type' => 'topic',
-                    'source' => $i['source'] ?? ''
+                    'source' => $i['source'] ?? '',
+                    'detail' => $i['detail'] ?? ''
                 ];
                 if ($id = $i['id'] ?? '') {
                     $data['id'] = $id;
@@ -1078,9 +1082,12 @@ class SolrEad3 extends SolrEad
     /**
      * Get related places.
      *
+     * @param array $include Relator attributes to include
+     * @param array $exclude Relator attributes to exclude
+     *
      * @return array
      */
-    public function getRelatedPlacesExtended()
+    public function getRelatedPlacesExtended($include = [], $exclude = ['aihe'])
     {
         $record = $this->getXmlRecord();
         if (!isset($record->controlaccess->geogname)) {
@@ -1095,6 +1102,12 @@ class SolrEad3 extends SolrEad
         foreach ($record->controlaccess->geogname as $name) {
             $attr = $name->attributes();
             $relator = (string)$attr->relator;
+            if (!empty($include) && !in_array($relator, $include)) {
+                continue;
+            }
+            if (!empty($exclude) && in_array($relator, $exclude)) {
+                continue;
+            }
             if (isset($name->part)) {
                 $part = (string)$name->part;
                 $data = ['data' => $part, 'detail' => $relator];
@@ -1521,11 +1534,6 @@ class SolrEad3 extends SolrEad
             foreach ([true, false] as $obeyPreferredLanguage) {
                 foreach ($record->controlaccess->subject as $subject) {
                     $attr = $subject->attributes();
-                    if (isset($subject->attributes()->relator)
-                        && (string)$subject->attributes()->relator !== 'aihe'
-                    ) {
-                        continue;
-                    }
                     if ($topic = $this->getDisplayLabel(
                         $subject, 'part', $obeyPreferredLanguage
                     )
@@ -1536,7 +1544,8 @@ class SolrEad3 extends SolrEad
                         $topics[] = [
                             'data' => $topic[0],
                             'id' => (string)$attr->identifier,
-                            'source' => (string)$attr->source
+                            'source' => (string)$attr->source,
+                            'detail' => (string)$subject->attributes()->relator
                         ];
                     }
                 }
