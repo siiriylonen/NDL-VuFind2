@@ -1276,6 +1276,7 @@ class SolrEad3 extends SolrEad
             }
             $relations[] = [
                 'value' => $value,
+                'detail' => !empty($attr->arcrole) ? (string)$attr->arcrole : null,
                 'link' => [
                     'value' => $href,
                     'type' => 'identifier',
