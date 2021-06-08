@@ -48,7 +48,7 @@ function FinnaPaginator(element, images, settings) {
   };
   _.root.removeClass('paginate');
   _.setMaxImages();
-  
+
   // Needed references
   _.timeOut = null;
   _.imageDetail = _.root.find('.recordcover-image-detail .image-description');
@@ -84,7 +84,7 @@ FinnaPaginator.prototype.clearTracks = function clearTracks() {
 
 /**
  * Add an element to an active track
- * 
+ *
  * @param {HTMLElement} elem
  */
 FinnaPaginator.prototype.appendTracks = function appendTracks(elem) {
@@ -268,8 +268,8 @@ FinnaPaginator.prototype.readQuery = function readQuery() {
 
 /**
  * Function to toggle proper canvas element to show video, image in popup
- * 
- * @param {string} type 
+ *
+ * @param {string} type
  */
 FinnaPaginator.prototype.setCanvasElement = function setCanvasElement(type) {
   var _ = this;
@@ -469,7 +469,7 @@ FinnaPaginator.prototype.setPopupImageState = function setPopupImageState(type) 
       }
     });
     _.leafletLoader = _.canvasElements.leaflet.find('.leaflet-image-loading');
-  
+
     _.leafletHolder = L.map('leaflet-map-image', {
       minZoom: 1,
       maxZoom: 20,
@@ -583,14 +583,13 @@ FinnaPaginator.prototype.changeTriggerImage = function changeTriggerImage(imageP
   }
   _.imageDetail.html(imagePopup.data('description'));
   img.off('load').on('load', function handleImage() {
-    
+
     setImageProperties(this);
   });
   img.unveil(100);
 };
 
 FinnaPaginator.prototype.showImageDetails = function showImageDetails(imagePopup) {
-  var _ = this;
   $('.image-details-container').addClass('hidden');
   var details = $('.image-details-container[data-img-index="' + imagePopup.attr('index') + '"]');
   details.removeClass('hidden');
@@ -839,7 +838,7 @@ FinnaPaginator.prototype.createImagePopup = function createImagePopup(image) {
       'data-modelsettings': image.modelsettings,
       'data-scripts': image.scripts
     });
-  } 
+  }
 
   return holder;
 };
@@ -898,7 +897,7 @@ FinnaPaginator.prototype.setDimensions = function setDimensions() {
 
 /**
  * Lets create a popup object to handle images properly
- * 
+ *
  * @param {jQuery} popup
  */
 FinnaPaginator.prototype.createPopupObject = function createPopupObject(popup) {
