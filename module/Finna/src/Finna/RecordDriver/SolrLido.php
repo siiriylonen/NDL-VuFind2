@@ -225,6 +225,19 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }
 
         $results = [];
+
+        $addToResults = function ($imageData) use (&$results) {
+            if (!isset($imageData['urls']['small'])) {
+                $imageData['urls']['small'] = $imageData['urls']['medium']
+                    ?? $imageData['urls']['large'];
+            }
+            if (!isset($imageData['urls']['medium'])) {
+                $imageData['urls']['medium'] = $imageData['urls']['small']
+                    ?? $imageData['urls']['large'];
+            }
+            $results[] = $imageData;
+        };
+
         $defaultRights = $this->getImageRights($language, true);
         foreach ($this->getXmlRecord()->xpath(
             '/lidoWrap/lido/administrativeMetadata/'
@@ -341,11 +354,13 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                         // We already have URL's, store them in the final results
                         // first. This shouldn't happen unless there are multiple
                         // images without type in the same set.
-                        $results[] = [
-                            'urls' => $urls,
-                            'description' => '',
-                            'rights' => $rights
-                        ];
+                        $addToResults(
+                            [
+                                'urls' => $urls,
+                                'description' => '',
+                                'rights' => $rights
+                            ]
+                        );
                     }
                     $urls['small'] = $urls['medium'] = $urls['large'] = $url;
                 } else {
@@ -371,14 +386,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             // If current set has no images to show, continue to next one
             if (empty($urls)) {
                 continue;
-            }
-            if (!isset($urls['small'])) {
-                $urls['small'] = $urls['medium']
-                    ?? $urls['large'];
-            }
-            if (!isset($urls['medium'])) {
-                $urls['medium'] = $urls['small']
-                    ?? $urls['large'];
             }
 
             $result = [
@@ -435,7 +442,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     }
                 }
             );
-            $results[] = $result;
+            $addToResults($result);
         }
         return $this->cachedImages = $results;
     }
