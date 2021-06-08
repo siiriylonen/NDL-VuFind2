@@ -1,4 +1,4 @@
-<!-- START of: finna - myresearch/holds.phtml -->
+<!-- START of: finna - holds/list.phtml -->
 <?php
     // Set up page title:
     $this->headTitle($this->translate('My Holds'));
@@ -39,7 +39,7 @@
         <?php endif; ?>
         <?php if (!empty($this->recordList)): ?>
           <?php if ($this->cancelForm): ?>
-            <form name="cancelForm" class="inline" method="post" id="cancelHold" data-clear-account-cache="holds">
+            <form name="cancelForm" class="inline" method="post" action="<?=$this->escapeHtmlAttr($this->url('holds-list'))?>" id="cancelHold" data-clear-account-cache="holds">
               <table class="myresearch-table" role="presentation">
                 <tr class="toolbar">
                   <td>
@@ -201,17 +201,9 @@
                       <?php if (!empty($ilsDetails['expire'])): ?>|<?php endif; ?>
                     <?php endif; ?>
                     <?php if (!empty($ilsDetails['expire'])): ?>
-                      <strong><?=$this->transEsc('Expires') ?>:</strong> <?=$this->escapeHtml($ilsDetails['expire']) ?>
+                      <strong><?=$this->transEsc('hold_expires') ?>:</strong> <?=$this->escapeHtml($ilsDetails['expire']) ?>
                     <?php endif; ?>
                     <br />
-
-                    <?php if (isset($this->cancelResults['items'])): ?>
-                      <?php foreach ($this->cancelResults['items'] as $itemId => $cancelResult): ?>
-                        <?php if (($itemId == $ilsDetails['item_id'] || $itemId == ($ilsDetails['requestId'] ?? '')) && $cancelResult['success'] == false): ?>
-                          <div class="alert alert-danger"><?=$this->transEsc($cancelResult['status']) ?><?php if ($cancelResult['sysMessage']) echo ' : ' . $this->transEsc($cancelResult['sysMessage']); ?></div>
-                        <?php endif; ?>
-                      <?php endforeach; ?>
-                    <?php endif; ?>
 
                     <?php if (isset($ilsDetails['available']) && $ilsDetails['available'] == true): ?>
                       <div class="alert alert-success">
@@ -233,6 +225,15 @@
                     <?php if (isset($ilsDetails['cancel_link'])): ?>
                       <p><a href="<?=$this->escapeHtmlAttr($ilsDetails['cancel_link']) ?>"><?=$this->transEsc("hold_cancel") ?></a></p>
                     <?php endif; ?>
+
+                    <?php if (isset($this->cancelResults['items'])): ?>
+                      <?php foreach ($this->cancelResults['items'] as $itemId => $cancelResult): ?>
+                        <?php if (($itemId == $ilsDetails['item_id'] || $itemId == ($ilsDetails['requestId'] ?? '')) && $cancelResult['success'] == false): ?>
+                          <div class="alert alert-danger"><?=$this->transEsc($cancelResult['status']) ?><?php if ($cancelResult['sysMessage']) echo ' : ' . $this->transEsc($cancelResult['sysMessage']); ?></div>
+                        <?php endif; ?>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+
                     <?php if (isset($ilsDetails['available']) && !$ilsDetails['available'] && $changeRequestStatus && $requestIsEditable): ?>
                       <div class="change-hold-status" data-record-id="<?=$this->escapeHtmlAttr($resource->getUniqueId()) ?>" data-request-id="<?=$this->escapeHtml($ilsDetails['requestId']) ?>" >
                         <span class="status-change-load-indicator hidden"><i class="fa fa-spinner fa-spin"></i></span>
@@ -244,7 +245,13 @@
                         </span>
                       </div>
                     <?php elseif (!empty($ilsDetails['frozen'])): ?>
-                      <strong><?=$this->transEsc('request_frozen') ?></strong>
+                      <strong>
+                        <?php if (empty($ilsDetails['frozen_until'])): ?>
+                          <?=$this->transEsc('hold_frozen') ?>
+                        <?php else: ?>
+                          <?=$this->transEsc('hold_frozen_until', ['%%date%%' => $ilsDetails['frozen_until']]) ?>
+                        <?php endif; ?>
+                      </strong>
                     <?php endif; ?>
                   </div>
                 </td>
@@ -266,4 +273,4 @@
 </div>
 
 <?=$this->render('myresearch/notify-account-status.phtml', ['method' => 'holds', 'accountStatus' => $this->accountStatus]); ?>
-<!-- END of: finna - myresearch/holds.phtml -->
+<!-- END of: finna - holds/list.phtml -->

@@ -354,7 +354,7 @@ class RecordController extends \VuFind\Controller\RecordController
                         'html' => true,
                         'msg' => 'hold_place_success_html',
                         'tokens' => [
-                            '%%url%%' => $this->url()->fromRoute('myresearch-holds')
+                            '%%url%%' => $this->url()->fromRoute('holds-list')
                         ],
                     ];
                     $this->flashMessenger()->addMessage($msg, 'success');
