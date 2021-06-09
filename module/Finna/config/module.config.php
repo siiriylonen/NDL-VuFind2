@@ -905,6 +905,18 @@ $config = [
                     'Finna\Hierarchy\TreeDataSource\R2' => 'Finna\Hierarchy\TreeDataSource\R2Factory'
                 ]
 
+            ],
+            'view_customelement' => [
+                'factories' => [
+                    'Finna\View\CustomElement\FinnaList' => 'Finna\View\CustomElement\AbstractBaseFactory',
+                    'Finna\View\CustomElement\FinnaPanel' => 'Finna\View\CustomElement\AbstractBaseFactory',
+                    'Finna\View\CustomElement\FinnaTruncate' => 'Finna\View\CustomElement\AbstractBaseFactory',
+                ],
+                'aliases' => [
+                    'finna-list' => 'Finna\View\CustomElement\FinnaList',
+                    'finna-panel' => 'Finna\View\CustomElement\FinnaPanel',
+                    'finna-truncate' => 'Finna\View\CustomElement\FinnaTruncate',
+                ]
             ]
         ],
     ],

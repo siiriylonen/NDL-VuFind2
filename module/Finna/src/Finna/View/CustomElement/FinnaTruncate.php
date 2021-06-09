@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom element interface
+ * Finna-truncate custom element
  *
  * PHP version 7
  *
@@ -27,10 +27,8 @@
  */
 namespace Finna\View\CustomElement;
 
-use Laminas\View\Model\ModelInterface;
-
 /**
- * Custom element interface
+ * Finna-truncate custom element
  *
  * @category VuFind
  * @package  CustomElements
@@ -38,26 +36,42 @@ use Laminas\View\Model\ModelInterface;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:recommendation_modules Wiki
  */
-interface CustomElementInterface
+class FinnaTruncate extends AbstractBase
 {
     /**
-     * Get the name of the element.
+     * FinnaTruncate constructor.
      *
-     * @return string
+     * @param string $name    Element name
+     * @param array  $options Options
      */
-    public function getName(): string;
+    public function __construct(string $name, array $options = [])
+    {
+        parent::__construct($name, $options);
+
+        $labelElement = $this->dom->find('*[slot="label"]');
+        if ($labelElement = $labelElement[0] ?? false) {
+            $label = trim(strip_tags($labelElement->innerHtml()));
+            if (!empty($label)) {
+                $this->viewModel->setVariable('label', $label);
+            }
+            $this->removeSlotElement($labelElement);
+        }
+
+        $this->viewModel->setVariable(
+            'content', $this->dom->firstChild()->innerHTML()
+        );
+
+        $this->viewModel->setTemplate('CustomElement/finna-truncate');
+    }
 
     /**
-     * Get the names of attributes supported by the element.
+     * Get names of attributes to set as view model variables.
      *
-     * @return array
+     * @return array Keyed array with attribute names as keys and variable names as
+     *               values
      */
-    public static function getAttributes(): array;
-
-    /**
-     * Get the view model for server-side rendering the element.
-     *
-     * @return ModelInterface
-     */
-    public function getViewModel(): ModelInterface;
+    protected static function getAttributeToVariableMap(): array
+    {
+        return ['rows' => 'rows'];
+    }
 }
