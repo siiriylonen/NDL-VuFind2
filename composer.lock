@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ad8c480cf0d729d82ed389007feb6c2",
+    "content-hash": "7eb32ef4e70fb890f0efe371a7f75e47",
     "packages": [
         {
             "name": "ahand/mobileesp",
@@ -10712,7 +10712,7 @@
         },
         {
             "name": "wikimedia/composer-merge-plugin",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/composer-merge-plugin.git",
