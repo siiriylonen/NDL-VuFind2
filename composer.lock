@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eb32ef4e70fb890f0efe371a7f75e47",
+    "content-hash": "469098f5160c631694545e3dc25c07a0",
     "packages": [
         {
             "name": "ahand/mobileesp",
@@ -6960,16 +6960,16 @@
         },
         {
             "name": "ppito/laminas-whoops",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ppito/laminas-whoops.git",
-                "reference": "bda998b202fadde4feb16331169901d1f088810c"
+                "reference": "1507b42caeefc56511ab591ebd87c6700d111409"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ppito/laminas-whoops/zipball/bda998b202fadde4feb16331169901d1f088810c",
-                "reference": "bda998b202fadde4feb16331169901d1f088810c",
+                "url": "https://api.github.com/repos/Ppito/laminas-whoops/zipball/1507b42caeefc56511ab591ebd87c6700d111409",
+                "reference": "1507b42caeefc56511ab591ebd87c6700d111409",
                 "shasum": ""
             },
             "require": {
@@ -7004,9 +7004,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Ppito/laminas-whoops/issues",
-                "source": "https://github.com/Ppito/laminas-whoops/tree/2.1.0"
+                "source": "https://github.com/Ppito/laminas-whoops/tree/2.2.0"
             },
-            "time": "2021-03-25T13:25:58+00:00"
+            "time": "2021-06-16T16:50:48+00:00"
         },
         {
             "name": "psr/cache",
