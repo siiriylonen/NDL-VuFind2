@@ -771,8 +771,8 @@ class SolrEad3 extends SolrEad
             }
 
             foreach ($images['large'] ?? $images['medium'] as $id => $img) {
-                $large = $images['large'][$id] ?? null;
-                $medium = $images['medium'][$id] ?? null;
+                $large = $images['large'][$id] ?? ['url' => '', 'pdf' => false];
+                $medium = $images['medium'][$id] ?? ['url' => '', 'pdf' => false];
 
                 $data = $img;
                 $data['urls'] = [
