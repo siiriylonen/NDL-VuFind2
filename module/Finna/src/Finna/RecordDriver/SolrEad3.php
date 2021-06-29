@@ -1460,6 +1460,23 @@ class SolrEad3 extends SolrEad
     }
 
     /**
+     * Get material arrangement information.
+     *
+     * @return string[]
+     */
+    public function getMaterialArrangement() : array
+    {
+        $xml = $this->getXmlRecord();
+        $result = [];
+        foreach ($xml->arrangement ?? [] as $arrangement) {
+            $label = $this->getDisplayLabel($arrangement, 'p');
+            $localeLabel = $this->getDisplayLabel($arrangement, 'p', true);
+            $result = array_merge($result, $localeLabel ?: $label);
+        }
+        return $result;
+    }
+
+    /**
      * Get notes on finding aids related to the record.
      *
      * @return array
@@ -1675,9 +1692,9 @@ class SolrEad3 extends SolrEad
         $node,
         $childNodeName = 'part',
         $obeyPreferredLanguage = false
-    ) {
+    ) : array {
         if (! isset($node->$childNodeName)) {
-            return null;
+            return [];
         }
         $allResults = [];
         $defaultLanguageResults = [];
