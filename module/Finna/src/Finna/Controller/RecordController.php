@@ -397,12 +397,20 @@ class RecordController extends \VuFind\Controller\RecordController
             }
         }
 
+        // Set default start date to today:
+        $dateConverter = $this->serviceLocator->get(\VuFind\Date\Converter::class);
+        $defaultStartDate = $dateConverter->convertToDisplayDate('U', time());
+
         // Find and format the default required date:
-        $defaultRequired = $this->holds()->getDefaultRequiredDate(
-            $checkHolds, $catalog, $patron, $gatheredDetails
+        $defaultRequiredDate = $dateConverter->convertToDisplayDate(
+            'U',
+            $this->holds()->getDefaultRequiredDate(
+                $checkHolds,
+                $catalog,
+                $patron,
+                $gatheredDetails
+            )
         );
-        $defaultRequired = $this->serviceLocator->get(\VuFind\Date\Converter::class)
-            ->convertToDisplayDate("U", $defaultRequired);
         try {
             $defaultPickup
                 = $catalog->getDefaultPickUpLocation($patron, $gatheredDetails);
@@ -417,20 +425,19 @@ class RecordController extends \VuFind\Controller\RecordController
             $defaultRequestGroup = false;
         }
 
+        $config = $this->getConfig();
+        $homeLibrary = ($config->Account->set_home_library ?? true)
+            ? $this->getUser()->home_library : '';
+        $helpText = $checkHolds['helpText'] ?? null;
+        $acceptTermsText = $checkHolds['acceptTermsText'] ?? null;
+
         $view = $this->createViewModel(
-            [
-                'gatheredDetails' => $gatheredDetails,
-                'pickup' => $pickup,
-                'defaultPickup' => $defaultPickup,
-                'homeLibrary' => $this->getUser()->home_library,
-                'extraHoldFields' => $extraHoldFields,
-                'defaultRequiredDate' => $defaultRequired,
-                'requestGroups' => $requestGroups,
-                'defaultRequestGroup' => $defaultRequestGroup,
-                'requestGroupNeeded' => $requestGroupNeeded,
-                'helpText' => $checkHolds['helpText'] ?? null,
-                'acceptTermsText' => $checkHolds['acceptTermsText'] ?? null
-            ]
+            compact(
+                'gatheredDetails', 'pickup', 'defaultPickup', 'homeLibrary',
+                'extraHoldFields', 'defaultStartDate', 'defaultRequiredDate',
+                'requestGroups', 'defaultRequestGroup', 'requestGroupNeeded',
+                'helpText', 'acceptTermsText'
+            )
         );
         $view->setTemplate('record/hold');
         return $view;
