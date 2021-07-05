@@ -1044,6 +1044,14 @@ class RecordDataFormatterFactory
         );
 
         $setTemplateLine(
+            'Container Information', 'getContainerInformation',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'recordContainerInformation']
+            ]
+        );
+
+        $setTemplateLine(
             'Material Arrangement', 'getMaterialArrangement',
             'data-escapeHtml.phtml',
             [
