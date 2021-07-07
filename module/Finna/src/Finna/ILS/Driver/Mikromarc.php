@@ -548,7 +548,8 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             'zip' => $result['MainZip'],
             'city' => $result['MainPlace'],
             'expiration_date' => $expirationDate,
-            'messagingServices' => $messagingSettings
+            'messagingServices' => $messagingSettings,
+            'blocked' => !empty($result['Defaulted'])
         ];
 
         if (isset($this->config['updateTransactionHistoryState']['method'])) {
@@ -648,27 +649,28 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      */
     public function renewMyItems($renewDetails)
     {
-        $finalResult = ['details' => []];
-        foreach ($renewDetails['details'] as $details) {
-            $checkedOutId = $details;
+        $details = [];
+        $blocks = [];
+        foreach ($renewDetails['details'] as $id) {
+            $checkedOutId = $id;
             [$code, $result] = $this->makeRequest(
                 ['odata', "BorrowerLoans($checkedOutId)", 'Default.RenewLoan'],
                 false, 'POST', true
             );
             if ($code != 200 || $result['ServiceCode'] != 'LoanRenewed') {
-                $map = ['ReservedForOtherBorrower' => 'renew_item_requested'];
-                $errorCode = $result['error']['code'] ?? null;
-                $sysMsg = $map[$errorCode] ?? null;
-                $finalResult['details'][$checkedOutId] = [
-                    'item_id' => $checkedOutId,
-                    'success' => false,
-                    'sysMessage' => $sysMsg
-                ];
+                $currentResult = $this->convertError($code, $result);
+                $currentResult['item_id'] = $checkedOutId;
+                $details[$checkedOutId] = $currentResult;
+                if ($code > 204
+                    && !in_array($currentResult['sysMessage'], $blocks)
+                ) {
+                    $blocks[] = $currentResult['sysMessage'];
+                }
             } else {
                 $newDate = $this->dateConverter->convertToDisplayDate(
                     'U', strtotime($result['DueTime'])
                 );
-                $finalResult['details'][$checkedOutId] = [
+                $details[$checkedOutId] = [
                     'item_id' => $checkedOutId,
                     'success' => true,
                     'new_date' => $newDate
@@ -680,7 +682,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 );
             }
         }
-        return $finalResult;
+        return compact('details', 'blocks');
     }
 
     /**
@@ -784,7 +786,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
 
         // Make sure pickup location is valid
         if (!$this->pickUpLocationIsValid($pickUpLocation, $patron, $holdDetails)) {
-            return $this->holdError(0, 'hold_invalid_pickup');
+            return $this->convertError(0, 'hold_invalid_pickup');
         }
         $request = [
             'BorrowerId' =>  $patron['id'],
@@ -800,7 +802,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             true
         );
         if ($code >= 300) {
-            return $this->holdError($code, $result);
+            return $this->convertError($code, $result);
         }
 
         if ($holdDetails['startDateTS']) {
@@ -926,7 +928,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 true
             );
             if ($code >= 300) {
-                $holdError = $this->holdError($code, $result);
+                $holdError = $this->convertError($code, $result);
                 $results[$requestId] = [
                     'success' => false,
                     'status' => $holdError['sysMessage']
@@ -1861,6 +1863,9 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      */
     protected function getPatronBlocks($patron)
     {
+        if (!empty($patron['blocked'])) {
+            return ['Borrowing Block Message'];
+        }
         return false;
     }
 
@@ -1966,14 +1971,14 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
     }
 
     /**
-     * Return a hold error message
+     * Convert error message into a translation key
      *
      * @param int   $code   HTTP Result Code
      * @param array $result API Response
      *
      * @return array
      */
-    protected function holdError($code, $result)
+    protected function convertError($code, $result)
     {
         $message = 'hold_error_fail';
         if (!empty($result['error']['message'])) {
@@ -1987,7 +1992,8 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
            'DuplicateReservationExists' => 'hold_error_already_held',
            'NoItemsAvailableByTerm' => 'hold_error_denied',
            'NoItemAvailable' => 'hold_error_denied',
-           'NoTermsPermitLoanOrReservation' => 'hold_error_not_holdable'
+           'NoTermsPermitLoanOrReservation' => 'hold_error_not_holdable',
+           'ReservedForOtherBorrower' => 'renew_item_requested'
         ];
 
         if (isset($map[$message])) {
