@@ -711,17 +711,19 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         }
         $holds = [];
         foreach ($result as $entry) {
-            $frozen = !$entry['ResActiveToday'];
+            $available = $entry['ServiceCode'] === 'ReservationArrived'
+                    || $entry['ServiceCode'] === 'ReservationNoticeSent';
+            $frozen = !$entry['ResActiveToday'] && !$available;
             $frozenThrough = '';
-            if ($frozen && $entry['ResPausedTo'] != $entry['ResValidUntil']) {
+            if ($frozen && $entry['ResPausedTo']
+                && $entry['ResPausedTo'] != $entry['ResValidUntil']
+            ) {
                 $frozenThrough = $this->dateConverter->convertToDisplayDate(
                     'U',
                     strtotime($entry['ResPausedTo'])
                 );
             }
 
-            $available = $entry['ServiceCode'] === 'ReservationArrived'
-                    || $entry['ServiceCode'] === 'ReservationNoticeSent';
             $updateDetails = !$available
                 ? $entry['Id'] . '|' . $entry['ResValidUntil']
                 : '';
