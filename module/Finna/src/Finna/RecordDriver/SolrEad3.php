@@ -599,25 +599,20 @@ class SolrEad3 extends SolrEad
      *
      * @return array
      */
-    public function getSummary()
+    public function getSummary() : array
     {
-        $xml = $this->getXmlRecord();
+        return $this->getSummaryWithData(false);
+    }
 
-        if (!empty($xml->scopecontent)) {
-            $desc = [];
-            foreach ($xml->scopecontent as $el) {
-                if (isset($el->attributes()->encodinganalog)) {
-                    continue;
-                }
-                if (isset($el->head) && (string)$el->head !== 'Tietosisältö') {
-                    continue;
-                }
-                if ($desc = $this->getDisplayLabel($el, 'p', true)) {
-                    return $desc;
-                }
-            }
-        }
-        return parent::getSummary();
+    /**
+     * Get an array of summary items for the record.
+     * Each item includes the fields 'text' and 'url' (when available).
+     *
+     * @return array
+     */
+    public function getSummaryExtended() : array
+    {
+        return $this->getSummaryWithData(true);
     }
 
     /**
@@ -1689,6 +1684,65 @@ class SolrEad3 extends SolrEad
             }
         }
         return null;
+    }
+
+    /**
+     * Helper function for returning summary strings for the record.
+     *
+     * @param boolean $withLinks Whether to also return URL's related to
+     * summary strings.
+     *
+     * @return array
+     */
+    protected function getSummaryWithData($withLinks = false) : array
+    {
+        $xml = $this->getXmlRecord();
+
+        if (!empty($xml->scopecontent)) {
+            $result = $localeResult = [];
+            $preferredLangCodes = $this->mapLanguageCode($this->preferredLanguage);
+            foreach ($xml->scopecontent as $el) {
+                if (isset($el->attributes()->encodinganalog)) {
+                    continue;
+                }
+                if (isset($el->head) && (string)$el->head !== 'Tietosisältö') {
+                    continue;
+                }
+                if (!$withLinks) {
+                    if ($desc = $this->getDisplayLabel($el, 'p', true)) {
+                        return $desc;
+                    }
+                } else {
+                    foreach ($el->p ?? [] as $p) {
+                        $text = (string)$p;
+                        $url = isset($p->ref)
+                            ? (string)$p->ref->attributes()->href : null;
+                        if ($this->urlBlocked($url, $text)) {
+                            $url = null;
+                        }
+                        $data = compact('text', 'url');
+                        $result[] = $data;
+                        $lang = $this->detectNodeLanguage($p);
+                        if ($lang['preferred']) {
+                            $localeResult[] = $data;
+                        }
+                    }
+                }
+            }
+        }
+        if ($res = $localeResult ?: $result) {
+            return $res;
+        }
+        $summary = parent::getSummary();
+        if ($withLinks) {
+            return array_map(
+                function ($text) {
+                    return compact('text');
+                },
+                $summary
+            );
+        }
+        return $summary;
     }
 
     /**
