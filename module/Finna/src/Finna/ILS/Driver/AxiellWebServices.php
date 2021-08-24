@@ -512,9 +512,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         $username = $user['cat_username'];
         $password = $user['cat_password'];
 
-        $id = !empty($holdDetails['item_id'])
-            ? $holdDetails['item_id']
-            : ($holdDetails['id'] ?? '');
+        $id = $holdDetails['id'] ?? '';
 
         $holdType = $this->getHoldType($holdDetails);
 
@@ -2449,6 +2447,11 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                    isset($reservation->reservationType)
                    && $this->requestGroupsEnabled
                    ? "axiell_$reservation->reservationType"
+                   : '',
+                'requestGroupId' =>
+                   isset($reservation->reservationType)
+                   && $this->requestGroupsEnabled
+                   ? $reservation->reservationType
                    : '',
                 'in_transit' => $reservation->reservationStatus == 'inTransit',
                 'title' => $title,
