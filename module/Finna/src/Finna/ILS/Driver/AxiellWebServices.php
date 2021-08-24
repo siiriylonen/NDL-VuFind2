@@ -512,7 +512,9 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         $username = $user['cat_username'];
         $password = $user['cat_password'];
 
-        $id = $holdDetails['id'] ?? '';
+        $id = !empty($holdDetails['item_id'])
+            ? $holdDetails['item_id']
+            : ($holdDetails['id'] ?? '');
 
         $holdType = $this->getHoldType($holdDetails);
 
@@ -2437,7 +2439,6 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'position' =>
                    $reservation->queueNo ?? '-',
                 'available' => $reservation->reservationStatus == 'fetchable',
-                'item_id' => $reservation->id,
                 'reqnum' => $reservation->id,
                 'volume' =>
                    $reservation->catalogueRecord->volume ?? '',
