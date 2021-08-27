@@ -131,15 +131,15 @@ class HoldsController extends AbstractBase
             }
 
             // Add update details if appropriate
-            if (empty($holdConfig['updateFields'])) {
-                if (isset($current['updateDetails'])) {
+            if (isset($current['updateDetails'])) {
+                if (empty($holdConfig['updateFields'])
+                    || '' === $current['updateDetails']
+                ) {
                     unset($current['updateDetails']);
+                } else {
+                    $view->updateForm = true;
+                    $this->holds()->rememberValidId($current['updateDetails']);
                 }
-            } elseif (isset($current['updateDetails'])
-                && '' !== $current['updateDetails']
-            ) {
-                $view->updateForm = true;
-                $this->holds()->rememberValidId($current['updateDetails']);
             }
 
             $driversNeeded[] = $current;
