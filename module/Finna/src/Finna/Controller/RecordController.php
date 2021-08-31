@@ -462,14 +462,16 @@ class RecordController extends \VuFind\Controller\RecordController
         $homeLibrary = ($config->Account->set_home_library ?? true)
             ? $this->getUser()->home_library : '';
         $helpText = $checkHolds['helpText'] ?? null;
-        $acceptTermsText = $checkHolds['acceptTermsText'] ?? null;
+        // acceptTermsText kept for backward-compatibility:
+        $acceptTermsText = $acceptTermsTextHtml
+            = $checkHolds['acceptTermsText'] ?? null;
 
         $view = $this->createViewModel(
             compact(
                 'gatheredDetails', 'pickup', 'defaultPickup', 'homeLibrary',
                 'extraHoldFields', 'defaultStartDate', 'defaultRequiredDate',
                 'requestGroups', 'defaultRequestGroup', 'requestGroupNeeded',
-                'helpText', 'acceptTermsText'
+                'helpText', 'acceptTermsText', 'acceptTermsTextHtml'
             )
         );
         $view->setTemplate('record/hold');
@@ -598,7 +600,9 @@ class RecordController extends \VuFind\Controller\RecordController
                 'extraFields' => $extraFields,
                 'defaultRequiredDate' => $defaultRequired,
                 'helpText' => $checkRequests['helpText'] ?? null,
-                'acceptTermsText' => $checkRequests['acceptTermsText'] ?? null
+                // For backward-compatibility:
+                'acceptTermsText' => $checkRequests['acceptTermsText'] ?? null,
+                'acceptTermsTextHtml' => $checkRequests['acceptTermsText'] ?? null
             ]
         );
         $view->setTemplate('record/storageretrievalrequest');
@@ -729,7 +733,9 @@ class RecordController extends \VuFind\Controller\RecordController
                 'extraFields' => $extraFields,
                 'defaultRequiredDate' => $defaultRequired,
                 'helpText' => $checkRequests['helpText'] ?? null,
-                'acceptTermsText' => $checkRequests['acceptTermsText'] ?? null
+                // For backward-compatibility:
+                'acceptTermsText' => $checkRequests['acceptTermsText'] ?? null,
+                'acceptTermsTextHtml' => $checkRequests['acceptTermsText'] ?? null
             ]
         );
         $view->setTemplate('record/illrequest');
