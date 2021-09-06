@@ -43,8 +43,8 @@ namespace Finna\RecordDriver;
  */
 class Primo extends \VuFind\RecordDriver\Primo
 {
-    use FinnaRecordTrait;
-    use XmlReaderTrait;
+    use Feature\FinnaRecordTrait;
+    use Feature\FinnaXmlReaderTrait;
 
     /**
      * Indicate whether export is disabled for a particular format.

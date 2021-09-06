@@ -27,7 +27,7 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-namespace Finna\RecordDriver;
+namespace Finna\RecordDriver\Feature;
 
 /**
  * Functions for reading MARC records.
@@ -40,7 +40,7 @@ namespace Finna\RecordDriver;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-trait MarcReaderTrait
+trait FinnaMarcReaderTrait
 {
     /**
      * Strip trailing spaces and punctuation characters from a string

@@ -41,11 +41,11 @@ namespace Finna\RecordDriver;
 class SolrForward extends \VuFind\RecordDriver\SolrDefault
     implements \Laminas\Log\LoggerAwareInterface
 {
-    use SolrFinnaTrait;
-    use SolrForwardTrait {
-        SolrForwardTrait::getAllImages insteadof SolrFinnaTrait;
+    use Feature\SolrFinnaTrait;
+    use Feature\SolrForwardTrait {
+        Feature\SolrForwardTrait::getAllImages insteadof Feature\SolrFinnaTrait;
     }
-    use UrlCheckTrait;
+    use Feature\FinnaUrlCheckTrait;
     use \VuFind\Log\LoggerAwareTrait;
 
     /**

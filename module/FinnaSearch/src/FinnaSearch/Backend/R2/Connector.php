@@ -95,13 +95,6 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
     protected $rems = null;
 
     /**
-     * HTTP options
-     *
-     * @var array
-     */
-    protected $httpOptions = [];
-
-    /**
      * R2 field used to store unique identifier
      *
      * $uniqueKey field is not unique in R2 but is still treated as unique by VuFind.
@@ -186,7 +179,7 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
      */
     public function setHttpOptions(array $options)
     {
-        $this->httpOptions = $options;
+        $this->client->setOptions($options);
     }
 
     /**
@@ -297,24 +290,5 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
             throw HttpErrorException::createFromResponse($response);
         }
         return $response->getBody();
-    }
-
-    /**
-     * Create the HTTP client.
-     *
-     * @param string $url    Target URL
-     * @param string $method Request method
-     *
-     * @return HttpClient
-     */
-    protected function createClient($url, $method)
-    {
-        $client = parent::createClient($url, $method);
-
-        $options = array_merge(
-            $this->httpOptions, ['timeout' => $this->timeout]
-        );
-        $client->setOptions($options);
-        return $client;
     }
 }

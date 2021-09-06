@@ -29,7 +29,7 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/configuration:external_content Wiki
  */
-namespace Finna\RecordDriver;
+namespace Finna\RecordDriver\Feature;
 
 /**
  * Trait for checking external content url validity
@@ -40,7 +40,7 @@ namespace Finna\RecordDriver;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/configuration:external_content Wiki
  */
-trait UrlCheckTrait
+trait FinnaUrlCheckTrait
 {
     /**
      * A simple runtime cache for results to avoid multiple url lookups during the

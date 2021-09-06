@@ -48,9 +48,9 @@ namespace Finna\RecordDriver;
 class SolrEad extends SolrDefault
     implements \Laminas\Log\LoggerAwareInterface
 {
-    use SolrFinnaTrait;
-    use XmlReaderTrait;
-    use UrlCheckTrait;
+    use Feature\SolrFinnaTrait;
+    use Feature\FinnaXmlReaderTrait;
+    use Feature\FinnaUrlCheckTrait;
     use \VuFind\Log\LoggerAwareTrait;
 
     // add-data > parent elements with these level-attributes are archive series
@@ -79,7 +79,7 @@ class SolrEad extends SolrDefault
     /**
      * Get access restriction notes for the record.
      *
-     * @return string[] Notes
+     * @return mixed Notes
      */
     public function getAccessRestrictions()
     {

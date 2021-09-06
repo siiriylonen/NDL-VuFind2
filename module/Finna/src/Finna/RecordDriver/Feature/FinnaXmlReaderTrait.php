@@ -25,7 +25,7 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-namespace Finna\RecordDriver;
+namespace Finna\RecordDriver\Feature;
 
 /**
  * Functions for reading XML records.
@@ -39,7 +39,7 @@ namespace Finna\RecordDriver;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-trait XmlReaderTrait
+trait FinnaXmlReaderTrait
 {
     /**
      * XML record. Access only via getXMLRecord() as this is initialized lazily.

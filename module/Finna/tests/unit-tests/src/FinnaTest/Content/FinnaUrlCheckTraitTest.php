@@ -1,6 +1,6 @@
 <?php
 /**
- * UrlCheckTrait Test Class
+ * FinnaUrlCheckTrait Test Class
  *
  * PHP version 7
  *
@@ -28,7 +28,7 @@
 namespace FinnaTest\Content;
 
 /**
- * UrlCheckTrait Test Class
+ * FinnaUrlCheckTrait Test Class
  *
  * @category VuFind
  * @package  Tests
@@ -36,7 +36,7 @@ namespace FinnaTest\Content;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:testing:unit_tests Wiki
  */
-class UrlCheckTraitTest extends \VuFindTest\Unit\TestCase
+class FinnaUrlCheckTraitTest extends \VuFindTest\Unit\TestCase
 {
     /**
      * Test with empty configuration
@@ -285,7 +285,7 @@ class UrlCheckTraitTest extends \VuFindTest\Unit\TestCase
 
 class MockDriver
 {
-    use \Finna\RecordDriver\UrlCheckTrait;
+    use \Finna\RecordDriver\Feature\FinnaUrlCheckTrait;
 
     public function check($url, $id = '')
     {

@@ -43,9 +43,9 @@ namespace Finna\RecordDriver;
 class SolrMarc extends \VuFind\RecordDriver\SolrMarc
     implements \Laminas\Log\LoggerAwareInterface
 {
-    use SolrFinnaTrait;
-    use MarcReaderTrait;
-    use UrlCheckTrait;
+    use Feature\SolrFinnaTrait;
+    use Feature\FinnaMarcReaderTrait;
+    use Feature\FinnaUrlCheckTrait;
     use \VuFind\Log\LoggerAwareTrait;
 
     /**

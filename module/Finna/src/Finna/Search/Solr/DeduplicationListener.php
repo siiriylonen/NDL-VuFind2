@@ -52,8 +52,8 @@ class DeduplicationListener extends \VuFind\Search\Solr\DeduplicationListener
     public function onSearchPre(EventInterface $event)
     {
         $saveEnabled = $this->enabled;
-        $backend = $event->getTarget();
-        if ($backend === $this->backend) {
+        $command = $event->getParam('command');
+        if ($command->getTargetBackendName() === $this->backend->getIdentifier()) {
             // Check that we're not doing a known record search
             $query = $event->getParam('query');
             if ($query && !($query instanceof QueryGroup)
@@ -109,8 +109,8 @@ class DeduplicationListener extends \VuFind\Search\Solr\DeduplicationListener
     {
         $saveEnabled = $this->enabled;
 
-        $backend = $event->getParam('backend');
-        if ($backend != $this->backend->getIdentifier()) {
+        $command = $event->getParam('command');
+        if ($command->getTargetBackendName() !== $this->backend->getIdentifier()) {
             return $event;
         }
         $context = $event->getParam('context');
