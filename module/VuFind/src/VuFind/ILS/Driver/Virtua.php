@@ -1614,7 +1614,7 @@ class Virtua extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterfa
      */
     public function getCancelHoldDetails($holdDetails, $patron = [])
     {
-        // TODO: implement me.
+        throw new \Exception('TODO: implement getCancelHoldDetails.');
     }
 
     /**
@@ -1634,6 +1634,7 @@ class Virtua extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterfa
     {
         // TODO: implement standard VuFind holds API; utilize cancelHold()
         // below as a support method.
+        throw new \Exception('cancelHolds() is not supported yet.');
     }
 
     /**
@@ -1730,7 +1731,7 @@ class Virtua extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterfa
      */
     public function getRenewDetails($checkOutDetails)
     {
-        // TODO: implement me
+        throw new \Exception('TODO: implement getRenewDetails');
     }
 
     /**
@@ -1890,7 +1891,7 @@ class Virtua extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterfa
             }
             $result = $client->setMethod($method)->send();
         } catch (\Exception $e) {
-            throw new ILSException($e->getMessage());
+            $this->throwAsIlsException($e);
         }
 
         if (!$result->isSuccess()) {

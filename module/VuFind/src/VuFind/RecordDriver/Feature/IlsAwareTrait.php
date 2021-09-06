@@ -27,7 +27,7 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-namespace VuFind\RecordDriver;
+namespace VuFind\RecordDriver\Feature;
 
 use VuFind\Exception\ILS as ILSException;
 
@@ -156,7 +156,7 @@ trait IlsAwareTrait
      *
      * @param array $backends List of backends that support ILS integration
      *
-     * @return string[]
+     * @return void
      */
     public function setIlsBackends($backends)
     {

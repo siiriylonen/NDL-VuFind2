@@ -336,6 +336,8 @@ class Aleph extends AbstractBase implements \Laminas\Log\LoggerAwareInterface,
     use \VuFind\Log\LoggerAwareTrait;
     use \VuFindHttp\HttpServiceAwareTrait;
 
+    const RECORD_ID_BASE_SEPARATOR = '-';
+
     /**
      * Translator object
      *
@@ -713,7 +715,7 @@ class Aleph extends AbstractBase implements \Laminas\Log\LoggerAwareInterface,
             }
             $result = $client->send();
         } catch (\Exception $e) {
-            throw new ILSException($e->getMessage());
+            $this->throwAsIlsException($e);
         }
         if (!$result->isSuccess()) {
             throw new ILSException('HTTP error');
@@ -736,7 +738,8 @@ class Aleph extends AbstractBase implements \Laminas\Log\LoggerAwareInterface,
     }
 
     /**
-     * Convert an ID string into an array of library and ID within the library.
+     * Convert an ID string into an array of bibliographic base and ID within
+     * the base.
      *
      * @param string $id ID to parse.
      *
@@ -744,18 +747,22 @@ class Aleph extends AbstractBase implements \Laminas\Log\LoggerAwareInterface,
      */
     protected function parseId($id)
     {
-        if (count($this->bib) == 1) {
-            $retval = [$this->bib[0], $id];
+        $result = null;
+        if (strpos($id, self::RECORD_ID_BASE_SEPARATOR) !== false) {
+            $result = explode(self::RECORD_ID_BASE_SEPARATOR, $id);
+            $base = $result[0];
+            if (!in_array($base, $this->bib)) {
+                throw new \Exception("Unknown library base '$base'");
+            }
+        } elseif (count($this->bib) == 1) {
+            $result = [$this->bib[0], $id];
         } else {
-            $retval = explode('-', $id);
+            throw new \Exception(
+                "Invalid record identifier '$id' "
+                . "without library base"
+            );
         }
-        if (count($retval) != 2) {
-            throw new \Exception("The resulting array has incorrect size");
-        }
-        if (!in_array($retval[0], $this->bib)) {
-            throw new \Exception("The resulting array contains unknown library ID");
-        }
-        return $retval;
+        return $result;
     }
 
     /**
@@ -1282,9 +1289,14 @@ class Aleph extends AbstractBase implements \Laminas\Log\LoggerAwareInterface,
                     $holddate = $this->parseDate($holddate);
                 }
                 $delete = ($delete[0] == "Y");
+                // Secondary, Aleph-specific identifier that may be useful for
+                // local customizations
+                $adm_id = (string)$z30->{'z30-doc-number'};
+
                 $holdList[] = [
                     'type' => $type,
                     'item_id' => $item_id,
+                    'adm_id'   => $adm_id,
                     'location' => $location,
                     'title' => $title,
                     'author' => $author,
@@ -1603,7 +1615,7 @@ class Aleph extends AbstractBase implements \Laminas\Log\LoggerAwareInterface,
             if (strpos($ex->getMessage(), 'Error in Verification') !== false) {
                 return null;
             }
-            throw new ILSException($ex->getMessage());
+            $this->throwAsIlsException($ex);
         }
         $patron = [];
         $name = $xml->z303->{'z303-name'};
