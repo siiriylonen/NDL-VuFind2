@@ -209,7 +209,7 @@ class Params extends \VuFind\Search\Solr\Params
      *
      * @param string $filter A filter string from url : "field:value"
      *
-     * @return bool
+     * @return void
      */
     public function addFilter($filter)
     {

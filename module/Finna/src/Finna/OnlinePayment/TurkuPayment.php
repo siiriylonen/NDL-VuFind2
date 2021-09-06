@@ -151,6 +151,7 @@ class TurkuPayment extends Paytrail
         $module->setHttpService($this->http);
         $module->setLogger($this->logger);
         $module->sendRequest($this->config->url);
+        return '';
     }
 
     /**

@@ -142,18 +142,6 @@ abstract class AuthorityRecordsBase extends \VuFind\RecordTab\AbstractBase
     }
 
     /**
-     * Set the record driver to operate on
-     *
-     * @param \VuFind\RecordDriver\AbstractBase $driver Record driver
-     *
-     * @return AbstractBase
-     */
-    public function setRecordDriver(\VuFind\RecordDriver\AbstractBase $driver)
-    {
-        $this->driver = $driver;
-    }
-
-    /**
      * Get search query for returning biblio records by authority.
      *
      * @return string

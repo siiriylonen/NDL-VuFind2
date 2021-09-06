@@ -299,6 +299,7 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
             }
             return $response;
         }
+        return false;
     }
 
     /**

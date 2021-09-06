@@ -153,6 +153,7 @@ class UrlQueryHelper extends \VuFind\Search\UrlQueryHelper
         if ($output) {
             return $this->getParams(false);
         }
+        return '';
     }
 
     /**

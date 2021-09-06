@@ -1407,6 +1407,7 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         }
+        return '';
     }
 
     /**

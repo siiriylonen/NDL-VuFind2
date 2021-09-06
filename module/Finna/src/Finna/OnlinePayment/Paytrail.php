@@ -243,6 +243,7 @@ class Paytrail extends BaseHandler
             : 'https://payment.paytrail.com/e2';
 
         $this->redirectToPaymentForm($paytrailUrl, $formData);
+        return '';
     }
 
     /**

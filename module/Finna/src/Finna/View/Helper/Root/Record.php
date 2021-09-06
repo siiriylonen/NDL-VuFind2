@@ -826,7 +826,7 @@ class Record extends \VuFind\View\Helper\Root\Record
      *
      * @param array $urls Array of rendered URLs
      *
-     * @return array
+     * @return void
      */
     public function setRenderedUrls($urls)
     {

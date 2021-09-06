@@ -298,9 +298,7 @@ class Primo extends \VuFind\RecordDriver\Primo
     public function getPublicationDates()
     {
         $xml = $this->getXmlRecord();
-        if (isset($xml->facets->creationdate)) {
-            return (array)($xml->facets->creationdate);
-        }
+        return (array)($xml->facets->creationdate ?? []);
     }
 
     /**

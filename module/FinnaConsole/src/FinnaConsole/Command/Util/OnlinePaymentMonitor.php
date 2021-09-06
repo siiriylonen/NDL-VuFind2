@@ -245,7 +245,7 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
      * @param int         $failedCnt     Number of failed transactions.
      * @param User        $user          User object.
      *
-     * @return boolean success
+     * @return bool success
      */
     protected function processTransaction(
         $t, &$report, &$registeredCnt, &$expiredCnt, &$failedCnt, &$user
@@ -371,6 +371,8 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
                 return false;
             }
         }
+
+        return true;
     }
 
     /**
