@@ -32,7 +32,7 @@
       <td style="width: 10%"><?=$this->escapeHtml($part['number']) ?></td>
       <td>
         <?php if (!empty($part['id'])): ?>
-          <a href="<?=$this->recordLink()->getUrl($part['id']) ?>"><?=$this->escapeHtml($part['title']) ?></a>
+          <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getUrl($part['id'])) ?>"><?=$this->escapeHtml($part['title']) ?></a>
         <?php else: ?>
           <?=$this->escapeHtml($part['title']) ?>
         <?php endif; ?>

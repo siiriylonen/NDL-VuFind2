@@ -1,10 +1,10 @@
 <?php
 /**
- * RecordLink view helper (DEPRECATED -- use RecordLinker instead)
+ * RecordLinker view helper
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2017-2020.
+ * Copyright (C) The National Library of Finland 2017-2021.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -30,7 +30,7 @@
 namespace Finna\View\Helper\Root;
 
 /**
- * RecordLink view helper (DEPRECATED -- use RecordLinker instead)
+ * RecordLinker view helper
  *
  * @category VuFind
  * @package  View_Helpers
@@ -40,7 +40,7 @@ namespace Finna\View\Helper\Root;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
-class RecordLink extends \VuFind\View\Helper\Root\RecordLink
+class RecordLinker extends \VuFind\View\Helper\Root\RecordLinker
 {
     /**
      * Data source configuration
@@ -52,13 +52,13 @@ class RecordLink extends \VuFind\View\Helper\Root\RecordLink
     /**
      * Constructor
      *
-     * @param \VuFind\Record\Router $router Record router
-     * @param array                 $config Configuration for search box
+     * @param \VuFind\Record\Router $router   Record router
+     * @param array                 $dsConfig Data source configuration
      */
-    public function __construct(\VuFind\Record\Router $router, $config)
+    public function __construct(\VuFind\Record\Router $router, array $dsConfig)
     {
-        // parent no longer has a constructor that uses $router
-        $this->datasourceConfig = $config;
+        parent::__construct($router);
+        $this->datasourceConfig = $dsConfig;
     }
 
     /**
@@ -110,12 +110,11 @@ class RecordLink extends \VuFind\View\Helper\Root\RecordLink
      * number), this helper renders a URL linking to that record.
      *
      * @param array  $link   Link information from record model
-     * @param bool   $escape Should we escape the rendered URL?
      * @param string $source Source ID for backend being used to retrieve records
      *
      * @return string       URL derived from link information
      */
-    public function related($link, $escape = true, $source = DEFAULT_SEARCH_BACKEND)
+    public function related($link, $source = DEFAULT_SEARCH_BACKEND)
     {
         if ('identifier' === $link['type']) {
             $urlHelper = $this->getView()->plugin('url');
@@ -147,11 +146,6 @@ class RecordLink extends \VuFind\View\Helper\Root\RecordLink
                     $filters
                 )
             );
-        }
-
-        if ($escape) {
-            $escapeHelper = $this->getView()->plugin('escapeHtml');
-            $result = $escapeHelper($result);
         }
 
         return $result;
