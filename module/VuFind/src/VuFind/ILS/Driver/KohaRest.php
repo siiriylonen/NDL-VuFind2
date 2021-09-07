@@ -56,7 +56,6 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
 {
     use \VuFindHttp\HttpServiceAwareTrait;
     use \VuFind\I18n\Translator\TranslatorAwareTrait;
-    use \VuFind\Log\LoggerAwareTrait;
     use \VuFind\ILS\Driver\CacheTrait;
     use \VuFind\ILS\Driver\OAuth2TokenTrait;
 
@@ -783,8 +782,8 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
     /**
      * Cancel Holds
      *
-     * Attempts to Cancel a hold. The data in $cancelDetails['details'] is determined
-     * by getCancelHoldDetails().
+     * Attempts to Cancel a hold. The data in $cancelDetails['details'] is taken from
+     * holds' cancel_details field.
      *
      * @param array $cancelDetails An array of item and patron data
      *

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Unit tests for VuFind NoCacheAdapter.
+ * Get information from the EDS backend
  *
  * PHP version 7
  *
- * Copyright (C) Villanova University 2007.
+ * Copyright (C) Villanova University 2021.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -21,37 +21,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Cache
- * @author   David Maus <maus@hab.de>
+ * @package  Search
+ * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     https://vufind.org
  */
-namespace VuFindTest\Cache\Storage\Adapter;
+namespace VuFindSearch\Backend\EDS\Command;
 
-use PHPUnit\Framework\TestCase;
-
-use VuFind\Cache\Storage\Adapter\NoCacheAdapter;
+use VuFindSearch\Backend\EDS\Backend;
+use VuFindSearch\Command\CallMethodCommand;
+use VuFindSearch\ParamBag;
 
 /**
- * Unit tests for VuFind NoCacheAdapter.
+ * Get information from the EDS backend
  *
  * @category VuFind
- * @package  Cache
- * @author   David Maus <maus@hab.de>
+ * @package  Search
+ * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     https://vufind.org
  */
-class NoCacheAdapterTest extends TestCase
+class GetInfoCommand extends CallMethodCommand
 {
     /**
-     * Test that an item is not stored.
+     * Constructor.
      *
-     * @return void
+     * @param string    $backend Search backend identifier
+     * @param ?ParamBag $params  Search backend parameters
      */
-    public function testHasItemIsFalseAfterSetItem()
-    {
-        $cache = new NoCacheAdapter();
-        $cache->setItem('key', 'value');
-        $this->assertFalse((bool)$cache->hasItem('key'));
+    public function __construct(
+        string $backend = 'EDS',
+        ParamBag $params = null
+    ) {
+        parent::__construct(
+            $backend,
+            Backend::class,
+            'getInfo',
+            [],
+            $params,
+            false
+        );
     }
 }
