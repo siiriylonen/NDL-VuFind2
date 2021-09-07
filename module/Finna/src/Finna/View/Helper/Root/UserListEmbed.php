@@ -232,7 +232,7 @@ class UserListEmbed extends \Laminas\View\Helper\AbstractHelper
         // in VuFind\Search\Results\Favorites
         $limit = $resultsTotal - 1;
 
-        return $this->__invoke(
+        return ($this)(
             [
                 'id' => $id, 'page' => 1, 'limit' => $limit,
                 'view' => $view, 'sort' => $sort

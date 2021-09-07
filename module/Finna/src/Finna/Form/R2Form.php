@@ -99,16 +99,15 @@ class R2Form extends Form
         switch ($translationKey) {
         case 'R2_register_form_usage_link_html':
         case 'R2_register_form_help_returninguser_pre_html':
-            $url = $urlHelper->__invoke('content-page', ['page' => 'tutkijasali']);
+            $url = $urlHelper('content-page', ['page' => 'tutkijasali']);
             return $this->translate($translationKey, ['%%url%%' => $url]);
         case 'R2_register_form_help_post_html':
             return $this->translate(
                 $translationKey,
                 [
-                    '%%url%%' =>
-                        $urlHelper->__invoke('content-page', ['page' => 'privacy']),
+                    '%%url%%' => $urlHelper('content-page', ['page' => 'privacy']),
                     '%%urlTerms%%' =>
-                        $urlHelper->__invoke('content-page', ['page' => 'terms'])
+                        $urlHelper('content-page', ['page' => 'terms'])
                 ]
             );
 

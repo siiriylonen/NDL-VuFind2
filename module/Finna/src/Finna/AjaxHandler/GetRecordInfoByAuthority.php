@@ -98,7 +98,7 @@ class GetRecordInfoByAuthority extends \VuFind\AjaxHandler\AbstractBase
 
         $id = $params->fromPost('id', $params->fromQuery('id'));
         $driver = $this->recordLoader->load($id, 'SolrAuth');
-        $html = $this->recordHelper->__invoke($driver)->getAuthoritySummary();
+        $html = ($this->recordHelper)($driver)->getAuthoritySummary();
 
         return $this->formatResponse(compact('html'));
     }

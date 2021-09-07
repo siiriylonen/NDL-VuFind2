@@ -200,7 +200,7 @@ class LinkedEvents implements \VuFindHttp\HttpServiceAwareInterface,
                     $event = [
                         'id' => $eventData['id'],
                         'title' => $this->getField($eventData, 'name'),
-                        'description' => $this->cleanHtml->__invoke(
+                        'description' => ($this->cleanHtml)(
                             $this->getField($eventData, 'description')
                         ),
                         'image' => ['url' => $eventData['images'][0]['url'] ?? ''],

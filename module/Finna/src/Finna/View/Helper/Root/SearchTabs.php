@@ -279,7 +279,7 @@ class SearchTabs extends \VuFind\View\Helper\Root\SearchTabs
         }
 
         // Build new URL
-        $url = $this->url->__invoke($targetOptions->getSearchAction())
+        $url = ($this->url)($targetOptions->getSearchAction())
             . $currentUrlQuery->getParams(false);
 
         return $url;

@@ -519,8 +519,7 @@ class DueDateReminders extends AbstractUtilCommand
             'type' => 'reminder',
             'key' => $key
         ];
-        $unsubscribeUrl
-            = $this->urlHelper->__invoke('myresearch-unsubscribe')
+        $unsubscribeUrl = ($this->urlHelper)('myresearch-unsubscribe')
             . '?' . http_build_query($urlParams);
 
         $urlParts = explode('/', $this->currentViewPath);

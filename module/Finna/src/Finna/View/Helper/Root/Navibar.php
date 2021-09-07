@@ -159,14 +159,12 @@ class Navibar extends \Laminas\View\Helper\AbstractHelper
             return ['url' => $action['url'], 'target' => $target];
         }
 
+        $urlHelper = $this->getViewHelper('url');
         try {
             if (isset($action['routeParams'])) {
-                $url =  $this->getViewHelper('url')->__invoke(
-                    $action['url'],
-                    $action['routeParams']
-                );
+                $url = $urlHelper($action['url'], $action['routeParams']);
             } else {
-                $url = $this->getViewHelper('url')->__invoke($action['url']);
+                $url = $urlHelper($action['url']);
             }
             return ['url' => $url, 'target' => $target];
         } catch (\Exception $e) {

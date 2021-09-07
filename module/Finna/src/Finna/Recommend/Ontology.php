@@ -579,11 +579,7 @@ class Ontology implements RecommendInterface, TranslatorAwareInterface
                 unset($params[$key]);
             }
         }
-        $href = $this->urlHelper->__invoke(
-            'search-results',
-            [],
-            ['query' => $params]
-        );
+        $href = ($this->urlHelper)('search-results', [], ['query' => $params]);
 
         // Add result and increase counter if the result is for a new term.
         $this->recommendationUris[] = $fintoResult['uri'];

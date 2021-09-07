@@ -404,7 +404,7 @@ class Form extends \VuFind\Form\Form
 
         // Help text from configuration
         $pre = isset($this->formConfig['help']['pre'])
-            && !$translationEmpty->__invoke($this->formConfig['help']['pre'])
+            && !$translationEmpty($this->formConfig['help']['pre'])
             ? $this->translate($this->formConfig['help']['pre'])
             : null;
 
@@ -424,14 +424,16 @@ class Form extends \VuFind\Form\Form
         if ($this->formId === self::RECORD_FEEDBACK_FORM && null !== $this->record) {
             // Append receiver info after general record feedback instructions
             // (translation key for this is defined in FeedbackForms.yaml)
-            if (!$translationEmpty->__invoke('feedback_recipient_info_record')) {
+            if (!$translationEmpty('feedback_recipient_info_record')) {
                 if (!empty($pre)) {
                     $pre .= '<br><br>';
                 }
                 $pre .= $transEsc(
                     'feedback_recipient_info_record',
-                    ['%%institution%%'
-                         => $organisationDisplayName->__invoke($this->record, true)]
+                    [
+                        '%%institution%%'
+                            => ($organisationDisplayName)($this->record, true)
+                    ]
                 );
             }
             $datasourceKey = 'feedback_recipient_info_record_'

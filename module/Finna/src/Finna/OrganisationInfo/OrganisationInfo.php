@@ -917,11 +917,10 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
         }
 
         if (!empty($response['slogan'])) {
-            $result['slogan'] = $this->cleanHtml->__invoke($response['slogan']);
+            $result['slogan'] = ($this->cleanHtml)($response['slogan']);
         }
         if (!empty($response['description'])) {
-            $result['description']
-                = $this->cleanHtml->__invoke($response['description']);
+            $result['description'] = ($this->cleanHtml)($response['description']);
         }
 
         if (!empty($response['links'])) {
@@ -956,15 +955,14 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
                     $name = empty($service['name'])
                         ? $service['standardName'] : $service['name'];
                     $data = [$name];
-                    $shortDesc = $this->cleanHtml->__invoke(
+                    $shortDesc = ($this->cleanHtml)(
                         $service['shortDescription'],
                         true
                     );
                     if ($shortDesc) {
                         $data['shortDesc'] = $shortDesc;
                     }
-                    $longDesc
-                        = $this->cleanHtml->__invoke($service['description'], true);
+                    $longDesc = ($this->cleanHtml)($service['description'], true);
                     if ($longDesc) {
                         $data['desc'] = $longDesc;
                     }

@@ -200,7 +200,7 @@ class Feed implements \VuFind\I18n\Translator\TranslatorAwareInterface,
                 '',
                 $url
             );
-            $imgLink = $this->imageLinkHelper->__invoke($file);
+            $imgLink = ($this->imageLinkHelper)($file);
         }
         return $imgLink;
     }
