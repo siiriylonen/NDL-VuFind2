@@ -55,7 +55,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
     use \VuFindHttp\HttpServiceAwareTrait;
     use \VuFind\I18n\Translator\TranslatorAwareTrait;
     use \VuFind\Log\LoggerAwareTrait;
-    use \VuFind\ILS\Driver\CacheTrait;
+    use \VuFind\Cache\CacheTrait;
 
     /**
      * Date converter object

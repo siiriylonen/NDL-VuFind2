@@ -51,7 +51,7 @@ class KohaRestSuomiVuFind extends \VuFind\ILS\Driver\AbstractBase implements
     use \VuFind\Log\LoggerAwareTrait {
         logError as error;
     }
-    use \VuFind\ILS\Driver\CacheTrait;
+    use \VuFind\Cache\CacheTrait;
 
     /**
      * Date converter object

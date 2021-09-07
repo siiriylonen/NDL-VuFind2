@@ -59,7 +59,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
     use \VuFind\Log\LoggerAwareTrait {
         logError as error;
     }
-    use \VuFind\ILS\Driver\CacheTrait;
+    use \VuFind\Cache\CacheTrait;
 
     /**
      * Date formatting object

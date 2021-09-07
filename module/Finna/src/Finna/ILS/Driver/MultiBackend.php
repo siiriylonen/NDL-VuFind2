@@ -46,7 +46,7 @@ class MultiBackend extends \VuFind\ILS\Driver\MultiBackend
     implements TranslatorAwareInterface
 {
     use \VuFind\I18n\Translator\TranslatorAwareTrait;
-    use \VuFind\ILS\Driver\CacheTrait;
+    use \VuFind\Cache\CacheTrait;
 
     /**
      * Initialize the driver.

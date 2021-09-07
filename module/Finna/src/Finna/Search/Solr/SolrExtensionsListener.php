@@ -130,7 +130,7 @@ class SolrExtensionsListener
     public function onSearchPre(EventInterface $event)
     {
         $command = $event->getParam('command');
-        if ($command->getTargetBackendName() === $this->backend->getIdentifier()) {
+        if ($command->getTargetIdentifier() === $this->backend->getIdentifier()) {
             $this->addDataSourceFilter($event);
             $context = $event->getParam('context');
             if (in_array($context, ['search', 'getids', 'workExpressions'])) {
@@ -154,7 +154,7 @@ class SolrExtensionsListener
     public function onSearchPost(EventInterface $event)
     {
         $command = $event->getParam('command');
-        if ($command->getTargetBackendName() === $this->backend->getIdentifier()) {
+        if ($command->getTargetIdentifier() === $this->backend->getIdentifier()) {
             if ($event->getParam('context') == 'search') {
                 $this->displayDebugInfo($event);
             }
