@@ -94,8 +94,11 @@ class GetModel extends \VuFind\AjaxHandler\AbstractBase
      * @param Router          $router       Router
      */
     public function __construct(
-        SessionSettings $ss, RecordLoader $recordLoader,
-        Url $urlHelper, FileLoader $fileLoader, TreeRouteStack $router
+        SessionSettings $ss,
+        RecordLoader $recordLoader,
+        Url $urlHelper,
+        FileLoader $fileLoader,
+        TreeRouteStack $router
     ) {
         $this->sessionSettings = $ss;
         $this->recordLoader = $recordLoader;

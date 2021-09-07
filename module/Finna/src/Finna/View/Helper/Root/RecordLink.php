@@ -131,7 +131,9 @@ class RecordLink extends \VuFind\View\Helper\Root\RecordLink
         $driver = $this->getView()->plugin('record')->getDriver();
         $result .= $this->getView()->plugin('searchTabs')
             ->getCurrentHiddenFilterParams(
-                $driver->getSourceIdentifier(), false, '&'
+                $driver->getSourceIdentifier(),
+                false,
+                '&'
             );
 
         if ($filters = ($link['filter'] ?? [])) {
@@ -141,7 +143,8 @@ class RecordLink extends \VuFind\View\Helper\Root\RecordLink
                     function ($key, $val) {
                         return 'filter[]=' . urlencode("$key:$val");
                     },
-                    array_keys($filters), $filters
+                    array_keys($filters),
+                    $filters
                 )
             );
         }

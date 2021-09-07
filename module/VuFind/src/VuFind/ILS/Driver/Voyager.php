@@ -1391,7 +1391,9 @@ EOT;
 
         // Order
         $sort = explode(
-            ' ', !empty($params['sort']) ? $params['sort'] : 'date_due desc', 2
+            ' ',
+            !empty($params['sort']) ? $params['sort'] : 'date_due desc',
+            2
         );
         $direction = (isset($sort[1]) && 'desc' === $sort[1]) ? 'DESC' : 'ASC';
         if ('title' === $sort[0]) {

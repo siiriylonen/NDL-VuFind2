@@ -121,7 +121,8 @@ class UserListEmbed extends \Laminas\View\Helper\AbstractHelper
     {
         foreach (array_keys($opt) as $key) {
             if (!in_array(
-                $key, ['id', 'view', 'sort', 'limit', 'page',
+                $key,
+                ['id', 'view', 'sort', 'limit', 'page',
                        'title', 'description', 'date', 'tags', 'headingLevel',
                        'allowCopy', 'showAllLink']
             )

@@ -69,7 +69,9 @@ class SolrEad extends SolrDefault
      * @param \Laminas\Config\Config $searchSettings Search-specific configuration
      * file
      */
-    public function __construct($mainConfig = null, $recordConfig = null,
+    public function __construct(
+        $mainConfig = null,
+        $recordConfig = null,
         $searchSettings = null
     ) {
         parent::__construct($mainConfig, $recordConfig, $searchSettings);
@@ -208,7 +210,8 @@ class SolrEad extends SolrDefault
         foreach ($record->xpath('//bibliography') as $node) {
             // Filter out Portti links since they're displayed in links
             $match = preg_match(
-                '/(.+) (http:\/\/wiki\.narc\.fi\/portti.*)/', (string)$node->p
+                '/(.+) (http:\/\/wiki\.narc\.fi\/portti.*)/',
+                (string)$node->p
             );
             if (!$match) {
                 $bibliography[] = (string)$node->p;

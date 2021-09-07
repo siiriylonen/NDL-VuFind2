@@ -53,8 +53,10 @@ class Linkify extends AbstractHelper
         $proxyUrl = $this->getView()->plugin('proxyUrl');
         $escapeHtmlAttr = $this->getView()->plugin('escapeHtmlAttr');
         $truncateUrl = $this->getView()->plugin('truncateUrl');
-        $callback = function ($url, $caption, $isEmail) use ($proxyUrl,
-            $escapeHtmlAttr, $truncateUrl
+        $callback = function ($url, $caption, $isEmail) use (
+            $proxyUrl,
+            $escapeHtmlAttr,
+            $truncateUrl
         ) {
             if ($caption === $url) {
                 $caption = $truncateUrl($caption);

@@ -59,7 +59,9 @@ class RecordDriverRelatedFactory implements FactoryInterface
      * @throws ContainerException if any other error occurs
      */
     public function __invoke(
-        ContainerInterface $container, $requestedName, array $options = null
+        ContainerInterface $container,
+        $requestedName,
+        array $options = null
     ) {
         $recordLoader = $container->get('VuFind\Record\Loader');
         return new \Finna\Related\RecordDriverRelated($recordLoader);

@@ -63,15 +63,12 @@
 <?php endif; ?>
 <?=
   $this->inlineScript(
-    \Laminas\View\Helper\HeadScript::SCRIPT,
-    '$(document).ready(function() {
-        finna.comments.initCommentList('
-        . ($allowCommenting ? 'true' : 'false') . ','
-        . ($allowRating ? 'true' : 'false') . ','
-        . count($comments)
-        . ');
-     });',
-    'SET'
-  );
-?>
+      \Laminas\View\Helper\HeadScript::SCRIPT,
+      '$(document).ready(function() { finna.comments.initCommentList('
+      . ($allowCommenting ? 'true' : 'false') . ','
+      . ($allowRating ? 'true' : 'false') . ','
+      . count($comments)
+      . '); });',
+      'SET'
+  )?>
 <!-- END of: finna - record/comments-list.phtml -->

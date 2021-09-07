@@ -138,8 +138,11 @@ class DeduplicationListener extends \VuFind\Search\Solr\DeduplicationListener
      *
      * @return array Local record data
      */
-    protected function appendDedupRecordFields($localRecordData, $dedupRecordData,
-        $recordSources, $sourcePriority
+    protected function appendDedupRecordFields(
+        $localRecordData,
+        $dedupRecordData,
+        $recordSources,
+        $sourcePriority
     ) {
         // Copy over only those local IDs that
         if (empty($recordSources)) {

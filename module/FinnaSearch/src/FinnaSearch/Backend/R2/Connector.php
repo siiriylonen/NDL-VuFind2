@@ -50,21 +50,22 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
      *
      * @var string
      */
-    const EVENT_DAILY_REQUEST_LIMIT_EXCEEDED = 'daily-request-limit-exceeded';
+    public const EVENT_DAILY_REQUEST_LIMIT_EXCEEDED = 'daily-request-limit-exceeded';
 
     /**
      * R2 monthly request limit exceeded.
      *
      * @var string
      */
-    const EVENT_MONTHLY_REQUEST_LIMIT_EXCEEDED = 'monthly-request-limit-exceeded';
+    public const EVENT_MONTHLY_REQUEST_LIMIT_EXCEEDED
+        = 'monthly-request-limit-exceeded';
 
     /**
      * REMS session expired.
      *
      * @var string
      */
-    const EVENT_REMS_SESSION_EXPIRED = 'rems-session-expired';
+    public const EVENT_REMS_SESSION_EXPIRED = 'rems-session-expired';
 
     /**
      * Username
@@ -245,9 +246,11 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
 
         $this->debug(
             sprintf(
-                '<= %s %s', $response->getStatusCode(),
+                '<= %s %s',
+                $response->getStatusCode(),
                 $response->getReasonPhrase()
-            ), ['time' => $time]
+            ),
+            ['time' => $time]
         );
 
         if ($this->rems) {
@@ -274,7 +277,8 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
             ];
             foreach ($limits as $header => $type) {
                 $this->rems->setSearchLimitExceededFromConnector(
-                    $type, (bool)$headers->get($header)
+                    $type,
+                    (bool)$headers->get($header)
                 );
             }
 

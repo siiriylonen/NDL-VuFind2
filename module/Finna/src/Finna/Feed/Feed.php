@@ -97,7 +97,10 @@ class Feed implements \VuFind\I18n\Translator\TranslatorAwareInterface,
      * @param ImageLink    $imageLink  Image link helper
      */
     public function __construct(
-        Config $config, Config $feedConfig, CacheManager $cm, Url $url,
+        Config $config,
+        Config $feedConfig,
+        CacheManager $cm,
+        Url $url,
         ImageLink $imageLink
     ) {
         $this->mainConfig = $config;
@@ -587,7 +590,8 @@ EOT;
                             }
                             $el->removeAttribute("style");
                             $el->setAttribute(
-                                'style', implode(';', $styleProperties)
+                                'style',
+                                implode(';', $styleProperties)
                             );
                         }
                         $content = $dom->saveHTML();

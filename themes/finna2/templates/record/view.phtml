@@ -35,15 +35,16 @@
   $headText = $title;
   $organisationName = $this->organisationDisplayName($this->driver);
   if (!empty($organisationName)) {
-     $headText .= " | $organisationName";
+      $headText .= " | $organisationName";
   }
   $this->headTitle($headText);
 
   $this->jsTranslations()->addStrings(
-    [
-      'map_zoom_in' => 'map_zoom_in',
-      'map_zoom_out' => 'map_zoom_out'
-  ]);
+      [
+          'map_zoom_in' => 'map_zoom_in',
+          'map_zoom_out' => 'map_zoom_out'
+      ]
+  );
 
   if ($lastUrl = $this->searchMemory()->getLastSearchUrl() && $this->searchMemory()->getLastSearchClassId() === $this->searchClassId) {
       $params = $this->searchMemory()->getLastSearchParams($this->searchClassId);
@@ -72,17 +73,18 @@
   $params = $this->searchMemory()->getLastSearchParams($this->searchClassId);
   $recordImage = $this->recordImage($this->record($this->driver));
   $images = $recordImage->getAllImagesAsCoverLinks(
-      $this->layout()->userLang, $params
+      $this->layout()->userLang,
+      $params
   );
   $noImage = empty($images[0]['urls']['medium']) && empty($images[0]['urls']['large']);
   $largeImageLayout = !$noImage && in_array($this->driver->tryMethod('getRecordFormat'), ['lido', 'forward', 'ead', 'ead3', 'forwardAuthority']);
 
   if ($oldRecordId = $this->driver->getExtraDetail('redirectedFromId')) {
-    echo $this->inlineScript(
-      \Laminas\View\Helper\HeadScript::SCRIPT,
-      'finna.record.handleRedirect(' . json_encode($oldRecordId) . ', ' . json_encode($this->driver->getUniqueID()) . ');',
-      'SET'
-    );
+      echo $this->inlineScript(
+          \Laminas\View\Helper\HeadScript::SCRIPT,
+          'finna.record.handleRedirect(' . json_encode($oldRecordId) . ', ' . json_encode($this->driver->getUniqueID()) . ');',
+          'SET'
+      );
   }
 ?>
 </div>

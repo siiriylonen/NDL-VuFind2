@@ -90,7 +90,8 @@ class Navibar extends \Laminas\View\Helper\AbstractHelper
      * @param OrganisationInfo       $organisationInfo Organisation info
      * @param TreeRouteStack         $router           Route helper
      */
-    public function __construct(\Laminas\Config\Config $config,
+    public function __construct(
+        \Laminas\Config\Config $config,
         \Finna\OrganisationInfo\OrganisationInfo $organisationInfo,
         TreeRouteStack $router
     ) {
@@ -161,7 +162,8 @@ class Navibar extends \Laminas\View\Helper\AbstractHelper
         try {
             if (isset($action['routeParams'])) {
                 $url =  $this->getViewHelper('url')->__invoke(
-                    $action['url'], $action['routeParams']
+                    $action['url'],
+                    $action['routeParams']
                 );
             } else {
                 $url = $this->getViewHelper('url')->__invoke($action['url']);
@@ -447,7 +449,9 @@ class Navibar extends \Laminas\View\Helper\AbstractHelper
                 // Re-position top-level menu
                 $position = $order['__MENU__'];
                 $items = $this->moveItem(
-                    $items, $menuPosition, $position
+                    $items,
+                    $menuPosition,
+                    $position
                 );
                 $menuPosition = $position;
                 unset($order['__MENU__']);
@@ -461,7 +465,8 @@ class Navibar extends \Laminas\View\Helper\AbstractHelper
                     continue;
                 }
                 $currentPosition = $this->getItemIndex(
-                    $items[$menuPosition]['items'], $item
+                    $items[$menuPosition]['items'],
+                    $item
                 );
                 if ($currentPosition === null) {
                     continue;
@@ -469,7 +474,8 @@ class Navibar extends \Laminas\View\Helper\AbstractHelper
                 $items[$menuPosition]['items']
                     = $this->moveItem(
                         $items[$menuPosition]['items'],
-                        $currentPosition, $position
+                        $currentPosition,
+                        $position
                     );
             }
         }

@@ -43,28 +43,28 @@ class Form extends \VuFind\Form\Form
      *
      * @var string
      */
-    const HANDLER_EMAIL = 'email';
+    public const HANDLER_EMAIL = 'email';
 
     /**
      * Database form handler
      *
      * @var string
      */
-    const HANDLER_DATABASE = 'database';
+    public const HANDLER_DATABASE = 'database';
 
     /**
      * Site feedback form id.
      *
      * @var string
      */
-    const FEEDBACK_FORM = 'FeedbackSite';
+    public const FEEDBACK_FORM = 'FeedbackSite';
 
     /**
      * Record feedback form id.
      *
      * @var string
      */
-    const RECORD_FEEDBACK_FORM = 'FeedbackRecord';
+    public const RECORD_FEEDBACK_FORM = 'FeedbackRecord';
 
     /**
      * Form id
@@ -449,7 +449,9 @@ class Form extends \VuFind\Form\Form
             // Receiver info
             $institution = $this->institution;
             $institutionName = $this->translate(
-                "institution::$institution", null, $institution
+                "institution::$institution",
+                null,
+                $institution
             );
 
             // Try to handle cases like tritonia-tria
@@ -457,7 +459,9 @@ class Form extends \VuFind\Form\Form
             ) {
                 $part = substr($institution, 0, strpos($institution, '-'));
                 $institutionName = $this->translate(
-                    "institution::$part", null, $institution
+                    "institution::$part",
+                    null,
+                    $institution
                 );
             }
 
@@ -466,7 +470,8 @@ class Form extends \VuFind\Form\Form
                 : 'feedback_recipient_info';
 
             $recipientInfo = $this->translate(
-                $translationKey, ['%%institution%%' => $institutionName]
+                $translationKey,
+                ['%%institution%%' => $institutionName]
             );
 
             if (!empty($pre)) {

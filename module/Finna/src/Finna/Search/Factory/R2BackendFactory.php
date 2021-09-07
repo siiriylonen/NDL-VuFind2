@@ -124,7 +124,8 @@ class R2BackendFactory extends SolrDefaultBackendFactory
         $connector = parent::createConnector();
         $credentials = $this->r2SupportService->getCredentials();
         $connector->setApiAuthentication(
-            $credentials['apiUser'], $credentials['apiKey']
+            $credentials['apiUser'],
+            $credentials['apiKey']
         );
         $connector->setRems($this->rems);
         $connector->setEventManager($this->events);

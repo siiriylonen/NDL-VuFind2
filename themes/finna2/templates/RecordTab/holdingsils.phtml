@@ -178,10 +178,12 @@
 <?php endif; ?>
 
 <?php if (!empty($holdings['electronic_holdings'])): ?>
-  <?=$this->context($this)->renderInContext(
-      'RecordTab/holdingsils/electronic.phtml',
-      ['holdings' => $holdings['electronic_holdings']]
-  );?>
+  <?=
+    $this->context($this)->renderInContext(
+        'RecordTab/holdingsils/electronic.phtml',
+        ['holdings' => $holdings['electronic_holdings']]
+    )
+  ?>
 <?php endif; ?>
 
 <div class="table record-holdings-table">
@@ -386,9 +388,9 @@
 
 <?php
   $this->inlineScript(
-    \Laminas\View\Helper\HeadScript::SCRIPT,
-    'finna.record.setupHoldingsTab();',
-    'SET'
+      \Laminas\View\Helper\HeadScript::SCRIPT,
+      'finna.record.setupHoldingsTab();',
+      'SET'
   );
   echo $this->inlineScript();
 ?>

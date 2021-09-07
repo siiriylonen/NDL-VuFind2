@@ -95,7 +95,9 @@ class SolrExtensionsListener
     public function __construct(
         BackendInterface $backend,
         ServiceLocatorInterface $serviceLocator,
-        $searchConfig, $facetConfig, $dataSourceConfig = 'datasources'
+        $searchConfig,
+        $facetConfig,
+        $dataSourceConfig = 'datasources'
     ) {
         $this->backend = $backend;
         $this->serviceLocator = $serviceLocator;
@@ -222,12 +224,17 @@ class SolrExtensionsListener
                         }
                         foreach (preg_split('/\s+OR\s+/', $value) as $filter) {
                             $bq = substr_replace(
-                                $filter, 'score=recipDistance ', 10, 0
+                                $filter,
+                                'score=recipDistance ',
+                                10,
+                                0
                             );
                             $boosts[] = $bq;
                             // Add a separate boost for the centroid
                             $bq = preg_replace(
-                                '/sfield=\w+/', 'sfield=center_coords', $bq
+                                '/sfield=\w+/',
+                                'sfield=center_coords',
+                                $bq
                             );
                             $boosts[] = $bq;
                         }

@@ -100,7 +100,8 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
      * @param \Laminas\View\Renderer\PhpRenderer $viewRenderer  View renderer
      * @param \VuFind\Date\Converter             $dateConverter Date converter
      */
-    public function __construct(\Laminas\Config\Config $config,
+    public function __construct(
+        \Laminas\Config\Config $config,
         \VuFind\Cache\Manager $cacheManager,
         \Laminas\View\Renderer\PhpRenderer $viewRenderer,
         \VuFind\Date\Converter $dateConverter
@@ -279,7 +280,12 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
             return $this->lookupLibraryAction($parent, $link, $parentName);
         } elseif ($params['action'] == 'consortium') {
             $response = $this->consortiumAction(
-                $parent, $buildings, $target, $startDate, $endDate, $params
+                $parent,
+                $buildings,
+                $target,
+                $startDate,
+                $endDate,
+                $params
             );
             if ($response) {
                 $response['id'] = $id;
@@ -290,8 +296,13 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
             $allServices = !empty($params['allServices']);
             $fullDetails = !empty($params['fullDetails']);
             $response = $this->detailsAction(
-                $id, $target, $schedules, $startDate, $endDate,
-                $fullDetails, $allServices
+                $id,
+                $target,
+                $schedules,
+                $startDate,
+                $endDate,
+                $fullDetails,
+                $allServices
             );
 
             if ($response) {
@@ -336,7 +347,10 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
      *
      * @return array|bool array of results or false on error.
      */
-    protected function lookupLibraryAction($parent, $link = false, $parentName = null
+    protected function lookupLibraryAction(
+        $parent,
+        $link = false,
+        $parentName = null
     ) {
         // Check if consortium is found in Kirjastohakemisto
         $params = [
@@ -367,7 +381,8 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
                     }
                 }
                 $data = $this->viewRenderer->partial(
-                    'Helpers/organisation-page-link.phtml', [
+                    'Helpers/organisation-page-link.phtml',
+                    [
                        'url' => $data, 'label' => 'organisation_info_link',
                        'logo' => $logo, 'name' => $parentName
                     ]
@@ -389,7 +404,9 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
      *
      * @return array|bool array of results or false on error.
      */
-    protected function lookupMuseumAction($parent, $link = false,
+    protected function lookupMuseumAction(
+        $parent,
+        $link = false,
         $parentName = null
     ) {
         $params['id'] = $parent;
@@ -412,7 +429,8 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
                 $name = $json['name'][$lang]
                         ?? $this->translator->translate("source_{$parent}");
                 $data = $this->viewRenderer->partial(
-                    'Helpers/organisation-page-link.phtml', [
+                    'Helpers/organisation-page-link.phtml',
+                    [
                     'url' => $data, 'label' => 'organisation_info_link',
                     'logo' => $logo, 'name' => $name
                     ]
@@ -436,7 +454,11 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
      * @return array|bool array of results or false on error.
      */
     protected function consortiumAction(
-        $parent, $buildings, $target, $startDate, $endDate
+        $parent,
+        $buildings,
+        $target,
+        $startDate,
+        $endDate
     ) {
         $params = [
             'finna:id' => $parent,
@@ -538,7 +560,13 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
      * @return array|bool array of results or false on error.
      */
     protected function detailsAction(
-        $id, $target, $schedules, $startDate, $endDate, $fullDetails, $allServices
+        $id,
+        $target,
+        $schedules,
+        $startDate,
+        $endDate,
+        $fullDetails,
+        $allServices
     ) {
         if (!$id) {
             $this->logError("Missing id");
@@ -585,7 +613,10 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
         // Details
         $response = $response['items'][0];
         $result = $this->parseDetails(
-            $target, $response, $schedules, $allServices
+            $target,
+            $response,
+            $schedules,
+            $allServices
         );
 
         $result['id'] = $id;
@@ -639,7 +670,9 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
         }
         if (!$response) {
             $client = $this->httpService->createClient(
-                $url, \Laminas\Http\Request::METHOD_GET, 10
+                $url,
+                \Laminas\Http\Request::METHOD_GET,
+                10
             );
             $client->setOptions(['useragent' => 'VuFind']);
             $result = $client->send();
@@ -772,7 +805,9 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
                     }
                     foreach ($replace as $param => $val) {
                         $mapUrl = str_replace(
-                            '{' . $param . '}', rawurlencode($val), $mapUrl
+                            '{' . $param . '}',
+                            rawurlencode($val),
+                            $mapUrl
                         );
                     }
                     $data[$map] = $mapUrl;
@@ -817,7 +852,10 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
      * @return array
      */
     protected function parseDetails(
-        $target, $response, $schedules, $includeAllServices = false
+        $target,
+        $response,
+        $schedules,
+        $includeAllServices = false
     ) {
         $result = [];
         $scheduleData = [
@@ -919,7 +957,8 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
                         ? $service['standardName'] : $service['name'];
                     $data = [$name];
                     $shortDesc = $this->cleanHtml->__invoke(
-                        $service['shortDescription'], true
+                        $service['shortDescription'],
+                        true
                     );
                     if ($shortDesc) {
                         $data['shortDesc'] = $shortDesc;
@@ -1156,14 +1195,20 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
             $routeUrl = $this->config->General->routeUrl;
             $replace['street'] = $details['address']['street'];
             $replace['city'] = preg_replace(
-                '/[0-9,]+/', '', $json['post_office']
+                '/[0-9,]+/',
+                '',
+                $json['post_office']
             );
             foreach ($replace as $param => $val) {
                 $mapUrl = str_replace(
-                    '{' . $param . '}', rawurlencode($val), $mapUrl
+                    '{' . $param . '}',
+                    rawurlencode($val),
+                    $mapUrl
                 );
                 $routeUrl = str_replace(
-                    '{' . $param . '}', rawurlencode($val), $routeUrl
+                    '{' . $param . '}',
+                    rawurlencode($val),
+                    $routeUrl
                 );
             }
             $details['mapUrl'] = $mapUrl;

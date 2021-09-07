@@ -176,7 +176,8 @@ trait SolrFinnaTrait
     {
         $table = $this->getDbTable('Comments');
         return $table->getAverageRatingForResource(
-            $this->getUniqueId(), $this->getSourceIdentifier()
+            $this->getUniqueId(),
+            $this->getSourceIdentifier()
         );
     }
 
@@ -413,7 +414,8 @@ trait SolrFinnaTrait
 
         if (!empty($this->fields['dedup_id_str_mv'])) {
             $records = $this->searchService->retrieve(
-                $this->getSourceIdentifier(), $this->fields['dedup_id_str_mv'][0]
+                $this->getSourceIdentifier(),
+                $this->fields['dedup_id_str_mv'][0]
             )->getRecords();
         } else {
             $safeId = addcslashes($this->getUniqueID(), '"');
@@ -424,7 +426,11 @@ trait SolrFinnaTrait
                 ['hl' => 'false', 'spellcheck' => 'false', 'sort' => '']
             );
             $records = $this->searchService->search(
-                $this->getSourceIdentifier(), $query, 0, 1, $params
+                $this->getSourceIdentifier(),
+                $query,
+                0,
+                1,
+                $params
             )->getRecords();
         }
         if (!isset($records[0])) {
@@ -481,7 +487,8 @@ trait SolrFinnaTrait
         }
         return $raw ? $this->fields['online_urls_str_mv'] : $this->resolveUrlTypes(
             $this->mergeURLArray(
-                $this->fields['online_urls_str_mv'], true
+                $this->fields['online_urls_str_mv'],
+                true
             )
         );
     }
@@ -986,7 +993,8 @@ trait SolrFinnaTrait
         foreach ($urls as $url) {
             if (preg_match(
                 '/^http(s)?:\/\/.*\.([a-zA-Z0-9]{3,4}.*)$/',
-                $url['url'], $match
+                $url['url'],
+                $match
             )
             ) {
                 $codec = $match[2];

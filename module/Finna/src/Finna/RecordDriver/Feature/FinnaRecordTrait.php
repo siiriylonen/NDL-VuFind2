@@ -67,7 +67,8 @@ trait FinnaRecordTrait
     {
         $table = $this->getDbTable('CommentsInappropriate');
         return $table->getForRecord(
-            $userId, $this->getUniqueID()
+            $userId,
+            $this->getUniqueID()
         );
     }
 
@@ -222,7 +223,10 @@ trait FinnaRecordTrait
     {
         $db = $this->getDbTable('UserResource');
         $data = $db->getSavedData(
-            $this->getUniqueId(), $this->getSourceIdentifier(), $list_id, $user_id
+            $this->getUniqueId(),
+            $this->getSourceIdentifier(),
+            $list_id,
+            $user_id
         );
         foreach ($data as $current) {
             return $current->saved;

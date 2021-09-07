@@ -10,7 +10,8 @@
   $params = $this->searchMemory()->getLastSearchParams($this->searchClassId);
   $img = $this->recordImage($this->record($this->driver));
   $images = $img->getAllImagesAsCoverLinks(
-      $this->layout()->userLang, $params
+      $this->layout()->userLang,
+      $params
   );
 
   $hasOnlineURLs =
@@ -187,7 +188,8 @@
       <?php
         $formatter = $this->recordDataFormatter();
         $coreFields = $formatter->getData(
-            $driver, $formatter->filterQDCFields($formatter->getDefaults('core'))
+            $driver,
+            $formatter->filterQDCFields($formatter->getDefaults('core'))
         );
       ?>
       <?php if (!empty($coreFields)): ?>

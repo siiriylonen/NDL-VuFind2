@@ -74,7 +74,10 @@ class GetRecordInfoByAuthority extends \VuFind\AjaxHandler\AbstractBase
      * @param TabManager      $tm           Recordtab manager
      */
     public function __construct(
-        SessionSettings $ss, Loader $loader, RecordHelper $recordHelper, $tm
+        SessionSettings $ss,
+        Loader $loader,
+        RecordHelper $recordHelper,
+        $tm
     ) {
         $this->sessionSettings = $ss;
         $this->recordLoader = $loader;

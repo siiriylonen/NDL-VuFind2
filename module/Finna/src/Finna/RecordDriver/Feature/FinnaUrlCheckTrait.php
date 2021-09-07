@@ -172,9 +172,14 @@ trait FinnaUrlCheckTrait
      *
      * @return bool
      */
-    protected function checkHostAllowedByFilters(string $id, string $url,
-        string $host, array $disallowedList, string $disallowedMode,
-        array $allowedList = [], string $allowedMode = 'disable'
+    protected function checkHostAllowedByFilters(
+        string $id,
+        string $url,
+        string $host,
+        array $disallowedList,
+        string $disallowedMode,
+        array $allowedList = [],
+        string $allowedMode = 'disable'
     ): bool {
         // Check disallowed hosts first (probably a short list)
         if ($disallowedList && $this->checkHostFilterMatch($host, $disallowedList)) {

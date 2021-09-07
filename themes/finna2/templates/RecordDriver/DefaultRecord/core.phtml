@@ -242,7 +242,8 @@
     <?php
       $formatter = $this->recordDataFormatter();
       $coreFields = $formatter->getData(
-          $driver, $formatter->filterMarcFields($formatter->getDefaults('core'))
+          $driver,
+          $formatter->filterMarcFields($formatter->getDefaults('core'))
       );
     ?>
     <?php if (!empty($coreFields)): ?>

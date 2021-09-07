@@ -73,7 +73,8 @@
       <?php
         $formatter = $this->recordDataFormatter();
         $coreFields = $formatter->getData(
-            $driver, $formatter->filterPrimoFields($formatter->getDefaults('core'))
+            $driver,
+            $formatter->filterPrimoFields($formatter->getDefaults('core'))
         );
       ?>
       <?php if (!empty($coreFields)): ?>
