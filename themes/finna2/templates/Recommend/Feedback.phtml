@@ -10,5 +10,6 @@
     </a>
   </div>
   <?php $this->plugin('piwik')->trackCustomVar($data['customVarName'], $data['customVarValue']); ?>
+  <?php $this->plugin('matomo')->addCustomData($data['customVarName'], $data['customVarValue']); ?>
   <!-- END of: finna - Recommend/Feedback.phtml -->
 <?php endif; ?>
