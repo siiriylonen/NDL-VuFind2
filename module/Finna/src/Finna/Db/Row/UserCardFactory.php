@@ -65,7 +65,7 @@ class UserCardFactory extends \VuFind\Db\Row\RowGatewayFactory
         $requestedName,
         array $options = null
     ) {
-        $adapter = $container->get('Laminas\Db\Adapter\Adapter');
+        $adapter = $container->get(\Laminas\Db\Adapter\Adapter::class);
         $prototype = new $requestedName(
             $adapter,
             ...($options !== null ? $options : [])

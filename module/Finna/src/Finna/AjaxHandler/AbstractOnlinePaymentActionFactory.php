@@ -72,9 +72,9 @@ class AbstractOnlinePaymentActionFactory
         $result = new $requestedName(
             $container->get(\VuFind\Session\Settings::class),
             $container->get(\VuFind\ILS\Connection::class),
-            $tablePluginManager->get('Finna\Db\Table\Transaction'),
+            $tablePluginManager->get(\Finna\Db\Table\Transaction::class),
             $tablePluginManager->get(\VuFind\Db\Table\UserCard::class),
-            $container->get('Finna\OnlinePayment\OnlinePayment'),
+            $container->get(\Finna\OnlinePayment\OnlinePayment::class),
             $container->get('Finna\OnlinePayment\Session')
         );
         $result->setLogger($container->get(\VuFind\Log\Logger::class));

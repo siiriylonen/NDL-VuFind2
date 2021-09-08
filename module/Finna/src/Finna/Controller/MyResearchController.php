@@ -1217,7 +1217,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
             return $this->forceLogin();
         }
 
-        $rems = $this->serviceLocator->get('Finna\Service\RemsService');
+        $rems = $this->serviceLocator->get(\Finna\Service\RemsService::class);
         $error = false;
         $hasAccess = $usagePurpose = null;
         try {

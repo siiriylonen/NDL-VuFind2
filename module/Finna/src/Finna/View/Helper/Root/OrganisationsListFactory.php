@@ -71,7 +71,7 @@ class OrganisationsListFactory implements FactoryInterface
             $container->get(\VuFind\Cache\Manager::class)->getCache('object'),
             $container->get(\VuFind\Search\Solr\HierarchicalFacetHelper::class),
             $container->get(\VuFind\Search\Results\PluginManager::class),
-            $container->get('Finna\OrganisationInfo\OrganisationInfo')
+            $container->get(\Finna\OrganisationInfo\OrganisationInfo::class)
         );
     }
 }

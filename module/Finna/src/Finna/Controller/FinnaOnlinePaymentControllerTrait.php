@@ -109,7 +109,7 @@ trait FinnaOnlinePaymentControllerTrait
     protected function getOnlinePaymentHandler($driver)
     {
         $onlinePayment = $this->serviceLocator
-            ->get('Finna\OnlinePayment\OnlinePayment');
+            ->get(\Finna\OnlinePayment\OnlinePayment::class);
         if (!$onlinePayment->isEnabled($driver)) {
             return false;
         }
@@ -159,7 +159,7 @@ trait FinnaOnlinePaymentControllerTrait
 
         // Check if payment handler is configured in datasources.ini
         $onlinePayment = $this->serviceLocator
-            ->get('Finna\OnlinePayment\OnlinePayment');
+            ->get(\Finna\OnlinePayment\OnlinePayment::class);
         if (!$onlinePayment->isEnabled($patron['source'])) {
             return;
         }

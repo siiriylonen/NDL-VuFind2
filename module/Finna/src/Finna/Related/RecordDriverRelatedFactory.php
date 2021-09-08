@@ -63,7 +63,7 @@ class RecordDriverRelatedFactory implements FactoryInterface
         $requestedName,
         array $options = null
     ) {
-        $recordLoader = $container->get('VuFind\Record\Loader');
+        $recordLoader = $container->get(\VuFind\Record\Loader::class);
         return new \Finna\Related\RecordDriverRelated($recordLoader);
     }
 }

@@ -70,7 +70,7 @@ class R2SupportServiceFactory implements FactoryInterface
         return new $requestedName(
             $container->get(\VuFind\Config\PluginManager::class)
                 ->get('R2'),
-            $container->get('LmcRbacMvc\Service\AuthorizationService')
+            $container->get(\LmcRbacMvc\Service\AuthorizationService::class)
         );
     }
 }

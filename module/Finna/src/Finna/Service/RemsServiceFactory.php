@@ -78,10 +78,10 @@ class RemsServiceFactory implements FactoryInterface
             'Shibboleth',
             $sessionManager
         );
-        $auth = $container->get('LmcRbacMvc\Service\AuthorizationService');
+        $auth = $container->get(\LmcRbacMvc\Service\AuthorizationService::class);
         $r2 = $container->get(\Finna\Service\R2SupportService::class);
         $user = $r2->isEnabled()
-            ? $container->get('VuFind\Auth\Manager')->isLoggedIn()
+            ? $container->get(\VuFind\Auth\Manager::class)->isLoggedIn()
             : false;
 
         return new $requestedName(

@@ -69,7 +69,7 @@ class GetLinkedEventsFactory
             throw new \Exception('Unexpected options passed to factory.');
         }
         $result = new $requestedName(
-            $container->get('Finna\Feed\LinkedEvents'),
+            $container->get(\Finna\Feed\LinkedEvents::class),
             $container->get('ViewRenderer')
         );
         return $result;

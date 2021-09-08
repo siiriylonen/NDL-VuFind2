@@ -69,8 +69,8 @@ class GetAuthorityInfoFactory
             throw new \Exception('Unexpected options passed to factory.');
         }
         $result = new $requestedName(
-            $container->get('VuFind\Session\Settings'),
-            $container->get('VuFind\Record\Loader'),
+            $container->get(\VuFind\Session\Settings::class),
+            $container->get(\VuFind\Record\Loader::class),
             $container->get('ViewRenderer')
         );
         return $result;

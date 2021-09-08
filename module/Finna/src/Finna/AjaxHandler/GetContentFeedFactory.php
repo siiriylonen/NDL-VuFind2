@@ -72,7 +72,7 @@ class GetContentFeedFactory implements FactoryInterface
             $container->get(\VuFind\Session\Settings::class),
             $container->get(\VuFind\Config\PluginManager::class)
                 ->get('rss-organisation-page'),
-            $container->get('Finna\Feed\Feed'),
+            $container->get(\Finna\Feed\Feed::class),
             $container->get('ViewRenderer'),
             $container->get('ControllerPluginManager')->get('url')
         );
