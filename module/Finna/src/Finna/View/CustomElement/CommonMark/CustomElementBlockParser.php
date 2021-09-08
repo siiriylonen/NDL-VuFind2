@@ -175,7 +175,7 @@ class CustomElementBlockParser implements BlockParserInterface
         if (null !== $match) {
             // Close possible blocks between tip and CustomElementContainerBlock.
             $tip = $context->getTip();
-            while ($container !== $tip) {
+            while (null !== $tip && $container !== $tip) {
                 $tip->finalize($context, $context->getLineNumber());
                 $tip = $context->getTip();
             }
@@ -186,7 +186,7 @@ class CustomElementBlockParser implements BlockParserInterface
             $closeBlock->finalize($context, $context->getLineNumber());
 
             // Close parent CustomElementContainerBlock.
-            $context->getTip()->finalize($context, $context->getLineNumber());
+            $container->finalize($context, $context->getLineNumber());
 
             return true;
         }
