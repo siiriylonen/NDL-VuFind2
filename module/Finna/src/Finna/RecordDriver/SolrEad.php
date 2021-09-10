@@ -142,6 +142,11 @@ class SolrEad extends SolrDefault
      */
     public function getAllImages($language = 'fi', $includePdf = true)
     {
+        $cacheKey = __FUNCTION__ . "/$language/" . ($includePdf ? '1' : '0');
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
+
         $result = [];
         // All images have same rights..
         $rights = $this->getImageRights($language, true);
@@ -195,6 +200,7 @@ class SolrEad extends SolrDefault
             ];
         }
 
+        $this->cache[$cacheKey] = $result;
         return $result;
     }
 

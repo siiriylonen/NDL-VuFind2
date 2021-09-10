@@ -710,6 +710,11 @@ class SolrEad3 extends SolrEad
         $language = 'fi',
         $includePdf = false
     ) {
+        $cacheKey = __FUNCTION__ . "/$language/" . ($includePdf ? '1' : '0');
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
+
         $result = $images = [];
         $xml = $this->getXmlRecord();
         if (isset($xml->did->daoset)) {
@@ -795,6 +800,8 @@ class SolrEad3 extends SolrEad
                 $result[] = $data;
             }
         }
+
+        $this->cache[$cacheKey] = $result;
         return $result;
     }
 
