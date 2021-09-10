@@ -19,12 +19,14 @@
 #                         value from config.ini [Feedback] section, or 'VuFind Feedback')
 #                         The subject may contain placeholders (for example %%receiver%%)
 #                         that are replaced with submitted form values.
-#   emailFrom (address in email envelope, separate from user's email)
+#   emailFrom (address in email envelope, separate from user's email, useful only
+#              when 'sendMethod' is email)
 #     name (string)  Sender name (default = sender_name setting from config.ini
 #                    [Feedback] section)
 #     email (string) Sender email (default = sender_email setting from
 #                    config.ini [Feedback] section)
-#   recipient
+#
+#   recipient (needed only when 'sendMethod' is email)
 #     name (string)  Recipient name (default = recipient_name setting from config.ini
 #                    [Feedback] section)
 #     email (string) Recipient email address (default = recipient_email setting from
@@ -41,6 +43,20 @@
 #       email: recipient2@email
 #
 #   response (string) Reponse after form submit (translation key)
+#
+#   sendMethod (string) Determines how submitted form data is handled:
+#     email    Form data is sent via email to 'recipient'
+#     database Form data is saved to the database.
+#     api      Form data is sent as a JSON message to an external API
+#
+#   apiSettings:
+#     url          (string) URL to use with sendMethod api
+#     username     (string) Username for API authentication
+#     password     (string) Password for API authentication
+#     authMethod   (string) Authentication method (basic [default] or digest)
+#     headers      (array)  Any extra headers to set in the API request
+#     successCodes (array)  HTTP status codes that indicate that the request was
+#                           successfully stored.
 #
 #   By default, the form renders input fields for sender name and email address with the
 #   following options:
@@ -246,7 +262,7 @@ forms:
     includeBarcode: true
     onlyForLoggedUsers: true
     #reminderEmail: feedback@myuniversity.edu
-    emailSubject: "Varastokirjastotilaus: %%record%%"
+    emailSubject: "Varastokirjastotilaus: %%record%% - %%pickup%%"
     response: repository_library_request_response
     senderInfoRequired: true
     hideSenderInfo: true
@@ -261,6 +277,11 @@ forms:
           - 2/Vaski/5/100/
           - 2/Vaski/6/110/
         label: preferred_pickup_location
+      - name: lastdate
+        type: date
+        label: hold_required_by
+        minValue: now
+        required: false
       - name: email
         type: email
         label: feedback_email
@@ -270,3 +291,4 @@ forms:
         label: feedback_message
         settings:
           - [placeholder, repository_library_request_message]
+          - [rows, 3]
