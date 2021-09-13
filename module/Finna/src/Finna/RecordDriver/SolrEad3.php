@@ -307,7 +307,7 @@ class SolrEad3 extends SolrEad
                         }
                     }
                     $lang = $this->detectNodeLanguage($name);
-                    if ($lang['preferred']
+                    if ($lang['preferred'] ?? false
                         && !$searchNamesFn($data, $originationLocaleResults)
                     ) {
                         $originationLocaleResults[] = $data;
@@ -890,7 +890,7 @@ class SolrEad3 extends SolrEad
             $data = compact('text', 'url');
             $results[] = $data;
             $lang = $this->detectNodeLanguage($p);
-            if ($lang['preferred']) {
+            if ($lang['preferred'] ?? false) {
                 $localeResults[] = $data;
             }
         }
@@ -1777,7 +1777,7 @@ class SolrEad3 extends SolrEad
                         $data = compact('text', 'url');
                         $result[] = $data;
                         $lang = $this->detectNodeLanguage($p);
-                        if ($lang['preferred']) {
+                        if ($lang['preferred'] ?? false) {
                             $localeResult[] = $data;
                         }
                     }
@@ -1842,12 +1842,7 @@ class SolrEad3 extends SolrEad
             $allResults[] = $name;
 
             if ($resolveLangFromChildNode) {
-                foreach ($child->attributes() as $key => $val) {
-                    $lang = $this->detectNodeLanguage($child);
-                    if ($lang) {
-                        break;
-                    }
-                }
+                $lang = $this->detectNodeLanguage($child);
             }
             if ($lang['default'] ?? false) {
                 $defaultLanguageResults[] = $name;
@@ -1872,13 +1867,16 @@ class SolrEad3 extends SolrEad
     /**
      * Helper for detecting the language of a XML node.
      * Compares the language attribute of the node to users' preferred language.
-     * Returns an array with keys 'default' and 'preferred'.
+     * Returns an array with keys 'default' and 'preferred', where 'default' means
+     * that the node language is the default language, and 'preferred' that the node
+     * language is user's preferred language. Returns null if the node doesn't have
+     * the language attribute.
      *
      * @param \SimpleXMLElement $node              XML node
      * @param string            $languageAttribute Name of the language attribute
      * @param string            $defaultLanguage   Default language
      *
-     * @return array
+     * @return null|array
      */
     protected function detectNodeLanguage(
         \SimpleXMLElement $node,
