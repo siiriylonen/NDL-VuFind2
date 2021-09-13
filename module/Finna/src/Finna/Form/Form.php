@@ -649,13 +649,40 @@ class Form extends \VuFind\Form\Form
 
             if ($this->user) {
                 $label = $this->translate('feedback_user_roles');
-                $params[$label]
-                    = ['type' => 'text', 'label' => $label,
-                       'value' => implode(', ', $this->userRoles)];
+                $params[$label] = [
+                    'type' => 'text',
+                    'name' => 'userRoles',
+                    'label' => $label,
+                    'value' => implode(', ', $this->userRoles)
+                ];
             }
         }
 
         return [$params, $tpl];
+    }
+
+    /**
+     * Get form contents as an array
+     *
+     * @param array $requestParams Request parameters
+     *
+     * @return array
+     */
+    public function getContentsAsArray(array $requestParams): array
+    {
+        $emailParams = $this->formatEmailMessage($requestParams);
+        $result = array_column($emailParams[0], 'value', 'name');
+        if (!isset($result['record_id'])
+            && ($id = $requestParams['record_id'] ?? null)
+        ) {
+            $result['record_id'] = $id;
+        }
+        if (!isset($result['record'])
+            && ($record = $requestParams['record'] ?? null)
+        ) {
+            $result['record'] = $record;
+        }
+        return $result;
     }
 
     /**
