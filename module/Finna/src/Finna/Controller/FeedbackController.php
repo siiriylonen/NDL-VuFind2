@@ -167,7 +167,14 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         }
         // Clone the form object to avoid messing with the existing instance:
         $form = clone $this->serviceLocator->get(\VuFind\Form\Form::class);
-        $form->setFormId($formId);
+        $params = [];
+        if ($refererHeader = $this->getRequest()->getHeader('Referer')) {
+            $params['referrer'] = $refererHeader->getFieldValue();
+        }
+        if ($userAgentHeader = $this->getRequest()->getHeader('User-Agent')) {
+            $params['userAgent'] = $userAgentHeader->getFieldValue();
+        }
+        $form->setFormId($formId, $params);
 
         if ($formId === 'FeedbackRecord') {
             // Resolve recipient email from datasource configuration
