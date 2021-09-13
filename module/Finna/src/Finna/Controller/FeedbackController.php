@@ -242,16 +242,7 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         $url = rtrim($this->getServerUrl('home'), '/');
         $url = substr($url, strpos($url, '://') + 3);
 
-        $formFields = $form->getFormFields();
-
-        $save = [];
-        $params = (array)$this->params()->fromPost();
-        foreach ($params as $key => $val) {
-            if (!in_array($key, $formFields)) {
-                continue;
-            }
-            $save[$key] = $val;
-        }
+        $save = $form->getContentsAsArray((array)$this->params()->fromPost());
         $save['emailSubject'] = $subject;
         $messageJson = json_encode($save);
 
@@ -281,20 +272,21 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         $userId = $user ? $user->id : null;
 
         $url = rtrim($this->getServerUrl('home'), '/');
-        $url = substr($url, strpos($url, '://') + 3);
 
-        $formFields = $form->getFormFields();
-
-        $message = [];
-        $params = (array)$this->params()->fromPost();
-        foreach ($params as $key => $val) {
-            if (!in_array($key, $formFields)) {
-                continue;
+        $message = $form->getContentsAsArray((array)$this->params()->fromPost());
+        $paramMap = [
+            'record_id' => 'recordId',
+            'record_info' => 'recordInfo'
+        ];
+        foreach ($paramMap as $from => $to) {
+            if (isset($message[$from])) {
+                $message[$to] = $message[$from];
+                unset($message[$from]);
             }
-            $message[$key] = $val;
         }
         $message['emailSubject'] = $subject;
         $message['internalUserId'] = $userId;
+        $message['viewBaseUrl'] = $url;
         $messageJson = json_encode($message);
 
         $apiSettings = $form->getApiSettings();

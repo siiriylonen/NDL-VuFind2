@@ -220,11 +220,6 @@ class Form extends \VuFind\Form\Form
             }
         }
         if ($this->formSettings['includePatronId'] ?? false) {
-            if (!$this->isRecordRequestFormWithBarcode()) {
-                throw new \VuFind\Exception\BadConfig(
-                    'Patron identifier can not be used with this form.'
-                );
-            }
             if (!($this->formSettings['onlyForLoggedUsers'] ?? false)) {
                 throw new \VuFind\Exception\BadConfig(
                     'Enable \'onlyForLoggedUsers\' when'
@@ -610,6 +605,7 @@ class Form extends \VuFind\Form\Form
             // Append library card barcode
             $field = [
                 'type' => 'text',
+                'name' => 'userCatUsername',
                 'label' => $this->translate('Library Catalog Username'),
                 'value' => $this->userCatUsername
             ];
@@ -624,6 +620,7 @@ class Form extends \VuFind\Form\Form
             // Append patron's id in library
             $field = [
                 'type' => 'text',
+                'name' => 'userCatId',
                 'label' => $this->translate('Unique patron identifier'),
                 'value' => $this->userCatId
             ];
