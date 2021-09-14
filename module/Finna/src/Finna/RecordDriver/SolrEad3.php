@@ -938,34 +938,6 @@ class SolrEad3 extends SolrEad
     public function getExtendedAccessRestrictions()
     {
         $xml = $this->getXmlRecord();
-        if (isset($xml->accessrestrict)
-            && !isset($xml->accessrestrict->accessrestrict)
-        ) {
-            // Case 1: no nested accessrestrict elements
-            $result = [];
-
-            foreach ([true, false] as $obeyPreferredLanguage) {
-                foreach ($xml->accessrestrict as $accessNode) {
-                    if ($label = $this->getDisplayLabel(
-                        $accessNode,
-                        'p',
-                        $obeyPreferredLanguage
-                    )
-                    ) {
-                        if (empty($label[0])) {
-                            continue;
-                        }
-                        $result[] = $label[0];
-                    }
-                }
-                if (!empty($result)) {
-                    break;
-                }
-            }
-            return $result;
-        }
-
-        // Case 2: nested accessrestrict elements grouped under subheadings
         $restrictions = [];
         foreach (self::ACCESS_RESTRICT_TYPES as $type) {
             $restrictions[$type] = [];
@@ -1017,8 +989,6 @@ class SolrEad3 extends SolrEad
             }
         }
 
-        $result = [];
-
         // Sort
         $order = array_flip(self::ACCESS_RESTRICT_TYPES);
         $orderCnt = count($order);
@@ -1028,7 +998,6 @@ class SolrEad3 extends SolrEad
             return $pos1 - $pos2;
         };
         uksort($restrictions, $sortFn);
-
         // Rename keys to match translations and filter duplicates
         $renamedKeys = [];
         foreach ($restrictions as $key => $val) {
