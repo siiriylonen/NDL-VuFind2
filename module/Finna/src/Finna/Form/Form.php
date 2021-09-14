@@ -90,35 +90,35 @@ class Form extends \VuFind\Form\Form
      *
      * @var string
      */
-    protected $formId;
+    protected $formId = '';
 
     /**
      * Institution name
      *
      * @var string
      */
-    protected $institution;
+    protected $institution = '';
 
     /**
      * Institution email
      *
      * @var string
      */
-    protected $institutionEmail;
+    protected $institutionEmail = '';
 
     /**
      * User
      *
      * @var User
      */
-    protected $user;
+    protected $user = null;
 
     /**
      * User roles
      *
      * @var array
      */
-    protected $userRoles;
+    protected $userRoles = [];
 
     /**
      * User library card barcode.
@@ -154,7 +154,7 @@ class Form extends \VuFind\Form\Form
      *
      * @var \VuFind\RecordDriver\AbstractRecordDriver
      */
-    protected $record;
+    protected $record = null;
 
     /**
      * Form settings (from YAML without parsing)
