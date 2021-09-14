@@ -165,8 +165,7 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         if (!$formId) {
             $formId = 'FeedbackSite';
         }
-        // Clone the form object to avoid messing with the existing instance:
-        $form = clone $this->serviceLocator->get(\VuFind\Form\Form::class);
+        $form = $this->serviceLocator->get(\VuFind\Form\Form::class);
         $params = [];
         if ($refererHeader = $this->getRequest()->getHeader('Referer')) {
             $params['referrer'] = $refererHeader->getFieldValue();
