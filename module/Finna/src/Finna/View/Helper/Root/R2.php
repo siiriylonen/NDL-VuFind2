@@ -161,7 +161,7 @@ class R2 extends \Laminas\View\Helper\AbstractHelper
         }
 
         // Driver is null when the helper is called outside record page
-        if (!$driver || $driver->trymethod('hasRestrictedMetadata')) {
+        if (!$driver || $driver->tryMethod('hasRestrictedMetadata')) {
             try {
                 if (!$this->rems->hasUserAccess(true, $params['throw'] ?? false)) {
                     // Registration hint on search results page.
