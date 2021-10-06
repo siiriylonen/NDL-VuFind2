@@ -48,7 +48,7 @@ finna.layout = (function finnaLayout() {
         modal.removeClass('location-service location-service-qrcode');
         dialog.removeClass('modal-lg');
       });
-      modal.find('.modal-body').load($(this).data('lightbox-href') + '&layout=lightbox');
+      VuFind.loadHtml(modal.find('.modal-body'), $(this).data('lightbox-href') + '&layout=lightbox');
       modal.modal();
       return false;
     });
@@ -385,7 +385,7 @@ finna.layout = (function finnaLayout() {
     $container.find('.load-indicator').removeClass('hidden');
     $.getJSON(VuFind.path + '/AJAX/JSON?method=getPiwikPopularSearches')
       .done(function onGetPiwikSearchesDone(response) {
-        $container.html(response.data.html);
+        $container.html(VuFind.updateCspNonce(response.data.html));
       })
       .fail(function onGetPiwikSearchesFail() {
         $container.find('.load-indicator').addClass('hidden');
