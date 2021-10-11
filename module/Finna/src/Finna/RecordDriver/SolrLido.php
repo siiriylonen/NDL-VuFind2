@@ -545,8 +545,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $settings[$setting] = $iniData->$setting;
             }
         }
-        $modelImages = 'model_preview_images';
-        $datasource = $this->getDataSource();
         $settings['previewImages'] = $this->allowModelPreviewImages();
         return $settings;
     }
