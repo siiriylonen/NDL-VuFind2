@@ -169,6 +169,7 @@ $config = [
         'vendor/slick.css',
         'vendor/slick-theme.css',
         'vendor/video-js.min.css',
+        'vendor/select2.min.css',
         'finna.css',
         'vendor/priority-nav-core.css',
         'finna-flex-fallback.css::lt IE 10', // flex polyfill
@@ -246,6 +247,7 @@ $config = [
         'vendor/easymde.min.js',
         'vendor/slick.min.js',
         'vendor/gauge.min.js',
+        'vendor/select2.min.js',
         'vendor/priority-nav.min.js',
         'vendor/leaflet.min.js',
         'vendor/leaflet.draw.min.js',
