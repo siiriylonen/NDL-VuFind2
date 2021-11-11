@@ -98,6 +98,43 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     ];
 
     /**
+     * Audio types array
+     *
+     * @var array
+     */
+    protected $audioTypes = [
+        'preview_audio' => 'audio',
+    ];
+
+    /**
+     * Video types array
+     *
+     * @var array
+     */
+    protected $videoTypes = [
+        'preview_video' => 'video',
+    ];
+
+    /**
+     * Supported audio formats
+     *
+     * @var array
+     */
+    protected $supportedAudioFormats = [
+        'mp3' => 'mpeg',
+        'wav' => 'wav'
+    ];
+
+    /**
+     * Supported video formats
+     *
+     * @var array
+     */
+    protected $supportedVideoFormats = [
+        'mp4' => 'video/mp4'
+    ];
+
+    /**
      * Array of web friendly model formats
      *
      * @var array
@@ -253,39 +290,46 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     /**
      * Function to format given resourceMeasurementsSet to readable format
      *
-     * @param object $measurements of the image
-     * @param string $language     to search data for
+     * @param \SimpleXmlElement $measurements of the image
+     * @param string            $language     language to get information
      *
      * @return array
      */
-    public function formatImageMeasurements($measurements, $language = 'en')
-    {
+    protected function formatImageMeasurements(
+        \SimpleXmlElement $measurements,
+        string $language
+    ) {
         $data = [];
         foreach ($measurements as $set) {
             if (empty($set->measurementValue)) {
                 continue;
             }
+            $value = trim((string)$set->measurementValue);
             $type = '';
             foreach ($set->measurementType as $t) {
-                if ((string)$t->attributes()->lang !== $language) {
-                    continue;
+                if (!($lang = (string)$t->attributes()->lang)) {
+                    $lang = 'nolocale';
                 }
                 $type = trim((string)$t);
-                break;
+                if (!isset($data[$lang][$type])) {
+                    $data[$lang][$type] = [];
+                }
             }
             $unit = '';
             foreach ($set->measurementUnit as $u) {
-                if ((string)$u->attributes()->lang !== $language) {
-                    continue;
+                if (!($lang = (string)$u->attributes()->lang)) {
+                    $lang = 'nolocale';
                 }
                 $unit = trim((string)$u);
-                break;
+                if (!isset($data[$lang][$type]['unit'])) {
+                    $data[$lang][$type]['unit'] = $unit;
+                }
+                if (!isset($data[$lang][$type]['value'])) {
+                    $data[$lang][$type]['value'] = $value;
+                }
             }
-
-            $value = trim((string)$set->measurementValue);
-            $data[$type] = compact('unit', 'value');
         }
-        return $data;
+        return $data[$language] ?? reset($data);
     }
 
     /**
@@ -298,6 +342,30 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $language = $this->getTranslatorLocale();
         $representations = $this->getRepresentations($language);
         return array_filter(array_column($representations, 'models'));
+    }
+
+    /**
+     * Get audios
+     *
+     * @return array
+     */
+    protected function getAudios(): array
+    {
+        $language = $this->getTranslatorLocale();
+        $representations = $this->getRepresentations($language);
+        return array_filter(array_column($representations, 'audios'));
+    }
+
+    /**
+     * Get videos
+     *
+     * @return array
+     */
+    protected function getVideos(): array
+    {
+        $language = $this->getTranslatorLocale();
+        $representations = $this->getRepresentations($language);
+        return array_filter(array_column($representations, 'videos'));
     }
 
     /**
@@ -318,9 +386,16 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $defaultRights = $this->getImageRights($language, true);
         $imageTypeKeys = array_keys($this->imageTypes);
         $modelTypeKeys = array_keys($this->modelTypes);
+        $audioTypeKeys = array_keys($this->audioTypes);
+        $videoTypeKeys = array_keys($this->videoTypes);
         $results = [];
 
-        $addToResults = function ($imageData = [], $models = []) use (&$results) {
+        $addToResults = function (
+            array $imageData = [],
+            array $models = [],
+            array $audios = [],
+            array $videos = []
+        ) use (&$results) {
             if ($imageData) {
                 if (!isset($imageData['urls']['small'])) {
                     $imageData['urls']['small'] = $imageData['urls']['medium']
@@ -332,7 +407,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             }
             $results[] = [
                 'images' => $imageData,
-                'models' => $models
+                'models' => $models,
+                'audios' => $audios,
+                'videos' => $videos
             ];
         };
 
@@ -340,10 +417,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             '/lidoWrap/lido/administrativeMetadata/'
             . 'resourceWrap/resourceSet'
         ) as $resourceSet) {
-            // Skip if there are no links in the resourceSet
-            if (empty($resourceSet->resourceRepresentation->linkResource)) {
-                continue;
-            }
             // Process rights first since we may need to duplicate them if there
             // are multiple representations in the set (non-standard)
             $rights = $this->parseResourceRights($resourceSet, $language);
@@ -353,6 +426,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
 
             $imageUrls = [];
             $modelUrls = [];
+            $audioUrls = [];
+            $videoUrls = [];
             $highResolution = [];
             foreach ($resourceSet->resourceRepresentation as $representation) {
                 $linkResource = $representation->linkResource;
@@ -412,10 +487,22 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                         $modelUrls = array_merge($modelUrls, $parsedModel);
                     }
                 }
+                // Representation is an audio
+                if (in_array($data['type'], $audioTypeKeys)) {
+                    if ($parsedAudio = $this->parseAudio($data)) {
+                        $audioUrls = array_merge($audioUrls, $parsedAudio);
+                    }
+                }
+                // Representation is a video
+                if (in_array($data['type'], $videoTypeKeys)) {
+                    if ($parsedVideo = $this->parseVideo($data)) {
+                        $videoUrls = array_merge($videoUrls, $parsedVideo);
+                    }
+                }
             }
             // Save all the found results here as a new object
             // If current set has no links, continue to next one
-            if (empty($imageUrls) && empty($modelUrls)) {
+            if (!$imageUrls && !$modelUrls && !$audioUrls && !$videoUrls) {
                 continue;
             }
             $imageResult = [];
@@ -477,7 +564,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     }
                 );
             }
-            $addToResults($imageResult, $modelUrls);
+            $addToResults(
+                $imageResult,
+                $modelUrls,
+                $audioUrls,
+                $videoUrls
+            );
         }
 
         $this->cache[$cacheKey] = $results;
@@ -496,8 +588,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     protected function parseModel(array $data): array
     {
+        if (empty($data['type']) || empty($data['format'])) {
+            return [];
+        }
         $type = $this->modelTypes[$data['type']];
-        $results = [];
+        $result = [];
+        $format = strtolower($data['format']);
         switch ($type) {
         case 'preview_3D':
             if (in_array(
@@ -505,14 +601,14 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $this->displayableModelFormats
             )
             ) {
-                $results[$data['format']][$type] = $data['url'];
+                $result[$format][$type] = $data['url'];
             }
             break;
         default:
-            $results[$data['format']][$type] = $data['url'];
+            $result[$format][$type] = $data['url'];
             break;
         }
-        return $results;
+        return $result;
     }
 
     /**
@@ -529,11 +625,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      *          - url           Url of the image
      * - sizeless               If no size has been found
      *
-     * @param array $data Data of the representation
+     * @param array  $data     Data of the representation
+     * @param string $language Language to get information
      *
      * @return array
      */
-    protected function parseImage(array $data): array
+    protected function parseImage(array $data, string $language): array
     {
         // Check if the image is really an image
         // Original images can be any type and are not displayed
@@ -562,7 +659,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
 
         if (in_array($size, ['master', 'original'])) {
             $currentHiRes = [
-                'data' => $this->formatImageMeasurements($data['measurements']),
+                'data' => $this->formatImageMeasurements(
+                    $data['measurements'],
+                    $language
+                ),
                 'url' => $data['url']
             ];
             if (!empty($data['ID'])) {
@@ -574,6 +674,67 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }
 
         return compact('url', 'highResolution', 'sizeless');
+    }
+
+    /**
+     * Function to return an audio in associative array
+     * - desc   Always false
+     * - url    Url to audio file
+     * - codec  Codec type of the audio
+     * - type   Type what type is the audio file
+     * - embed  Type of embed is audio
+     *
+     * @param array $data Data of representation
+     *
+     * @return array
+     */
+    protected function parseAudio(array $data): array
+    {
+        if (empty($data['format']) || empty($data['url'])) {
+            return [];
+        }
+        if ($codec = $this->supportedAudioFormats[$data['format']] ?? false) {
+            return [
+                'desc' => false,
+                'url' => $data['url'],
+                'codec' => $codec,
+                'type' => 'audio',
+                'embed' => 'audio'
+            ];
+        }
+        return [];
+    }
+
+    /**
+     * Function to return a video in associative array
+     * - desc           Default is false
+     * - url            Video url
+     * - embed          Video embed is video
+     * - videosources
+     *  - src           Different sources for the video
+     *  - type          Codec type
+     *
+     * @param array $data Data of representation
+     *
+     * @return array
+     */
+    protected function parseVideo(array $data): array
+    {
+        if (empty($data['format']) || empty($data['url'])) {
+            return [];
+        }
+        if ($codec = $this->supportedVideoFormats[$data['format']] ?? false) {
+            return [
+                'desc' => false,
+                'url' => $data['url'],
+                'embed' => 'video',
+                'videoSources' => [
+                    'src' => $data['url'],
+                    'type' => $codec,
+                ]
+            ];
+        }
+        return [];
     }
 
     /**
@@ -638,6 +799,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             ) {
                 $rights['description'][] = $term;
             }
+        }
+
+        if (!is_array($defaultRights)) {
+            $defaultRights = [];
         }
 
         return $rights ?: $defaultRights;
@@ -1295,6 +1460,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             }
         }
         $urls = $this->resolveUrlTypes($urls);
+        $urls = array_merge($urls, $this->getAudios(), $this->getVideos());
         return $urls;
     }
 
