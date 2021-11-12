@@ -566,21 +566,21 @@
       // Sort by translated name:
       $collator = \Collator::create($this->layout()->userLang);
       usort(
-        $group['items'],
-        function ($a, $b) use ($collator) {
-          $aName = $this->translate($a['name']);
-          $bName = $this->translate($b['name']);
-          if (strncmp($aName, 'The ', 4) === 0) {
-            $aName = substr($aName, 4);
+          $group['items'],
+          function ($a, $b) use ($collator) {
+              $aName = $this->translate($a['name']);
+              $bName = $this->translate($b['name']);
+              if (strncmp($aName, 'The ', 4) === 0) {
+                  $aName = substr($aName, 4);
+              }
+              if (strncmp($bName, 'The ', 4) === 0) {
+                  $bName = substr($bName, 4);
+              }
+              return $collator->compare(
+                  $aName,
+                  $bName
+              );
           }
-          if (strncmp($bName, 'The ', 4) === 0) {
-            $bName = substr($bName, 4);
-          }
-          return $collator->compare(
-            $aName,
-            $bName
-          );
-        }
       );
     ?>
 
