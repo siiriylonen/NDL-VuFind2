@@ -561,6 +561,29 @@
 <?php foreach ($groups as $group): ?>
   <div class="organisation-list-group">
     <h4 id="<?=$this->escapeHtmlAttr($group['id'])?>"><?=$this->transEsc($group['heading'])?></h4>
+
+    <?php
+      // Sort by translated name:
+      $collator = \Collator::create($this->layout()->userLang);
+      usort(
+        $group['items'],
+        function ($a, $b) use ($collator) {
+          $aName = $this->translate($a['name']);
+          $bName = $this->translate($b['name']);
+          if (strncmp($aName, 'The ', 4) === 0) {
+            $aName = substr($aName, 4);
+          }
+          if (strncmp($bName, 'The ', 4) === 0) {
+            $bName = substr($bName, 4);
+          }
+          return $collator->compare(
+            $aName,
+            $bName
+          );
+        }
+      );
+    ?>
+
     <div class="organisation-list-inner-row">
       <?php foreach ($group['items'] as $current): ?>
         <div class="organisation-list-item">
