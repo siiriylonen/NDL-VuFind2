@@ -122,7 +122,6 @@ class RecordDataFormatterFactory
                 $options['pos'] = $pos;
                 $lines[$key] = [true, $dataMethod, $callback, $options];
             };
-
         $setTemplateLine(
             'Genre',
             'getGenres',
@@ -131,7 +130,6 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'recordGenres']
             ]
         );
-
         $setTemplateLine(
             'Age Limit',
             'getAgeLimit',
@@ -206,6 +204,14 @@ class RecordDataFormatterFactory
             'data-forwardFields.phtml',
             [
                 'context' => ['class' => 'recordDescription']
+            ]
+        );
+        $setTemplateLine(
+            'Identifiers',
+            'getOtherIdentifiers',
+            'data-lines-with-detail.phtml',
+            [
+                'context' => ['class' => 'recordIdentifiers']
             ]
         );
         $setTemplateLine(
@@ -1027,6 +1033,14 @@ class RecordDataFormatterFactory
             'data-accrest.phtml',
             [
                 'context' => ['class' => 'extendedAccess']
+            ]
+        );
+        $setTemplateLine(
+            'Type',
+            'getTypes',
+            'data-escapeHtml',
+            [
+                'context' => ['class' => 'record-type']
             ]
         );
 
