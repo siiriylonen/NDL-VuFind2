@@ -165,6 +165,38 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault
     }
 
     /**
+     * Get an array of mediums for the record
+     *
+     * @return array
+     */
+    public function getPhysicalMediums(): array
+    {
+        $xml = $this->getXmlRecord();
+        $results = [];
+        foreach ($xml->medium as $medium) {
+            $results[] = trim((string)$medium);
+        }
+        return $results;
+    }
+
+    /**
+     * Get an array of formats/extents for the record
+     *
+     * @return array
+     */
+    public function getPhysicalDescriptions(): array
+    {
+        $xml = $this->getXmlRecord();
+        $results = [];
+        foreach ([$xml->format, $xml->extent] as $nodes) {
+            foreach ($nodes as $node) {
+                $results[] = trim((string)$node);
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Return an array of image URLs associated with this record with keys:
      * - url         Image URL
      * - description Description text
