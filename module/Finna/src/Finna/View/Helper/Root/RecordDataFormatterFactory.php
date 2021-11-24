@@ -1399,6 +1399,14 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'other-related-material']
             ]
         );
+        $setTemplateLine(
+            'Audience Characteristics',
+            'getAudienceCharacteristics',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'audience-characteristics']
+            ]
+        );
 
         return $lines;
     }
