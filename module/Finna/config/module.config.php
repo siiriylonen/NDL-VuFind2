@@ -30,6 +30,26 @@ namespace Finna\Module\Configuration;
 $config = [
     'router' => [
         'routes' => [
+            'browse-database' => [
+                'type' => 'Laminas\Router\Http\Literal',
+                'options' => [
+                    'route'    => '/Browse/Database',
+                    'defaults' => [
+                        'controller' => 'BrowseSearch',
+                        'action'     => 'Database',
+                    ]
+                ],
+            ],
+            'browse-journal' => [
+                'type' => 'Laminas\Router\Http\Literal',
+                'options' => [
+                    'route'    => '/Browse/Journal',
+                    'defaults' => [
+                        'controller' => 'BrowseSearch',
+                        'action'     => 'Journal',
+                    ]
+                ],
+            ],
             'comments-inappropriate' => [
                 'type'    => 'Laminas\Router\Http\Segment',
                 'options' => [
@@ -237,7 +257,7 @@ $config = [
             'Finna\Controller\AuthorityController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\AuthorityRecordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\BarcodeController' => 'VuFind\Controller\AbstractBaseFactory',
-            'Finna\Controller\BrowseController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
+            'Finna\Controller\BrowseSearchController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\CartController' => 'VuFind\Controller\CartControllerFactory',
             'Finna\Controller\CollectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\CombinedController' => 'VuFind\Controller\AbstractBaseFactory',
@@ -275,6 +295,7 @@ $config = [
             'AuthorityRecord' => 'Finna\Controller\AuthorityRecordController',
             'Barcode' => 'Finna\Controller\BarcodeController',
             'barcode' => 'Finna\Controller\BarcodeController',
+            'BrowseSearch' => 'Finna\Controller\BrowseSearchController',
             'Comments' => 'Finna\Controller\CommentsController',
             'comments' => 'Finna\Controller\CommentsController',
             'FeedContent' => 'Finna\Controller\FeedContentController',
@@ -305,7 +326,6 @@ $config = [
             // Overrides:
             'VuFind\Controller\AuthorityController' => 'Finna\Controller\AuthorityController',
             'VuFind\Controller\AjaxController' => 'Finna\Controller\AjaxController',
-            'VuFind\Controller\BrowseController' => 'Finna\Controller\BrowseController',
             'VuFind\Controller\CartController' => 'Finna\Controller\CartController',
             'VuFind\Controller\CombinedController' => 'Finna\Controller\CombinedController',
             'VuFind\Controller\CollectionController' => 'Finna\Controller\CollectionController',
@@ -681,13 +701,14 @@ $config = [
             ],
             'search_backend' => [
                 'factories' => [
-                    'R2' => 'Finna\Search\Factory\R2BackendFactory',
-                    'R2Collection' => 'Finna\Search\Factory\R2BackendFactory',
-                    'Primo' => 'Finna\Search\Factory\PrimoBackendFactory',
-                    'Solr' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
-                    'SolrAuth' => 'Finna\Search\Factory\SolrAuthBackendFactory',
                     'Blender' => 'Finna\Search\Factory\BlenderBackendFactory',
                     'L1' => 'Finna\Search\Factory\L1BackendFactory',
+                    'Primo' => 'Finna\Search\Factory\PrimoBackendFactory',
+                    'R2' => 'Finna\Search\Factory\R2BackendFactory',
+                    'R2Collection' => 'Finna\Search\Factory\R2BackendFactory',
+                    'Solr' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
+                    'SolrAuth' => 'Finna\Search\Factory\SolrAuthBackendFactory',
+                    'SolrBrowse' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
                 ],
             ],
             'search_facetcache' => [
@@ -708,6 +729,7 @@ $config = [
                     'Finna\Search\Primo\Options' => 'VuFind\Search\OptionsFactory',
                     'Finna\Search\Solr\Options' => 'VuFind\Search\OptionsFactory',
                     'Finna\Search\SolrAuth\Options' => 'VuFind\Search\OptionsFactory',
+                    'Finna\Search\SolrBrowse\Options' => 'VuFind\Search\OptionsFactory',
 
                     'Finna\Search\L1\Options' => 'VuFind\Search\OptionsFactory',
                 ],
@@ -727,6 +749,7 @@ $config = [
                     'R2' => 'Finna\Search\R2\Options',
                     'R2Collection' => 'VuFind\Search\SolrCollection\Options',
                     'SolrAuth' => 'Finna\Search\SolrAuth\Options',
+                    'SolrBrowse' => 'Finna\Search\SolrBrowse\Options',
                     'L1' => 'Finna\Search\L1\Options',
                 ]
             ],
@@ -743,6 +766,7 @@ $config = [
                     'Finna\Search\MixedList\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\Solr\Params' => 'Finna\Search\Solr\ParamsFactory',
                     'Finna\Search\SolrAuth\Params' => 'Finna\Search\Solr\ParamsFactory',
+                    'Finna\Search\SolrBrowse\Params' => 'Finna\Search\Solr\ParamsFactory',
 
                     'Finna\Search\L1\Params' => 'Finna\Search\Solr\ParamsFactory',
                 ],
@@ -773,6 +797,7 @@ $config = [
                     'Finna\Search\Primo\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Solr\Results' => 'VuFind\Search\Solr\ResultsFactory',
                     'Finna\Search\SolrAuth\Results' => 'VuFind\Search\Solr\ResultsFactory',
+                    'Finna\Search\SolrBrowse\Results' => 'VuFind\Search\Solr\ResultsFactory',
                     'Finna\Search\L1\Results' => 'Finna\Search\L1\ResultsFactory',
                 ],
                 'aliases' => [
@@ -783,9 +808,10 @@ $config = [
                     'VuFind\Search\SolrAuth\Results' => 'Finna\Search\SolrAuth\Results',
 
                     'Blender' => 'Finna\Search\Blender\Results',
+                    'L1' => 'Finna\Search\L1\Results',
                     'R2' => 'Finna\Search\R2\Results',
                     'R2Collection' => 'Finna\Search\R2Collection\Results',
-                    'L1' => 'Finna\Search\L1\Results',
+                    'SolrBrowse' => 'Finna\Search\SolrBrowse\Results',
                 ]
             ],
             'content_covers' => [
@@ -951,6 +977,7 @@ $config = [
 $recordRoutes = [
     'metalibrecord' => 'MetaLibRecord',
     'solrauthrecord' => 'AuthorityRecord',
+    'solrbrowserecord' => 'Record',
     'r2record' => 'R2Record',
     'r2collection' => 'R2Collection',
     'r2collectionrecord' => 'R2Record',
@@ -966,7 +993,7 @@ $dynamicRoutes = [
 ];
 
 $staticRoutes = [
-    'Browse/Database', 'Browse/Journal', 'Cover/Download',
+    'Cover/Download',
     'LibraryCards/Recover', 'LibraryCards/Register',
     'LibraryCards/RegistrationDone', 'LibraryCards/RegistrationForm',
     'LibraryCards/ResetPassword',
