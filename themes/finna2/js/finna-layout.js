@@ -149,6 +149,17 @@ finna.layout = (function finnaLayout() {
     });
   }
 
+  function initMobileCartIndicator() {
+    $('.btn-bookbag-toggle a').on('click', function onClickMobileCart() {
+      if ($(this).hasClass('cart-add')){
+        $('.navbar-toggle').removeClass('activated');
+        setTimeout(function triggerAnimation() {
+          $('.navbar-toggle').addClass('activated');
+        }, 100);
+      }
+    });
+  }
+
   function initCheckboxClicks() {
     $('.template-name-mylist input.checkbox-select-item').on('click', function onClickCheckbox() {
       var actions = $('.mylist-functions button, .mylist-functions select');
@@ -779,6 +790,7 @@ finna.layout = (function finnaLayout() {
       initTruncate();
       initContentNavigation();
       initMobileNarrowSearch();
+      initMobileCartIndicator();
       initCheckboxClicks();
       initToolTips();
       initModalToolTips();
