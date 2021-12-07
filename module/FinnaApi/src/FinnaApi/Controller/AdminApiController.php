@@ -40,39 +40,8 @@ use Finna\View\Helper\Root\RecordDataFormatterFactory;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Page
  */
-class AdminApiController extends \VuFindApi\Controller\ApiController
-    implements \VuFindApi\Controller\ApiInterface
+class AdminApiController extends \VuFindApi\Controller\AdminApiController
 {
-    use \VuFindApi\Controller\ApiTrait;
-
-    /**
-     * Clears the view's cache.
-     *
-     * @return \Laminas\Http\Response
-     */
-    public function clearCacheAction()
-    {
-        $this->disableSessionWrites();
-        $this->determineOutputMode();
-
-        if ($result = $this->isAccessDenied('finna.cache')) {
-            return $result;
-        }
-
-        $manager = $this->serviceLocator->get(\VuFind\Cache\Manager::class);
-
-        foreach ($manager->getCacheList() as $key) {
-            if (in_array($key, ['cover', 'description', 'public', 'stylesheet'])) {
-                continue;
-            }
-
-            $cache = $manager->getCache($key);
-            $cache->flush();
-        }
-
-        return $this->output([], self::STATUS_OK);
-    }
-
     /**
      * Returns available core record fields as an associative array of
      * cssClass => translated label pairs.

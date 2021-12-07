@@ -4,7 +4,7 @@ namespace FinnaApi\Module\Configuration;
 $config = [
     'controllers' => [
         'factories' => [
-            'FinnaApi\Controller\AdminApiController' => 'FinnaApi\Controller\Factory::getAdminApiController',
+            'FinnaApi\Controller\AdminApiController' => 'VuFindApi\Controller\AdminApiControllerFactory',
             'FinnaApi\Controller\ApiController' => 'FinnaApi\Controller\Factory::getApiController',
             'FinnaApi\Controller\AuthApiController' => 'FinnaApi\Controller\Factory::getAuthApiController',
             'FinnaApi\Controller\SearchApiController' => 'FinnaApi\Controller\Factory::getSearchApiController',
