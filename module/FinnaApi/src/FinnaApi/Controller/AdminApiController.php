@@ -70,16 +70,4 @@ class AdminApiController extends \VuFindApi\Controller\AdminApiController
 
         return $this->output(['fields' => $data], self::STATUS_OK);
     }
-
-    /**
-     * Get Swagger specification JSON fragment for services provided by the
-     * controller
-     *
-     * @return string
-     */
-    public function getSwaggerSpecFragment()
-    {
-        // Admin API endpoints are not published
-        return '{}';
-    }
 }
