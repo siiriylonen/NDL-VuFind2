@@ -218,7 +218,7 @@ class AuthApiController extends \VuFindApi\Controller\ApiController
      */
     public function getSwaggerSpecFragment()
     {
-       $spec = [];
+        $spec = [];
         if (!$this->isAccessDenied('access.finna.api.auth.backendlist')) {
             $spec['paths']['/auth/getLoginTargets']['get'] = [
                 'summary' => 'Get login targets',
