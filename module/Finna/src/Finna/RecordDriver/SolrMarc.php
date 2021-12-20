@@ -946,7 +946,8 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
                     $result[] = [
                         'name' => $this->stripTrailingPunctuation($subfields[0]),
                         'name_alt' => $altSubfields,
-                        'date' => !empty($dates) ? $dates[0] : '',
+                        'date' => !empty($dates)
+                            ? $this->stripTrailingPunctuation($dates[0]) : '',
                         'role' => $role,
                         'id' => $id ?: null,
                         'type' => in_array($fieldCode, ['100', '700'])
@@ -1012,6 +1013,7 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
                         $role = $this->getSubfield($field, 'e');
                     }
                     $role = mb_strtolower($role, 'UTF-8');
+                    $role = $this->stripTrailingPunctuation($role);
                     if (!$role
                         || !isset($this->mainConfig->Record->presenter_roles)
                         || !in_array(
@@ -1027,7 +1029,8 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
                     if (!empty($subfields)) {
                         $result['presenters'][] = [
                             'name' => $this->stripTrailingPunctuation($subfields[0]),
-                            'date' => $dates ? $dates[0] : '',
+                            'date' => $dates
+                                ? $this->stripTrailingPunctuation($dates[0]) : '',
                             'role' => $role,
                             'id' => $id ?: null
                         ];
