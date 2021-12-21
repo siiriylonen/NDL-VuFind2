@@ -49,31 +49,6 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
     use LoggerAwareTrait;
 
     /**
-     * True if form was submitted successfully.
-     *
-     * @var bool
-     */
-    protected $submitOk = false;
-
-    /**
-     * Show response after form submit.
-     *
-     * @param View    $view     View
-     * @param Form    $form     Form
-     * @param boolean $success  Was email sent successfully?
-     * @param string  $errorMsg Error message (optional)
-     *
-     * @return void
-     */
-    protected function showResponse($view, $form, $success, $errorMsg = null)
-    {
-        if ($success) {
-            $this->submitOk = true;
-        }
-        parent::showResponse($view, $form, $success, $errorMsg);
-    }
-
-    /**
      * Handles rendering and submit of dynamic forms.
      * Form configurations are specified in FeedbackForms.yaml.
      *
@@ -110,19 +85,6 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         }
         $view->form->populateValues($data);
 
-        if (!$this->submitOk) {
-            return $view;
-        }
-
-        // Reset flashmessages set by VuFind
-        $msg = $this->flashMessenger();
-        $namespaces = ['error', 'info', 'success'];
-        foreach ($namespaces as $ns) {
-            $msg->setNamespace($ns);
-            $msg->clearCurrentMessages();
-        }
-
-        $view->setTemplate('feedback/response');
         return $view;
     }
 
