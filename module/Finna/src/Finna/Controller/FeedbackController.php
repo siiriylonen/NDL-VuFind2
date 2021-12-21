@@ -164,7 +164,17 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         }
 
         if ($form->getSendMethod() === Form::HANDLER_EMAIL) {
-            return parent::sendEmail(...func_get_args());
+            // We may have modified the params, so state them explicitly:
+            return parent::sendEmail(
+                $recipientName,
+                $recipientEmail,
+                $senderName,
+                $senderEmail,
+                $replyToName,
+                $replyToEmail,
+                $emailSubject,
+                $emailMessage
+            );
         } elseif ($form->getSendMethod() === Form::HANDLER_DATABASE) {
             $this->saveToDatabase(
                 $form,
