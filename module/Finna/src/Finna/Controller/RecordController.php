@@ -189,26 +189,6 @@ class RecordController extends \VuFind\Controller\RecordController
         $source = $this->params()->fromPost('source')
             ?: $this->params()->fromQuery('source');
 
-        if (!$data) {
-            // Support marc parameter for backwards-compatibility
-            $marcData = $this->params()->fromPost('marc')
-                ?: $this->params()->fromQuery('marc');
-            if ($marcData) {
-                $format = 'marc';
-                if (!$source) {
-                    $source = '_marc_preview';
-                }
-                $marc = new \File_MARC($marcData, \File_MARC::SOURCE_STRING);
-                $record = $marc->next();
-                if (false === $record) {
-                    throw new \Exception('Missing record data');
-                }
-                $data = $record->toXML();
-                $data = preg_replace('/[\x00-\x09,\x11,\x12,\x14-\x1f]/', '', $data);
-                $data = iconv('UTF-8', 'UTF-8//IGNORE', $data);
-            }
-        }
-
         $manager
             = $this->serviceLocator->get(\Laminas\Session\SessionManager::class);
         $sessionContainer = new \Laminas\Session\Container(
