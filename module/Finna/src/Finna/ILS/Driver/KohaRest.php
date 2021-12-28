@@ -1652,7 +1652,7 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
      */
     protected function getHoldingsSummary($holdings)
     {
-        $availableTotal = $itemsTotal = $reservationsTotal = 0;
+        $availableTotal = $itemsTotal = 0;
         $requests = 0;
         $locations = [];
 
