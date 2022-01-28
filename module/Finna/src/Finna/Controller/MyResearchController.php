@@ -756,8 +756,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
                 $user->email = '';
                 $user->user_provided_email = 1;
                 $user->save();
-            }
-            elseif ($validator->isValid($values->email)) {
+            } elseif ($validator->isValid($values->email)) {
                 $this->getAuthManager()->updateEmail($user, $values->email);
                 // If we have a pending change, we need to send a verification email:
                 if (!empty($user->pending_email)) {
