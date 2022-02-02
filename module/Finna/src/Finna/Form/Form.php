@@ -388,7 +388,7 @@ class Form extends \VuFind\Form\Form
             if ($recipientField === $param['name']) {
                 return [
                     'email' => $param['value'],
-                    'name' => $param['valueLabel']
+                    'name' => $this->translate($param['valueLabel'])
                 ];
             }
         }
