@@ -508,13 +508,13 @@ class Form extends \VuFind\Form\Form
         if ($this->userCatUsername) {
             $preParagraphs[] = $this->translate(
                 'feedback_library_card_barcode_html',
-                ['%%barcode%%' => $this->userCatUsername]
+                ['%%barcode%%' => $escapeHtml($this->userCatUsername)]
             );
         }
         if ($this->userCatId) {
             $postParagraphs[] = $this->translate(
                 'feedback_library_patron_id_html',
-                ['%%id%%' => $this->userCatId]
+                ['%%id%%' => $escapeHtml($this->userCatId)]
             );
         }
 
