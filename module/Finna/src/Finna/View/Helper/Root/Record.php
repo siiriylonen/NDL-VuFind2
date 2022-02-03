@@ -627,8 +627,13 @@ class Record extends \VuFind\View\Helper\Root\Record
      */
     public function getImagePopupZoom()
     {
-        return isset($this->config->Content->enableImagePopupZoom)
-            && $this->config->Content->enableImagePopupZoom === '1';
+        if (!($this->config->Content->enableImagePopupZoom ?? false)) {
+            return false;
+        }
+        return in_array(
+            $this->driver->tryMethod('getRecordFormat'),
+            explode(':', $this->config->Content->zoomFormats ?? '')
+        );
     }
 
     /**
