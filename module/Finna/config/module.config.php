@@ -336,7 +336,6 @@ $config = [
             'Finna\Service\RemsService' => 'Finna\Service\RemsServiceFactory',
             'Finna\View\CustomElement\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
 
-            'VuFind\Search\SearchTabsHelper' => 'Finna\Search\SearchTabsHelperFactory',
             'VuFindHttp\HttpService' => 'Finna\Service\HttpServiceFactory',
 
             'Laminas\Session\SessionManager' => 'Finna\Session\ManagerFactory',
