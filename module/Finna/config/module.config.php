@@ -295,10 +295,7 @@ $config = [
     ],
     'controller_plugins' => [
         'factories' => [
-            'Finna\Controller\Plugin\Captcha' => 'Finna\Controller\Plugin\CaptchaFactory',
-        ],
-        'aliases' => [
-            'VuFind\Controller\Plugin\Captcha' => 'Finna\Controller\Plugin\Captcha'
+            'VuFind\Controller\Plugin\Captcha' => 'Finna\Controller\Plugin\CaptchaFactory',
         ],
     ],
     'service_manager' => [
