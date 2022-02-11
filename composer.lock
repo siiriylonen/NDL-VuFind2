@@ -1012,83 +1012,6 @@
             "time": "2021-08-16T22:08:35+00:00"
         },
         {
-            "name": "eremaijala/besimple-soap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/EreMaijala/BeSimpleSoap.git",
-                "reference": "9783c7d5139ad9160db6877538db56ade4253fea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/EreMaijala/BeSimpleSoap/zipball/9783c7d5139ad9160db6877538db56ade4253fea",
-                "reference": "9783c7d5139ad9160db6877538db56ade4253fea",
-                "shasum": ""
-            },
-            "require": {
-                "ass/xmlsecurity": "~1.0",
-                "ext-curl": "*",
-                "ext-soap": "*",
-                "laminas/laminas-mail": "2.*",
-                "laminas/laminas-mime": "2.*",
-                "laminas/laminas-serializer": "^2.12",
-                "php": ">=7.4.0",
-                "symfony/error-handler": "^5.4.3 || ^6.0.3",
-                "symfony/framework-bundle": "^5.4.4 || ^6.0.4"
-            },
-            "replace": {
-                "besimple/soap-bundle": "self.version",
-                "besimple/soap-client": "self.version",
-                "besimple/soap-common": "self.version",
-                "besimple/soap-server": "self.version",
-                "besimple/soap-wsdl": "self.version"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "~1.0",
-                "symfony/filesystem": "^5.4.3 || ^6.0.3",
-                "symfony/phpunit-bridge": "*",
-                "symfony/process": "^5.4.3 || ^6.0.3"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "master"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "BeSimple\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Francis Besset",
-                    "email": "francis.besset@gmail.com"
-                },
-                {
-                    "name": "Christian Kerl",
-                    "email": "christian-kerl@web.de"
-                },
-                {
-                    "name": "Andreas Schamberger",
-                    "email": "mail@andreass.net"
-                }
-            ],
-            "description": "Build and consume SOAP and WSDL based web services",
-            "homepage": "http://besim.pl",
-            "keywords": [
-                "soap"
-            ],
-            "support": {
-                "source": "https://github.com/EreMaijala/BeSimpleSoap/tree/master"
-            },
-            "time": "2022-02-09T10:49:29+00:00"
-        },
-        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.12.0",
             "source": {
@@ -5262,6 +5185,82 @@
                 }
             ],
             "time": "2021-07-05T08:18:36+00:00"
+        },
+        {
+            "name": "natlibfi/besimple-soap",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NatLibFi/BeSimpleSoap.git",
+                "reference": "617e27b3935a89459b461fc6cc5642b7d7bba31e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NatLibFi/BeSimpleSoap/zipball/617e27b3935a89459b461fc6cc5642b7d7bba31e",
+                "reference": "617e27b3935a89459b461fc6cc5642b7d7bba31e",
+                "shasum": ""
+            },
+            "require": {
+                "ass/xmlsecurity": "~1.0",
+                "ext-curl": "*",
+                "ext-soap": "*",
+                "laminas/laminas-mail": "2.*",
+                "laminas/laminas-mime": "2.*",
+                "laminas/laminas-serializer": "^2.12",
+                "php": ">=7.4.0",
+                "symfony/error-handler": "^5.4.3 || ^6.0.3",
+                "symfony/framework-bundle": "^5.4.4 || ^6.0.4"
+            },
+            "replace": {
+                "besimple/soap-bundle": "self.version",
+                "besimple/soap-client": "self.version",
+                "besimple/soap-common": "self.version",
+                "besimple/soap-server": "self.version",
+                "besimple/soap-wsdl": "self.version"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "~1.0",
+                "symfony/filesystem": "^5.4.3 || ^6.0.3",
+                "symfony/phpunit-bridge": "*",
+                "symfony/process": "^5.4.3 || ^6.0.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "BeSimple\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Francis Besset",
+                    "email": "francis.besset@gmail.com"
+                },
+                {
+                    "name": "Christian Kerl",
+                    "email": "christian-kerl@web.de"
+                },
+                {
+                    "name": "Andreas Schamberger",
+                    "email": "mail@andreass.net"
+                },
+                {
+                    "name": "Ere Maijala",
+                    "email": "ere.maijala@helsinki.fi"
+                }
+            ],
+            "description": "Build and consume SOAP and WSDL based web services",
+            "homepage": "https://github.com/NatLibFi/BeSimpleSoap",
+            "keywords": [
+                "soap"
+            ],
+            "support": {
+                "source": "https://github.com/NatLibFi/BeSimpleSoap/tree/v2.0.0"
+            },
+            "time": "2022-02-11T12:18:24+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -12316,16 +12315,16 @@
         },
         {
             "name": "sebastian/global-state",
-            "version": "5.0.3",
+            "version": "5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/global-state.git",
-                "reference": "23bd5951f7ff26f12d4e3242864df3e08dec4e49"
+                "reference": "19c519631c5a511b7ed0ad64a6713fdb3fd25fe4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/23bd5951f7ff26f12d4e3242864df3e08dec4e49",
-                "reference": "23bd5951f7ff26f12d4e3242864df3e08dec4e49",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/19c519631c5a511b7ed0ad64a6713fdb3fd25fe4",
+                "reference": "19c519631c5a511b7ed0ad64a6713fdb3fd25fe4",
                 "shasum": ""
             },
             "require": {
@@ -12368,7 +12367,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/global-state/issues",
-                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.3"
+                "source": "https://github.com/sebastianbergmann/global-state/tree/5.0.4"
             },
             "funding": [
                 {
@@ -12376,7 +12375,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-11T13:31:12+00:00"
+            "time": "2022-02-10T07:01:19+00:00"
         },
         {
             "name": "sebastian/lines-of-code",
@@ -13253,8 +13252,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "ahand/mobileesp": 20,
-        "eremaijala/besimple-soap": 20
+        "ahand/mobileesp": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
