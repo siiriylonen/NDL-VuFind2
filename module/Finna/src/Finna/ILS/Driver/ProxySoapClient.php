@@ -78,6 +78,6 @@ class ProxySoapClient extends \BeSimple\SoapClient\SoapClient
         array $options = []
     ) {
         $this->httpService = $httpService;
-        return parent::__construct($wsdl, $options);
+        parent::__construct($wsdl, $options);
     }
 }
