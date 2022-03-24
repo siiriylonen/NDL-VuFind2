@@ -5,16 +5,28 @@ finna.videoPopup = (function finnaVideoPopup() {
     var $container = $(_container);
     var $videoElem = $(_container).find('video');
 
-    // Use a fairly small buffer for faster quality changes
-    videojs.Hls.GOAL_BUFFER_LENGTH = 10;
-    videojs.Hls.MAX_GOAL_BUFFER_LENGTH = 20;
-    var player = videojs($videoElem.get(0), {
+    var options = {
+      preload: 'metadata',
+      autoplay: false,
+      controls: true,
+      preloadWebComponents: true,
+      nativeControlsForTouch: true,
+      techOrder: [ 'chromecast', 'html5' ],
+      plugins: {
+        airPlay: { addButtonToControlBar: true },
+        chromecast: { addButtonToControlBar: true }
+      },
       html5: {
-        hls: {
+        Vhs: {
           overrideNative: !videojs.browser.IS_SAFARI
         }
       }
-    });
+    };
+
+    // Use a fairly small buffer for faster quality changes
+    videojs.Vhs.GOAL_BUFFER_LENGTH = 10;
+    videojs.Vhs.MAX_GOAL_BUFFER_LENGTH = 20;
+    var player = videojs($videoElem.get(0), options);
  
     player.ready(function onReady() {
       this.hotkeys({
@@ -25,7 +37,8 @@ finna.videoPopup = (function finnaVideoPopup() {
 
     player.src(videoSources);
     player.poster(posterUrl);
-
+    player.chromecast();
+    player.airPlay();
     var selectedBitrate = 'auto';
 
     player.qualityLevels().on('addqualitylevel', function onAddQualityLevel(event) {
@@ -93,6 +106,19 @@ finna.videoPopup = (function finnaVideoPopup() {
             .addClass('vjs-selected')
             .attr('aria-checked', 'true');
         }
+      }
+
+      var chromecast = $container.find('.vjs-chromecast-button');
+      if (chromecast) {
+        var chromecastTranslation = VuFind.translate('Open Chromecast menu');
+        chromecast.attr('title', chromecastTranslation);
+        chromecast.find('.vjs-control-text').html(chromecastTranslation);
+      }
+      var airPlay = $container.find('.vjs-airplay-button');
+      if (airPlay) {
+        var airPlayTranslation = VuFind.translate('Open AirPlay menu');
+        airPlay.attr('title', airPlayTranslation);
+        airPlay.find('.vjs-control-text').html(airPlayTranslation);
       }
     });
 
