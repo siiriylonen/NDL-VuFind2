@@ -13,8 +13,8 @@ finna.videoPopup = (function finnaVideoPopup() {
       nativeControlsForTouch: true,
       techOrder: [ 'chromecast', 'html5' ],
       plugins: {
-        airPlay: { addButtonToControlBar: true },
-        chromecast: { addButtonToControlBar: true }
+        airPlay: { addButtonToControlBar: true }
+        // Disabled for now: , chromecast: { addButtonToControlBar: true }
       },
       html5: {
         Vhs: {
@@ -27,7 +27,7 @@ finna.videoPopup = (function finnaVideoPopup() {
     videojs.Vhs.GOAL_BUFFER_LENGTH = 10;
     videojs.Vhs.MAX_GOAL_BUFFER_LENGTH = 20;
     var player = videojs($videoElem.get(0), options);
- 
+
     player.ready(function onReady() {
       this.hotkeys({
         enableVolumeScroll: false,
@@ -258,13 +258,13 @@ finna.videoPopup = (function finnaVideoPopup() {
             if (warnings[0]) {
               warnings.removeClass('hidden');
               finna.common.observeImages(warnings[0].querySelectorAll('img[data-src]'));
-            }      
+            }
           } else {
             this.content.css('height', '100%');
             if (warnings[0]) {
               var clone = warnings.clone();
               clone.removeClass('hidden');
-              clone.appendTo(this.modalHolder);              
+              clone.appendTo(this.modalHolder);
               finna.common.observeImages(clone[0].querySelectorAll('img[data-src]'));
               setTimeout(function startFade() {
                 clone.fadeOut(2000);
