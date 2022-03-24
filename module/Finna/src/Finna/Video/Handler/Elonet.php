@@ -90,6 +90,7 @@ class Elonet extends \Finna\Video\Handler\AbstractBase
                 'description' => $media['description'] ?: $media['type'],
                 'type' => $media['type'],
                 'text' => $media['text'],
+                'source' => $this->source,
                 'embed' => 'video',
                 'videoSources' => [
                     'src' => $url,
