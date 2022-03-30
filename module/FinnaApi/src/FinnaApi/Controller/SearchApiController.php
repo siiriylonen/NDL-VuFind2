@@ -27,10 +27,6 @@
  */
 namespace FinnaApi\Controller;
 
-use Laminas\ServiceManager\ServiceLocatorInterface;
-use VuFindApi\Formatter\FacetFormatter;
-use VuFindApi\Formatter\RecordFormatter;
-
 /**
  * Search API Controller
  *
