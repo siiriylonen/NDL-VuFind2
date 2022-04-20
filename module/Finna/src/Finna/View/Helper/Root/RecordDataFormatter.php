@@ -129,7 +129,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Introduction', 'Inventory ID', 'ISBN', 'ISSN',
             'Item Description', 'Item History', 'Keywords',
             'Language', 'Language Notes', 'Learning Resource Type',
-            'Location', 'Manufacturer', 'Measurements',
+            'lido_editions', 'Location', 'Manufacturer', 'Measurements',
             'Medium of Performance', 'Methodology', 'New Title',
             'Notated Music Format', 'Notes', 'Objective and Content',
             'Organisation', 'original_work_language', 'Other Classification',
