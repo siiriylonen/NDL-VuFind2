@@ -129,8 +129,13 @@
                 <?=$this->translate('status_Ordered')?>: <?=$row['availabilityInfo']['ordered']?>
               </div>
             <?php endif; ?>
-            <?php if (!empty($row['availabilityInfo']['available'])): ?>
-              <div class="available"><?=$this->translate('Available items')?>: <?=$row['availabilityInfo']['available']?> / <?=$row['availabilityInfo']['total']?></div>
+            <?php if (isset($row['availabilityInfo']['available'])): ?>
+              <div class="available">
+                <?=$this->translate('Available items')?>: <?=$row['availabilityInfo']['available']?>
+                <?php if (isset($row['availabilityInfo']['total'])): ?>
+                  / <?=$row['availabilityInfo']['total']?>
+                <?php endif; ?>
+              </div>
             <?php endif; ?>
           </div>
         <?php endif; ?>
