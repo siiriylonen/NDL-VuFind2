@@ -656,8 +656,19 @@ a.authority {
   }
 }
 .recordInscriptions {
-  .truncate-field > div {
-    margin-bottom: 5px;
+  .record-inscription {
+    display: block;
+    margin-bottom: 7px;
+  }
+  .truncate-field {
+    .record-inscription {
+      span {
+        display: block;
+        > span {
+            margin-bottom: 5px;
+        }
+      }
+    }
   }
 }
 .record-other-screenings-region,
