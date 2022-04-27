@@ -83,7 +83,7 @@
           <?php if (!empty($url['part'])): ?> <span class="coverage"><?=$this->transEsc('default::link_' . $url['part'], null, $url['part']) ?></span><?php endif; ?>
         <?php endforeach; ?>
         <?php if ('popup' === $context && $linkCount > $maxLinkCount): ?>
-          <div>...</div>
+          <div><?=$this->transEsc('eol_ellipsis')?></div>
         <?php endif; ?>
         <?php foreach ($mergedData['urls'] ?? $onlineURLs ?? [] as $i => $url): ?>
           <?php

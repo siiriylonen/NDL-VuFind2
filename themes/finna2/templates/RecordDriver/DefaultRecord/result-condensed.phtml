@@ -166,7 +166,7 @@
               <?php endif; ?>
 
               <div class="callnumAndLocation ajax-availability<?=$this->driver->supportsAjaxStatus() ? ' hidden' : ''?>">
-                <span class="availability-load-indicator hidden"><i class="fa fa-spinner fa-spin"></i> <?=$this->transEsc('Loading')?>...<br/></span>
+                <span class="availability-load-indicator hidden"><i class="fa fa-spinner fa-spin"></i> <?=$this->transEsc('loading_ellipsis')?><br/></span>
                 <?php if ($this->driver->supportsAjaxStatus()): ?>
                   <strong class="hideIfDetailed"></strong>
                   <span class="callnumber ajax-availability hidden">
