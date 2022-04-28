@@ -9,10 +9,10 @@ override_full_sections = "Results,ResultsTop,SpecialFacets,CheckboxFacets,Result
 ; displayed in the results list for each result. Use an empty string for no label.
 ; Backend order defines the order the results are fetched from each backend.
 [Backends]
-;Solr = "Items in Library"
-;SolrAuth = "Authors"
-;Primo = "CDI"
-;EDS = "EDS"
+;Solr = tabs_local
+;SolrAuth = tabs_authority
+;Primo = tabs_pci
+;EDS = tabs_eds
 
 [Blending]
 ; Backends used for blending the first results for at most the initial 20 results:
