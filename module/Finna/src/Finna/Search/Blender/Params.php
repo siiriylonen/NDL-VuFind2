@@ -75,7 +75,7 @@ class Params extends \VuFind\Search\Blender\Params
         array $searchParams,
         \Laminas\Config\Config $blenderConfig,
         array $mappings,
-        AuthorityHelper $authHelper,
+        AuthorityHelper $authHelper
     ) {
         parent::__construct(
             $options,
