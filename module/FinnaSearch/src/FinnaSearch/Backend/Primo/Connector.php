@@ -49,13 +49,6 @@ class Connector extends \VuFindSearch\Backend\Primo\Connector
     protected $hiddenFilters = [];
 
     /**
-     * Cache manager
-     *
-     * @var \VuFind\Cache\Manager
-     */
-    protected $cacheManager = null;
-
-    /**
      * Constructor
      *
      * Sets up the Primo API Client
@@ -83,57 +76,6 @@ class Connector extends \VuFindSearch\Backend\Primo\Connector
     public function setHiddenFilters($filters)
     {
         $this->hiddenFilters = $filters;
-    }
-
-    /**
-     * Set cache manager
-     *
-     * @param \VuFind\Cache\Manager $manager Cache manager
-     *
-     * @return void
-     */
-    public function setCacheManager(\VuFind\Cache\Manager $manager)
-    {
-        $this->cacheManager = $manager;
-    }
-
-    /**
-     * Small wrapper for sendRequest, process to simplify error handling.
-     *
-     * @param string $qs     Query string
-     * @param array  $params Request parameters
-     * @param string $method HTTP method
-     *
-     * @return object    The parsed primo data
-     * @throws \Exception
-     */
-    protected function call($qs, $params = [], $method = 'GET')
-    {
-        $cacheKey = md5(
-            json_encode(
-                [
-                    'inst' => $this->inst,
-                    'host' => $this->host,
-                    'qs' => $qs,
-                    'method' => $method
-                ]
-            )
-        );
-        $cache = null;
-        if ($this->cacheManager) {
-            $cache = $this->cacheManager->getCache('object', 'PrimoConnector');
-            if ($result = $cache->getItem($cacheKey)) {
-                return $result;
-            }
-        }
-
-        $result = parent::call($qs, $params, $method);
-
-        if ($cache) {
-            $cache->setItem($cacheKey, $result);
-        }
-
-        return $result;
     }
 
     /**

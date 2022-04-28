@@ -667,7 +667,6 @@ $config = [
             ],
             'search_backend' => [
                 'factories' => [
-                    'Blender' => 'Finna\Search\Factory\BlenderBackendFactory',
                     'L1' => 'Finna\Search\Factory\L1BackendFactory',
                     'Primo' => 'Finna\Search\Factory\PrimoBackendFactory',
                     'R2' => 'Finna\Search\Factory\R2BackendFactory',
@@ -687,19 +686,19 @@ $config = [
             ],
             'search_options' => [
                 'factories' => [
-                    'Finna\Search\Blender\Options' => 'VuFind\Search\OptionsFactory',
-
-                    'Finna\Search\Combined\Options' => 'VuFind\Search\OptionsFactory',
-                    'Finna\Search\EDS\Options' => 'VuFind\Search\EDS\OptionsFactory',
+                    'Finna\Search\Blender\Options' => 'VuFind\Search\Options\OptionsFactory',
+                    'Finna\Search\Combined\Options' => 'VuFind\Search\Options\OptionsFactory',
+                    'Finna\Search\EDS\Options' => 'VuFind\Search\EDS\Options\OptionsFactory',
                     'Finna\Search\R2\Options' => 'VuFind\Search\Options\OptionsFactory',
-                    'Finna\Search\Primo\Options' => 'VuFind\Search\OptionsFactory',
-                    'Finna\Search\Solr\Options' => 'VuFind\Search\OptionsFactory',
-                    'Finna\Search\SolrAuth\Options' => 'VuFind\Search\OptionsFactory',
-                    'Finna\Search\SolrBrowse\Options' => 'VuFind\Search\OptionsFactory',
+                    'Finna\Search\Primo\Options' => 'VuFind\Search\Options\OptionsFactory',
+                    'Finna\Search\Solr\Options' => 'VuFind\Search\Options\OptionsFactory',
+                    'Finna\Search\SolrAuth\Options' => 'VuFind\Search\Options\OptionsFactory',
+                    'Finna\Search\SolrBrowse\Options' => 'VuFind\Search\Options\OptionsFactory',
 
                     'Finna\Search\L1\Options' => 'VuFind\Search\OptionsFactory',
                 ],
                 'aliases' => [
+                    'VuFind\Search\Blender\Options' => 'Finna\Search\Blender\Options',
                     'VuFind\Search\Combined\Options' => 'Finna\Search\Combined\Options',
                     'VuFind\Search\EDS\Options' => 'Finna\Search\EDS\Options',
                     'VuFind\Search\Primo\Options' => 'Finna\Search\Primo\Options',
@@ -711,7 +710,6 @@ $config = [
                     // Counterpart for EmptySet Params:
                     'Finna\Search\EmptySet\Options' => 'VuFind\Search\EmptySet\Options',
                     'Finna\Search\MixedList\Options' => 'VuFind\Search\MixedList\Options',
-                    'Blender' => 'Finna\Search\Blender\Options',
                     'R2' => 'Finna\Search\R2\Options',
                     'R2Collection' => 'VuFind\Search\SolrCollection\Options',
                     'SolrAuth' => 'Finna\Search\SolrAuth\Options',
@@ -722,7 +720,6 @@ $config = [
             'search_params' => [
                 'factories' => [
                     'Finna\Search\Blender\Params' => 'Finna\Search\Blender\ParamsFactory',
-
                     'Finna\Search\Combined\Params' => 'Finna\Search\Solr\ParamsFactory',
                     'Finna\Search\EDS\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\EmptySet\Params' => 'VuFind\Search\Params\ParamsFactory',
@@ -737,6 +734,7 @@ $config = [
                     'Finna\Search\L1\Params' => 'Finna\Search\Solr\ParamsFactory',
                 ],
                 'aliases' => [
+                    'VuFind\Search\Blender\Params' => 'Finna\Search\Blender\Params',
                     'VuFind\Search\Combined\Params' => 'Finna\Search\Combined\Params',
                     'VuFind\Search\EDS\Params' => 'Finna\Search\EDS\Params',
                     'VuFind\Search\EmptySet\Params' => 'Finna\Search\EmptySet\Params',
@@ -746,7 +744,6 @@ $config = [
 
                     'VuFind\Search\SolrAuth\Params' => 'Finna\Search\SolrAuth\Params',
 
-                    'Blender' => 'Finna\Search\Blender\Params',
                     'R2' => 'Finna\Search\R2\Params',
                     'R2Collection' => 'Finna\Search\R2Collection\Params',
                     'SolrAuth' => 'Finna\Search\SolrAuth\Params',
@@ -755,7 +752,7 @@ $config = [
             ],
             'search_results' => [
                 'factories' => [
-                    'Finna\Search\Blender\Results' => 'VuFind\Search\Solr\ResultsFactory',
+                    'Finna\Search\Blender\Results' => '\VuFind\Search\Solr\ResultsFactory',
                     'Finna\Search\Combined\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Favorites\Results' => 'Finna\Search\Favorites\ResultsFactory',
                     'Finna\Search\R2\Results' => 'VuFind\Search\Solr\ResultsFactory',
@@ -767,13 +764,13 @@ $config = [
                     'Finna\Search\L1\Results' => 'Finna\Search\L1\ResultsFactory',
                 ],
                 'aliases' => [
+                    'VuFind\Search\Blender\Results' => 'Finna\Search\Blender\Results',
                     'VuFind\Search\Combined\Results' => 'Finna\Search\Combined\Results',
                     'VuFind\Search\Favorites\Results' => 'Finna\Search\Favorites\Results',
                     'VuFind\Search\Primo\Results' => 'Finna\Search\Primo\Results',
                     'VuFind\Search\Solr\Results' => 'Finna\Search\Solr\Results',
                     'VuFind\Search\SolrAuth\Results' => 'Finna\Search\SolrAuth\Results',
 
-                    'Blender' => 'Finna\Search\Blender\Results',
                     'L1' => 'Finna\Search\L1\Results',
                     'R2' => 'Finna\Search\R2\Results',
                     'R2Collection' => 'Finna\Search\R2Collection\Results',
@@ -979,7 +976,7 @@ $staticRoutes = [
     'PCI/Home', 'PCI/Search', 'PCI/Record',
     'R2/Advanced', 'R2/FacetList', 'R2/Home', 'R2/Results',
     'Search/StreetSearch',
-    'Barcode/Show', 'Search/MapFacet', 'Search/Blended',
+    'Barcode/Show', 'Search/MapFacet',
     'L1/Advanced', 'L1/FacetList', 'L1/Home', 'L1/Results',
     'Record/DownloadModel',
     'Record/DownloadFile'

@@ -44,7 +44,10 @@
             </h2>
           </div>
           <div class="dateyeartype">
-            <div class="resultItemFormat"><?=$this->record($this->driver)->getFormatList() ?> <?=$this->record($this->driver)->getSourceIdElement() ?></div>
+            <div class="resultItemFormat">
+              <?=$this->record($this->driver)->getFormatList() ?>
+              <?=$this->record($this->driver)->getLabelList() ?>
+            </div>
             <?php if($this->driver->isCollection()): ?>
               <?=implode('<br>', $this->driver->getSummary()); ?>
             <?php else: ?>

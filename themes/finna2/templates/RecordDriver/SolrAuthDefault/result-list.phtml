@@ -20,7 +20,10 @@
     <?php endif; ?>
     <div class="media-body">
       <div class="result-body">
-        <div class="resultItemFormat"><?=$this->record($this->driver)->getFormatList() ?> <?=$this->record($this->driver)->getSourceIdElement() ?></div>
+        <div class="resultItemFormat">
+          <?=$this->record($this->driver)->getFormatList() ?>
+          <?=$this->record($this->driver)->getLabelList() ?>
+        </div>
         <div class="title-container">
             <h2 class="search-title">
             <a class="title" href="<?=$this->escapeHtmlAttr($this->recordLinker()->getUrl($this->driver))?>" data-view="<?=isset($this->params) ? $this->params->getOptions()->getListViewOption() : 'list' ?>">

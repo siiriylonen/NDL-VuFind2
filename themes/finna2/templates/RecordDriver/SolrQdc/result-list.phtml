@@ -46,7 +46,10 @@
         <?php endforeach; ?>
 
         <div class="dateyeartype">
-          <div class="resultItemFormat"><?=$this->record($this->driver)->getFormatList() ?> <?=$this->record($this->driver)->getSourceIdElement() ?></div>
+          <div class="resultItemFormat">
+            <?=$this->record($this->driver)->getFormatList() ?>
+            <?=$this->record($this->driver)->getLabelList() ?>
+          </div>
 
           <?php if ($results = $this->driver->tryMethod('getOtherLinks')): ?>
             <div class="resultOtherLinks">

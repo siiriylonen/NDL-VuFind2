@@ -43,7 +43,10 @@
           </h2>
         </div>
         <div class="dateyeartype">
-          <div class="resultItemFormat"><?=$this->record($this->driver)->getFormatList() ?> <?=$this->record($this->driver)->getSourceIdElement() ?></div>
+          <div class="resultItemFormat">
+            <?=$this->record($this->driver)->getFormatList() ?>
+            <?=$this->record($this->driver)->getLabelList() ?>
+          </div>
           <?php if($this->driver->isCollection()): ?>
             <?=implode('<br>', $this->driver->getSummary()); ?>
           <?php else: ?>
@@ -126,11 +129,11 @@
           <?php if ($this->driver->supportsAjaxStatus()): ?>
             <strong class="hideIfDetailed"><?=$this->transEsc('Call Number')?>:</strong>
             <span class="callnumber ajax-availability hidden">
-              <?=$this->transEsc('Loading')?>...<br/>
+              <?=$this->transEsc('loading_ellipsis')?><br/>
             </span>
             <strong><?=$this->transEsc('Located')?>:</strong>
             <span class="location ajax-availability hidden">
-              <?=$this->transEsc('Loading')?>...
+              <?=$this->transEsc('loading_ellipsis')?>
             </span>
             <div class="locationDetails clearfix"></div>
           <?php else: ?>

@@ -905,16 +905,12 @@ class Record extends \VuFind\View\Helper\Root\Record
      * Render a source id element if necessary
      *
      * @return string
+     *
+     * @deprecated Use getLabelList instead
      */
     public function getSourceIdElement()
     {
-        $view = $this->getView();
-        if (isset($view->results) && is_callable([$view->results, 'getBackendId'])) {
-            if ($view->results->getBackendId() === 'Blender') {
-                return $this->renderTemplate('source-id-label.phtml');
-            }
-        }
-        return '';
+        return $this->getLabelList();
     }
 
     /**
