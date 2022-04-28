@@ -93,13 +93,6 @@ class MarkdownFactory implements FactoryInterface
     protected $extensions;
 
     /**
-     * Dependency injection container
-     *
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * Create an object
      *
      * @param ContainerInterface $container     Service manager
@@ -127,7 +120,6 @@ class MarkdownFactory implements FactoryInterface
             )
             : self::$defaultExtensions;
         $this->extensions = array_filter($this->extensions);
-        $this->container = $container;
 
         return new MarkdownConverter($this->getEnvironment());
     }
@@ -143,12 +135,7 @@ class MarkdownFactory implements FactoryInterface
         $environment->addExtension(new CommonMarkCoreExtension());
         foreach ($this->extensions as $extension) {
             $extensionClass = $this->getExtensionClass($extension);
-            // For case, somebody needs to create extension using custom factory, we
-            // try to get the object from DI container if possible
-            $extensionObject = $this->container->has($extensionClass)
-                ? $this->container->get($extensionClass)
-                : new $extensionClass();
-            $environment->addExtension($extensionObject);
+            $environment->addExtension(new $extensionClass());
         }
         return $environment;
     }
@@ -185,13 +172,11 @@ class MarkdownFactory implements FactoryInterface
      */
     protected function getExtensionClass(string $extension): string
     {
-        $extensionClass = (strpos($extension, '\\') !== false)
-            ? $extension
-            : sprintf(
-                'League\CommonMark\Extension\%s\%sExtension',
-                $extension,
-                $extension
-            );
+        $extensionClass = sprintf(
+            'League\CommonMark\Extension\%s\%sExtension',
+            $extension,
+            $extension
+        );
         if (!class_exists($extensionClass)) {
             throw new ServiceNotCreatedException(
                 sprintf(
@@ -213,13 +198,9 @@ class MarkdownFactory implements FactoryInterface
     protected function getConfigForExtension(string $extension): array
     {
         if (isset($this->config[$extension])) {
-            $configKey = self::$configKeys[$extension]
-                ?? $this->config[$extension]['config_key']
-                ?? '';
-            unset($this->config[$extension]['config_key']);
-            return $configKey !== ''
-                ? [ $configKey => $this->config[$extension] ]
-                : [];
+            return [
+                self::$configKeys[$extension] => $this->config[$extension],
+            ];
         }
         return [];
     }
