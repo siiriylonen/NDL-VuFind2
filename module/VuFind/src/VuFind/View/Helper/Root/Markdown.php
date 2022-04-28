@@ -29,8 +29,7 @@
 namespace VuFind\View\Helper\Root;
 
 use Laminas\View\Helper\AbstractHelper;
-use League\CommonMark\ConverterInterface;
-use League\CommonMark\Output\RenderedContentInterface;
+use League\CommonMark\MarkdownConverterInterface;
 
 /**
  * Helper for transforming markdown to html
@@ -46,16 +45,16 @@ class Markdown extends AbstractHelper
     /**
      * Markdown converter
      *
-     * @var ConverterInterface
+     * @var MarkdownConverterInterface
      */
     protected $converter;
 
     /**
      * Markdown constructor.
      *
-     * @param ConverterInterface $converter Markdown converter
+     * @param MarkdownConverterInterface $converter Markdown converter
      */
-    public function __construct(ConverterInterface $converter)
+    public function __construct(MarkdownConverterInterface $converter)
     {
         $this->converter = $converter;
     }
@@ -65,10 +64,10 @@ class Markdown extends AbstractHelper
      *
      * @param string $markdown Markdown formatted text
      *
-     * @return RenderedContentInterface
+     * @return string
      */
     public function __invoke(string $markdown)
     {
-        return $this->converter->convert($markdown);
+        return $this->converter->convertToHtml($markdown);
     }
 }
