@@ -1,10 +1,10 @@
 <?php
 /**
- * Factory for GetImageInformation AJAX handler.
+ * Statistics event handler factory.
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2019.
+ * Copyright (C) The National Library of Finland 2022.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,29 +20,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  AJAX
- * @author   Juha Luoma <juha.luoma@helsinki.fi>
+ * @package  Service
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-namespace Finna\AjaxHandler;
+namespace Finna\Statistics;
 
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Factory for GetImageInformation AJAX handler.
+ * Statistics event handler factory.
  *
  * @category VuFind
- * @package  AJAX
- * @author   Juha Luoma <juha.luoma@helsinki.fi>
+ * @package  Service
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class GetImageInformationFactory
-    implements \Laminas\ServiceManager\Factory\FactoryInterface
+class EventHandlerFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -57,8 +57,6 @@ class GetImageInformationFactory
      * @throws ServiceNotCreatedException if an exception is raised when
      * creating a service.
      * @throws ContainerException if any other error occurs
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __invoke(
         ContainerInterface $container,
@@ -68,19 +66,27 @@ class GetImageInformationFactory
         if (!empty($options)) {
             throw new \Exception('Unexpected options passed to factory.');
         }
-        $tablePluginManager = $container->get(\VuFind\Db\Table\PluginManager::class);
-        $result = new $requestedName(
-            $container->get(\VuFind\Session\Settings::class),
-            $container->get(\VuFind\Config\PluginManager::class)->get('config'),
-            $container->get(\VuFind\Record\Loader::class),
-            $tablePluginManager->get(\VuFind\Db\Table\User::class),
-            $tablePluginManager->get(\VuFind\Db\Table\UserList::class),
-            $container->get(\VuFind\Auth\Manager::class)->isLoggedIn(),
-            $container->get('ViewRenderer')->plugin('record')
+
+        $config = $container->get(\VuFind\Config\PluginManager::class)
+            ->get('config');
+
+        $driver = null;
+        if (!empty($config->Statistics->driver)) {
+            $driverManager
+                = $container->get(\Finna\Statistics\Driver\PluginManager::class);
+            $driver = $driverManager->get($config->Statistics->driver);
+        }
+
+        $request = $container->get('Request');
+        $headers = $request->getHeaders();
+        $userAgent = $headers->has('User-Agent')
+            ? $headers->get('User-Agent')->toString() : '';
+
+        return new $requestedName(
+            $config->Site->institution ?? '',
+            getenv('FINNA_BASE_URL') ?: '',
+            $driver,
+            $userAgent
         );
-        $result->setStatisticsEventHandler(
-            $container->get(\Finna\Statistics\EventHandler::class)
-        );
-        return $result;
     }
 }
