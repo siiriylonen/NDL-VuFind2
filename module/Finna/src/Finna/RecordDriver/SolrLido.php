@@ -1196,10 +1196,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
             $culture = (string)($node->culture->term ?? '');
-            $description = (string)(
-                $node->eventDescriptionSet->descriptiveNoteValue
-                ?? ''
-            );
+            $descriptions = [];
+            foreach ($node->eventDescriptionSet ?? [] as $set) {
+                if ($note = trim((string)($set->descriptiveNoteValue ?? ''))) {
+                    $descriptions[] = $note;
+                }
+            }
 
             $event = [
                 'type' => $type,
@@ -1210,7 +1212,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 'places' => $places,
                 'actors' => $actors,
                 'culture' => $culture,
-                'description' => $description
+                'descriptions' => $descriptions,
+                // For backward compatibility
+                'description' => $descriptions[0] ?? ''
             ];
             // Only add the event if it has content
             foreach ($event as $key => $field) {
