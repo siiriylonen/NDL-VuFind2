@@ -1,6 +1,6 @@
 <?php
 /**
- * Record field Markdown view helper
+ * Custom element closing tag renderer
  *
  * PHP version 7
  *
@@ -20,50 +20,50 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  View_Helpers
+ * @package  CommonMark
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-namespace Finna\View\Helper\Root;
+namespace Finna\CommonMark\Renderer\Block;
+
+use Finna\CommonMark\Node\Block\CustomElementClosingTag;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
 
 /**
- * Record field Markdown view helper
+ * Custom element closing tag renderer
  *
  * @category VuFind
- * @package  View_Helpers
+ * @package  CommonMark
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class RecordFieldMarkdown extends \VuFind\View\Helper\Root\Markdown
+class CustomElementClosingTagRenderer implements NodeRendererInterface
 {
     /**
-     * Return HTML
+     * Render the node.
      *
-     * @param string  $markdown  Markdown
-     * @param ?string $softBreak Alternative string to use for rendering soft breaks
-     *                           (optional)
+     * @param Node                       $node          Node
+     * @param ChildNodeRendererInterface $childRenderer Child node renderer
      *
-     * @return string
+     * @return string|\Stringable|null
      */
-    public function toHtml(string $markdown, ?string $softBreak = null): string
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
-        $cleanHtml = $this->getView()->plugin('cleanHtml');
-        return (string)$this->converter->convert($cleanHtml($markdown), $softBreak);
-    }
+        if (!($node instanceof CustomElementClosingTag)) {
+            throw new \InvalidArgumentException(
+                'Incompatible block type: ' . \get_class($node)
+            );
+        }
 
-    /**
-     * Converts Markdown to HTML
-     *
-     * Finna: back-compatibility with default param and call logic
-     *
-     * @param ?string $markdown Markdown formatted text
-     *
-     * @return RecordFieldMarkdown|string
-     */
-    public function __invoke(string $markdown = null)
-    {
-        return null === $markdown ? $this : parent::__invoke($markdown);
+        $remainingContent = $childRenderer->renderNodes($node->children());
+        if ('' !== $remainingContent) {
+            $remainingContent = "\n" . $remainingContent;
+        }
+
+        return $node->getClosingTag() . $remainingContent;
     }
 }

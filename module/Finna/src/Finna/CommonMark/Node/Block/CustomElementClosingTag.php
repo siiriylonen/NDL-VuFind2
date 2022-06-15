@@ -1,6 +1,6 @@
 <?php
 /**
- * Record field Markdown view helper
+ * Custom element closing tag block node
  *
  * PHP version 7
  *
@@ -20,50 +20,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  View_Helpers
+ * @package  CommonMark
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-namespace Finna\View\Helper\Root;
+namespace Finna\CommonMark\Node\Block;
+
+use League\CommonMark\Node\Block\AbstractBlock;
 
 /**
- * Record field Markdown view helper
+ * Custom element closing tag block node
  *
  * @category VuFind
- * @package  View_Helpers
+ * @package  CommonMark
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class RecordFieldMarkdown extends \VuFind\View\Helper\Root\Markdown
+class CustomElementClosingTag extends AbstractBlock
 {
     /**
-     * Return HTML
+     * Custom element name
      *
-     * @param string  $markdown  Markdown
-     * @param ?string $softBreak Alternative string to use for rendering soft breaks
-     *                           (optional)
-     *
-     * @return string
+     * @var string
      */
-    public function toHtml(string $markdown, ?string $softBreak = null): string
+    protected string $name;
+
+    /**
+     * CustomElementClosingTag constructor.
+     *
+     * @param string $name Custom element name
+     */
+    public function __construct(string $name)
     {
-        $cleanHtml = $this->getView()->plugin('cleanHtml');
-        return (string)$this->converter->convert($cleanHtml($markdown), $softBreak);
+        parent::__construct();
+        $this->name = $name;
     }
 
     /**
-     * Converts Markdown to HTML
+     * Get custom element closing tag
      *
-     * Finna: back-compatibility with default param and call logic
-     *
-     * @param ?string $markdown Markdown formatted text
-     *
-     * @return RecordFieldMarkdown|string
+     * @return string
      */
-    public function __invoke(string $markdown = null)
+    public function getClosingTag(): string
     {
-        return null === $markdown ? $this : parent::__invoke($markdown);
+        return '</' . $this->name . '>';
     }
 }
