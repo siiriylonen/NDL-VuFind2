@@ -479,6 +479,32 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
     }
 
     /**
+     * Get original version notes.
+     * Each result contains:
+     * - notes => Notes found
+     *
+     * @return array
+     */
+    public function getOriginalVersionNotes(): array
+    {
+        $results = [];
+        foreach ($this->getMarcReader()->getFields('534') as $field) {
+            $result = [];
+            if ($subfields = $this->getSubfieldArray(
+                $field,
+                ['p', 'c']
+            )
+            ) {
+                $result['notes'] = implode(' ', $subfields);
+            }
+            if ($result) {
+                $results[] = $result;
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Get an array of embedded component parts
      *
      * @return array Component parts

@@ -1314,6 +1314,16 @@ class RecordDataFormatterFactory
             ]
         );
         $setTemplateLine(
+            'Original Version Notes',
+            'getOriginalVersionNotes',
+            'data-originalVersionNotes.phtml',
+            [
+                'context' => [
+                    'class' => 'record-original-version-notes',
+                ],
+            ]
+        );
+        $setTemplateLine(
             'Place of Origin',
             'getAssociatedPlace',
             'data-escapeHtml.phtml',
