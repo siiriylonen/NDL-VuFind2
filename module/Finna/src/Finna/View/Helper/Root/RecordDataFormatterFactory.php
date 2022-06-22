@@ -455,7 +455,9 @@ class RecordDataFormatterFactory
                         'labelFunction'
                             => function ($data, $driver) use ($eventType) {
                                 $mainFormat = $driver->getMainFormat();
-                                return "lido_event_type_{$mainFormat}_$eventType";
+                                return $eventType
+                                    ? "lido_event_type_{$mainFormat}_$eventType"
+                                    : '';
                             },
                     ],
                 ];
