@@ -543,8 +543,8 @@ $config = [
                     'Finna\Db\Row\CommentsRecord' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\DueDateReminder' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\Fee' => 'VuFind\Db\Row\RowGatewayFactory',
-                    'Finna\Db\Row\Feedback' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\FinnaCache' => 'VuFind\Db\Row\RowGatewayFactory',
+                    'Finna\Db\Row\FinnaFeedback' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\FinnaPageViewStats' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\FinnaRecordStats' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\FinnaRecordStatsLog' => 'VuFind\Db\Row\RowGatewayFactory',
@@ -585,8 +585,8 @@ $config = [
                     'Finna\Db\Table\CommentsRecord' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\DueDateReminder' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\Fee' => 'VuFind\Db\Table\GatewayFactory',
-                    'Finna\Db\Table\Feedback' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\FinnaCache' => 'VuFind\Db\Table\GatewayFactory',
+                    'Finna\Db\Table\FinnaFeedback' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\FinnaPageViewStats' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\FinnaRecordStats' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\FinnaRecordStatsLog' => 'VuFind\Db\Table\GatewayFactory',
@@ -612,7 +612,7 @@ $config = [
                     'commentsrecord' => 'Finna\Db\Table\CommentsRecord',
                     'duedatereminder' => 'Finna\Db\Table\DueDateReminder',
                     'fee' => 'Finna\Db\Table\Fee',
-                    'feedback' => 'Finna\Db\Table\Feedback',
+                    'finnafeedback' => 'Finna\Db\Table\FinnaFeedback',
                     'finnacache' => 'Finna\Db\Table\FinnaCache',
                     'finnapageviewstats' => 'Finna\Db\Table\FinnaPageViewStats',
                     'finnarecordstats' => 'Finna\Db\Table\FinnaRecordStats',
@@ -620,6 +620,19 @@ $config = [
                     'finnasessionstats' => 'Finna\Db\Table\FinnaSessionStats',
                     'transaction' => 'Finna\Db\Table\Transaction',
                 ]
+            ],
+            'form_handler' => [
+                'factories' => [
+                    'Finna\Form\Handler\Api' => 'Finna\Form\Handler\ApiFactory',
+                    'Finna\Form\Handler\Database' => 'Finna\Form\Handler\DatabaseFactory',
+                    'Finna\Form\Handler\Email' => 'VuFind\Form\Handler\EmailFactory',
+                ],
+                'aliases' => [
+                    'api' => 'Finna\Form\Handler\Api',
+
+                    'VuFind\Form\Handler\Database' => 'Finna\Form\Handler\Database',
+                    'VuFind\Form\Handler\Email' => 'Finna\Form\Handler\Email',
+                ],
             ],
             'ils_driver' => [
                 'factories' => [

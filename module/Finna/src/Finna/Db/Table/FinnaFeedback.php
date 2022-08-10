@@ -40,7 +40,7 @@ use VuFind\Db\Table\PluginManager;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org   Main Site
  */
-class Feedback extends \VuFind\Db\Table\Gateway
+class FinnaFeedback extends \VuFind\Db\Table\Gateway
 {
     /**
      * Constructor

@@ -1567,7 +1567,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         $messageJson = json_encode($mergedArrays);
 
         $messageString = $this->getMessageString($userData, $message, $oldMessage);
-        $feedback = $this->getTable('feedback');
+        $feedback = $this->getTable('FinnaFeedback');
         $feedback->saveFeedback(
             $url,
             $formId,
