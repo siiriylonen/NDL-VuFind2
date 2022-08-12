@@ -1441,7 +1441,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                         ?? '')
                     );
                 if ($name) {
-                    $role = $actor->actorInRole->roleActor->term ?? '';
+                    $role = (string)($actor->actorInRole->roleActor->term ?? '');
                     ++$index;
                     $authors["$priority/{$index}"] = compact(
                         'name',
