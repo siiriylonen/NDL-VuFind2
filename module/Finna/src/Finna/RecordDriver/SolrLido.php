@@ -1054,8 +1054,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 ? mb_strtolower((string)$node->eventType->term, 'UTF-8') : '';
             $date = (string)($node->eventDate->displayDate ?? '');
             if (!$date && !empty($node->eventDate->date)) {
-                $startDate = (string)($node->eventDate->date->earliestDate ?? '');
-                $endDate = (string)($node->eventDate->date->latestDate ?? '');
+                $startDate
+                    = trim((string)($node->eventDate->date->earliestDate ?? ''));
+                $endDate = trim((string)($node->eventDate->date->latestDate ?? ''));
                 if (strlen($startDate) == 4 && strlen($endDate) == 4) {
                     $date = "$startDate-$endDate";
                 } else {
@@ -1068,14 +1069,14 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                         $endDateType = 'Y-m';
                     }
 
-                    $date = $this->dateConverter
+                    $date = $this->dateConverter && $startDate
                         ? $this->dateConverter->convertToDisplayDate(
                             $startDateType,
                             $startDate
                         )
                         : $startDate;
 
-                    if ($startDate != $endDate) {
+                    if ($endDate && $startDate != $endDate) {
                         $date .= '-' . ($this->dateConverter
                             ? $this->dateConverter->convertToDisplayDate(
                                 $endDateType,
