@@ -14,6 +14,7 @@
   $extraUrlFields = $this->results->getUrlQuery()->getParamsWithConfiguredDefaults();
 ?>
 <div id="facet_<?=$this->escapeHtml($title)?>" class="jstree-facet"
+    data-source="<?=$this->escapeHtml($this->searchClassId)?>"
     data-facet="<?=$this->escapeHtmlAttr($title)?>"
     data-path=""
     data-exclude="<?=$allowExclude?>"
