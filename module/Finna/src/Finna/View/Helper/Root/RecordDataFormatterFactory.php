@@ -301,6 +301,80 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'recordFormat']
             ]
         );
+
+        // Note: "Parent..." fields are similar to archive fields further down, but
+        // use a less archive-specific terminology.
+        $setTemplateLine(
+            'Parent Archive',
+            'getParentArchives',
+            'data-hierarchyLinks.phtml',
+            [
+                'context' => [
+                    'class' => 'recordHierarchyLinks',
+                ]
+            ]
+        );
+        $setTemplateLine(
+            'Parent Collection',
+            'getParentCollections',
+            'data-hierarchyLinks.phtml',
+            [
+                'context' => [
+                    'class' => 'recordHierarchyLinks',
+                ]
+            ]
+        );
+        $setTemplateLine(
+            'Parent Subcollection',
+            'getParentSubcollections',
+            'data-hierarchyLinks.phtml',
+            [
+                'context' => [
+                    'class' => 'recordHierarchyLinks',
+                ]
+            ]
+        );
+        $setTemplateLine(
+            'Parent Series',
+            'getParentSeries',
+            'data-hierarchyLinks.phtml',
+            [
+                'context' => [
+                    'class' => 'recordHierarchyLinks',
+                ]
+            ]
+        );
+        $setTemplateLine(
+            'Parent Purchase Batch',
+            'getParentPurchaseBatches',
+            'data-hierarchyLinks.phtml',
+            [
+                'context' => [
+                    'class' => 'recordHierarchyLinks',
+                ]
+            ]
+        );
+        $setTemplateLine(
+            'Parent Work',
+            'getParentWorks',
+            'data-hierarchyLinks.phtml',
+            [
+                'context' => [
+                    'class' => 'recordHierarchyLinks',
+                ]
+            ]
+        );
+        $setTemplateLine(
+            'Parent Unclassified Entity',
+            'getParentUnclassifiedEntities',
+            'data-hierarchyLinks.phtml',
+            [
+                'context' => [
+                    'class' => 'recordHierarchyLinks',
+                ]
+            ]
+        );
+
         $setTemplateLine(
             'Archive Origination',
             'getOriginationExtended',
@@ -311,27 +385,26 @@ class RecordDataFormatterFactory
         );
         $setTemplateLine(
             'Archive',
-            true,
-            'data-archive.phtml',
+            'getParentArchives',
+            'data-hierarchyLinks.phtml',
             [
                 'context' => ['class' => 'recordHierarchyLinks']
             ]
         );
         $setTemplateLine(
             'Archive Series',
-            'isPartOfArchiveSeries',
-            'data-archiveSeries.phtml',
+            'getParentSeries',
+            'data-hierarchyLinks.phtml',
             [
                 'context' => [
                     'class' => 'recordSeries',
-                    'levels' => \Finna\RecordDriver\SolrEad::SERIES_LEVELS
                 ]
             ]
         );
         $setTemplateLine(
             'Archive File',
-            'isPartOfArchiveSeries',
-            'data-archiveSeries.phtml',
+            'getParentFiles',
+            'data-hierarchyLinks.phtml',
             [
                 'context' => [
                     'class' => 'recordFile',
