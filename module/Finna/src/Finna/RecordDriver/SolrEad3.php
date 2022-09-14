@@ -1703,7 +1703,9 @@ class SolrEad3 extends SolrEad
             foreach ($aid->p as $p) {
                 $data = [
                     'label' => (string)$p,
-                    'url' => (string)($p->ref->attributes()->href ?? '')
+                    'url' => $p->ref
+                        ? (string)($p->ref->attributes()->href ?? '')
+                        : ''
                 ];
                 $result[] = $data;
                 $lang = $this->detectNodeLanguage($p);
