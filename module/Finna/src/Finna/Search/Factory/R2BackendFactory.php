@@ -29,8 +29,8 @@
 namespace Finna\Search\Factory;
 
 use Finna\Search\R2\AuthenticationListener;
-use Interop\Container\ContainerInterface;
 use Laminas\EventManager\EventManager;
+use Psr\Container\ContainerInterface;
 use VuFindSearch\Backend\Solr\Backend;
 
 use VuFindSearch\Backend\Solr\Connector;
