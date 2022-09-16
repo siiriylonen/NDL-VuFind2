@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc4c2fb6abf0bcbce0ab7ab68adc5cc9",
+    "content-hash": "7bf1d1b320bf1d99b2d310bdbc4339d3",
     "packages": [
         {
             "name": "ahand/mobileesp",
@@ -10779,32 +10779,33 @@
         },
         {
             "name": "vufind-org/vufindhttp",
-            "version": "v3.1.0",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vufind-org/vufindhttp.git",
-                "reference": "69aff6bcb84139598bdb42d161b7483caf69b1c2"
+                "reference": "53fe3781e6b2a5043417ee054bc120c63180b936"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vufind-org/vufindhttp/zipball/69aff6bcb84139598bdb42d161b7483caf69b1c2",
-                "reference": "69aff6bcb84139598bdb42d161b7483caf69b1c2",
+                "url": "https://api.github.com/repos/vufind-org/vufindhttp/zipball/53fe3781e6b2a5043417ee054bc120c63180b936",
+                "reference": "53fe3781e6b2a5043417ee054bc120c63180b936",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-http": ">=2.2",
-                "php": ">=7.0.8"
+                "php": ">=7.4.1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.16.1",
+                "friendsofphp/php-cs-fixer": "3.8.0",
                 "laminas/laminas-uri": ">=2.2",
-                "pear/http_request2": "2.3.0",
-                "phing/phing": "2.16.2",
-                "phploc/phploc": "4.0.1",
-                "phpmd/phpmd": "2.8.1",
-                "phpunit/phpunit": "6.5.14",
-                "sebastian/phpcpd": "3.0.1",
-                "squizlabs/php_codesniffer": "3.5.3"
+                "pear/http_request2": "2.5.1",
+                "phing/phing": "2.17.3",
+                "phploc/phploc": "7.0.2",
+                "phpmd/phpmd": "2.12.0",
+                "phpstan/phpstan": "1.6.8",
+                "phpunit/phpunit": "9.5.20",
+                "sebastian/phpcpd": "6.0.3",
+                "squizlabs/php_codesniffer": "3.6.2"
             },
             "type": "library",
             "autoload": {
@@ -10832,9 +10833,9 @@
             "homepage": "https://vufind.org/",
             "support": {
                 "issues": "https://vufind.org/jira",
-                "source": "https://github.com/vufind-org/vufindhttp/tree/v3.1.0"
+                "source": "https://github.com/vufind-org/vufindhttp/tree/v3.2.0"
             },
-            "time": "2020-07-01T10:47:57+00:00"
+            "time": "2022-09-15T10:37:23+00:00"
         },
         {
             "name": "webfontkit/open-sans",
