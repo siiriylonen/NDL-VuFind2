@@ -1,11 +1,10 @@
 <?php
 /**
- * VuFind Config Manager
+ * View helper to support ILS holdings display
  *
  * PHP version 7
  *
- * Copyright (C) Villanova University 2010.
- * Copyright (C) The National Library of Finland 2018.
+ * Copyright (C) Villanova University 2022.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -21,40 +20,54 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  ServiceManager
+ * @package  View_Helpers
  * @author   Demian Katz <demian.katz@villanova.edu>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-namespace Finna\Config;
+namespace VuFind\View\Helper\Root;
 
 /**
- * VuFind Config Manager
+ * View helper to support ILS holdings display
  *
  * @category VuFind
- * @package  ServiceManager
+ * @package  View_Helpers
  * @author   Demian Katz <demian.katz@villanova.edu>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class PluginManager extends \VuFind\Config\PluginManager
+class Holdings extends \Laminas\View\Helper\AbstractHelper
 {
+    /**
+     * Configuration
+     *
+     * @var array
+     */
+    protected $config;
+
     /**
      * Constructor
      *
-     * Make sure plugins are properly initialized.
-     *
-     * @param mixed $configOrContainerInstance Configuration or container instance
-     * @param array $v3config                  If $configOrContainerInstance is a
-     * container, this value will be passed to the parent constructor.
+     * @param array $config Configuration
      */
-    public function __construct(
-        $configOrContainerInstance = null,
-        array $v3config = []
-    ) {
-        $this->addAbstractFactory('Finna\Config\PluginFactory');
-        parent::__construct($configOrContainerInstance, $v3config);
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * Is the provided holdings array (from an ILS driver's getHolding method)
+     * suitable for display to the end user?
+     *
+     * @param array $holding Holding to evaluate
+     *
+     * @return bool
+     */
+    public function holdingIsVisible(array $holding): bool
+    {
+        $catalogConfig = $this->config['Catalog'] ?? [];
+        $showEmptyBarcodes
+            = (bool)($catalogConfig['display_items_without_barcodes'] ?? true);
+        return $showEmptyBarcodes || strlen($holding['barcode'] ?? '') > 0;
     }
 }
