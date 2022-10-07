@@ -1749,6 +1749,12 @@ CCBYNC4.0 = CC BY-NC-SA 4.0
 PUBLIC DOMAIN = PDM
 PUBLIC DOMAIN 1.0 = PDM
 
+; Settings for file downloads
+[FileDownload]
+; Excluded rights prevents a file from being downloaded.
+excludeRights[] = "INC"
+excludeRights[] = "CNE"
+
 ; Finna survey
 [FinnaSurvey]
 enabled = false

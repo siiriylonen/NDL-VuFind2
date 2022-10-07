@@ -237,6 +237,7 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault
             if (!isset($imageData['urls']['large'])) {
                 $imageData['urls']['large'] = $imageData['urls']['medium'];
             }
+            $imageData['downloadable'] = $this->allowRecordImageDownload($imageData);
             $results[] = $imageData;
         };
 
