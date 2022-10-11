@@ -1629,7 +1629,8 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
      * - heading: the actual subject heading chunks
      * - type: heading type
      * - source: source vocabulary
-     * - id: authority id (if defined)
+     * - id: first authority id (if defined)
+     * - ids: multiple authority ids (if defined)
      * - authType: authority type (if id is defined)
      *
      * @return array

@@ -93,9 +93,6 @@ class DefaultRecord extends AbstractBase
      * - heading: the actual subject heading chunks
      * - type: heading type
      * - source: source vocabulary
-     * - id: first authority id (if defined)
-     * - ids: multiple authority ids (if defined)
-     * - authType: authority type (if id is defined)
      *
      * @return array
      */
