@@ -104,7 +104,7 @@ CookieConsent:
           Domain: '{{vufind_cookie_domain}}'
           Description: CookieConsent::cookie_description_collapse_authority_info_html
           Expiration: session
-        - Name: finna.fi, front-s-preventInactivityAction, _shib_session_*, _opensaml_req_ss*
+        - Name: finna.fi, _shib_session_*, _opensaml_req_ss*
           Domain: '{{vufind_cookie_domain}}'
           Description: CookieConsent::cookie_description_session_html
           Expiration: session
