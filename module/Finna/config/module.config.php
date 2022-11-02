@@ -359,7 +359,6 @@ $config = [
 
             // Factory overrides for non-Finna classes:
             'VuFind\Config\PathResolver' => 'Finna\Config\PathResolverFactory',
-            'VuFindHttp\HttpService' => 'Finna\Service\HttpServiceFactory',
 
             'League\CommonMark\ConverterInterface' => 'Finna\Service\MarkdownFactory',
         ],
