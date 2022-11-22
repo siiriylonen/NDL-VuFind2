@@ -168,7 +168,7 @@ class SolrAuthEaccpf extends SolrAuthDefault
             return '';
         }
         return $this->formatDate(
-            $this->getExistDate('http://rdaregistry.info/Elements/a/P50120') ?? ''
+            $this->getExistDate('http://rdaregistry.info/Elements/a/P50121') ?? ''
         );
     }
 
@@ -185,7 +185,7 @@ class SolrAuthEaccpf extends SolrAuthDefault
             return '';
         }
         return $this->formatDate(
-            $this->getExistDate('http://rdaregistry.info/Elements/a/P50121') ?? ''
+            $this->getExistDate('http://rdaregistry.info/Elements/a/P50120') ?? ''
         );
     }
 
