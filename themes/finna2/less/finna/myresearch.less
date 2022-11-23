@@ -99,7 +99,7 @@
       }
     }
   }
-  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelSelected, #cancelAll {
+  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected {
     height: 35px;
     padding: 0 10px;
     margin-right: 12px;
@@ -193,6 +193,14 @@
   }
   .myresearch-row:last-child {
     box-shadow: none;
+  }
+  #cancelSelected, #cancelAll {
+    height: 35px;
+    padding: 0 10px;
+    margin-right: 12px;
+    @media (max-width: @screen-sm) {
+      margin-bottom: 12px;
+    }
   }
 }
 .list-description,
