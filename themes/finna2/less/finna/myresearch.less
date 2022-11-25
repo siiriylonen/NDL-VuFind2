@@ -197,6 +197,9 @@
     height: 35px;
     padding: 0 10px;
     margin-right: 12px;
+    @media (max-width: @screen-sm) {
+      margin-bottom: 12px;
+    }
   }
 }
 .list-description,
@@ -449,6 +452,13 @@
   }
   .checkboxFilter .checkbox label {
     font-size: 13px;
+  }
+}
+
+#cancelILLRequest .toolbar, #cancelStorageRetrievalRequest .toolbar {
+  padding: 5px;
+  .btn-group {
+    margin: 0;
   }
 }
 
