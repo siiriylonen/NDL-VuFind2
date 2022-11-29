@@ -53,8 +53,9 @@ class CommentsController extends \VuFind\Controller\AbstractBase
 
         if ($id && $this->formWasSubmitted()) {
             $reason = $this->params()->fromPost('reason');
+            $elaborateReason = $this->params()->fromPost('elaborateReason');
             if (null !== $reason) {
-                $this->markCommentInappropriate($id, $reason);
+                $this->markCommentInappropriate($id, $reason, $elaborateReason);
                 $this->flashMessenger()->addSuccessMessage('Reported inappropriate');
             } else {
                 $this->flashMessenger()->addErrorMessage('Missing reason');
@@ -72,12 +73,12 @@ class CommentsController extends \VuFind\Controller\AbstractBase
      *
      * @return void
      */
-    protected function markCommentInappropriate($id, $reason)
+    protected function markCommentInappropriate($id, $reason, string $elaborateReason)
     {
         $user = $this->getUser();
 
         $table = $this->getTable('Comments');
-        $table->markInappropriate($user ? $user->id : null, $id, $reason);
+        $table->markInappropriate($user ? $user->id : null, $id, $reason, $elaborateReason);
 
         if (!$user) {
             $session = new SessionContainer(

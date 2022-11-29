@@ -142,13 +142,14 @@ class Comments extends \VuFind\Db\Table\Comments
      *
      * @return void
      */
-    public function markInappropriate($userId, $id, $reason)
+    public function markInappropriate($userId, $id, $reason, string $elaborateReason)
     {
         $table = $this->getDbTable('CommentsInappropriate');
         $row = $table->createRow();
         $row->user_id = $userId;
         $row->comment_id = $id;
         $row->reason = $reason;
+        $row->elaborate_reason = $elaborateReason;
         $row->created = date('Y-m-d H:i:s');
         $row->save();
     }
