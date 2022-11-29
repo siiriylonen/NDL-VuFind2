@@ -68,17 +68,23 @@ class CommentsController extends \VuFind\Controller\AbstractBase
     /**
      * Mark comment inappropriate.
      *
-     * @param int    $id     Comment ID
-     * @param string $reason Reason
+     * @param int    $id              Comment ID
+     * @param string $reason          Reason
+     * @param string $elaborateReason Expand given reason
      *
      * @return void
      */
-    protected function markCommentInappropriate($id, $reason, string $elaborateReason)
+    protected function markCommentInappropriate($id, $reason, $elaborateReason)
     {
         $user = $this->getUser();
 
         $table = $this->getTable('Comments');
-        $table->markInappropriate($user ? $user->id : null, $id, $reason, $elaborateReason);
+        $table->markInappropriate(
+            $user ? $user->id : null,
+            $id,
+            $reason,
+            $elaborateReason
+        );
 
         if (!$user) {
             $session = new SessionContainer(
