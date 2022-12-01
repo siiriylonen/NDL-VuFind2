@@ -53,7 +53,7 @@ class CommentsController extends \VuFind\Controller\AbstractBase
 
         if ($id && $this->formWasSubmitted()) {
             $reason = $this->params()->fromPost('reason');
-            $message = $this->params()->fromPost('message');
+            $message = $this->params()->fromPost('message' ?? '');
             if (null !== $reason) {
                 $this->markCommentInappropriate($id, $reason, $message);
                 $this->flashMessenger()->addSuccessMessage('Reported inappropriate');
