@@ -136,10 +136,10 @@ class Comments extends \VuFind\Db\Table\Comments
     /**
      * Mark comment as inappropriate
      *
-     * @param int    $userId          Current user ID
-     * @param int    $id              Record ID
-     * @param string $reason          Reason
-     * @param string $message         Expand given reason
+     * @param int    $userId  Current user ID
+     * @param int    $id      Record ID
+     * @param string $reason  Reason
+     * @param string $message Expand given reason
      *
      * @return void
      */
