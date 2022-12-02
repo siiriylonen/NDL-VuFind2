@@ -271,7 +271,7 @@
       <?php endif; ?>
     </div>
     <div class="myresearch-profile-header">
-      <h3 id="profile-settings"><?= $this->transEsc("finna_account_settings") . $this->escapeHtml($this->truncate($user->getDisplayName(), 20)) ?></h3>
+      <h3 id="profile-settings"><?= $this->transEsc("finna_account_settings") . $this->escapeHtml($user->getDisplayName(), 20) ?></h3>
 
     </div>
     <div class="myresearch-profile-list library-profile">
