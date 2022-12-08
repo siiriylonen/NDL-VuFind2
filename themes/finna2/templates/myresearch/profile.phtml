@@ -69,6 +69,9 @@
       <?php endif; ?>
       <?=$this->partial('myresearch/profile-messages.phtml', ['messages' => $this->profile['messages'] ?? []]); ?>
       <?php if (is_array($this->profile)): ?>
+        <div class="logged-in-as">
+        <i id="account-icon" class="fa fa-user"><span></span></i><?=$this->escapeHtml($user->getDisplayName(), 20) ?>
+      </div>
         <div class="myresearch-profile-header"><h3><?=$this->transEsc('Library Card Settings');?></h3></div>
         <div class="myresearch-profile-list library-profile">
           <?php if ($showHomeLibForm): ?>
@@ -271,7 +274,7 @@
       <?php endif; ?>
     </div>
     <div class="myresearch-profile-header">
-      <h3 id="profile-settings"><?= $this->transEsc("finna_account_settings") . $this->escapeHtml($user->getDisplayName(), 20) ?></h3>
+      <h3 id="profile-settings"><?= $this->transEsc("finna_account_settings") ?></h3>
 
     </div>
     <div class="myresearch-profile-list library-profile">
