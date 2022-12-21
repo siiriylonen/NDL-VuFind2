@@ -612,11 +612,6 @@ finna.layout = (function finnaLayout() {
     });
   }
 
-  function initVideoButtons() {
-    finna.videoPopup.initVideoPopup($('body'));
-    finna.videoPopup.initIframeEmbed($('body'));
-  }
-
   function initKeyboardNavigation() {
     $(window).keyup(function onKeyUp(e) {
       var $target = $(e.target);
@@ -826,7 +821,6 @@ finna.layout = (function finnaLayout() {
       initOrganisationInfoWidgets();
       initOrganisationPageLinks();
       initAudioButtons();
-      initVideoButtons();
       initKeyboardNavigation();
       initPriorityNav();
       initFiltersToggle();
