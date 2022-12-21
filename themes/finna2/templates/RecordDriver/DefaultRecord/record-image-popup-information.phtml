@@ -1,15 +1,6 @@
 <?php
   $recordImage = $this->recordImage($this->record($this->driver));
-
-  $images = $recordImage->getAllImagesAsCoverLinks(
-      $this->layout()->userLang,
-      [],
-      true,
-      true,
-      $this->driver->getSourceIdentifier()
-  );
-  $image = $images[$this->index] ?? [];
-  $imageDescription = $image['description'] ?? '';
+  $image = $recordImage->getImageAsCoverLinks($this->index);
   $rights = $recordImage->getImageRights($this->index);
 
   $formats = $this->driver->tryMethod('getFormats');
@@ -70,9 +61,9 @@ if ($otherTitles):?>
       <?php if ('marc' === $recordType): ?>
         <p></p>
       <?php else: ?>
-        <?php if ($imageDescription): ?>
+        <?php if (!empty($image['description'])): ?>
           <div id="popup-image-description" class="image-description">
-            <p><strong><?=$this->transEsc('Image') ?>:</strong> <?=$this->escapeHtml($imageDescription)?></p>
+            <p><strong><?=$this->transEsc('Image') ?>:</strong> <?=$this->escapeHtml($image['description'])?></p>
           </div>
         <?php endif; ?>
         <?php if ($summaries = $this->driver->tryMethod('getDescriptions') ?? $this->driver->tryMethod('getSummary')): ?>
