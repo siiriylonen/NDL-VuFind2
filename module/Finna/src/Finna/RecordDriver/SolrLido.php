@@ -31,8 +31,6 @@
  */
 namespace Finna\RecordDriver;
 
-use SimpleXMLElement;
-
 /**
  * Model for LIDO records in Solr.
  *
