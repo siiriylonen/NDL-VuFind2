@@ -1097,7 +1097,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             $name = (string)($node->eventName->appellationValue ?? '');
             $type = isset($node->eventType->term)
                 ? mb_strtolower((string)$node->eventType->term, 'UTF-8') : '';
-            $date = (string)($this->getLanguageSpecificItem($node->eventDate->displayDate, $language) ?? '');
+            $date = (string)($this->getLanguageSpecificItem(
+                $node->eventDate->displayDate,
+                $language
+            ) ?? '');
             if (!$date && !empty($node->eventDate->date)) {
                 $startDate
                     = trim((string)($node->eventDate->date->earliestDate ?? ''));
@@ -1753,7 +1756,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         foreach ($this->getXmlRecord()->xpath(
             '/lidoWrap/lido/descriptiveMetadata/eventWrap/eventSet/event'
         ) as $node) {
-            $date[] = (string)($this->getLanguageSpecificItem($node->eventDate->displayDate, $language));
+            $date[] = (string)($this->getLanguageSpecificItem(
+                $node->eventDate->displayDate,
+                $language
+            ));
             $date = array_filter($date, 'strlen');
             print_r($date);
             $headings = array_merge($headings, $date);
