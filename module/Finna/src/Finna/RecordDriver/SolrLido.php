@@ -1761,7 +1761,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $language
             ));
             $date = array_filter($date, 'strlen');
-            print_r($date);
             $headings = array_merge($headings, $date);
         }
 
