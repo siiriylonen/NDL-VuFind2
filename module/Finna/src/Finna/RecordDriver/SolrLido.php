@@ -2094,7 +2094,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }                        
         return array_unique($results);
     }
-  //  }
+
     /**
      * Get introduction.
      *
