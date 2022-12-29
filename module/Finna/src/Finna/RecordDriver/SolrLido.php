@@ -2069,9 +2069,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }
         if (empty($results)) {
             $desc = $this->getXmlRecord()->xpath(
-                'lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap'
-                . '/objectDescriptionSet[not(@type)]/descriptiveNoteValue'
-            ); 
+                'lido/descriptiveMetadata/objectIdentificationWrap' .
+                '/objectDescriptionWrap/objectDescriptionSet[not(@type)]'
+                . '/descriptiveNoteValue'
+            );
             if ($desc) {
                 $term = $this->getLanguageSpecificItem($desc, $preferredLanguages);
                 if ($term) {
@@ -2079,7 +2080,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         }
-        if (empty($results)) { 
+        if (empty($results)) {
             $desc = $this->getXmlRecord()->xpath(
                 'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet'
                 . '/displaySubject[@label="aihe"]'
@@ -2091,7 +2092,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     $results[] = $term;
                 }
             }
-        }                        
+        }
         return array_unique($results);
     }
 
