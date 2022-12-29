@@ -2043,7 +2043,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 return $item;
             }
         }
-
         return $element;
     }
 
@@ -2055,40 +2054,47 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     public function getSummary()
     {
         $results = [];
-        $label = null;
         $title = str_replace([',', ';'], ' ', $this->getTitle());
-        foreach ($this->getXmlRecord()->xpath(
-            'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet'
-        ) as $node) {
-            $subject = $node->displaySubject;
-            $checkTitle = str_replace([',', ';'], ' ', (string)$subject) != $title;
-            foreach ($subject as $attributes) {
-                $label = $attributes->attributes()->label;
-                if (($label == 'aihe' || $label == null) && $checkTitle) {
-                    $results[] = (string)$subject;
-                }
-            }
-        }
-
         $preferredLanguages = $this->getPreferredLanguageCodes();
-        foreach ($this->getXmlRecord()->xpath(
+        $preferredLanguages = reset($preferredLanguages);
+        $desc = $this->getXmlRecord()->xpath(
             'lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap'
             . '/objectDescriptionSet[@type="description"]/descriptiveNoteValue'
-        ) as $node) {
-            if (in_array((string)$node->attributes()->lang, $preferredLanguages)) {
-                if ($term = trim((string)$node)) {
+        );
+        if ($desc) {
+            $term = $this->getLanguageSpecificItem($desc, $preferredLanguages);
+            if ($term) {
+                $results[] = $term;
+            }
+        }
+        if (empty($results)) {
+            $desc = $this->getXmlRecord()->xpath(
+                'lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap'
+                . '/objectDescriptionSet[not(@type)]/descriptiveNoteValue'
+            ); 
+            if ($desc) {
+                $term = $this->getLanguageSpecificItem($desc, $preferredLanguages);
+                if ($term) {
                     $results[] = $term;
                 }
             }
         }
-
-        if (!$results && !empty($this->fields['description'])) {
-            $results[] = (string)($this->fields['description']) != $title
-                ? (string)$this->fields['description'] : '';
-        }
+        if (empty($results)) { 
+            $desc = $this->getXmlRecord()->xpath(
+                'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet'
+                . '/displaySubject[@label="aihe"]'
+            );
+            if ($desc) {
+                $term = $this->getLanguageSpecificItem($desc, $preferredLanguages);
+                $checkTitle = str_replace([',', ';'], ' ', (string)$term) != $title;
+                if ($term && $checkTitle) {
+                    $results[] = $term;
+                }
+            }
+        }                        
         return array_unique($results);
     }
-
+  //  }
     /**
      * Get introduction.
      *
