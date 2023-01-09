@@ -2055,8 +2055,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     {
         $results = [];
         $title = str_replace([',', ';'], ' ', $this->getTitle());
-        $preferredLanguages = $this->getPreferredLanguageCodes();
-        $preferredLanguages = reset($preferredLanguages);
+        $preferredLanguages = $this->getLocale();
         $desc = $this->getXmlRecord()->xpath(
             'lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap'
             . '/objectDescriptionSet[@type="description"]/descriptiveNoteValue'
@@ -2080,7 +2079,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         }
-        if (empty($results)) {
+        if (!$results) {
             $desc = $this->getXmlRecord()->xpath(
                 'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet'
                 . '/displaySubject[@label="aihe"]'
