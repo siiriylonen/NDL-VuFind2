@@ -2013,19 +2013,53 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     /**
      * Get a language-specific item from an element array
      *
-     * @param SimpleXMLElement $element  Element to use
-     * @param string           $language Language to look for
+     * @param SimpleXMLElement $element   Element to use
+     * @param string           $language  Language to look for
+     * @param bool             $returnAll While true, returns multiple fitting items
+     *                                    (optional)
      *
      * @return SimpleXMLElement
      */
-    protected function getLanguageSpecificItem($element, $language)
-    {
+    protected function getLanguageSpecificItem(
+        $element,
+        $language,
+        $returnAll = false
+    ) {
         $languages = [];
+        $items = [];
         if ($language) {
             $languages[] = $language;
             if (strlen($language) > 2) {
                 $languages[] = substr($language, 0, 2);
             }
+        }
+        if ($returnAll) {
+            foreach ($languages as $lng) {
+                foreach ($element as $item) {
+                    $attrs = $item->attributes();
+                    if (!empty($attrs->lang) && (string)$attrs->lang == $lng) {
+                        if ('' !== trim((string)$item)) {
+                            $items[] = $item;
+                        }
+                    }
+                    if ('' !== trim((string)$item)
+                        && empty($item->attributes()->lang)
+                    ) {
+                        $items[] = $item;
+                    }
+                }
+            }
+            if (!empty($items)) {
+                return implode(PHP_EOL, $items);
+            }
+        }
+        if ($returnAll && empty($items)) {
+            foreach ($element as $item) {
+                if ('' !== trim((string)$item)) {
+                    $items[] = $item;
+                }
+            }
+            return implode(PHP_EOL, $items);
         }
         foreach ($languages as $lng) {
             foreach ($element as $item) {
@@ -2061,19 +2095,23 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             . '/objectDescriptionSet[@type="description"]/descriptiveNoteValue'
         );
         if ($desc) {
-            $term = $this->getLanguageSpecificItem($desc, $preferredLanguages);
+            $term = $this->getLanguageSpecificItem($desc, $preferredLanguages, true);
             if ($term) {
                 $results[] = $term;
             }
         }
-        if (empty($results)) {
+        if (!$results) {
             $desc = $this->getXmlRecord()->xpath(
                 'lido/descriptiveMetadata/objectIdentificationWrap' .
                 '/objectDescriptionWrap/objectDescriptionSet[not(@type)]'
                 . '/descriptiveNoteValue'
             );
             if ($desc) {
-                $term = $this->getLanguageSpecificItem($desc, $preferredLanguages);
+                $term = $this->getLanguageSpecificItem(
+                    $desc,
+                    $preferredLanguages,
+                    true
+                );
                 if ($term) {
                     $results[] = $term;
                 }
@@ -2085,7 +2123,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 . '/displaySubject[@label="aihe"]'
             );
             if ($desc) {
-                $term = $this->getLanguageSpecificItem($desc, $preferredLanguages);
+                $term = $this->getLanguageSpecificItem(
+                    $desc,
+                    $preferredLanguages,
+                    true
+                );
                 $checkTitle = str_replace([',', ';'], ' ', (string)$term) != $title;
                 if ($term && $checkTitle) {
                     $results[] = $term;
