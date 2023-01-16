@@ -1097,10 +1097,14 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             $name = (string)($node->eventName->appellationValue ?? '');
             $type = isset($node->eventType->term)
                 ? mb_strtolower((string)$node->eventType->term, 'UTF-8') : '';
-            $date = (string)($this->getLanguageSpecificItem(
-                $node->eventDate->displayDate,
-                $language
-            ) ?? '');
+            if (!empty($node->eventDate->displayDate)) {
+                $date = (string)($this->getLanguageSpecificItem(
+                    $node->eventDate->displayDate,
+                    $language
+                ) ?? '');
+            } else {
+                $date = (string)$node->eventDate->displayDate;
+            }
             if (!$date && !empty($node->eventDate->date)) {
                 $startDate
                     = trim((string)($node->eventDate->date->earliestDate ?? ''));
@@ -1702,11 +1706,20 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     public function getSubjectDates()
     {
         $results = [];
+        $language = $this->getLocale();
         foreach ($this->getXmlRecord()->xpath(
             'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/'
-            . 'subjectSet/subject/subjectDate/displayDate'
+            . 'subjectSet/subject'
         ) as $node) {
-            $results[] = (string)$node;
+            if (!empty($node->subjectDate->displayDate)) {
+                $node[]= (string)($this->getLanguageSpecificItem(
+                    $node->subjectDate->displayDate,
+                    $language
+                ));
+                if ($node) {
+                    $results[] = (string)$node;
+                }
+            }
         }
         return $results;
     }
@@ -1753,15 +1766,18 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $headings = array_merge($headings, (array)$this->fields[$field]);
             }
         }
+        // Include all display dates from events
         foreach ($this->getXmlRecord()->xpath(
             '/lidoWrap/lido/descriptiveMetadata/eventWrap/eventSet/event'
         ) as $node) {
-            $date[] = (string)($this->getLanguageSpecificItem(
-                $node->eventDate->displayDate,
-                $language
-            ));
-            $date = array_filter($date, 'strlen');
-            $headings = array_merge($headings, $date);
+            if (!empty($node->eventDate->displayDate)) {
+                $date[] = (string)($this->getLanguageSpecificItem(
+                    $node->eventDate->displayDate,
+                    $language
+                ));
+                $date = array_filter($date);
+                $headings = array_merge($headings, $date);
+            }
         }
 
         // The default index schema doesn't currently store subject headings in a
