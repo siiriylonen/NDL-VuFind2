@@ -204,6 +204,26 @@ finna.layout = (function finnaLayout() {
         backUp.toggleClass('hidden', $(window).scrollTop() <= 2000);
       });
     }
+    // Pushed upper button to feedback form
+    feedbackBtn.click(function countClick() {
+      var _paq = window._paq || []; 
+      window._paq = _paq;
+      _paq.push(['trackEvent', 'Feedback', 'Top Button', 'Click']);
+    });
+    // Pushed footer button (aka link) to feedback form
+    var feedbackBtn1 = $('#to-feedback-form');
+    feedbackBtn1.click(function countClick() {
+      var _paq = window._paq || []; 
+      window._paq = _paq;
+      _paq.push(['trackEvent', 'Feedback', 'Lower Button', 'Click']);
+    });
+    // Feedback form sent
+    var feedbackSent = $('#form_FeedbackSite_submit');
+    feedbackSent.click(function feedbackFormSent() {
+      var _paq = window._paq || []; 
+      window._paq = _paq;
+      _paq.push(['trackEvent', 'Feedback', 'Send form', 'Click']);
+    });
   }
 
   function initSearchboxFunctions() {
