@@ -2180,11 +2180,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     ) != 0
                 ) {
                     $descriptions[] = str_replace(
-                        (string)$this->fields['description'],
                         $checkDesc,
+                        $results,
                         (string)$this->fields['description']
                     );
-                    $descriptions[] = $results;
                     $results = $descriptions;
                 }
             }
