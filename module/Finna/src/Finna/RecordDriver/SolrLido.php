@@ -2092,7 +2092,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $preferredLanguages = $this->getLocale();
         $desc = $this->getXmlRecord()->xpath(
             'lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap'
-            . '/objectDescriptionSet[@type="description"]/descriptiveNoteValue'
+             . '/objectDescriptionSet[@type="description"]/descriptiveNoteValue'
         );
         if ($desc) {
             $term = $this->getLanguageSpecificItem($desc, $preferredLanguages, true);
@@ -2103,8 +2103,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         if (!$results) {
             $desc = $this->getXmlRecord()->xpath(
                 'lido/descriptiveMetadata/objectIdentificationWrap' .
-                '/objectDescriptionWrap/objectDescriptionSet[not(@type)]'
-                . '/descriptiveNoteValue'
+                 '/objectDescriptionWrap/objectDescriptionSet[not(@type)]'
+                 . '/descriptiveNoteValue'
             );
             if ($desc) {
                 $term = $this->getLanguageSpecificItem(
@@ -2120,7 +2120,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         if (!$results) {
             $desc = $this->getXmlRecord()->xpath(
                 'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet'
-                . '/displaySubject[@label="aihe"]'
+                 . '/displaySubject[@label="aihe"]'
             );
             if ($desc) {
                 $term = $this->getLanguageSpecificItem(
@@ -2131,6 +2131,61 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $checkTitle = str_replace([',', ';'], ' ', (string)$term) != $title;
                 if ($term && $checkTitle) {
                     $results[] = $term;
+                }
+            }
+        }
+        if (!$results) {
+            $checkDesc = [];
+            $desc1 = $this->getXmlRecord()->xpath(
+                'lido/descriptiveMetadata/objectIdentificationWrap'
+                . '/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue'
+            );
+            if ($desc1) {
+                $term = (string)$this->getLanguageSpecificItem(
+                    $desc1,
+                    $preferredLanguages,
+                    true
+                );
+                if ($term) {
+                    $results[] = $term;
+                }
+                foreach ($desc1 as $item) {
+                    $checkDesc[] = (string)$item;
+                }
+            }
+            $desc2 = $this->getXmlRecord()->xpath(
+                'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet'
+                . '/displaySubject[@label="aihe" and @label=""]'
+            );
+            if ($desc2) {
+                $term = (string)$this->getLanguageSpecificItem(
+                    $desc2,
+                    $preferredLanguages,
+                    true
+                );
+                if ($term) {
+                    $results[] = $term;
+                }
+                foreach ($desc2 as $item) {
+                    $checkDesc[] = (string)$item;
+                }
+            }
+            $checkDesc = trim(implode(' ', array_unique($checkDesc)));
+            if ($results) {
+                if (!empty($this->fields['description'])
+                    && strncmp(
+                        $this->fields['description'],
+                        $checkDesc,
+                        strlen((string)$this->fields['description'])
+                    ) != 0
+                ) {
+                    $descriptions[] = str_replace(
+                        (string)$this->fields['description'],
+                        $checkDesc,
+                        (string)$this->fields['description']
+                    );
+                    $descriptions[] = $results;
+                    $results = $descriptions;
                 }
             }
         }
