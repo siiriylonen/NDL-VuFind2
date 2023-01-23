@@ -204,25 +204,25 @@ finna.layout = (function finnaLayout() {
         backUp.toggleClass('hidden', $(window).scrollTop() <= 2000);
       });
     }
-    // Pushed upper button to feedback form
+    // Tracks clicks of floating feedback button
     feedbackBtn.click(function countClick() {
       var _paq = window._paq || []; 
       window._paq = _paq;
-      _paq.push(['trackEvent', 'Feedback', 'Top Button', 'Click']);
+      _paq.push(['trackEvent', 'Feedback', 'Click Floating Button', 'Click']);
     });
-    // Pushed footer button (aka link) to feedback form
+    // Track clicks of footer feedback button
     var feedbackBtn1 = $('#to-feedback-form');
     feedbackBtn1.click(function countClick() {
       var _paq = window._paq || []; 
       window._paq = _paq;
-      _paq.push(['trackEvent', 'Feedback', 'Lower Button', 'Click']);
+      _paq.push(['trackEvent', 'Feedback', 'Click Footer Button', 'Click']);
     });
-    // Feedback form sent
+    // Track feedback form submissions
     var feedbackSent = $('#form_FeedbackSite_submit');
     feedbackSent.click(function feedbackFormSent() {
       var _paq = window._paq || []; 
       window._paq = _paq;
-      _paq.push(['trackEvent', 'Feedback', 'Send form', 'Click']);
+      _paq.push(['trackEvent', 'Feedback', 'Send Form', 'Click']);
     });
   }
 
