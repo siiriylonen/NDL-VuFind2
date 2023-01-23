@@ -1101,9 +1101,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $date = (string)($this->getLanguageSpecificItem(
                     $node->eventDate->displayDate,
                     $language
-                ) ?? '');
+                ));
             } else {
-                $date = (string)$node->eventDate->displayDate;
+                $date = '';
             }
             if (!$date && !empty($node->eventDate->date)) {
                 $startDate
@@ -1712,12 +1712,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             . 'subjectSet/subject'
         ) as $node) {
             if (!empty($node->subjectDate->displayDate)) {
-                $node[]= (string)($this->getLanguageSpecificItem(
+                $term = (string)($this->getLanguageSpecificItem(
                     $node->subjectDate->displayDate,
                     $language
                 ));
-                if ($node) {
-                    $results[] = (string)$node;
+                if ($term) {
+                    $results[] = $term;
                 }
             }
         }
@@ -1771,12 +1771,13 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             '/lidoWrap/lido/descriptiveMetadata/eventWrap/eventSet/event'
         ) as $node) {
             if (!empty($node->eventDate->displayDate)) {
-                $date[] = (string)($this->getLanguageSpecificItem(
+                $date = (string)($this->getLanguageSpecificItem(
                     $node->eventDate->displayDate,
                     $language
                 ));
-                $date = array_filter($date);
-                $headings = array_merge($headings, $date);
+                if ($date) {
+                    $headings[] = $date;
+                }
             }
         }
 
