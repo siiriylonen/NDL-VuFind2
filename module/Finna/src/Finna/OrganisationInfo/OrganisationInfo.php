@@ -598,8 +598,8 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
         $with = 'schedules';
         if ($fullDetails) {
             $with .=
-                ',phoneNumbers,emailAddresses,mailAddress,pictures,links,services,
-                customData,schedules,persons';
+                ',phoneNumbers,emailAddresses,mailAddress,pictures,links,services,'
+                . 'customData,schedules,persons';
         }
 
         $params = [
