@@ -204,28 +204,8 @@ finna.layout = (function finnaLayout() {
         backUp.toggleClass('hidden', $(window).scrollTop() <= 2000);
       });
     }
-    // Tracks clicks of floating feedback button
-    feedbackBtn.click(function countClick() {
-      var _paq = window._paq || []; 
-      window._paq = _paq;
-      _paq.push(['trackEvent', 'Feedback', 'Click Floating Button', 'Click']);
-    });
-    // Track clicks of footer feedback button
-    var feedbackBtn1 = $('#to-feedback-form');
-    feedbackBtn1.click(function countClick() {
-      var _paq = window._paq || []; 
-      window._paq = _paq;
-      _paq.push(['trackEvent', 'Feedback', 'Click Footer Button', 'Click']);
-    });
-    // Track feedback form submissions
-    var feedbackSent = $('#form_FeedbackSite_submit');
-    feedbackSent.click(function feedbackFormSent() {
-      var _paq = window._paq || []; 
-      window._paq = _paq;
-      _paq.push(['trackEvent', 'Feedback', 'Send Form', 'Click']);
-    });
   }
-
+   
   function initSearchboxFunctions() {
     var searchForm = document.querySelector('.searchForm.navbar-form');
     if (searchForm) {
