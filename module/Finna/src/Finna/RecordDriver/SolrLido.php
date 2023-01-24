@@ -2013,53 +2013,19 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     /**
      * Get a language-specific item from an element array
      *
-     * @param SimpleXMLElement $element   Element to use
-     * @param string           $language  Language to look for
-     * @param bool             $returnAll While true, returns multiple fitting items
-     *                                    (optional)
+     * @param SimpleXMLElement $element  Element to use
+     * @param string           $language Language to look for
      *
      * @return SimpleXMLElement
      */
-    protected function getLanguageSpecificItem(
-        $element,
-        $language,
-        $returnAll = false
-    ) {
+    protected function getLanguageSpecificItem($element, $language)
+    {
         $languages = [];
-        $items = [];
         if ($language) {
             $languages[] = $language;
             if (strlen($language) > 2) {
                 $languages[] = substr($language, 0, 2);
             }
-        }
-        if ($returnAll) {
-            foreach ($languages as $lng) {
-                foreach ($element as $item) {
-                    $attrs = $item->attributes();
-                    if (!empty($attrs->lang) && (string)$attrs->lang == $lng) {
-                        if ('' !== trim((string)$item)) {
-                            $items[] = $item;
-                        }
-                    }
-                    if ('' !== trim((string)$item)
-                        && empty($item->attributes()->lang)
-                    ) {
-                        $items[] = $item;
-                    }
-                }
-            }
-            if (!empty($items)) {
-                return implode(PHP_EOL, $items);
-            }
-        }
-        if ($returnAll && empty($items)) {
-            foreach ($element as $item) {
-                if ('' !== trim((string)$item)) {
-                    $items[] = $item;
-                }
-            }
-            return implode(PHP_EOL, $items);
         }
         foreach ($languages as $lng) {
             foreach ($element as $item) {
@@ -2081,6 +2047,53 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     }
 
     /**
+     * Get all fitting language-specific items from an element array
+     *
+     * @param SimpleXMLElement $element  Element to use
+     * @param string           $language Language to look for
+     *
+     * @return array
+     */
+    protected function getAllLanguageSpecificItems($element, $language)
+    {
+        $languages = [];
+        $items = [];
+        if ($language) {
+            $languages[] = $language;
+            if (strlen($language) > 2) {
+                $languages[] = substr($language, 0, 2);
+            }
+        }
+        foreach ($languages as $lng) {
+            foreach ($element as $item) {
+                $attrs = $item->attributes();
+                if (!empty($attrs->lang) && (string)$attrs->lang == $lng) {
+                    if ('' !== trim((string)$item)) {
+                        $items[] = $item;
+                    }
+                }
+                if ('' !== trim((string)$item)
+                    && empty($item->attributes()->lang)
+                ) {
+                    $items[] = $item;
+                }
+            }
+        }
+        if (!empty($items)) {
+            return $items;
+        }
+        if (empty($items)) {
+            foreach ($element as $item) {
+                if ('' !== trim((string)$item)) {
+                    $items[] = $item;
+                }
+            }
+            return $items;
+        }
+        return $items;
+    }
+
+    /**
      * Get the displaysubject and description info to summary
      *
      * @return array $results with summary from displaySubject or description field
@@ -2095,9 +2108,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
              . '/objectDescriptionSet[@type="description"]/descriptiveNoteValue'
         );
         if ($desc) {
-            $term = $this->getLanguageSpecificItem($desc, $preferredLanguages, true);
+            $term = $this->getAllLanguageSpecificItems($desc, $preferredLanguages);
             if ($term) {
-                $results[] = $term;
+                $results[] = implode(PHP_EOL, $term);
             }
         }
         if (!$results) {
@@ -2107,13 +2120,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                  . '/descriptiveNoteValue'
             );
             if ($desc) {
-                $term = $this->getLanguageSpecificItem(
+                $term = $this->getAllLanguageSpecificItems(
                     $desc,
-                    $preferredLanguages,
-                    true
+                    $preferredLanguages
                 );
                 if ($term) {
-                    $results[] = $term;
+                    $results[] = implode(PHP_EOL, $term);
                 }
             }
         }
@@ -2123,14 +2135,18 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                  . '/displaySubject[@label="aihe"]'
             );
             if ($desc) {
-                $term = $this->getLanguageSpecificItem(
+                $term = $this->getAllLanguageSpecificItems(
                     $desc,
-                    $preferredLanguages,
-                    true
+                    $preferredLanguages
                 );
-                $checkTitle = str_replace([',', ';'], ' ', (string)$term) != $title;
+                $titleToCheck = $this->getLanguageSpecificItem(
+                    $desc,
+                    $preferredLanguages
+                );
+                $checkTitle = str_replace([',', ';'], ' ', (string)$titleToCheck)
+                    != $title;
                 if ($term && $checkTitle) {
-                    $results[] = $term;
+                    $results[] = implode(PHP_EOL, $term);
                 }
             }
         }
@@ -2141,13 +2157,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 . '/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue'
             );
             if ($desc1) {
-                $term = (string)$this->getLanguageSpecificItem(
+                $term = $this->getAllLanguageSpecificItems(
                     $desc1,
-                    $preferredLanguages,
-                    true
+                    $preferredLanguages
                 );
                 if ($term) {
-                    $results[] = $term;
+                    $results[] = implode(PHP_EOL, $term);
                 }
                 foreach ($desc1 as $item) {
                     $checkDesc[] = (string)$item;
@@ -2158,13 +2173,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 . '/displaySubject[@label="aihe" and @label=""]'
             );
             if ($desc2) {
-                $term = (string)$this->getLanguageSpecificItem(
+                $term = $this->getAllLanguageSpecificItems(
                     $desc2,
-                    $preferredLanguages,
-                    true
+                    $preferredLanguages
                 );
                 if ($term) {
-                    $results[] = $term;
+                    $results[] = implode(PHP_EOL, $term);
                 }
                 foreach ($desc2 as $item) {
                     $checkDesc[] = (string)$item;
@@ -2179,12 +2193,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                         strlen((string)$this->fields['description'])
                     ) != 0
                 ) {
-                    $descriptions[] = str_replace(
+                    $results = str_replace(
                         $checkDesc,
                         $results,
                         (string)$this->fields['description']
                     );
-                    $results = $descriptions;
                 }
             }
         }
