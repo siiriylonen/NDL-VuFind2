@@ -576,6 +576,8 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             return $this->filterLrmiFields($defaults);
         case 'marc':
             return $this->filterMarcFields($defaults);
+        case 'marcauthority':
+            return $defaults;
         case 'primo':
             return $this->filterPrimoFields($defaults);
         default:
