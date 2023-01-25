@@ -1305,8 +1305,7 @@ class Record extends \VuFind\View\Helper\Root\Record
         if (!in_array($source, $localSources)) {
             return false;
         }
-        return ('SolrAuth' === $source || $this->hasLargeImageLayout())
-            ? 'inline' : 'sidebar';
+        return $this->hasLargeImageLayout() ? 'inline' : 'sidebar';
     }
 
     /**
