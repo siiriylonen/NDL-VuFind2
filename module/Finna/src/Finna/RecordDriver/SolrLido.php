@@ -1768,8 +1768,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }
         // Include all display dates from events
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap
-            ->eventSet->event ?? [] as $node) {
-            if (!empty($node->eventDate->displayDate)) {
+            ->eventSet ?? [] as $node) {
+                if (!empty($node->eventDate->displayDate)) {
                 $date = (string)($this->getLanguageSpecificItem(
                     $node->eventDate->displayDate,
                     $language
