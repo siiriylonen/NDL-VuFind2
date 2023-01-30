@@ -62,6 +62,7 @@
     <?php endif; ?>
   </div>
 
+  <?php $openUrl = $this->openUrl($this->driver, 'record'); ?>
   <?=$openUrl ? $openUrl->renderMoreOptions() : '' ?>
 </div>
 <!-- END of: finna - RecordDriver/EDS/core-fields.phtml -->
