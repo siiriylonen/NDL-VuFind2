@@ -208,8 +208,8 @@ finna.record = (function finnaRecord() {
     accordionActivation.forEach((item) => {
       var collapsed = $('holdings-container-heading').siblings('.collapsed');
       if (collapsed) {
-        item.setAttribute('aria-expanded', 'false');
-      } else { item.setAttribute('aria-expanded', 'true'); }
+        item.setAttribute('aria-expanded', 'true');
+      } else { item.setAttribute('aria-expanded', 'false'); }
     });
     initHoldingsControls();
     setUpCheckRequest();
