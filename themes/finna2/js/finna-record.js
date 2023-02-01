@@ -150,10 +150,16 @@ finna.record = (function finnaRecord() {
   }
 
   function initHoldingsControls() {
+    $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').on('keyup', function onClickHeading(e) {
+      if (e.keyCode === 13 || e.keyCode === 32) {
+        $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').click();
+      }
+    });
     $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').on('click', function onClickHeading(e) {
-      if ($(e.target).attr('aria-expanded') === 'false') {
-        $(e.target).attr('aria-expanded', 'true');
-      } else { $(e.target).attr('aria-expanded', 'false'); }
+      if ($('.location', this).attr('aria-expanded') === 'false') {
+        $('.location', this).attr('aria-expanded', 'true');
+      } 
+      else { $('.location', this).attr('aria-expanded', 'false'); }
       if ($(e.target).hasClass('location-service') || $(e.target).parents().hasClass('location-service')) {
         return;
       }
