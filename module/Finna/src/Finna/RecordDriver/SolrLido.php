@@ -2076,9 +2076,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 ) {
                     $items[] = $item;
                 }
-                if (empty($attrs->lang)) {
-                    $items[] = $item;
-                }
             }
         }
         // Return either language specific results or all given items.
@@ -2092,97 +2089,101 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getSummary()
     {
-        $results = [];
-        $resultsUntyped = [];
-        $desc1 = [];
-        $desc2 = [];
-        $subjct = [];
+        $descriptionsTyped = [];
+        $descriptionsUntyped = [];
+        $typeIsDescription = [];
+        $typeIsNull = [];
+        $subjectHasLabel = [];
         $title = str_replace([',', ';'], ' ', $this->getTitle());
         $language = $this->getLocale();
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
             ->objectIdentificationWrap->objectDescriptionWrap->objectDescriptionSet
             ?? [] as $node) {
-            $resultsUntyped[] = $node->descriptiveNoteValue;
-            if ($node->attributes()->type == 'description') {
-                $desc1[] = $node->descriptiveNoteValue;
+            $type = $node->attributes()->type; 
+            $descriptionsUntyped[] = $node->descriptiveNoteValue;
+            if ($type == 'description') {
+                $typeIsDescription[] = $node->descriptiveNoteValue;
             }
-            if ($node->attributes()->type == null) {
-                $desc2[] = $node->descriptiveNoteValue;
+            elseif (empty($type)) {
+                $typeIsNull[] = $node->descriptiveNoteValue;
             }
         }
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap
             ->subjectWrap->subjectSet ?? [] as $node) {
             if ($node->displaySubject) {
-                if ($node->displaySubject->attributes()->label == 'aihe') {
-                    $subjct[] = $node->displaySubject;
-                    $resultsUntyped[] = $node->displaySubject;
+                $label = $node->displaySubject->attributes()->label;
+                if ($label == 'aihe') {
+                    $subjectHasLabel[] = $node->displaySubject;
+                    $descriptionsUntyped[] = $node->displaySubject;
                 }
-                if ($node->displaySubject->attributes()->label == '') {
-                    $resultsUntyped[] = $node->displaySubject;
+                if ($label == '') {
+                    $descriptionsUntyped[] = $node->displaySubject;
                 }
             }
         }
-        // Set results according to found items and their set order
-        if ($desc1 || $desc2 || $subjct) {
+        // Fill descriptionsTyped according to found items and their set order of hierarchy
+        if ($typeIsDescription || $typeIsNull) {
             $terms = $this->getAllLanguageSpecificItems(
-                $desc1 ?: $desc2 ?: $subjct,
+                $typeIsDescription ?: $typeIsNull,
                 $language
             );
-            if (!$subjct) {
-                foreach ($terms as $item) {
-                    foreach ($item as $part) {
-                        $results[] = (string)$part;
-                    }
+            foreach ($terms as $item) {
+                foreach ($item as $part) {
+                    $descriptionsTyped[] = (string)$part;
                 }
             }
-            if ($subjct) {
-                $titleToCheck = $this->getLanguageSpecificItem($subjct, $language);
-                $checkTitle = str_replace([',', ';'], ' ', (string)$titleToCheck)
-                    != $title;
-                if ($terms && $checkTitle) {
-                    foreach ($terms as $item) {
-                        foreach ($item as $part) {
-                            $results[] = (string)$part;
-                        }
+        }
+        elseif ($subjectHasLabel) {
+            $terms = $this->getAllLanguageSpecificItems(
+                $typeIsDescription ?: $typeIsNull,
+                $language
+            );
+            $titleToCheck = $this->getLanguageSpecificItem($subjectHasLabel, $language);
+            $checkTitle = str_replace([',', ';'], ' ', (string)$titleToCheck)
+                != $title;
+            if ($terms && $checkTitle) {
+                foreach ($terms as $item) {
+                    foreach ($item as $part) {
+                        $descriptionsTyped[] = (string)$part;                        
                     }
                 }
             }
         }
         // If no specified fields found, set results as description-field content
-        if ($resultsUntyped && !$results) {
-            $checkDesc = [];
-            foreach ($resultsUntyped as $item) {
+        if ($descriptionsUntyped && !$descriptionsTyped) {
+            $compareDesc = [];
+            foreach ($descriptionsUntyped as $item) {
                 foreach ($item as $part) {
-                    $checkDesc[] = (string)$part;
+                    $compareDesc[] = (string)$part;
                 }
             }
             $replaceDesc = $this->getAllLanguageSpecificItems(
-                $resultsUntyped,
+                $descriptionsUntyped,
                 $language
             );
             $replaceDesc = trim(implode(PHP_EOL, array_unique($replaceDesc)));
-            $checkDesc = trim(implode(' ', array_unique($checkDesc)));
-            // Check if splitTitle
+            $compareDesc = trim(implode(' ', array_unique($compareDesc)));
+            // Check if splitTitle by comparing to description-field content
             if (!empty($this->fields['description'])
                 && strncmp(
                     $this->fields['description'],
-                    $checkDesc,
+                    $compareDesc,
                     strlen((string)$this->fields['description'])
                 ) != 0
             ) {
-                $results[] = str_replace(
-                    $checkDesc,
+                $descriptionsTyped[] = str_replace(
+                    $compareDesc,
                     $replaceDesc,
                     (string)$this->fields['description']
                 );
             } else {
-                $resultsUntyped = $this->getAllLanguageSpecificItems(
-                    $resultsUntyped,
+                $descriptionsUntyped = $this->getAllLanguageSpecificItems(
+                    $descriptionsUntyped,
                     $language
                 );
             }
         }
-        return array_unique($results ?: $resultsUntyped);
+        return array_unique($descriptionsTyped ?: $descriptionsUntyped);
     }
 
     /**
