@@ -2109,14 +2109,16 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap
             ->subjectWrap->subjectSet ?? [] as $node) {
-            if ($node->displaySubject) {
-                $label = $node->displaySubject->attributes()->label;
-                if ($label == 'aihe') {
-                    $subjectHasLabel[] = $node->displaySubject;
-                    $descriptionsUntyped[] = $node->displaySubject;
+            foreach ($node->displaySubject ?? [] as $node) {
+                $label = $node->attributes()->label;
+                $checkTitle = str_replace([',', ';'], ' ', (string)$node)
+                != $title;
+                if ($label == 'aihe' && $checkTitle) {
+                    $subjectHasLabel[] = $node;
+                    $descriptionsUntyped[] = $node;
                 }
-                if ($label == '') {
-                    $descriptionsUntyped[] = $node->displaySubject;
+                if ($label == '' && $checkTitle) {
+                    $descriptionsUntyped[] = $node;
                 }
             }
         }
@@ -2132,17 +2134,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         } elseif ($subjectHasLabel) {
-            $terms = $this->getAllLanguageSpecificItems(
-                $typeIsDescription ?: $typeIsNull,
-                $language
-            );
-            $titleToCheck = $this->getLanguageSpecificItem(
-                $subjectHasLabel,
-                $language
-            );
-            $checkTitle = str_replace([',', ';'], ' ', (string)$titleToCheck)
-                != $title;
-            if ($terms && $checkTitle) {
+            $terms = $this->getAllLanguageSpecificItems($subjectHasLabel, $language);
+            if ($terms) {
                 foreach ($terms as $item) {
                     foreach ($item as $part) {
                         $descriptionsTyped[] = (string)$part;
