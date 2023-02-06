@@ -2099,12 +2099,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
             ->objectIdentificationWrap->objectDescriptionWrap->objectDescriptionSet
             ?? [] as $node) {
-            $type = $node->attributes()->type; 
+            $type = $node->attributes()->type;
             $descriptionsUntyped[] = $node->descriptiveNoteValue;
             if ($type == 'description') {
                 $typeIsDescription[] = $node->descriptiveNoteValue;
-            }
-            elseif (empty($type)) {
+            } elseif (empty($type)) {
                 $typeIsNull[] = $node->descriptiveNoteValue;
             }
         }
@@ -2121,7 +2120,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         }
-        // Fill descriptionsTyped according to found items and their set order of hierarchy
+        // Fill descriptionsTyped according to found items and their set order
         if ($typeIsDescription || $typeIsNull) {
             $terms = $this->getAllLanguageSpecificItems(
                 $typeIsDescription ?: $typeIsNull,
@@ -2132,19 +2131,21 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     $descriptionsTyped[] = (string)$part;
                 }
             }
-        }
-        elseif ($subjectHasLabel) {
+        } elseif ($subjectHasLabel) {
             $terms = $this->getAllLanguageSpecificItems(
                 $typeIsDescription ?: $typeIsNull,
                 $language
             );
-            $titleToCheck = $this->getLanguageSpecificItem($subjectHasLabel, $language);
+            $titleToCheck = $this->getLanguageSpecificItem(
+                $subjectHasLabel,
+                $language
+            );
             $checkTitle = str_replace([',', ';'], ' ', (string)$titleToCheck)
                 != $title;
             if ($terms && $checkTitle) {
                 foreach ($terms as $item) {
                     foreach ($item as $part) {
-                        $descriptionsTyped[] = (string)$part;                        
+                        $descriptionsTyped[] = (string)$part;
                     }
                 }
             }
