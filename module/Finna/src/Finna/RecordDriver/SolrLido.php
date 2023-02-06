@@ -2135,12 +2135,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             }
         } elseif ($subjectHasLabel) {
             $terms = $this->getAllLanguageSpecificItems($subjectHasLabel, $language);
-            if ($terms) {
-                foreach ($terms as $item) {
-                    foreach ($item as $part) {
-                        $descriptionsTyped[] = (string)$part;
-                    }
-                }
+            foreach ($terms as $item) {
+                foreach ($item as $part) {
+                    $descriptionsTyped[] = (string)$part;
+                }                
             }
         }
         // If no specified fields found, set results as description-field content
