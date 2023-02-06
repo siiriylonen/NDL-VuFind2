@@ -2138,7 +2138,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             foreach ($terms as $item) {
                 foreach ($item as $part) {
                     $descriptionsTyped[] = (string)$part;
-                }                
+                }
             }
         }
         // If no specified fields found, set results as description-field content
