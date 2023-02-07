@@ -1446,8 +1446,8 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
         $locale = $this->translator->getLocale();
         $cacheFile = "$cacheDir/organisations_list_$locale.json";
         $maxAge = (int)(
-            $this->organisationConfig['General']['organisationListCacheTime'] ?? null
-        ) ?? 60;
+            $this->organisationConfig['General']['organisationListCacheTime'] ?? 60
+        );
         $list = [];
         if (is_readable($cacheFile)
             && time() - filemtime($cacheFile) < $maxAge * 60
