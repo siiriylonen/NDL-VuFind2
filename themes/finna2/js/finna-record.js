@@ -29,8 +29,17 @@ finna.record = (function finnaRecord() {
           description.hide();
         });
     }
+    $('.show-info.cc-info').button().on('click', function handleClick() {
+      var item = $(this);
+      item.toggleClass('hide');
+      item.siblings('.cc-info').toggleClass('hide');
+    });
+    $('.hide-info.cc-info').button().on('click', function handleClick() {
+      var item = $(this);
+      item.toggleClass('hide');
+      item.siblings('.cc-info').toggleClass('hide');
+    });
   }
-
   function initHideDetails() {
     $('.show-details-button').on('click', function onClickShowDetailsButton() {
       $('.record-information .record-details-more').removeClass('hidden');
@@ -412,7 +421,6 @@ finna.record = (function finnaRecord() {
         container.style.marginLeft = marginLeft + 'px';
       }
     };
-
     document.addEventListener('mouseup', function onMouseUp(e) {
       document.querySelectorAll('.inline-linked-field.open').forEach((element) => {
         if (!element.contains(e.target)) {

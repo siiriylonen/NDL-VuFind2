@@ -280,7 +280,21 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
 #viz-instructions {
   padding-top:600px;
 }
+.record-links {
+    .show-info, .hide-info {
+        color: @link-color;
+        text-transform: lowercase;
+    }
+    .show-info:first-letter, .hide-info:first-letter {
+        color: @link-color;
+        text-transform: none;
+    }
 
+    .iconlabel {
+        margin: 0%;
+        vertical-align: top;
+    }
+}
 //Finna mixins
 .truncate-field {
     overflow: hidden;

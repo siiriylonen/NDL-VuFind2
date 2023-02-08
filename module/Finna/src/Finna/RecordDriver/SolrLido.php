@@ -555,7 +555,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     if ($document = $this->getDocument(
                         $url,
                         $format,
-                        $description
+                        $description,
+                        $language,
+                        $rights                    
                     )
                     ) {
                         $documentUrls = array_merge($documentUrls, $document);
@@ -866,18 +868,23 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      * @param string $url         Url of the document
      * @param string $format      Format of the document
      * @param string $description Description of the document
+     * @param array $rights         Rights of the document
      *
      * @return array
      */
     protected function getDocument(
         string $url,
         string $format,
-        string $description
+        string $description,
+        string $language,
+        array $rights
     ): array {
         return [
             'description' => $description ?: false,
             'url' => $url,
-            'format' => strtolower($format)
+            'format' => strtolower($format),
+            'language' => $language,
+            'rights' => $rights
         ];
     }
 

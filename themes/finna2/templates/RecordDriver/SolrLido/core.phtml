@@ -97,7 +97,6 @@
           <?=$this->record($this->driver)->renderTemplate('versions-link.phtml')?>
         <?php endif; ?>
       </div>
-
       <?php if ($documents = $this->driver->getDocuments()): ?>
         <div class="record-links">
           <div class="recordURLs local-available-online-record">
@@ -105,6 +104,9 @@
               <?php foreach ($documents as $i => $document): ?>
                 <?php
                   $description = $document['description'] ?: $this->translate('Download the file');
+                  $rights = $document['rights']['copyright'];
+                  $rightsAdditional = $document['rights'];
+                  $link = $rightsAdditional['link'];
                 ?>
                 <li class="fulltextField">
                   <a href="<?=$this->escapeHtmlAttr($this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']]))?>" target="_blank" download>
@@ -112,7 +114,20 @@
                     <?=$this->escapeHtml($description)?>
                   </a>
                   (<?=$this->escapeHtml($document['format'])?>)
+                  <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights])?>
+                  <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($link)?>" target="_blank"><?=$this->escapeHtmlAttr($rights);?></a>
+                  <button class="show-info cc-info more-link" type="button">
+                    <?=$this->transEsc('Additional Information')?> <i class="fa fa-arrow-down"></i>
+                  </button>
+                  <button class="hide-info cc-info hide less-link" type="button">
+                    <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
+                  </button>
+                  <p class="fullTextField cc-info access-rights hide"><?=$this->escapeHtmlAttr($rightsAdditional['description'][0]);?></p>
+                  <button class="hide-info cc-info hide less-link" type="button">
+                      <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
+                    </button>
                 </li>
+                </span>
               <?php endforeach; ?>
             </ul>
           </div>
