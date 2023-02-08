@@ -150,8 +150,9 @@ finna.record = (function finnaRecord() {
   }
 
   function initHoldingsControls() {
-    $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').on('keyup', function onClickHeading(e) {
+    $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').on('keydown', function onClickHeading(e) {
       if (e.keyCode === 13 || e.keyCode === 32) {
+        e.preventDefault();
         $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').click();
       }
     });
