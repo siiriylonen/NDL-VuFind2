@@ -562,6 +562,8 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
         case 'dc':
         case 'qdc':
             return $this->filterQDCFields($defaults);
+        case 'eaccpf':
+            return $defaults;
         case 'ead':
             return $this->filterEADFields($defaults);
         case 'ead3':
@@ -581,7 +583,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
         case 'primo':
             return $this->filterPrimoFields($defaults);
         default:
-            throw new Exception("Unhandled record type $type");
+            return $defaults;
         }
     }
 
