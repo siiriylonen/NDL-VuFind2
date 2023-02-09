@@ -30,14 +30,12 @@ finna.record = (function finnaRecord() {
         });
     }
     $('.show-info.cc-info').button().on('click', function handleClick() {
-      var item = $(this);
-      item.toggleClass('hide');
-      item.siblings('.cc-info').toggleClass('hide');
+      $(this).toggleClass('hide');
+      $(this).siblings('.cc-info').toggleClass('hide');
     });
     $('.hide-info.cc-info').button().on('click', function handleClick() {
-      var item = $(this);
-      item.toggleClass('hide');
-      item.siblings('.cc-info').toggleClass('hide');
+      $(this).toggleClass('hide');
+      $(this).siblings('.cc-info').toggleClass('hide');
     });
   }
   function initHideDetails() {
