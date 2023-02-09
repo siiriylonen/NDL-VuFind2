@@ -157,11 +157,11 @@ finna.record = (function finnaRecord() {
       }
     });
     $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').on('click', function onClickHeading(e) {
-      if ($('.location', this).attr('aria-expanded') === 'false') {
-        $('.location', this).attr('aria-expanded', 'true');
+      if ($('.location', this).parent().attr('aria-expanded') === 'false') {
+        $('.location', this).parent().attr('aria-expanded', 'true');
       } 
       else {
-        $('.location', this).attr('aria-expanded', 'false');
+        $('.location', this).parent().attr('aria-expanded', 'false');
       }
       if ($(e.target).hasClass('location-service') || $(e.target).parents().hasClass('location-service')) {
         return;
@@ -213,15 +213,6 @@ finna.record = (function finnaRecord() {
   }
 
   function setupHoldingsTab() {
-    var accordionActivation = document.querySelectorAll('.location');
-    accordionActivation.forEach((item) => {
-      var collapsed = $('holdings-container-heading').siblings('.collapsed');
-      if (collapsed) {
-        item.setAttribute('aria-expanded', 'true');
-      } else {
-        item.setAttribute('aria-expanded', 'false');
-      }
-    });
     initHoldingsControls();
     setUpCheckRequest();
     augmentOnlineLinksFromHoldings();
