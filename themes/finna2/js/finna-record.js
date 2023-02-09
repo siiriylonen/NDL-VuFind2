@@ -160,7 +160,9 @@ finna.record = (function finnaRecord() {
       if ($('.location', this).attr('aria-expanded') === 'false') {
         $('.location', this).attr('aria-expanded', 'true');
       } 
-      else { $('.location', this).attr('aria-expanded', 'false'); }
+      else {
+        $('.location', this).attr('aria-expanded', 'false');
+      }
       if ($(e.target).hasClass('location-service') || $(e.target).parents().hasClass('location-service')) {
         return;
       }
@@ -216,7 +218,9 @@ finna.record = (function finnaRecord() {
       var collapsed = $('holdings-container-heading').siblings('.collapsed');
       if (collapsed) {
         item.setAttribute('aria-expanded', 'true');
-      } else { item.setAttribute('aria-expanded', 'false'); }
+      } else {
+        item.setAttribute('aria-expanded', 'false');
+      }
     });
     initHoldingsControls();
     setUpCheckRequest();
