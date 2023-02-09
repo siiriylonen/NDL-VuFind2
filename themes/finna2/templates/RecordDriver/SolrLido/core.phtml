@@ -3,6 +3,7 @@
   $params = $this->searchMemory()->getLastSearchParams($this->searchClassId);
   $img = $this->recordImage($this->record($this->driver));
   $urls = $this->record($this->driver)->getLinkDetails();
+  $language = $this->layout()->userLang;
   if (!empty($urls)){
       $videoUrls = [];
       $audioUrls = [];
@@ -104,9 +105,8 @@
               <?php foreach ($documents as $i => $document): ?>
                 <?php
                   $description = $document['description'] ?: $this->translate('Download the file');
-                  $rights = $document['rights']['copyright'];
-                  $rightsAdditional = $document['rights'];
-                  $link = $rightsAdditional['link'];
+                  $rights = $this->driver->getAccessRestrictionsType($language);
+                  $rightsDescription = $this->driver->getAccessRestrictions($language);
                 ?>
                 <li class="fulltextField">
                   <a href="<?=$this->escapeHtmlAttr($this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']]))?>" target="_blank" download>
@@ -114,18 +114,18 @@
                     <?=$this->escapeHtml($description)?>
                   </a>
                   (<?=$this->escapeHtml($document['format'])?>)
-                  <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights])?>
-                  <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($link)?>" target="_blank"><?=$this->escapeHtmlAttr($rights);?></a>
+                  <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
+                  <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright']);?></a>
                   <button class="show-info cc-info more-link" type="button">
                     <?=$this->transEsc('Additional Information')?> <i class="fa fa-arrow-down"></i>
                   </button>
                   <button class="hide-info cc-info hide less-link" type="button">
                     <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
                   </button>
-                  <p class="fullTextField cc-info access-rights hide"><?=$this->escapeHtmlAttr($rightsAdditional['description'][0]);?></p>
+                  <p class="fullTextField cc-info access-rights hide"><?=$this->escapeHtmlAttr($rightsDescription[0]);?></p>
                   <button class="hide-info cc-info hide less-link" type="button">
                       <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
-                    </button>
+                  </button>
                 </li>
                 </span>
               <?php endforeach; ?>
