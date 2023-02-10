@@ -29,13 +29,11 @@ finna.record = (function finnaRecord() {
           description.hide();
         });
     }
-    $('.show-info.cc-info').button().on('click', function handleClick() {
-      $(this).toggleClass('hide');
-      $(this).siblings('.cc-info').toggleClass('hide');
+    $('.show-info.more-link').button().on('click', function handleClick() {
+      $(this).parents('li').find('.cc-info').toggleClass('hide');
     });
-    $('.hide-info.cc-info').button().on('click', function handleClick() {
-      $(this).toggleClass('hide');
-      $(this).siblings('.cc-info').toggleClass('hide');
+    $('.hide-info.less-link').button().on('click', function handleClick() {
+      $(this).parents('li').find('.cc-info').toggleClass('hide');
     });
   }
   function initHideDetails() {

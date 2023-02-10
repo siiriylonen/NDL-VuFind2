@@ -281,21 +281,36 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
   padding-top:600px;
 }
 .record-links {
-    .cc-info, a.copyright-meaning, .iconlabel {
+    a.copyright-meaning, .iconlabel {
         font-size: @font-size-small;
         font-weight: normal;
     }
     .show-info, .hide-info {
-        color: @link-color;
         text-transform: lowercase;
+        font-weight: normal;
     }
     .show-info:first-letter, .hide-info:first-letter {
         text-transform: none;
     }
-    .iconlabel {
-        margin: 0%;
-        vertical-align: top;
+    p {
+       font-size: @font-size-small; 
+       padding: 0;
+       margin: 0;
     }
+    .iconlabel {
+        margin-right: -3px;
+        vertical-align: bottom;
+    }
+    .iconlabel:first-child {
+        margin-left: 2px;
+    }
+    .copyright-meaning {
+        margin-right: 5px;
+    }
+}
+.copyright-wrapper {
+    display: inline-block;
+    margin-left: 3px;
 }
 //Finna mixins
 .truncate-field {

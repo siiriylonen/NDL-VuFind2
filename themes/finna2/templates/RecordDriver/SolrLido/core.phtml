@@ -109,25 +109,34 @@
                   $rightsDescription = array_unique($this->driver->getAccessRestrictions($language));
                 ?>
                 <li class="fulltextField">
-                  <a href="<?=$this->escapeHtmlAttr($this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']]))?>" target="_blank" download>
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                    <?=$this->escapeHtml($description)?>
-                  </a>
-                  (<?=$this->escapeHtml($document['format'])?>)
-                  <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
-                  <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright']);?></a>
-                  <button class="show-info cc-info more-link" type="button">
-                    <?=$this->transEsc('Additional Information')?> <i class="fa fa-arrow-down"></i>
-                  </button>
-                  <button class="hide-info cc-info hide less-link" type="button">
-                    <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
-                  </button>
-                  <p class="fullTextField cc-info access-rights hide"><?=$this->escapeHtmlAttr(implode("<br/>", $rightsDescription));?></p>
-                  <button class="hide-info cc-info hide less-link" type="button">
-                    <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
-                  </button>
+                  <div class="link-wrapper">  
+                    <a href="<?=$this->escapeHtmlAttr($this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']]))?>" target="_blank" download>
+                      <i class="fa fa-download" aria-hidden="true"></i>
+                      <?=$this->escapeHtml($description)?>
+                    </a>
+                    (<?=$this->escapeHtml($document['format'])?>)
+                    <div class="copyright-wrapper">
+                      <span class="copyright-icons">
+                        <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
+                      </span>
+                      <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright']);?></a>
+                      <button class="show-info cc-info more-link">
+                        <?=$this->transEsc('Additional Information')?> <i class="fa fa-arrow-down"></i>
+                      </button>
+                      <button class="hide-info cc-info hide less-link">
+                        <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="cc-info hide">
+                    <p class="access-rights"><?=$this->escapeHtmlAttr(implode("<br/>", $rightsDescription));?></p>
+                  </div>
+                  <div class="cc-info hide">
+                    <button class="hide-info less-link">
+                      <?=$this->transEsc('Sulje lisätiedot')?> <i class="fa fa-arrow-up"></i>
+                    </button>
+                  </div>
                 </li>
-                </span>
               <?php endforeach; ?>
             </ul>
           </div>
