@@ -100,11 +100,15 @@ finna.layout = (function finnaLayout() {
           self.siblings('.less-link').hide();
           self.siblings('.more-link').show();
           self.css('height', truncation[index] - 1 + 'px');
+          self.blur();
+          self.siblings('.more-link').focus();
         });
         moreLink.on('click', function showMore() {
           self.siblings('.more-link').hide();
           self.siblings('.less-link').show();
           self.css('height', 'auto');
+          self.blur();
+          self.siblings('.less-link').focus();
         });
         lessLink.hide();
 

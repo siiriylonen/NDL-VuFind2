@@ -38,6 +38,8 @@ finna.record = (function finnaRecord() {
       $('.hide-details-button').removeClass('hidden');
       $('.record .description .more-link.wide').click();
       sessionStorage.setItem('finna_record_details', '1');
+      $(this).blur();
+      $(this).siblings('.hide-details-button').focus();
     });
     $('.hide-details-button').click (function onClickHideDetailsButton() {
       $('.record-information .record-details-more').addClass('hidden');
@@ -45,6 +47,8 @@ finna.record = (function finnaRecord() {
       $('.show-details-button').removeClass('hidden');
       $('.record .description .less-link.wide').click();
       sessionStorage.removeItem('finna_record_details');
+      $(this).blur();
+      $(this).siblings('.show-details-button').focus();
     });
     if ($('.record-information').height() > 350 && $('.show-details-button')[0]) {
       $('.record-information .description').addClass('too-long');
