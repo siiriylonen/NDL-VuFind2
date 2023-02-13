@@ -2118,7 +2118,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             if (implode('; ', $compareDesc) == $this->getTitle()) {
                 $descriptionsTyped = [];
                 $descriptionsUntyped = [];
-            } 
+            }
         }
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap
             ->subjectWrap->subjectSet ?? [] as $node) {
