@@ -114,10 +114,13 @@
                       <i class="fa fa-download" aria-hidden="true"></i>
                       <?=$this->escapeHtml($description)?>
                     </a>
-                    <span>
-                      (<?=$this->escapeHtml($document['format'])?><?php if ($rights) { ?>:<?php } ?>
-                    </span>
                     <div class="copyright-wrapper">
+                      <span>
+                        (<?=$this->escapeHtml($document['format'])?><?php if ($rights) { ?>:<?php } ?>
+                      </span>
+                      <span class="copyright-icons">
+                         <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
+                       </span>
                       <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright']);?></a>
                       <button class="show-info cc-info more-link">
                         <?=$this->transEsc('Additional Information')?> <i class="fa fa-arrow-down"></i>)
