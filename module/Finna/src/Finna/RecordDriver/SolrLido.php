@@ -2089,23 +2089,36 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getSummary()
     {
+        $descriptions = [];
         $descriptionsTyped = [];
         $descriptionsUntyped = [];
-        $typeIsDescription = [];
-        $typeIsNull = [];
-        $subjectHasLabel = [];
+        $descriptionsLabeled = [];
+        $descriptionsUnlabeled = [];
         $title = str_replace([',', ';'], ' ', $this->getTitle());
         $language = $this->getLocale();
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
             ->objectIdentificationWrap->objectDescriptionWrap->objectDescriptionSet
             ?? [] as $node) {
+            $checkDesc = [];
             $type = $node->attributes()->type;
-            $descriptionsUntyped[] = $node->descriptiveNoteValue;
             if ($type == 'description') {
-                $typeIsDescription[] = $node->descriptiveNoteValue;
+                $descriptionsTyped[] = $node->descriptiveNoteValue;
+                $checkDesc[] = $node->descriptiveNoteValue;
             } elseif (empty($type)) {
-                $typeIsNull[] = $node->descriptiveNoteValue;
+                $descriptionsUntyped[] = $node->descriptiveNoteValue;
+                $checkDesc[] = $node->descriptiveNoteValue;
             }
+            $compareDesc = [];
+            foreach ($checkDesc as $item) {
+                foreach ($item as $part) {
+                    $compareDesc[] = (string)$part;
+                }
+            }
+            array_unique($compareDesc);
+            if (implode('; ', $compareDesc) == $this->getTitle()) {
+                $descriptionsTyped = [];
+                $descriptionsUntyped = [];
+            } 
         }
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap
             ->subjectWrap->subjectSet ?? [] as $node) {
@@ -2114,68 +2127,38 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $checkTitle = str_replace([',', ';'], ' ', (string)$node)
                 != $title;
                 if ($label == 'aihe' && $checkTitle) {
-                    $subjectHasLabel[] = $node;
-                    $descriptionsUntyped[] = $node;
+                    $descriptionsLabeled[] = $node;
                 }
                 if ($label == '' && $checkTitle) {
-                    $descriptionsUntyped[] = $node;
+                    $descriptionsUnlabeled[] = $node;
                 }
             }
         }
         // Fill descriptionsTyped according to found items and their set order
-        if ($typeIsDescription || $typeIsNull) {
+        if ($descriptionsTyped || $descriptionsUntyped) {
             $terms = $this->getAllLanguageSpecificItems(
-                $typeIsDescription ?: $typeIsNull,
+                $descriptionsTyped ?: $descriptionsUntyped,
                 $language
             );
             foreach ($terms as $item) {
                 foreach ($item as $part) {
-                    $descriptionsTyped[] = (string)$part;
+                    $descriptions[] = (string)$part;
                 }
+                $descriptions[] = (string)$item;
             }
-        } elseif ($subjectHasLabel) {
-            $terms = $this->getAllLanguageSpecificItems($subjectHasLabel, $language);
-            foreach ($terms as $item) {
-                foreach ($item as $part) {
-                    $descriptionsTyped[] = (string)$part;
-                }
-            }
-        }
-        // If no specified fields found, set results as description-field content
-        if ($descriptionsUntyped && !$descriptionsTyped) {
-            $compareDesc = [];
-            foreach ($descriptionsUntyped as $item) {
-                foreach ($item as $part) {
-                    $compareDesc[] = (string)$part;
-                }
-            }
-            $replaceDesc = $this->getAllLanguageSpecificItems(
-                $descriptionsUntyped,
+        } elseif ($descriptionsLabeled || $descriptionsUnlabeled) {
+            $terms = $this->getAllLanguageSpecificItems(
+                $descriptionsLabeled ?: $descriptionsUnlabeled,
                 $language
             );
-            $replaceDesc = trim(implode(PHP_EOL, array_unique($replaceDesc)));
-            $compareDesc = trim(implode(' ', array_unique($compareDesc)));
-            // Check if splitTitle by comparing to description-field content
-            if (!empty($this->fields['description'])
-                && strncmp(
-                    $this->fields['description'],
-                    $compareDesc,
-                    strlen((string)$this->fields['description'])
-                ) != 0
-            ) {
-                $descriptionsTyped[] = str_replace(
-                    $compareDesc,
-                    $replaceDesc,
-                    (string)$this->fields['description']
-                );
-            } else {
-                $descriptionsUntyped = $this->getAllLanguageSpecificItems(
-                    $descriptionsUntyped,
-                    $language
-                );
+            foreach ($terms as $item) {
+                foreach ($item as $part) {
+                    $descriptions[] = (string)$part;
+                }
+                $descriptions[] = (string)$item;
             }
         }
-        return array_unique($descriptionsTyped ?: $descriptionsUntyped);
+        return array_unique($descriptions);
     }
 
     /**
