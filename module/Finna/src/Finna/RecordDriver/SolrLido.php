@@ -2092,32 +2092,37 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $descriptions = [];
         $descriptionsTyped = [];
         $descriptionsUntyped = [];
-        $descriptionsLabeled = [];
-        $descriptionsUnlabeled = [];
+        $subjectsLabeled = [];
+        $subjeUnlabeled = [];
         $title = str_replace([',', ';'], ' ', $this->getTitle());
         $language = $this->getLocale();
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
             ->objectIdentificationWrap->objectDescriptionWrap->objectDescriptionSet
             ?? [] as $node) {
-            $checkDesc = [];
             $type = $node->attributes()->type;
+            $compareDesc = [];
             if ($type == 'description') {
                 $descriptionsTyped[] = $node->descriptiveNoteValue;
-                $checkDesc[] = $node->descriptiveNoteValue;
+                foreach ($descriptionsTyped as $item) {
+                    foreach ($item as $part) {
+                        $compareDesc[] = (string)$part;
+                    }
+                }
+                array_unique($compareDesc);
+                if (implode('; ', $compareDesc) == $this->getTitle()) {
+                    $descriptionsTyped = [];
+                }
             } elseif (empty($type)) {
                 $descriptionsUntyped[] = $node->descriptiveNoteValue;
-                $checkDesc[] = $node->descriptiveNoteValue;
-            }
-            $compareDesc = [];
-            foreach ($checkDesc as $item) {
-                foreach ($item as $part) {
-                    $compareDesc[] = (string)$part;
+                foreach ($descriptionsUntyped as $item) {
+                    foreach ($item as $part) {
+                        $compareDesc[] = (string)$part;
+                    }
                 }
-            }
-            array_unique($compareDesc);
-            if (implode('; ', $compareDesc) == $this->getTitle()) {
-                $descriptionsTyped = [];
-                $descriptionsUntyped = [];
+                array_unique($compareDesc);
+                if (implode('; ', $compareDesc) == $this->getTitle()) {
+                    $descriptionsUntyped = [];
+                }
             }
         }
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap
@@ -2127,10 +2132,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $checkTitle = str_replace([',', ';'], ' ', (string)$node)
                 != $title;
                 if ($label == 'aihe' && $checkTitle) {
-                    $descriptionsLabeled[] = $node;
+                    $subjectsLabeled[] = $node;
                 }
                 if ($label == '' && $checkTitle) {
-                    $descriptionsUnlabeled[] = $node;
+                    $subjectsUnlabeled[] = $node;
                 }
             }
         }
@@ -2141,20 +2146,14 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $language
             );
             foreach ($terms as $item) {
-                foreach ($item as $part) {
-                    $descriptions[] = (string)$part;
-                }
                 $descriptions[] = (string)$item;
             }
-        } elseif ($descriptionsLabeled || $descriptionsUnlabeled) {
+        } elseif ($subjectsLabeled || $subjeUnlabeled) {
             $terms = $this->getAllLanguageSpecificItems(
-                $descriptionsLabeled ?: $descriptionsUnlabeled,
+                $subjectsLabeled ?: $subjectsUnlabeled,
                 $language
             );
             foreach ($terms as $item) {
-                foreach ($item as $part) {
-                    $descriptions[] = (string)$part;
-                }
                 $descriptions[] = (string)$item;
             }
         }
