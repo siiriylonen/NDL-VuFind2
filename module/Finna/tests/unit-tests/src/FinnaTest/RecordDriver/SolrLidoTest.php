@@ -165,7 +165,8 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
                         'rights' => [
                             'copyright' => 'CC BY 4.0',
                             'description' => [
-                                0 => 'Tässä on kuvien copyright.'                            ]
+                                0 => 'Tässä on kuvien copyright.'
+                            ]
                         ],
                         'highResolution' => [],
                         'identifier' => '607644',
