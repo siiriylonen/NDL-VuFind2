@@ -159,8 +159,7 @@ finna.record = (function finnaRecord() {
     $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').on('click', function onClickHeading(e) {
       if ($('.location', this).parent().attr('aria-expanded') === 'false') {
         $('.location', this).parent().attr('aria-expanded', 'true');
-      } 
-      else {
+      } else {
         $('.location', this).parent().attr('aria-expanded', 'false');
       }
       if ($(e.target).hasClass('location-service') || $(e.target).parents().hasClass('location-service')) {
@@ -170,8 +169,7 @@ finna.record = (function finnaRecord() {
       if ($('.location .fa', this).hasClass('fa-arrow-down')) {
         $('.location .fa', this).removeClass('fa-arrow-down');
         $('.location .fa', this).addClass('fa-arrow-right');
-      }
-      else {
+      } else {
         $('.location .fa', this).removeClass('fa-arrow-right');
         $('.location .fa', this).addClass('fa-arrow-down');
         var rows = $(this).nextUntil('.holdings-container-heading');
