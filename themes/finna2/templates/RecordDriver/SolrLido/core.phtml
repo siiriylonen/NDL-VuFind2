@@ -106,7 +106,8 @@
                 <?php
                   $description = $document['description'] ?: $this->translate('Download the file');
                   $rights = $this->driver->getAccessRestrictionsType($language);
-                  $rightsDescription = array_unique($this->driver->getAccessRestrictions($language));
+                  $rightsDescription = $this->driver->getAccessRestrictions($language);
+                  $hasLink = isset($rights['link']) && !empty($rights['link']);
                 ?>
                 <li class="fulltextField">
                   <div class="link-wrapper">  
@@ -119,9 +120,15 @@
                         (<?=$this->escapeHtml($document['format'])?><?php if ($rights) { ?>:<?php } ?>
                       </span>
                       <span class="copyright-icons">
-                         <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
-                       </span>
-                      <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright']);?></a>
+                        <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
+                      </span>
+                      <?php if ($hasLink): ?>
+                        <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright']);?></a>
+                      <?php else: ?>
+                        <span>
+                          <?=$this->escapeHtmlAttr($rights['copyright']);?>
+                        </span>
+                      <?php endif; ?>
                       <button class="show-info cc-info more-link">
                         <?=$this->transEsc('Additional Information')?> <i class="fa fa-arrow-down"></i>)
                       </button>

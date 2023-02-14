@@ -224,7 +224,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         }
-        return $restrictions;
+        return array_unique($restrictions);
     }
 
     /**
