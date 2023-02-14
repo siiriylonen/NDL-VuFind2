@@ -2093,7 +2093,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $descriptionsTyped = [];
         $descriptionsUntyped = [];
         $subjectsLabeled = [];
-        $subjeUnlabeled = [];
+        $subjectsUnlabeled = [];
         $title = str_replace([',', ';'], ' ', $this->getTitle());
         $language = $this->getLocale();
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
@@ -2148,7 +2148,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             foreach ($terms as $item) {
                 $descriptions[] = (string)$item;
             }
-        } elseif ($subjectsLabeled || $subjeUnlabeled) {
+        } elseif ($subjectsLabeled || $subjectsUnlabeled) {
             $terms = $this->getAllLanguageSpecificItems(
                 $subjectsLabeled ?: $subjectsUnlabeled,
                 $language
