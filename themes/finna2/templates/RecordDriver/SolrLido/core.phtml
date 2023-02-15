@@ -3,7 +3,6 @@
   $params = $this->searchMemory()->getLastSearchParams($this->searchClassId);
   $img = $this->recordImage($this->record($this->driver));
   $urls = $this->record($this->driver)->getLinkDetails();
-  $language = $this->layout()->userLang;
   if (!empty($urls)){
       $videoUrls = [];
       $audioUrls = [];
@@ -102,51 +101,7 @@
         <div class="record-links">
           <div class="recordURLs local-available-online-record">
             <ul class="truncate-field outer" data-rows="4">
-              <?php foreach ($documents as $i => $document): ?>
-                <?php
-                  $description = $document['description'] ?: $this->translate('Download the file');
-                  $rights = $this->driver->getAccessRestrictionsType($language);
-                  $rightsDescription = $this->driver->getAccessRestrictions($language);
-                  $hasLink = isset($rights['link']) && !empty($rights['link']);
-                ?>
-                <li class="fulltextField">
-                  <div class="link-wrapper">  
-                    <a href="<?=$this->escapeHtmlAttr($this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']]))?>" target="_blank" download>
-                      <i class="fa fa-download" aria-hidden="true"></i>
-                      <?=$this->escapeHtml($description)?>
-                    </a>
-                    <div class="copyright-wrapper">
-                      <span>
-                        (<?=$this->escapeHtml($document['format'])?><?php if ($rights) { ?>:<?php } ?>
-                      </span>
-                      <span class="copyright-icons">
-                        <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
-                      </span>
-                      <?php if ($hasLink): ?>
-                        <a class="copyright-meaning" href="<?=$this->escapeHtmlAttr($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright']);?></a>
-                      <?php else: ?>
-                        <span>
-                          <?=$this->escapeHtmlAttr($rights['copyright']);?>
-                        </span>
-                      <?php endif; ?>
-                      <button class="show-info cc-info more-link">
-                        <?=$this->transEsc('Additional Information')?> <i class="fa fa-arrow-down"></i>)
-                      </button>
-                      <button class="hide-info cc-info hide less-link">
-                        <?=$this->transEsc('more_info_hide')?> <i class="fa fa-arrow-up"></i>)
-                      </button>
-                    </div>
-                  </div>
-                  <div class="cc-info hide">
-                    <p class="access-rights"><?=$this->escapeHtmlAttr(implode("<br/>", $rightsDescription));?></p>
-                  </div>
-                  <div class="cc-info hide">
-                    <button class="hide-info less-link">
-                      <?=$this->transEsc('more_info_hide')?> <i class="fa fa-arrow-up"></i>
-                    </button>
-                  </div>
-                </li>
-              <?php endforeach; ?>
+              <?=$this->record($this->driver)->renderTemplate('document-rights.phtml')?>
             </ul>
           </div>
         </div>

@@ -29,10 +29,10 @@ finna.record = (function finnaRecord() {
           description.hide();
         });
     }
-    $('.show-info.more-link').button().on('click', function handleClick() {
+    $('.show-info').button().on('click', function handleClick() {
       $(this).parents('li').find('.cc-info').toggleClass('hide');
     });
-    $('.hide-info.less-link').button().on('click', function handleClick() {
+    $('.hide-info').button().on('click', function handleClick() {
       $(this).parents('li').find('.cc-info').toggleClass('hide');
     });
   }
