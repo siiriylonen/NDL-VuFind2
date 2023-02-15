@@ -2100,28 +2100,26 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             ->objectIdentificationWrap->objectDescriptionWrap->objectDescriptionSet
             ?? [] as $node) {
             $type = $node->attributes()->type;
-            $compareDesc = [];
-            if ($type == 'description') {
-                $descriptionsTyped[] = $node->descriptiveNoteValue;
-                foreach ($descriptionsTyped as $item) {
-                    foreach ($item as $part) {
-                        $compareDesc[] = (string)$part;
+            foreach ($node->descriptiveNoteValue ?? [] as $node) {
+                $compareDesc = [];
+                if ($type == 'description') {
+                    $descriptionsTyped[] = $node;
+                    foreach ($descriptionsTyped as $item) {
+                        $compareDesc[] = (string)$item;
                     }
-                }
-                array_unique($compareDesc);
-                if (implode('; ', $compareDesc) == $this->getTitle()) {
-                    $descriptionsTyped = [];
-                }
-            } elseif (empty($type)) {
-                $descriptionsUntyped[] = $node->descriptiveNoteValue;
-                foreach ($descriptionsUntyped as $item) {
-                    foreach ($item as $part) {
-                        $compareDesc[] = (string)$part;
+                    array_unique($compareDesc);
+                    if (implode('; ', $compareDesc) == $this->getTitle()) {
+                        $descriptionsTyped = [];
                     }
-                }
-                array_unique($compareDesc);
-                if (implode('; ', $compareDesc) == $this->getTitle()) {
-                    $descriptionsUntyped = [];
+                } elseif (empty($type)) {
+                    $descriptionsUntyped[] = $node;
+                    foreach ($descriptionsUntyped as $item) {
+                        $compareDesc[] = (string)$item;
+                    }
+                    array_unique($compareDesc);
+                    if (implode('; ', $compareDesc) == $this->getTitle()) {
+                        $descriptionsUntyped = [];
+                    }
                 }
             }
         }
