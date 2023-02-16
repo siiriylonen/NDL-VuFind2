@@ -31,19 +31,11 @@ finna.record = (function finnaRecord() {
     }
     $('.show-info').button().on('click', function handleClick() {
       $(this).parents('li').find('.cc-info').toggleClass('hide');
-      if ($('#extra_cc_info').hasClass('hide')) {
-        $('button.cc-info').attr('aria-expanded', 'false');
-      } else {
-        $('button.cc-info').attr('aria-expanded', 'true');
-      }
+      $('button.cc-info').attr('aria-expanded', function changeAria(i, attr) { return attr === 'false' ? 'true' : 'false'; });
     });
     $('.hide-info').button().on('click', function handleClick() {
       $(this).parents('li').find('.cc-info').toggleClass('hide');
-      if ($('#extra_cc_info').hasClass('hide')) {
-        $('button.cc-info').attr('aria-expanded', 'false');
-      } else {
-        $('button.cc-info').attr('aria-expanded', 'true');
-      }
+      $('button.cc-info').attr('aria-expanded', function changeAria(i, attr) { return attr === 'false' ? 'true' : 'false'; });
     });
   }
 
