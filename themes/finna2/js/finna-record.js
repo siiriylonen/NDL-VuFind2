@@ -31,10 +31,19 @@ finna.record = (function finnaRecord() {
     }
     $('.show-info').button().on('click', function handleClick() {
       $(this).parents('li').find('.cc-info').toggleClass('hide');
+      toggleAriaExpanded();
     });
     $('.hide-info').button().on('click', function handleClick() {
       $(this).parents('li').find('.cc-info').toggleClass('hide');
+      toggleAriaExpanded();
     });
+  }
+  function toggleAriaExpanded() {
+    if ($('#extra_cc_info').hasClass('hide')) {
+      $('button.cc-info').attr('aria-expanded', 'false');
+    } else {
+      $('button.cc-info').attr('aria-expanded', 'true');
+    }
   }
   function initHideDetails() {
     $('.show-details-button').on('click', function onClickShowDetailsButton() {

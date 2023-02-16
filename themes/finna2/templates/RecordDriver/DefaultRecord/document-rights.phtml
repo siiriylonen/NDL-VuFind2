@@ -27,21 +27,19 @@
                     <?=$this->escapeHtmlAttr($rights['copyright']);?>
                 </span>
                 <?php endif; ?>
-                <button class="show-info cc-info more-link">
+                <button class="show-info cc-info more-link" aria-expanded="false">
                     <?=$this->transEsc('Additional Information')?> <?=$this->icon('truncate-more')?>)
                 </button>
-                <button class="hide-info cc-info hide less-link">
+                <button class="hide-info cc-info hide less-link" aria-expanded="false">
                     <?=$this->transEsc('more_info_hide')?> <?=$this->icon('truncate-less')?>)
                 </button>
             </div>
         </div>
-        <div class="cc-info hide">
+        <div id="extra_cc_info" class="cc-info hide">
             <p class="access-rights"><?=$this->escapeHtmlAttr(implode("<br/>", $rightsDescription));?></p>
         </div>
-        <div class="cc-info hide">
-            <button class="hide-info less-link">
-                <?=$this->transEsc('more_info_hide')?> <?=$this->icon('truncate-less')?>
-            </button>
-        </div>
+        <button class="cc-info hide hide-info less-link" aria-expanded="false">
+            <?=$this->transEsc('more_info_hide')?> <?=$this->icon('truncate-less')?>
+        </button>        
     </li>
 <?php endforeach; ?>
