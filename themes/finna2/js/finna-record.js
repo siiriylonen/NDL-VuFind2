@@ -157,11 +157,7 @@ finna.record = (function finnaRecord() {
       }
     });
     $('.record-holdings-table:not(.electronic-holdings) .holdings-container-heading').on('click', function onClickHeading(e) {
-      if ($('.location', this).parent().attr('aria-expanded') === 'false') {
-        $('.location', this).parent().attr('aria-expanded', 'true');
-      } else {
-        $('.location', this).parent().attr('aria-expanded', 'false');
-      }
+      $(this).attr('aria-expanded', function changeAria(i, attr) { return attr === 'false' ? 'true' : 'false'; });
       if ($(e.target).hasClass('location-service') || $(e.target).parents().hasClass('location-service')) {
         return;
       }
