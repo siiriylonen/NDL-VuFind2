@@ -2103,7 +2103,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             //Descriptions divided to typed and untyped
             foreach ($node->descriptiveNoteValue ?? [] as $node) {
                 if ($type == 'description') {
-                    $descriptionsTyped[] = $node;          
+                    $descriptionsTyped[] = $node;
                 } elseif (empty($type)) {
                     $descriptionsUntyped[] = $node;
                 }
@@ -2124,29 +2124,44 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }
         //Check for matching language variations and compare to title
         if ($descriptionsTyped) {
-            $termsTyped = $this->getAllLanguageSpecificItems($descriptionsTyped, $language);
+            $termsTyped = $this->getAllLanguageSpecificItems(
+                $descriptionsTyped,
+                $language
+            );
             $checkDesc = [];
             foreach ($termsTyped as $item) {
                 $checkDesc[] = (string)$item;
                 array_unique($checkDesc);
                 if (implode('; ', $checkDesc) == $this->getTitle()) {
-                    unset($descriptionsTyped[array_search($item, $descriptionsTyped)]);
+                    unset(
+                        $descriptionsTyped[array_search($item, $descriptionsTyped)]
+                    );
                 }
             }
         }
         if ($descriptionsUntyped) {
-            $termsUntyped = $this->getAllLanguageSpecificItems($descriptionsUntyped, $language);
+            $termsUntyped = $this->getAllLanguageSpecificItems(
+                $descriptionsUntyped,
+                $language
+            );
             $checkDesc = [];
             foreach ($termsUntyped as $item) {
                 $checkDesc[] = (string)$item;
                 array_unique($checkDesc);
                 if (implode('; ', $checkDesc) == $this->getTitle()) {
-                    unset($descriptionsUntyped[array_search($item, $descriptionsUntyped)]);
+                    unset(
+                        $descriptionsUntyped[
+                            array_search($item, $descriptionsUntyped)
+                        ]
+                    );
                 }
             }
         }
         if ($subjectsLabeled) {
-            $termsTyped = $this->getAllLanguageSpecificItems($subjectsLabeled, $language);
+            $termsTyped = $this->getAllLanguageSpecificItems(
+                $subjectsLabeled,
+                $language
+            );
             $checkDesc = [];
             foreach ($termsTyped as $item) {
                 $checkDesc[] = (string)$item;
@@ -2157,13 +2172,18 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             }
         }
         if ($subjectsUnlabeled) {
-            $termsUntyped = $this->getAllLanguageSpecificItems($subjectsUnlabeled, $language);
+            $termsUntyped = $this->getAllLanguageSpecificItems(
+                $subjectsUnlabeled,
+                $language
+            );
             $checkDesc = [];
             foreach ($termsUntyped as $item) {
                 $checkDesc[] = (string)$item;
                 array_unique($checkDesc);
                 if (implode('; ', $checkDesc) == $this->getTitle()) {
-                    unset($subjectsUnlabeled[array_search($item, $subjectsUnlabeled)]);
+                    unset(
+                        $subjectsUnlabeled[array_search($item, $subjectsUnlabeled)]
+                    );
                 }
             }
         }
@@ -2173,14 +2193,18 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $untyped = false;
         $checkDesc = [];
         foreach ($descriptionsTyped as $item) {
-            if (property_exists($item, 'lang') && $item->attributes()->lang == $language) {
+            if (property_exists($item, 'lang')
+                && $item->attributes()->lang == $language
+            ) {
                 $typed = true;
                 break;
-            } 
+            }
         }
         if (!$typed) {
             foreach ($descriptionsUntyped as $item) {
-                if (property_exists($item, 'lang') && $item->attributes()->lang == $language) {
+                if (property_exists($item, 'lang')
+                    && $item->attributes()->lang == $language
+                ) {
                     $untyped = true;
                     break;
                 }
@@ -2199,14 +2223,18 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             $typed = false;
             $untyped = false;
             foreach ($subjectsLabeled as $item) {
-                if (property_exists($item, 'lang') && $item->attributes()->lang == $language) {
+                if (property_exists($item, 'lang')
+                    && $item->attributes()->lang == $language
+                ) {
                     $typed = true;
                     break;
-                } 
+                }
             }
             if (!$typed) {
                 foreach ($subjectsUnlabeled as $item) {
-                    if (property_exists($item, 'lang') && $item->attributes()->lang == $language) {
+                    if (property_exists($item, 'lang')
+                        && $item->attributes()->lang == $language
+                    ) {
                         $untyped = true;
                         break;
                     }
