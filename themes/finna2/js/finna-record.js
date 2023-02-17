@@ -39,7 +39,7 @@ finna.record = (function finnaRecord() {
       $('.record .description .more-link.wide').click();
       sessionStorage.setItem('finna_record_details', '1');
       $(this).blur();
-      $(this).siblings('.hide-details-button').focus();
+      $(this).siblings('table.table').focus();
     });
     $('.hide-details-button').click (function onClickHideDetailsButton() {
       $('.record-information .record-details-more').addClass('hidden');
@@ -53,9 +53,17 @@ finna.record = (function finnaRecord() {
     if ($('.record-information').height() > 350 && $('.show-details-button')[0]) {
       $('.record-information .description').addClass('too-long');
       if (sessionStorage.getItem('finna_record_details')) {
-        $('.show-details-button').click();
+        $('.record-information .record-details-more').removeClass('hidden');
+        $(this).addClass('hidden');
+        $('.hide-details-button').removeClass('hidden');
+        $('.record .description .more-link.wide').click();
+        sessionStorage.setItem('finna_record_details', '1');
       } else {
-        $('.hide-details-button').click();
+        $('.record-information .record-details-more').addClass('hidden');
+        $(this).addClass('hidden');
+        $('.show-details-button').removeClass('hidden');
+        $('.record .description .less-link.wide').click();
+        sessionStorage.removeItem('finna_record_details');
       }
     }
   }
