@@ -1,5 +1,6 @@
 <?php
     $documents = $this->driver->getDocuments();
+    $i = 1;
     foreach ($documents as $i => $document):
         $language = $this->layout()->userLang;
         $description = $document['description'] ?: $this->translate('Download the file');
@@ -27,19 +28,20 @@
                     <?=$this->escapeHtmlAttr($rights['copyright']);?>
                 </span>
                 <?php endif; ?>
-                <button class="show-info cc-info more-link" aria-expanded="false">
-                    <?=$this->transEsc('Additional Information')?> <?=$this->icon('truncate-more')?>)
-                </button>
-                <button class="hide-info cc-info hide less-link" aria-expanded="false">
-                    <?=$this->transEsc('more_info_hide')?> <?=$this->icon('truncate-less')?>)
+                <button class="show-hide-button show-info more-link" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
+                    <?=$this->transEsc('Additional Information')?> <?=$this->icon('truncate-more')?>
                 </button>
             </div>
         </div>
-        <div class="cc-info hide">
+        <div id="cc_info_<?= $i ?>" class="cc-info collapse">
             <p class="access-rights"><?=$this->escapeHtmlAttr(implode("<br/>", $rightsDescription));?></p>
+            <button class="hide-info less-link" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
+                <?=$this->transEsc('more_info_hide')?> <?=$this->icon('truncate-less')?>
+            </button>
         </div>
-        <button class="cc-info hide hide-info less-link" aria-expanded="false">
-            <?=$this->transEsc('more_info_hide')?> <?=$this->icon('truncate-less')?>
-        </button>        
+        
     </li>
-<?php endforeach; ?>
+<?php
+    endforeach;
+    $i++;
+?>

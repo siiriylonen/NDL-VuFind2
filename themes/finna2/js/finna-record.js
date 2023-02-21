@@ -29,13 +29,19 @@ finna.record = (function finnaRecord() {
           description.hide();
         });
     }
-    $('.show-info').button().on('click', function handleClick() {
-      $(this).parents('li').find('.cc-info').toggleClass('hide');
-      $('button.cc-info').attr('aria-expanded', function changeAria(i, attr) { return attr === 'false' ? 'true' : 'false'; });
+    var buttonText = document.querySelectorAll('.show-hide-button');
+    var more = VuFind.translate('Additional Information') + ' ' + VuFind.icon("truncate-more") + ')';
+    var less = VuFind.translate('more_info_hide') + ' ' + VuFind.icon("truncate-less") + ')';
+    buttonText.forEach(function setText(item) {
+      item.innerHTML = more;
     });
-    $('.hide-info').button().on('click', function handleClick() {
-      $(this).parents('li').find('.cc-info').toggleClass('hide');
-      $('button.cc-info').attr('aria-expanded', function changeAria(i, attr) { return attr === 'false' ? 'true' : 'false'; });
+    $('.show-hide-button').on('click', function handleClick() {
+      $(this).toggleClass('active');
+      if (this.classList.contains('active')) {
+        this.innerHTML = less;
+      } else {
+        this.innerHTML = more;
+      }
     });
   }
 
