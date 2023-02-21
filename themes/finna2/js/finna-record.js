@@ -30,8 +30,8 @@ finna.record = (function finnaRecord() {
         });
     }
     var buttonText = document.querySelectorAll('.show-hide-button');
-    var more = $('.show-hide-button.more-link').html();
-    var less = $('.hide-info.less-link').html();
+    var more = $('.show-hide-button').html();
+    var less = $('.hide-info').html();
     buttonText.forEach(function setText(item) {
       item.innerHTML = more;
     });
@@ -426,7 +426,7 @@ finna.record = (function finnaRecord() {
         container.style.marginLeft = marginLeft + 'px';
       }
     };
-    
+
     document.addEventListener('mouseup', function onMouseUp(e) {
       document.querySelectorAll('.inline-linked-field.open').forEach((element) => {
         if (!element.contains(e.target)) {
