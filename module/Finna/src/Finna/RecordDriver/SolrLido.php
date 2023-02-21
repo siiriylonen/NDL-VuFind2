@@ -2083,6 +2083,26 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     }
 
     /**
+     * Compare the title of the element to the title of the current object
+     *
+     * @param array $compare An array of items compared to title
+     *
+     * @return array
+     */
+    protected function compareTitle(array $compare): array
+    {
+        $compareDone = [];
+        $title = str_replace([',', ';'], ' ', $this->getTitle());
+        foreach ($compare as $item) {
+            $checkTitle = str_replace([',', ';'], ' ', (string)$item) != $title;
+            if ($checkTitle) {
+                $compareDone[] = (string)$item;
+            }
+        }
+        return array_unique($compareDone);
+    }
+
+    /**
      * Get the displaysubject and description info to summary
      *
      * @return array $results with summary from displaySubject or description field
@@ -2092,6 +2112,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $descriptions = [];
         $descriptionsTyped = [];
         $descriptionsUntyped = [];
+        $subjectsLabeled = [];
+        $subjectsUnlabeled = [];
         $language = $this->getLocale();
         //Collect all fitting description objects
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
@@ -2107,133 +2129,39 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         }
-        //Check for matching language variations and compare to title
-        if ($descriptionsTyped) {
-            $termsTyped = $this->getAllLanguageSpecificItems(
-                $descriptionsTyped,
+        //Collect all fitting subject objects
+        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
+            ->objectRelationWrap->subjectWrap->subjectSet ?? [] as $node) {
+            foreach ($node->displaySubject ?? [] as $node) {
+                $label = $node->attributes()->label;
+                //Subjects divided to labeled and unlabeled
+                if ($label == 'aihe') {
+                    $subjectsLabeled[] = $node;
+                }
+                if ($label == '') {
+                    $subjectsUnlabeled[] = $node;
+                }
+            }
+        }
+        //Check for matching language variations
+        if ($descriptionsTyped ?: $descriptionsUntyped) {
+            $descriptions = $this->getAllLanguageSpecificItems(
+                $descriptionsTyped ?: $descriptionsUntyped,
                 $language
             );
-            $checkDesc = [];
-            foreach ($termsTyped as $item) {
-                $checkDesc[] = (string)$item;
-                array_unique($checkDesc);
-                if (implode('; ', $checkDesc) == $this->getTitle()) {
-                    unset(
-                        $descriptionsTyped[array_search($item, $descriptionsTyped)]
-                    );
-                }
-            }
         }
-        if ($descriptionsUntyped) {
-            $termsUntyped = $this->getAllLanguageSpecificItems(
-                $descriptionsUntyped,
-                $language
-            );
-            $checkDesc = [];
-            foreach ($termsUntyped as $item) {
-                $checkDesc[] = (string)$item;
-                array_unique($checkDesc);
-                if (implode('; ', $checkDesc) == $this->getTitle()) {
-                    unset(
-                        $descriptionsUntyped[
-                            array_search($item, $descriptionsUntyped)
-                        ]
-                    );
-                }
-            }
-        }
-        //Similarly collect and handle all fitting subject objects
-        if (!$descriptionsTyped && !$descriptionsUntyped) {
-            foreach ($this->getXmlRecord()->lido->descriptiveMetadata
-                ->objectRelationWrap->subjectWrap->subjectSet ?? [] as $node) {
-                foreach ($node->displaySubject ?? [] as $node) {
-                    $label = $node->attributes()->label;
-                    //Subjects divided to typed and untyped
-                    if ($label == 'aihe') {
-                        $descriptionsTyped[] = $node;
-                    }
-                    if ($label == '') {
-                        $descriptionsUntyped[] = $node;
-                    }
-                }
-            }
-            if ($descriptionsTyped) {
-                $termsTyped = $this->getAllLanguageSpecificItems(
-                    $descriptionsTyped,
+        if (!$descriptions) {
+            if ($subjectsLabeled ?: $subjectsUnlabeled) {
+                $descriptions = $this->getAllLanguageSpecificItems(
+                    $subjectsLabeled ?: $subjectsUnlabeled,
                     $language
                 );
-                $checkDesc = [];
-                foreach ($termsTyped as $item) {
-                    $checkDesc[] = (string)$item;
-                    array_unique($checkDesc);
-                    if (implode('; ', $checkDesc) == $this->getTitle()) {
-                        unset(
-                            $descriptionsTyped[array_search(
-                                $item,
-                                $descriptionsTyped
-                            )]
-                        );
-                    }
-                }
-            }
-            if ($descriptionsUntyped) {
-                $termsUntyped = $this->getAllLanguageSpecificItems(
-                    $descriptionsUntyped,
-                    $language
-                );
-                $checkDesc = [];
-                foreach ($termsUntyped as $item) {
-                    $checkDesc[] = (string)$item;
-                    array_unique($checkDesc);
-                    if (implode('; ', $checkDesc) == $this->getTitle()) {
-                        unset(
-                            $descriptionsUntyped[array_search(
-                                $item,
-                                $descriptionsUntyped
-                            )]
-                        );
-                    }
-                }
             }
         }
-        //Check for and prioritize correct language over type
-        $typed = false;
-        $untyped = false;
-        $checkDesc = [];
-        foreach ($descriptionsTyped as $item) {
-            if (property_exists($item, 'lang')
-                && $item->attributes()->lang == $language
-            ) {
-                $typed = true;
-                break;
-            }
-        }
-        if (!$typed) {
-            foreach ($descriptionsUntyped as $item) {
-                if (property_exists($item, 'lang')
-                    && $item->attributes()->lang == $language
-                ) {
-                    $untyped = true;
-                    break;
-                }
-            }
-        }
-        if ($typed) {
-            $checkDesc = $descriptionsTyped;
-        } elseif (!$typed && $untyped) {
-            $checkDesc = $descriptionsUntyped;
-        } elseif ($descriptionsTyped) {
-            $checkDesc = $descriptionsTyped;
-        } elseif ($descriptionsUntyped) {
-            $checkDesc = $descriptionsUntyped;
-        }
+        //Check title
+        $descriptions = $this->compareTitle($descriptions);
 
-        //Set the shown description
-        $terms = $this->getAllLanguageSpecificItems($checkDesc, $language);
-        foreach ($terms as $item) {
-            $descriptions[] = (string)$item;
-        }
-        return array_unique($descriptions);
+        return $descriptions;
     }
 
     /**
