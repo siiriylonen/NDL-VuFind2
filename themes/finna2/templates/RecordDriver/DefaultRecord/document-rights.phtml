@@ -1,6 +1,6 @@
 <?php
     $documents = $this->driver->getDocuments();
-    $i = 1;
+    static $i = 1;
     foreach ($documents as $i => $document):
         $language = $this->layout()->userLang;
         $description = $document['description'] ?: $this->translate('Download the file');

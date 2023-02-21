@@ -30,8 +30,8 @@ finna.record = (function finnaRecord() {
         });
     }
     var buttonText = document.querySelectorAll('.show-hide-button');
-    var more = VuFind.translate('Additional Information') + ' ' + VuFind.icon("truncate-more") + ')';
-    var less = VuFind.translate('more_info_hide') + ' ' + VuFind.icon("truncate-less") + ')';
+    var more = $('.show-hide-button.more-link').html();
+    var less = $('.hide-info.less-link').html();
     buttonText.forEach(function setText(item) {
       item.innerHTML = more;
     });
@@ -426,6 +426,7 @@ finna.record = (function finnaRecord() {
         container.style.marginLeft = marginLeft + 'px';
       }
     };
+    
     document.addEventListener('mouseup', function onMouseUp(e) {
       document.querySelectorAll('.inline-linked-field.open').forEach((element) => {
         if (!element.contains(e.target)) {
