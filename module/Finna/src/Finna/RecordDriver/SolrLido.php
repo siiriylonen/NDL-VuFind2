@@ -2089,7 +2089,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      *
      * @return array
      */
-    protected function compareTitle(array $compare): array
+    protected function compareToTitle(array $compare): array
     {
         $compareDone = [];
         $title = str_replace([',', ';'], ' ', $this->getTitle());
@@ -2159,7 +2159,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             }
         }
         //Check title
-        $descriptions = $this->compareTitle($descriptions);
+        $descriptions = $this->compareToTitle($descriptions);
 
         return $descriptions;
     }
