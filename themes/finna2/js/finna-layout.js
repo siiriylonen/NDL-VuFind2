@@ -59,6 +59,7 @@ finna.layout = (function finnaLayout() {
 
     var truncation = [];
     var rowHeight = [];
+    $(holder).find('.truncate-field').parent().attr('tabindex', '-1');
     $(holder).find('.truncate-field').not('.truncate-done').each(function handleTruncate(index) {
       var self = $(this);
       self.addClass('truncate-done');
@@ -100,11 +101,15 @@ finna.layout = (function finnaLayout() {
           self.siblings('.less-link').hide();
           self.siblings('.more-link').show();
           self.css('height', truncation[index] - 1 + 'px');
+          self.blur();
+          self.siblings('.more-link').focus();
         });
         moreLink.on('click', function showMore() {
           self.siblings('.more-link').hide();
           self.siblings('.less-link').show();
           self.css('height', 'auto');
+          self.blur();
+          self.parent().focus();
         });
         lessLink.hide();
 
