@@ -29,9 +29,9 @@ finna.record = (function finnaRecord() {
           description.hide();
         });
     }
-    var buttonText = document.querySelectorAll('.show-hide-button');
     var more = $('.show-hide-button').html();
     var less = $('.hide-info').html() + "<span id='bracket'>)</span>";
+    var buttonText = document.querySelectorAll('.show-hide-button');
     buttonText.forEach(function setText(item) {
       item.innerHTML = more;
     });
@@ -44,7 +44,14 @@ finna.record = (function finnaRecord() {
       }
     });
     $('.hide-info').on('click', function handleClick() {
-      $('.show-hide-button').click();
+      var element = $(this).parents('.fulltextField');
+      var button = element.find('.show-hide-button');
+      button.toggleClass('active');
+      if (button.hasClass('active')) {
+        button.html(less);
+      } else {
+        button.html(more);
+      }
     });
   }
 
