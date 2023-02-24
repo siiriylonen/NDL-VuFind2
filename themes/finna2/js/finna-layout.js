@@ -21,6 +21,14 @@ finna.layout = (function finnaLayout() {
       || (navigator.maxTouchPoints > 0)
       || (navigator.msMaxTouchPoints > 0)); // IE10, IE11, Edge
   }
+  //Add class on tables sizes
+  $(window).resize(function changeHappened() {
+    if ($(window).width() <= 992) {
+      $('#language_menu').addClass('nav nav-absolute');
+    } else if ($(window).width() >= 768) {
+      $('#language_menu').removeClass('nav nav-absolute');
+    }
+  });
 
   // Append current anchor (location.hash) to selected links
   // in order to preserve the anchor when the link is clicked.

@@ -21,7 +21,7 @@
         $lang = $this->layout()->userLang;
         $selectedLang = $this->layout()->allLangs[$lang];
       ?>
-      <div class="language-menu-mobile">
+      <div class="language-menu-mobile visible-xs">
         <button class="btn collapse-mobile" aria-label="<?=$this->transEscAttr('select_language')?>" type="button" id="collapseMenuButton" data-toggle="collapse" data-target="#language_menu_mobile" aria-haspopup="true" aria-expanded="false">
           <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <b class="caret"></b>
         </button>
@@ -119,7 +119,7 @@
         <?php endif; ?>
       </ul>
       <!-- Language menu on desktop --->
-      <div id="language_menu" class="dropdown" role="navigation" aria-label="<?=$this->transEscAttr('select_language')?>">
+      <div id="language_menu" class="dropdown hidden-xs" role="navigation" aria-label="<?=$this->transEscAttr('select_language')?>">
         <a href="#" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <b class="caret"></b>
         </a>
