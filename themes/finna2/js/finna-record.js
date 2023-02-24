@@ -31,7 +31,7 @@ finna.record = (function finnaRecord() {
     }
     var buttonText = document.querySelectorAll('.show-hide-button');
     var more = $('.show-hide-button').html();
-    var less = $('.hide-info').html();
+    var less = $('.hide-info').html() + "<span id='bracket'>)</span>";
     buttonText.forEach(function setText(item) {
       item.innerHTML = more;
     });
@@ -42,6 +42,9 @@ finna.record = (function finnaRecord() {
       } else {
         this.innerHTML = more;
       }
+    });
+    $('.hide-info').on('click', function handleClick() {
+      $('.show-hide-button').click();
     });
   }
 
