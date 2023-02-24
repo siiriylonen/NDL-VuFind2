@@ -29,14 +29,14 @@
                 </span>
                 <?php endif; ?>
                 <button class="show-hide-button show-info more-link" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
-                    <?=$this->transEsc('Additional Information')?> <?=$this->icon('truncate-more')?>)
+                    <?=$this->transEsc('copyright_info_show')?> <?=$this->icon('truncate-more')?>)
                 </button>
             </div>
         </div>
         <div id="cc_info_<?= $i ?>" class="cc-info collapse">
             <p class="access-rights"><?=$this->escapeHtmlAttr(implode("<br/>", $rightsDescription));?></p>
             <button class="hide-info less-link" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
-                <?=$this->transEsc('more_info_hide')?> <?=$this->icon('truncate-less')?>)
+                <?=$this->transEsc('copyright_info_hide')?> <?=$this->icon('truncate-less')?>
             </button>
         </div>
         
