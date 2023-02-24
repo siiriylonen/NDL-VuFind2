@@ -210,7 +210,6 @@ $config = [
         'finna-item-status.js',
         'finna-adv-search.js',
         'finna-daterange-vis.js',
-        'finna-feed.js',
         'finna-layout.js',
         'finna-linked-events.js',
         'finna-openurl.js',
@@ -255,6 +254,7 @@ $config = [
         'finna-multiselect.js',
         'finna-model-viewer.js',
         'finna-video-element.js',
+        'finna-feed-element.js',
     ],
     'less' => [
         'active' => false
