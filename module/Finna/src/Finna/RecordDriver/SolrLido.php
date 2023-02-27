@@ -2066,6 +2066,26 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
 
         return $element;
     }
+    
+    /**
+      * Compare the title of the element to the title of the current object
+      *
+      * @param array $compare An array of items compared to title
+      *
+      * @return array
+      */
+      protected function compareToTitle(array $compare): array
+      {
+          $compareDone = [];
+          $title = str_replace([',', ';'], ' ', $this->getTitle());
+          foreach ($compare as $item) {
+              $checkTitle = str_replace([',', ';'], ' ', (string)$item) != $title;
+              if ($checkTitle) {
+                  $compareDone[] = (string)$item;
+              }
+          }
+          return array_unique($compareDone);
+      }
 
     /**
      * Get the displaysubject and description info to summary
@@ -2074,39 +2094,50 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getSummary()
     {
-        $results = [];
-        $label = null;
-        $title = str_replace([',', ';'], ' ', $this->getTitle());
-        foreach ($this->getXmlRecord()->xpath(
-            'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet'
-        ) as $node) {
-            $subject = $node->displaySubject;
-            $checkTitle = str_replace([',', ';'], ' ', (string)$subject) != $title;
-            foreach ($subject as $attributes) {
-                $label = $attributes->attributes()->label;
-                if (($label == 'aihe' || $label == null) && $checkTitle) {
-                    $results[] = (string)$subject;
+        $descriptions = [];
+        $descriptionsTyped = [];
+        $descriptionsUntyped = [];
+        $subjectsLabeled = [];
+        $subjectsUnlabeled = [];
+        //Collect all fitting description objects
+        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
+             ->objectIdentificationWrap->objectDescriptionWrap->objectDescriptionSet
+             ?? [] as $node) {
+             $type = $node->attributes()->type;
+             //Descriptions divided to typed and untyped
+             foreach ($node->descriptiveNoteValue ?? [] as $node) {
+                 if ($type == 'description') {
+                     $descriptionsTyped[] = $node;
+                 } elseif (empty($type)) {
+                     $descriptionsUntyped[] = $node;
+                 }
+             }
+         }
+
+        //Collect all fitting subject objects
+        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
+        ->objectRelationWrap->subjectWrap->subjectSet ?? [] as $node) {
+            foreach ($node->displaySubject ?? [] as $node) {
+            $label = $node->attributes()->label;
+                //Subjects divided to labeled and unlabeled
+                if ($label == 'aihe') {
+                    $subjectsLabeled[] = $node;
+                }
+                if ($label == '') {
+                    $subjectsUnlabeled[] = $node;
                 }
             }
         }
-
-        $preferredLanguages = $this->getPreferredLanguageCodes();
-        foreach ($this->getXmlRecord()->xpath(
-            'lido/descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap'
-            . '/objectDescriptionSet[@type="description"]/descriptiveNoteValue'
-        ) as $node) {
-            if (in_array((string)$node->attributes()->lang, $preferredLanguages)) {
-                if ($term = trim((string)$node)) {
-                    $results[] = $term;
-                }
-            }
+        //Set the descriptions
+        foreach( $descriptionsTyped ?: $descriptionsUntyped as $description) {
+            $descriptions[] = (string)$description;
         }
-
-        if (!$results && !empty($this->fields['description'])) {
-            $results[] = (string)($this->fields['description']) != $title
-                ? (string)$this->fields['description'] : '';
+        foreach ($subjectsLabeled ?: $subjectsUnlabeled as $subject) {
+            $descriptions[] = (string)$subject;
         }
-        return array_unique($results);
+        $descriptions = $this->compareToTitle($descriptions);
+
+        return $descriptions;
     }
 
     /**
