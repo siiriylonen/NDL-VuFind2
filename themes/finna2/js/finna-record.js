@@ -30,7 +30,7 @@ finna.record = (function finnaRecord() {
         });
     }
     var more = $('.show-hide-button').html();
-    var less = $('.hide-info').html() + "<span id='bracket'>)</span>";
+    var less = $('.hide-info').html();
     var buttonText = document.querySelectorAll('.show-hide-button');
     buttonText.forEach(function setText(item) {
       item.innerHTML = more;
