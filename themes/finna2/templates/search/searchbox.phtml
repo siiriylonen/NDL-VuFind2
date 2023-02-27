@@ -67,8 +67,7 @@
     $showFilters = $filterDetails && ($results || $options->getRetainFilterSetting());
 
     // Set up filters
-    $this->layout()->finnaFilters = $showFilters
-      ? $this->context($this)->renderInContext(
+    $this->layout()->finnaFilters = $showFilters ? $this->context($this)->renderInContext(
         'search/filters.phtml',
         [
             'filterList' => $filterList,
@@ -77,7 +76,7 @@
             'options' => $options,
             'params' => $params
         ]
-      ) : '';
+    ) : '';
 
     $searchTabs = $this->searchtabs()->getTabConfig($this->searchClassId, $this->lookfor, $this->searchIndex, $this->searchType, $hiddenFilters, $this->layout()->savedTabs);
 
