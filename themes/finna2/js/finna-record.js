@@ -52,6 +52,8 @@ finna.record = (function finnaRecord() {
       } else {
         button.html(more);
       }
+      $(this).blur();
+      button.focus();
     });
   }
 
