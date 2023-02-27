@@ -2066,26 +2066,26 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
 
         return $element;
     }
-    
+
     /**
-      * Compare the title of the element to the title of the current object
-      *
-      * @param array $compare An array of items compared to title
-      *
-      * @return array
-      */
-      protected function compareToTitle(array $compare): array
-      {
-          $compareDone = [];
-          $title = str_replace([',', ';'], ' ', $this->getTitle());
-          foreach ($compare as $item) {
-              $checkTitle = str_replace([',', ';'], ' ', (string)$item) != $title;
-              if ($checkTitle) {
-                  $compareDone[] = (string)$item;
-              }
-          }
-          return array_unique($compareDone);
-      }
+     * Compare the title of the element to the title of the current object
+     *
+     * @param array $compare An array of items compared to title
+     *
+     * @return array
+     */
+    protected function compareToTitle(array $compare): array
+    {
+        $compareDone = [];
+        $title = str_replace([',', ';'], ' ', $this->getTitle());
+        foreach ($compare as $item) {
+            $checkTitle = str_replace([',', ';'], ' ', (string)$item) != $title;
+            if ($checkTitle) {
+                $compareDone[] = (string)$item;
+            }
+        }
+        return array_unique($compareDone);
+    }
 
     /**
      * Get the displaysubject and description info to summary
@@ -2103,22 +2103,22 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
              ->objectIdentificationWrap->objectDescriptionWrap->objectDescriptionSet
              ?? [] as $node) {
-             $type = $node->attributes()->type;
-             //Descriptions divided to typed and untyped
-             foreach ($node->descriptiveNoteValue ?? [] as $node) {
-                 if ($type == 'description') {
-                     $descriptionsTyped[] = $node;
-                 } elseif (empty($type)) {
-                     $descriptionsUntyped[] = $node;
-                 }
-             }
-         }
+            $type = $node->attributes()->type;
+            //Descriptions divided to typed and untyped
+            foreach ($node->descriptiveNoteValue ?? [] as $node) {
+                if ($type == 'description') {
+                    $descriptionsTyped[] = $node;
+                } elseif (empty($type)) {
+                    $descriptionsUntyped[] = $node;
+                }
+            }
+        }
 
         //Collect all fitting subject objects
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
-        ->objectRelationWrap->subjectWrap->subjectSet ?? [] as $node) {
+            ->objectRelationWrap->subjectWrap->subjectSet ?? [] as $node) {
             foreach ($node->displaySubject ?? [] as $node) {
-            $label = $node->attributes()->label;
+                $label = $node->attributes()->label;
                 //Subjects divided to labeled and unlabeled
                 if ($label == 'aihe') {
                     $subjectsLabeled[] = $node;
@@ -2129,7 +2129,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             }
         }
         //Set the descriptions
-        foreach( $descriptionsTyped ?: $descriptionsUntyped as $description) {
+        foreach ($descriptionsTyped ?: $descriptionsUntyped as $description) {
             $descriptions[] = (string)$description;
         }
         foreach ($subjectsLabeled ?: $subjectsUnlabeled as $subject) {
