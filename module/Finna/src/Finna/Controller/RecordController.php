@@ -235,11 +235,7 @@ class RecordController extends \VuFind\Controller\RecordController
             return $response;
         }
 
-        $view = parent::showTab($tab, $ajax);
-        //$view->scrollData = $this->resultScroller()->getScrollData($driver);
-
-        $this->getSearchMemory()->rememberScrollData($view->scrollData);
-        return $view;
+        return parent::showTab($tab, $ajax);
     }
 
     /**
