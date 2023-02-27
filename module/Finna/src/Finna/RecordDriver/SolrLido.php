@@ -2094,6 +2094,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getSummary()
     {
+        $collected = [];
         $descriptions = [];
         $descriptionsTyped = [];
         $descriptionsUntyped = [];
@@ -2129,13 +2130,22 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             }
         }
         //Set the descriptions
-        foreach ($descriptionsTyped ?: $descriptionsUntyped as $description) {
-            $descriptions[] = (string)$description;
+        if ($descriptionsTyped ?: $descriptionsUntyped) {
+            $collected[] = $this->compareToTitle(
+                $descriptionsTyped ?: $descriptionsUntyped
+            );
+            foreach ($collected as $item) {
+                $descriptions[] = implode(PHP_EOL, $item);
+            }
         }
-        foreach ($subjectsLabeled ?: $subjectsUnlabeled as $subject) {
-            $descriptions[] = (string)$subject;
+        if ($subjectsLabeled ?: $subjectsUnlabeled) {
+            $collected[] = $this->compareToTitle(
+                $subjectsLabeled ?: $subjectsUnlabeled
+            );
+            foreach ($collected as $item) {
+                $descriptions[] = implode(PHP_EOL, $item);
+            }
         }
-        $descriptions = $this->compareToTitle($descriptions);
 
         return $descriptions;
     }
