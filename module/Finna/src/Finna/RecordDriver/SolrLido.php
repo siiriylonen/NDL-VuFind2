@@ -2109,6 +2109,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getSummary()
     {
+        $collected = [];
         $descriptions = [];
         $descriptionsTyped = [];
         $descriptionsUntyped = [];
@@ -2121,46 +2122,52 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             ?? [] as $node) {
             $type = $node->attributes()->type;
             //Descriptions divided to typed and untyped
-            foreach ($node->descriptiveNoteValue ?? [] as $node) {
+            foreach ($node->descriptiveNoteValue ?? [] as $desc) {
                 if ($type == 'description') {
-                    $descriptionsTyped[] = $node;
+                    $descriptionsTyped[] = $desc;
                 } elseif (empty($type)) {
-                    $descriptionsUntyped[] = $node;
+                    $descriptionsUntyped[] = $desc;
                 }
             }
         }
         //Collect all fitting subject objects
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
             ->objectRelationWrap->subjectWrap->subjectSet ?? [] as $node) {
-            foreach ($node->displaySubject ?? [] as $node) {
-                $label = $node->attributes()->label;
+            foreach ($node->displaySubject ?? [] as $subj) {
+                $label = $subj->attributes()->label;
                 //Subjects divided to labeled and unlabeled
                 if ($label == 'aihe') {
-                    $subjectsLabeled[] = $node;
-                }
-                if ($label == '') {
-                    $subjectsUnlabeled[] = $node;
+                    $subjectsLabeled[] = $subj;
+                } elseif ($label == '') {
+                    $subjectsUnlabeled[] = $subj;
                 }
             }
         }
         //Check for matching language variations
+        //And check for items matching object title
         if ($descriptionsTyped ?: $descriptionsUntyped) {
-            $descriptions = $this->getAllLanguageSpecificItems(
+            $collectedDesc = $this->getAllLanguageSpecificItems(
                 $descriptionsTyped ?: $descriptionsUntyped,
                 $language
             );
+            $collected[] = $this->compareToTitle($collectedDesc);
         }
-        if (!$descriptions) {
-            if ($subjectsLabeled ?: $subjectsUnlabeled) {
-                $descriptions = $this->getAllLanguageSpecificItems(
-                    $subjectsLabeled ?: $subjectsUnlabeled,
-                    $language
-                );
+        if ($subjectsLabeled ?: $subjectsUnlabeled) {
+            $collectedSubj = $this->getAllLanguageSpecificItems(
+                $subjectsLabeled ?: $subjectsUnlabeled,
+                $language
+            );
+            $collected[] = $this->compareToTitle($collectedSubj);
+        }
+        foreach ($collected as $item) {
+            if (is_array($item)) {
+                foreach ($item as $part) {
+                    $descriptions[] = (string)$part;
+                }
+            } else {
+                $descriptions[] = (string)$item;
             }
         }
-        //Check title
-        $descriptions = $this->compareToTitle($descriptions);
-
         return $descriptions;
     }
 

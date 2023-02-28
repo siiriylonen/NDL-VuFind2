@@ -475,6 +475,42 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function getSummaryData()
+    {
+        return [
+            [
+                'lido_test.xml',
+                ['Visible description.','Näkyy subject labeled.'],
+                []
+
+            ],
+            [
+                'lido_test2.xml',
+                ['Näkyy description untyped.', 'Synas description untyped.', 'Näkyy subject unlabeled.'],
+                ['title' => 'Otsikko']
+            ]
+
+        ];
+    }
+
+    /**
+     *
+     *
+     *
+     * @dataProvider getSummaryData
+     */
+    public function testGetSummary(
+        $xmlFile,
+        $expected,
+        $rawData
+    ) {
+        $driver = $this->getDriver($xmlFile, [], [], $rawData);
+        $this->assertEquals(
+            $expected,
+            $driver->getSummary()
+        );
+    }
+
     /**
      * Get a record driver with fake data
      *
@@ -487,7 +523,8 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
     protected function getDriver(
         string $recordXml,
         $overrides = [],
-        $searchConfig = []
+        $searchConfig = [],
+        $rawData = []
     ): SolrLido {
         $fixture = $this->getFixture("lido/$recordXml", 'Finna');
         $config = [
@@ -506,14 +543,15 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
             $config,
             new \Laminas\Config\Config($searchConfig)
         );
-        $record->setRawData(
-            [
-                'id' => 'knp-247394',
-                'fullrecord' => $fixture,
-                'usage_rights_str_mv' => [
-                    'usage_A'
-                ]
+        $defaultData = [
+            'id' => 'knp-247394',
+            'fullrecord' => $fixture,
+            'usage_rights_str_mv' => [
+                'usage_A'
             ]
+        ];
+        $record->setRawData(
+            array_merge($defaultData, $rawData)
         );
         return $record;
     }
