@@ -2150,24 +2150,22 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 $descriptionsTyped ?: $descriptionsUntyped,
                 $language
             );
-            $collected[] = $this->compareToTitle($collectedDesc);
+            $collected = $this->compareToTitle($collectedDesc);
+            foreach ($collected as $item) {
+                $descriptions[] = (string)$item;
+            }
         }
         if ($subjectsLabeled ?: $subjectsUnlabeled) {
             $collectedSubj = $this->getAllLanguageSpecificItems(
                 $subjectsLabeled ?: $subjectsUnlabeled,
                 $language
             );
-            $collected[] = $this->compareToTitle($collectedSubj);
-        }
-        foreach ($collected as $item) {
-            if (is_array($item)) {
-                foreach ($item as $part) {
-                    $descriptions[] = (string)$part;
-                }
-            } else {
+            $collected = $this->compareToTitle($collectedSubj);
+            foreach ($collected as $item) {
                 $descriptions[] = (string)$item;
             }
         }
+
         return $descriptions;
     }
 
