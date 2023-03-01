@@ -4,6 +4,8 @@
     $patron = $user ? $this->auth()->getILSPatron() : false;
     $capabilityParams = $patron ? ['patron' => $patron] : [];
     $account = $this->auth()->getManager();
+    $lang = $this->layout()->userLang;
+    $selectedLang = $this->layout()->allLangs[$lang];
 ?>
 <div role="navigation" aria-label="<?=$this->transEscAttr('Main Menu')?>" class="finna-navbar">
   <div class="navbar-header">
@@ -16,45 +18,41 @@
   <?php if (!isset($this->layout()->renderingError)): ?>
     <div class="collapse navbar-collapse" id="header-collapse">
       <ul role="menubar" class="nav navbar-nav navbar-main">
-      <!-- Language menu on mobile -->
-       <?php
-         $lang = $this->layout()->userLang;
-         $selectedLang = $this->layout()->allLangs[$lang];
-       ?>
-       <div class="language-menu-mobile visible-xs">
-         <button class="btn collapse-mobile" aria-label="<?=$this->transEscAttr('select_language')?>" type="button" id="collapseMenuButton" data-toggle="collapse" data-target="#language_menu_mobile" aria-haspopup="true" aria-expanded="false">
-           <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <b class="caret"></b>
-         </button>
-         <ul id="language_menu_mobile" class="collapse" aria-labelledby="dropdownMenuButton">
-           <h2 class="dropdown-header">
-             <?=$this->transEscAttr('select_language')?>
-           </h2>
-           <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
-             <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
-               <?php if ($this->layout()->userLang == $langCode): ?>
-                 <li class="lang dropdown-item">
-                   <a class="preserve-anchor active" lang="<?=$this->escapeHtmlAttr($langCode)?>"> <?=$this->displayLanguageOption($langName)?></a>
-                 </li>
-                 <?php break; ?>
-               <?php endif ?>
-             <?php endforeach; ?>
-             <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
-               <?php if ($this->layout()->userLang != $langCode): ?>
-                 <li class="lang dropdown-item">
-                   <a class="preserve-anchor" lang="<?=$this->escapeHtmlAttr($langCode)?>" href="<?=$this->escapeHtmlAttr($this->navibar()->getLanguageUrl($langCode))?>"><?=$this->displayLanguageOption($langName)?></a>
-                 </li>
-               <?php endif ?>
-             <?php endforeach; ?>
-           <?php endif; ?>
-         </ul>
-       </div>
-       <!-- END -->
-        <?php foreach ($this->navibar()->getMenuItems($this->layout()->userLang) as $key => $val): ?>
-          <?php if (count($val['items']) > 1): ?>
-            <li class="dropdown" id="<?= $val['label'] ?>">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-nav-<?=$val['label'] ?>" aria-hidden="true"></i><?= $this->transEsc($val['label']) ?> <b class="caret" aria-hidden="true"></b></a>
-              <ul role="group" class="dropdown-menu" aria-labelledby="<?= $val['label'] ?>">
-                <?php foreach ($val['items'] as $itemKey => $itemVal): ?>
+
+      <div class="language-menu-mobile visible-xs">
+        <button class="btn collapse-mobile" aria-label="<?=$this->transEscAttr('select_language')?>" type="button" id="collapseMenuButton" data-toggle="collapse" data-target="#language_menu_mobile" aria-haspopup="true" aria-expanded="false">
+          <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <b class="caret"></b>
+        </button>
+        <ul id="language_menu_mobile" class="collapse" aria-labelledby="dropdownMenuButton">
+          <h2 class="dropdown-header">
+            <?=$this->transEscAttr('select_language')?>
+          </h2>
+          <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
+            <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
+              <?php if ($this->layout()->userLang == $langCode): ?>
+                <li class="lang dropdown-item">
+                  <a class="preserve-anchor active" lang="<?=$this->escapeHtmlAttr($langCode)?>"> <?=$this->displayLanguageOption($langName)?></a>
+                </li>
+                <?php break; ?>
+              <?php endif ?>
+            <?php endforeach; ?>
+            <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
+              <?php if ($this->layout()->userLang != $langCode): ?>
+                <li class="lang dropdown-item">
+                  <a class="preserve-anchor" lang="<?=$this->escapeHtmlAttr($langCode)?>" href="<?=$this->escapeHtmlAttr($this->navibar()->getLanguageUrl($langCode))?>"><?=$this->displayLanguageOption($langName)?></a>
+                </li>
+              <?php endif ?>
+            <?php endforeach; ?>
+          <?php endif; ?>
+        </ul>
+      </div>
+
+      <?php foreach ($this->navibar()->getMenuItems($this->layout()->userLang) as $key => $val): ?>
+        <?php if (count($val['items']) > 1): ?>
+          <li class="dropdown" id="<?= $val['label'] ?>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-nav-<?=$val['label'] ?>" aria-hidden="true"></i><?= $this->transEsc($val['label']) ?> <b class="caret" aria-hidden="true"></b></a>
+            <ul role="group" class="dropdown-menu" aria-labelledby="<?= $val['label'] ?>">
+              <?php foreach ($val['items'] as $itemKey => $itemVal): ?>
                 <?php
                   if (!($itemUrl = $this->navibar()->getMenuItemUrl($itemVal))) {
                     continue;
@@ -72,9 +70,9 @@
                     <?php endif; ?>
                   </a>
                 </li>
-                <?php endforeach; ?>
-              </ul>
-            </li>
+              <?php endforeach; ?>
+            </ul>
+          </li>
           <?php else:
             $itemVal = $val['items'][0];
             if (!($itemUrl = $this->navibar()->getMenuItemUrl($itemVal))) {
@@ -144,7 +142,6 @@
 
     <ul role="menubar" class="nav navbar-nav nav-absolute">
       <div class="lang-login-buttons">
-        <!-- Language menu on desktop --->
         <li id="language_menu" class="dropdown hidden-xs" role="navigation" aria-label="<?=$this->transEscAttr('select_language')?>">
          <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" role="menuitem" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
            <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <b class="caret"></b>
@@ -171,9 +168,8 @@
              <?php endforeach; ?>
            <?php endif; ?>
          </ul>
-               </li>
-  
-       <!-- END --->
+        </li>
+        
       <?php if (is_object($account) && $account->loginEnabled()): ?>
         <?php if ($user): ?>
           <li class="logoutOptions">
