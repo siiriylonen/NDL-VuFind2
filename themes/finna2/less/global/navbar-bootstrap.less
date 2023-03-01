@@ -27,10 +27,13 @@
 }
 
 .navbar-collapse {
-  border-top: 3px solid @gray-lighter;
+  border-top: 3px solid @brand-primary;
   @media (min-width: @grid-float-breakpoint) {
     border-top: 0;
     box-shadow: none;
+  }
+  @media (max-width: @screen-sm) {
+    border-color: @gray-lighter;
   }
 }
 
@@ -237,6 +240,7 @@
   }
   .dropdown-item {
     margin-bottom: 6px;
+    height: 25px;
   }
   .dropdown-item > a {
     padding-bottom: 4px;
@@ -268,15 +272,16 @@
     background-color: transparent;
   }
   .dropdown-menu {
-    width: 250px;
+    margin: 0;
+    min-width: 200px;
     border-radius: 0;
     padding-bottom: 10px;
     background-color: @navbar-default-bg;
     border-top: 3px solid @btn-primary-bg;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .275);
   }
   .dropdown-menu > li {
     border-bottom: none;
-    height: min-content;
     a {
       padding: 0;
       margin-left: 10px;
@@ -324,7 +329,7 @@
   align-items: center;
   height: @navbar-height;
   li.logoutOptions {
-    margin-right: 0.5em;
+    margin-right: 1em;
   }
 }
 
@@ -355,6 +360,13 @@
   }
   .navbar-header {
     padding-left: 10px;
+  }
+}
+
+@media(max-width: @screen-sm) {
+  #header-collapse {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
