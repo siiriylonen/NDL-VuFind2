@@ -1023,13 +1023,15 @@ i.bigger {
         width: 12px;
         height: 12px;
         top: 18px;
-        left: 20px;
+        left: 130px;
         background: @brand-success;
         border: 2px solid @header-background-color;
         border-radius: 50%;
+        @media (max-width: @screen-sm) {
+            left: 10px;
+        }
     }
 }
-
 // Status warning
 .status .fa-bell.text-warning:before {
     font-family: finnaicons;
@@ -1040,14 +1042,17 @@ i.bigger {
     width: auto;
     &:before {
         content:"";
-        position: absolute;
+        position: relative;
         width: 12px;
         height: 12px;
         top: 18px;
-        left: 20px;
+        left: 130px;
         background: @brand-warning;
         border: 2px solid @header-background-color;
         border-radius: 50%;
+        @media (max-width: @screen-sm) {
+            left: 10px;
+        }
     }
 }
 
@@ -1068,10 +1073,13 @@ i.bigger {
         width: 12px;
         height: 12px;
         top: 18px;
-        left: 20px;
+        left: 130px;
         background: @brand-danger;
         border: 2px solid @header-background-color;
         border-radius: 50%;
+        @media (max-width: @screen-sm) {
+            left: 10px;
+        }
     }
 }
 
