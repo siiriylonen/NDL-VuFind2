@@ -480,7 +480,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 'lido_test.xml',
-                ['Visible description.','Näkyy subject labeled.'],
+                ['Visible description.','Visible subject labeled.'],
                 []
 
             ],

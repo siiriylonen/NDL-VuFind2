@@ -73,8 +73,11 @@
        <objectRelationWrap>
         <subjectWrap>
           <subjectSet>
-            <displaySubject label="aihe">Näkyy subject labeled.</displaySubject>
+            <displaySubject lang="en" label="aihe">Visible subject labeled.</displaySubject>
+            <displaySubject lang="fi" label="aihe">Ei näy subject labeled.</displaySubject>
+            <displaySubject lang="sv" label="aihe">Syns inte subject labeled.</displaySubject>
             <displaySubject label="">Ei näy subject unlabeled.</displaySubject>
+            <displaySubject>Ei näy, no label.</displaySubject>
           </subjectSet>
         </subjectWrap>
       </objectRelationWrap>
