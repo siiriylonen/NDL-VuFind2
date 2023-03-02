@@ -28,10 +28,10 @@
                     <?=$this->escapeHtml($rights['copyright']);?>
                 </span>
                 <?php endif; ?>
-                <button class="show-hide-button show-info more-link" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
+                <button class="show-hide-button show-info more-link collapsed" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
                     <?=$this->transEsc('copyright_info_show')?> <?=$this->icon('truncate-more')?>
                 </button>
-                <span id='bracket'>)</span>
+                <span class='bracket'>)</span>
             </div>
         </div>
         <div id="cc_info_<?= $i ?>" class="cc-info collapse">

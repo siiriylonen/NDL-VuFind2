@@ -29,32 +29,20 @@ finna.record = (function finnaRecord() {
           description.hide();
         });
     }
-    var more = $('.show-hide-button').html();
-    var less = $('.hide-info').html();
-    var buttonText = document.querySelectorAll('.show-hide-button');
-    buttonText.forEach(function setText(item) {
+    const more = $('.show-hide-button').html();
+    const less = $('.hide-info').html();
+    document.querySelectorAll('.show-hide-button').forEach( function setText(item) {
       item.innerHTML = more;
     });
-    $('.show-hide-button').on('click', function handleClick() {
-      $(this).toggleClass('active');
-      if (this.classList.contains('active')) {
-        this.innerHTML = less;
-      } else {
-        this.innerHTML = more;
-      }
+    $('.cc-info').on('show.bs.collapse', function changeText() {
+      $(this).parents('.fulltextField').find('.show-hide-button').html(less);
+    }).on('hidden.bs.collapse', function changeText() {
+      $(this).parents('.fulltextField').find('.show-hide-button').html(more);
     });
     $('.hide-info').on('click', function handleClick() {
-      var element = $(this).parents('.fulltextField');
-      var button = element.find('.show-hide-button');
-      button.toggleClass('active');
-      if (button.hasClass('active')) {
-        button.html(less);
-      } else {
-        button.html(more);
-      }
       $(this).blur();
-      button.focus();
-    });
+      $(this).parents('.fulltextField').find('.show-hide-button').focus();
+    })
   }
 
   function initHideDetails() {
