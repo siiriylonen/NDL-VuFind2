@@ -42,7 +42,7 @@ finna.record = (function finnaRecord() {
     $('.hide-info').on('click', function handleClick() {
       $(this).blur();
       $(this).parents('.fulltextField').find('.show-hide-button').focus();
-    })
+    });
   }
 
   function initHideDetails() {
