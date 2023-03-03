@@ -399,9 +399,9 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 $description .= $entry['description'];
             }
             switch ($description) {
-            case 'Overdue Renewal':
-                $description = 'Overdue';
-                break;
+                case 'Overdue Renewal':
+                    $description = 'Overdue';
+                    break;
             }
             $bibId = null;
             $title = null;
@@ -733,11 +733,12 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             $config = $handlerConfig['config'];
             try {
                 switch ($type) {
-                case 'IMMS':
-                    $result = $this->getHoldShelfWithIMMS($config, $hold, $patron);
-                    break;
-                default:
-                    $this->logError("Unknown hold shelf handler: $type");
+                    case 'IMMS':
+                        $result
+                            = $this->getHoldShelfWithIMMS($config, $hold, $patron);
+                        break;
+                    default:
+                        $this->logError("Unknown hold shelf handler: $type");
                 }
             } catch (\Exception $e) {
                 $this->logError(
