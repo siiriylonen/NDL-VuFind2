@@ -896,4 +896,65 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         );
         return (string)$response->Token;
     }
+
+    /**
+     * Make Request
+     *
+     * Makes a request to the Sierra REST API
+     *
+     * Finna: Adds caching for bibs and items
+     *
+     * @param array  $hierarchy    Array of values to embed in the URL path of the
+     * request
+     * @param array  $params       A keyed array of query data
+     * @param string $method       The http request method to use (Default is GET)
+     * @param array  $patron       Patron information, if available
+     * @param bool   $returnStatus Whether to return HTTP status code and response
+     * as a keyed array instead of just the response
+     *
+     * @throws ILSException
+     * @return mixed JSON response decoded to an associative array, an array of HTTP
+     * status code and JSON response when $returnStatus is true or null on
+     * authentication error when using patron-specific access
+     */
+    protected function makeRequest(
+        $hierarchy,
+        $params = false,
+        $method = 'GET',
+        $patron = false,
+        $returnStatus = false
+    ) {
+        $url = $this->getApiUrlFromHierarchy($hierarchy);
+        // Allow caching of GET requests for bibs and items:
+        $bibsUrl = $this->getApiUrlFromHierarchy([$this->apiBase, 'bibs']);
+        $itemsUrl = $this->getApiUrlFromHierarchy([$this->apiBase, 'items']);
+        $cacheKey = null;
+        if ('GET' === $method
+            && (strncmp($url, $bibsUrl, strlen($bibsUrl)) === 0
+            || strncmp($url, $itemsUrl, strlen($itemsUrl)) === 0)
+        ) {
+            // Cacheable request, check cache:
+            $paramArray = compact('params', 'method', 'patron', 'returnStatus');
+            $cacheKey = "request|$url|" . md5(var_export($paramArray, true));
+            if (null !== ($result = $this->getCachedData($cacheKey))) {
+                return $result;
+            }
+        }
+        $result = parent::makeRequest(
+            $hierarchy,
+            $params,
+            $method,
+            $patron,
+            $returnStatus
+        );
+        if ($cacheKey) {
+            // Cache records by default for 300 seconds:
+            $this->putCachedData(
+                $cacheKey,
+                $result,
+                $this->config['Catalog']['request_cache_time'] ?? 300
+            );
+        }
+        return $result;
+    }
 }
