@@ -31,9 +31,6 @@ finna.record = (function finnaRecord() {
     }
     const more = $('.show-hide-button').html();
     const less = $('.hide-info').html();
-    document.querySelectorAll('.show-hide-button').forEach( function setText(item) {
-      item.innerHTML = more;
-    });
     $('.cc-info').on('show.bs.collapse', function changeText() {
       $(this).parents('.fulltextField').find('.show-hide-button').html(less);
     }).on('hidden.bs.collapse', function changeText() {

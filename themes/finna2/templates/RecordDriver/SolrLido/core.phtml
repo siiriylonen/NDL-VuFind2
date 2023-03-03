@@ -101,7 +101,7 @@
         <div class="record-links">
           <div class="recordURLs local-available-online-record">
             <ul class="truncate-field outer" data-rows="4">
-              <?=$this->record($this->driver)->renderTemplate('document-rights.phtml')?>
+              <?=$this->record($this->driver)->renderTemplate('document-links.phtml', ['documents' => $documents])?>
             </ul>
           </div>
         </div>
