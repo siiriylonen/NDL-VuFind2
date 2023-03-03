@@ -29,16 +29,17 @@ finna.record = (function finnaRecord() {
           description.hide();
         });
     }
-    const more = $('.show-hide-button').html();
+    const button = $('.show-hide-button');
+    const more = button.html();
     const less = $('.hide-info').html();
     $('.cc-info').on('show.bs.collapse', function changeText() {
-      $(this).parents('.fulltextField').find('.show-hide-button').html(less);
+      $(this).parents('.fulltextField').find(button).html(less);
     }).on('hidden.bs.collapse', function changeText() {
-      $(this).parents('.fulltextField').find('.show-hide-button').html(more);
+      $(this).parents('.fulltextField').find(button).html(more);
     });
     $('.hide-info').on('click', function handleClick() {
       $(this).blur();
-      $(this).parents('.fulltextField').find('.show-hide-button').focus();
+      $(this).parents('.fulltextField').find(button).focus();
     });
   }
 
