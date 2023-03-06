@@ -475,6 +475,11 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * Function to get expected summary data
+     * 
+     * @return array
+     */
     public function getSummaryData()
     {
         return [
@@ -493,9 +498,12 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     *
-     *
+    /** 
+     * Test getSummary()
+     * 
+     * @param string $xmlFile Xml recod to use for the test
+     * @param array $expected Expected results from function
+     * @param array $rawData  The additional tested data
      *
      * @dataProvider getSummaryData
      */
