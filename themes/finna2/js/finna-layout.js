@@ -637,6 +637,19 @@ finna.layout = (function finnaLayout() {
       navDropdownToggleClassName: "nav-dropdown-toggle",
       breakPoint: 400
     });
+
+    $('#language_menu').on('show.bs.dropdown', function changeIcon() {
+      $('#dropdownMenuButton').children('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+    });
+    $('#language_menu').on('hide.bs.dropdown', function changeIcon() {
+      $('#dropdownMenuButton').children('.fa-chevron-up').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+    });
+    $('#language_menu_mobile').on('show.bs.collapse', function changeIcon() {
+      $('#collapseMenuButton').children('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+    });
+    $('#language_menu_mobile').on('hide.bs.collapse', function changeIcon() {
+      $('#collapseMenuButton').children('.fa-chevron-up').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+    });
   }
 
   function initFiltersToggle () {

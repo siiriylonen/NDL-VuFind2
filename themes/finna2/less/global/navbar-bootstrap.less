@@ -229,6 +229,9 @@
   .dropdown-menu > li:last-child, li:last-child a {
     border-radius: 0;
   }
+  .chevron-down, .chevron-up { //Make smaller
+    font-size: 1em;
+  }
   .dropdown-header {
     margin-top: 5px;
     margin-bottom: 10px;
@@ -293,9 +296,9 @@
   }
 }
 #language_menu.open {
-  background-color: @btn-primary-bg !important;
+  background-color: @btn-primary-bg;
   #dropdownMenuButton {
-    color: @btn-primary-color !important;
+    color: @btn-primary-color;
     background-color: transparent;
   }
   .dropdown-menu {
@@ -305,8 +308,7 @@
 .language-menu-mobile {
   padding: 10px;
   background-color: @gray-ultralight;
-  box-shadow: inset 0 0 10px #d1d1d1;
-  border: 1.5px solid #d1d1d1;
+  border: 1px solid @dropdown-divider-bg;
   .dropdown-menu {
     border-color: @dropdown-divider-bg;
     padding-left: 10px;
@@ -366,6 +368,9 @@
   #header-collapse {
     padding-left: 0;
     padding-right: 0;
+  }
+  .navbar-collapse {
+    border-top: 0px;
   }
 }
 
