@@ -31,13 +31,17 @@
   }
 }
 
-.finna-navbar .navbar-nav {
+#logout {
+  @media(max-width: @screen-sm) {
+    margin: 1em;
+  }
+}
+
+// fix navbar for logoutoptions
+.finna-navbar .navbar-nav .logoutOptions {
   @media(max-width: @screen-sm) {
     margin: 0;
   }
-}
-// fix navbar for logoutoptions
-.finna-navbar .navbar-nav .logoutOptions {
   a {
     color: @action-link-color;
   }
