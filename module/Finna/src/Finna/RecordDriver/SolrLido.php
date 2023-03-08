@@ -2083,7 +2083,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     }
 
     /**
-     * Compare the title of the element to the title of the current object
+     * Compare the title of current object to items from given array as titles
      *
      * @param array $compare An array of items compared to title
      *
