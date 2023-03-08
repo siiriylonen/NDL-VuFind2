@@ -30,7 +30,7 @@
           <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
             <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
               <?php if ($this->layout()->userLang == $langCode): ?>
-                <li class="lang dropdown-item">
+                <li class="dropdown-item">
                   <a class="preserve-anchor active" lang="<?=$this->escapeHtmlAttr($langCode)?>"> <?=$this->displayLanguageOption($langName)?></a>
                 </li>
                 <?php break; ?>
@@ -153,7 +153,7 @@
            <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
              <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
                <?php if ($this->layout()->userLang == $langCode): ?>
-                 <li class="lang dropdown-item">
+                 <li class="dropdown-item">
                    <a class="preserve-anchor active" lang="<?=$this->escapeHtmlAttr($langCode)?>"> <?=$this->displayLanguageOption($langName)?></a>
                  </li>
                  <?php break; ?>
@@ -161,7 +161,7 @@
              <?php endforeach; ?>
              <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
                <?php if ($this->layout()->userLang != $langCode): ?>
-                 <li class="lang dropdown-item">
+                 <li class="dropdown-item">
                    <a class="preserve-anchor" lang="<?=$this->escapeHtmlAttr($langCode)?>" href="<?=$this->escapeHtmlAttr($this->navibar()->getLanguageUrl($langCode))?>"><?=$this->displayLanguageOption($langName)?></a>
                  </li>
                <?php endif ?>
