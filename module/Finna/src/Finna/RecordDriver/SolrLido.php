@@ -1049,8 +1049,10 @@ implements \Laminas\Log\LoggerAwareInterface
                     $label = (string)($attributes->label ?? '');
                     $data = $label ? compact('term', 'label') : $term;
                     $allResults[] = $data;
+                    $termLanguage = trim((string)$attributes->lang)
+                        ?: trim((string)$node->attributes()->lang);
                     if (in_array(
-                        (string)$node->attributes()->lang,
+                        $termLanguage,
                         $preferredLanguages
                     )
                     ) {
