@@ -485,23 +485,31 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 'lido_test.xml',
-                ['Visible description.','Visible subject labeled.'],
-                []
+                ['Visible description.', 'Visible subject labeled.'],
+                [],
+                'en-gb'
 
             ],
             [
                 'lido_test2.xml',
-                ['Näkyy description untyped.', 'Synas description untyped.', 'Näkyy subject unlabeled.'],
-                ['title' => 'Otsikko']
+                ['Näkyy description untyped.', 'Näkyy subject unlabeled.'],
+                ['title' => 'Otsikko'],
+                'fi'
+            ],
+            [
+                'lido_test.xml',
+                ['Näkyy description typed.', 'Visible description.', 'Visible subject labeled.',
+                'Näkyy subject labeled.', 'Synas subject labeled.'],
+                [],
+                'xy'
             ]
-
         ];
     }
 
     /**
      * Test getSummary()
      *
-     * @param string $xmlFile Xml recod to use for the test
+     * @param string $xmlFile Xml record to use for the test
      * @param array $expected Expected results from function
      * @param array $rawData  The additional tested data
      *
@@ -510,9 +518,17 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
     public function testGetSummary(
         $xmlFile,
         $expected,
-        $rawData
+        $rawData,
+        $language
     ) {
+        $translator = $this
+            ->getMockBuilder(\Laminas\I18n\Translator\Translator::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([])
+            ->getMock();
+        $translator->setLocale($language);
         $driver = $this->getDriver($xmlFile, [], [], $rawData);
+        $driver->setTranslator($translator);
         $this->assertEquals(
             $expected,
             $driver->getSummary()

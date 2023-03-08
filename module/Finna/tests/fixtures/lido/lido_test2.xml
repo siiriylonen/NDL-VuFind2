@@ -94,6 +94,7 @@
       <objectRelationWrap>
         <subjectWrap>
           <subjectSet>
+            <displaySubject lang="fi" label="">Näkyy subject unlabeled.</displaySubject>
             <displaySubject label="">Näkyy subject unlabeled.</displaySubject>
           </subjectSet>
         </subjectWrap>

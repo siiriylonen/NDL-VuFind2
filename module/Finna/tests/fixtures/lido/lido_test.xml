@@ -28,7 +28,7 @@
           <descriptiveNoteValue lang="fi" label="esittely">Ei saa näkyä.</descriptiveNoteValue>
         </objectDescriptionSet>
         <objectDescriptionSet type="description">
-          <descriptiveNoteValue lang="fi" label="kuvaus">Ei näy description typed.</descriptiveNoteValue>
+          <descriptiveNoteValue lang="fi" label="kuvaus">Näkyy description typed.</descriptiveNoteValue>
         </objectDescriptionSet>
         <objectDescriptionSet type="description">
           <descriptiveNoteValue lang="en" label="description">Visible description.</descriptiveNoteValue>
@@ -74,8 +74,8 @@
         <subjectWrap>
           <subjectSet>
             <displaySubject lang="en" label="aihe">Visible subject labeled.</displaySubject>
-            <displaySubject lang="fi" label="aihe">Ei näy subject labeled.</displaySubject>
-            <displaySubject lang="sv" label="aihe">Syns inte subject labeled.</displaySubject>
+            <displaySubject lang="fi" label="aihe">Näkyy subject labeled.</displaySubject>
+            <displaySubject lang="sv" label="aihe">Synas subject labeled.</displaySubject>
             <displaySubject label="">Ei näy subject unlabeled.</displaySubject>
             <displaySubject>Ei näy, no label.</displaySubject>
           </subjectSet>
