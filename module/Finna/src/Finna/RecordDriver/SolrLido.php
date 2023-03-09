@@ -175,8 +175,8 @@ implements \Laminas\Log\LoggerAwareInterface
      * @var array
      */
     protected $authorEvents = [
-        'suunnittelu' => 0,
-        'valmistus' => 1,
+        'suunnittelu' => 1,
+        'valmistus' => 2,
     ];
 
     /**
@@ -1592,15 +1592,15 @@ implements \Laminas\Log\LoggerAwareInterface
                     );
                 if ($name) {
                     $role = (string)($actor->actorInRole->roleActor->term ?? '');
-                    ++$index;
-                    $authors["$priority/{$index}"] = compact(
+                    $key = $priority * 1000 + $index++;
+                    $authors[$key] = compact(
                         'name',
                         'role'
                     );
                 }
             }
         }
-        ksort($authors);
+        ksort($authors, SORT_NUMERIC);
         return array_values($authors);
     }
 
