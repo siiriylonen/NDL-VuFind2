@@ -27,6 +27,13 @@
         </classificationWrap>
       </objectClassificationWrap>
       <objectIdentificationWrap>
+        <titleWrap>
+          <titleSet>
+            <appellationValue>Otsikko näkyy partial.</appellationValue>
+            <appellationValue>Näkyy kokonaan.</appellationValue>
+            <appellationValue pref="alternate">Ei näy alternate.</appellationValue>
+          </titleSet>
+        </titleWrap>
         <objectDescriptionWrap>
           <objectDescriptionSet type="introduction">
             <descriptiveNoteValue lang="fi" label="esittely">Ei saa näkyä.</descriptiveNoteValue>

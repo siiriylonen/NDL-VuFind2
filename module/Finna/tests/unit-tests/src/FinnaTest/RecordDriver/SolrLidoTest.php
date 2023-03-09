@@ -492,7 +492,9 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 'lido_test2.xml',
-                ['Näkyy description untyped.', 'Näkyy subject unlabeled.'],
+                [' näkyy partial.', 'Näkyy kokonaan.',
+                'Näkyy description untyped.', 'Näkyy subject unlabeled.'
+                ],
                 ['title' => 'Otsikko'],
                 'fi'
             ],

@@ -2115,6 +2115,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $descriptionsUntyped = [];
         $subjectsLabeled = [];
         $subjectsUnlabeled = [];
+        $titleValues = [];
         $language = $this->getLocale();
         //Collect all fitting description objects
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
@@ -2143,6 +2144,16 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
         }
+        //Collect all apellationValues to be checked
+        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
+        ->objectIdentificationWrap->titleWrap->titleSet
+        ?? [] as $node) {
+            foreach ($node->appellationValue ?? [] as $title) {
+                if ($title->attributes()->pref != 'alternate') {
+                    $titleValues[] = $title;
+                }
+            }
+        }
         //Check for matching language variations
         //And check for items matching object title
         if ($descriptionsTyped ?: $descriptionsUntyped) {
@@ -2164,6 +2175,28 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             foreach ($collected as $item) {
                 $descriptions[] = (string)$item;
             }
+        }
+        if ($titleValues) {
+            $keyword = $this->getTitle();
+            foreach ($titleValues as $item) {
+                $checkItem = preg_replace('/[^a-zA-Z0-9]/','', (string)$item);
+                $checkWord = preg_replace('/[^a-zA-Z0-9]/','', $keyword);
+                if (
+                    strncmp(
+                    $checkItem,
+                    $checkWord,
+                    strlen($checkWord)
+                    ) == 0
+                    && strlen($checkWord) != strlen($checkItem)
+                )
+                {
+                    $item = substr($item, strlen($keyword));
+                    $collectedTitles[] = (string)$item;
+                } elseif ($keyword != $item) {
+                    $collectedTitles[] = (string)$item;
+                }
+            }
+            $descriptions = array_merge($collectedTitles, $descriptions);
         }
 
         return $descriptions;
