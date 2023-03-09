@@ -45,7 +45,7 @@ namespace Finna\RecordDriver;
  * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
 class SolrLido extends \VuFind\RecordDriver\SolrDefault
-    implements \Laminas\Log\LoggerAwareInterface
+implements \Laminas\Log\LoggerAwareInterface
 {
     use Feature\SolrFinnaTrait;
     use Feature\FinnaXmlReaderTrait;
@@ -175,8 +175,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      * @var array
      */
     protected $authorEvents = [
-        'suunnittelu' => 0,
-        'valmistus' => 1,
+        'suunnittelu' => 1,
+        'valmistus' => 2,
     ];
 
     /**
@@ -1049,8 +1049,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     $label = (string)($attributes->label ?? '');
                     $data = $label ? compact('term', 'label') : $term;
                     $allResults[] = $data;
+                    $termLanguage = trim((string)$attributes->lang)
+                        ?: trim((string)$node->attributes()->lang);
                     if (in_array(
-                        (string)$node->attributes()->lang,
+                        $termLanguage,
                         $preferredLanguages
                     )
                     ) {
@@ -1310,12 +1312,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     $termLabel = trim((string)$term->attributes()->label);
 
                     switch ($workTypeTerm) {
-                    case 'rakennetun ympäristön kohde':
-                        $results[] = $getDisplayString($termString, $termType);
-                        break 2;
-                    case 'arkeologinen kohde':
-                        $results[] = $getDisplayString($termString, $termLabel);
-                        break;
+                        case 'rakennetun ympäristön kohde':
+                            $results[] = $getDisplayString($termString, $termType);
+                            break 2;
+                        case 'arkeologinen kohde':
+                            $results[] = $getDisplayString($termString, $termLabel);
+                            break;
                     }
                 }
             }
@@ -1590,15 +1592,15 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     );
                 if ($name) {
                     $role = (string)($actor->actorInRole->roleActor->term ?? '');
-                    ++$index;
-                    $authors["$priority/{$index}"] = compact(
+                    $key = $priority * 1000 + $index++;
+                    $authors[$key] = compact(
                         'name',
                         'role'
                     );
                 }
             }
         }
-        ksort($authors);
+        ksort($authors, SORT_NUMERIC);
         return array_values($authors);
     }
 
