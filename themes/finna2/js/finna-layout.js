@@ -59,6 +59,7 @@ finna.layout = (function finnaLayout() {
 
     var truncation = [];
     var rowHeight = [];
+    $(holder).find('.truncate-field').parent().attr('tabindex', '-1');
     $(holder).find('.truncate-field').not('.truncate-done').each(function handleTruncate(index) {
       var self = $(this);
       self.addClass('truncate-done');
@@ -100,11 +101,15 @@ finna.layout = (function finnaLayout() {
           self.siblings('.less-link').hide();
           self.siblings('.more-link').show();
           self.css('height', truncation[index] - 1 + 'px');
+          self.blur();
+          self.siblings('.more-link').focus();
         });
         moreLink.on('click', function showMore() {
           self.siblings('.more-link').hide();
           self.siblings('.less-link').show();
           self.css('height', 'auto');
+          self.blur();
+          self.parent().focus();
         });
         lessLink.hide();
 
@@ -298,19 +303,24 @@ finna.layout = (function finnaLayout() {
     });
   }
 
+  /**
+   * Initializes additional functionality for condensed styled lists.
+   * I.e search condensed, authority records record tab.
+   *
+   * @param {jQuery|undefined} _holder Element as jQuery to initialize.
+   *                                   If uninitialized, defaults to document.
+   */
   function initCondensedList(_holder) {
     var holder = typeof _holder === 'undefined' ? $(document) : _holder;
-
+    finna.itemStatus.initDedupRecordSelection(holder);
     holder.find('.condensed-collapse-toggle').off('click').on('click', function onClickCollapseToggle(event) {
       if ((event.target.nodeName) !== 'A' && (event.target.nodeName) !== 'MARK') {
         holder = $(this).parent().parent();
         holder.toggleClass('open');
-
+        VuFind.itemStatuses.check(holder);
         var onSlideComplete = null;
         if (holder.hasClass('open') && !holder.hasClass('opened')) {
           holder.addClass('opened');
-          VuFind.itemStatuses.check(holder);
-          finna.itemStatus.initDedupRecordSelection(holder);
         }
 
         $(this).nextAll('.condensed-collapse-data').first().slideToggle(120, 'linear', onSlideComplete);
@@ -549,12 +559,13 @@ finna.layout = (function finnaLayout() {
   }
 
   function initOrganisationPageLinks() {
-    $('.organisation-page-link').not('.done').each(function setupOrganisationPageLinks() {
-      $(this).one('inview', function onInViewLink() {
-        var holder = $(this);
-        var organisationId = $(this).data('organisation');
-        var organisationName = $(this).data('organisationName');
-        var organisationSector = $(this).data('organisationSector');
+    VuFind.observerManager.createIntersectionObserver(
+      'OrganisationPageLinks',
+      (element) => {
+        const holder = $(element);
+        var organisationId = holder.data('organisation');
+        var organisationName = holder.data('organisationName');
+        var organisationSector = holder.data('organisationSector');
         var organisation = {'id': organisationId, 'sector': organisationSector};
         getOrganisationPageLink(organisation, organisationName, true, function organisationPageCallback(response) {
           holder.toggleClass('done', true);
@@ -564,8 +575,9 @@ finna.layout = (function finnaLayout() {
             });
           }
         });
-      });
-    });
+      },
+      document.querySelectorAll('.organisation-page-link:not(.done)')
+    );
   }
 
   function initOrganisationInfoWidgets() {
@@ -608,11 +620,6 @@ finna.layout = (function finnaLayout() {
         );
       });
     });
-  }
-
-  function initVideoButtons() {
-    finna.videoPopup.initVideoPopup($('body'));
-    finna.videoPopup.initIframeEmbed($('body'));
   }
 
   function initKeyboardNavigation() {
@@ -824,7 +831,6 @@ finna.layout = (function finnaLayout() {
       initOrganisationInfoWidgets();
       initOrganisationPageLinks();
       initAudioButtons();
-      initVideoButtons();
       initKeyboardNavigation();
       initPriorityNav();
       initFiltersToggle();

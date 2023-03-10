@@ -68,12 +68,29 @@ $config = [
                 'type'    => 'Laminas\Router\Http\Segment',
                 'options' => [
                     'route'    => '/FeedContent[/:page][/:element]',
-                    'constraints' => [
-                        'page'     => '[a-zA-Z][a-zA-Z0-9_-]*'
-                    ],
                     'defaults' => [
                         'controller' => 'FeedContent',
                         'action'     => 'Content',
+                    ]
+                ],
+            ],
+            'feed-image' => [
+                'type'    => 'Laminas\Router\Http\Segment',
+                'options' => [
+                    'route'    => '/FeedContent/Image/:page',
+                    'defaults' => [
+                        'controller' => 'FeedContent',
+                        'action'     => 'Image',
+                    ]
+                ],
+            ],
+            'linked-events-image' => [
+                'type'    => 'Laminas\Router\Http\Literal',
+                'options' => [
+                    'route'    => '/FeedContent/EventImage',
+                    'defaults' => [
+                        'controller' => 'FeedContent',
+                        'action'     => 'EventImage',
                     ]
                 ],
             ],
@@ -168,6 +185,16 @@ $config = [
                     ]
                 ],
             ],
+            'organisation-info-image' => [
+                'type'    => 'Laminas\Router\Http\Literal',
+                'options' => [
+                    'route'    => '/OrganisationInfo/Image',
+                    'defaults' => [
+                        'controller' => 'OrganisationInfo',
+                        'action'     => 'Image',
+                    ]
+                ],
+            ],
             'record-preview' => [
                 'type' => 'Laminas\Router\Http\Literal',
                 'options' => [
@@ -211,6 +238,7 @@ $config = [
             'Finna\Controller\AuthorityController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\AuthorityRecordController' => 'Finna\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\BarcodeController' => 'VuFind\Controller\AbstractBaseFactory',
+            'Finna\Controller\BazaarController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\BrowseSearchController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\CartController' => 'VuFind\Controller\CartControllerFactory',
             'Finna\Controller\CollectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
@@ -250,6 +278,8 @@ $config = [
             'AuthorityRecord' => 'Finna\Controller\AuthorityRecordController',
             'Barcode' => 'Finna\Controller\BarcodeController',
             'barcode' => 'Finna\Controller\BarcodeController',
+            'Bazaar' => 'Finna\Controller\BazaarController',
+            'bazaar' => 'Finna\Controller\BazaarController',
             'BrowseSearch' => 'Finna\Controller\BrowseSearchController',
             // Alias for the browse record route (that must not clash with normal
             // record route for getMatchedRouteName to return correct value):
@@ -326,6 +356,7 @@ $config = [
             'Finna\Connection\Finto' => 'Finna\Connection\FintoFactory',
             'Finna\Cookie\RecommendationMemory' => 'Finna\Cookie\RecommendationMemoryFactory',
             'Finna\Cover\Loader' => 'VuFind\Cover\LoaderFactory',
+            'Finna\Export' => 'VuFind\ExportFactory',
             'Finna\File\Loader' => 'Finna\File\LoaderFactory',
             'Finna\Feed\Feed' => 'Finna\Feed\FeedFactory',
             'Finna\Feed\LinkedEvents' => 'Finna\Feed\LinkedEventsFactory',
@@ -343,15 +374,16 @@ $config = [
             'Finna\RecordDriver\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\RecordTab\TabManager' => 'VuFind\RecordTab\TabManagerFactory',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
-            'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
             'Finna\Search\Solr\AuthorityHelper' => 'Finna\Search\Solr\AuthorityHelperFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'VuFind\Search\Solr\HierarchicalFacetHelperFactory',
+            'Finna\Service\BazaarService' => 'Finna\Service\BazaarServiceFactory',
             'Finna\Service\R2SupportService' => 'Finna\Service\R2SupportServiceFactory',
             'Finna\Service\RecordFieldMarkdown' => 'Laminas\ServiceManager\Factory\InvokableFactory',
+            'Finna\Service\RemsService' => 'Finna\Service\RemsServiceFactory',
+            'Finna\Service\UserPreferenceService' => 'Finna\Service\UserPreferenceServiceFactory',
             'Finna\Statistics\Driver\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Statistics\EventHandler' => 'Finna\Statistics\EventHandlerFactory',
             'Finna\Favorites\FavoritesService' => 'Finna\Favorites\FavoritesServiceFactory',
-            'Finna\Service\RemsService' => 'Finna\Service\RemsServiceFactory',
             'Finna\View\CustomElement\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Video\Handler\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Video\Video' => 'Finna\Video\VideoFactory',
@@ -370,6 +402,7 @@ $config = [
             'VuFind\Config\SearchSpecsReader' => 'Finna\Config\SearchSpecsReader',
             'VuFind\Config\YamlReader' => 'Finna\Config\YamlReader',
             'VuFind\Cover\Loader' => 'Finna\Cover\Loader',
+            'VuFind\Export' => 'Finna\Export',
             'VuFind\Favorites\FavoritesService' => 'Finna\Favorites\FavoritesService',
             'VuFind\Form\Form' => 'Finna\Form\Form',
             'VuFind\ILS\Connection' => 'Finna\ILS\Connection',
@@ -378,7 +411,6 @@ $config = [
             'VuFind\Record\Loader' => 'Finna\Record\Loader',
             'VuFind\RecordTab\TabManager' => 'Finna\RecordTab\TabManager',
             'VuFind\Role\PermissionManager' => 'Finna\Role\PermissionManager',
-            'VuFind\Search\Memory' => 'Finna\Search\Memory',
             'VuFind\Search\Solr\HierarchicalFacetHelper' => 'Finna\Search\Solr\HierarchicalFacetHelper',
 
             'ViewResolver' => 'Finna\View\Resolver\AggregateResolver',
@@ -400,12 +432,12 @@ $config = [
                 'factories' => [
                     'Finna\AjaxHandler\AddToList' =>
                         'Finna\AjaxHandler\AddToListFactory',
+                    'Finna\AjaxHandler\BazaarDestroySession' =>
+                        'Finna\AjaxHandler\BazaarDestroySessionFactory',
                     'Finna\AjaxHandler\CheckRequestsAreValid' =>
                         'VuFind\AjaxHandler\AbstractIlsAndUserActionFactory',
                     'Finna\AjaxHandler\CommentRecord' =>
                         'Finna\AjaxHandler\CommentRecordFactory',
-                    'Finna\AjaxHandler\DeleteRecordComment' =>
-                        'VuFind\AjaxHandler\DeleteRecordCommentFactory',
                     'Finna\AjaxHandler\EditList' =>
                         'Finna\AjaxHandler\EditListFactory',
                     'Finna\AjaxHandler\EditListResource' =>
@@ -426,6 +458,8 @@ $config = [
                         'Finna\AjaxHandler\GetDescriptionFactory',
                     'Finna\AjaxHandler\GetModel' =>
                         'Finna\AjaxHandler\GetModelFactory',
+                    'Finna\AjaxHandler\GetEncapsulatedRecords' =>
+                        'Finna\AjaxHandler\GetEncapsulatedRecordsFactory',
                     'Finna\AjaxHandler\GetFacetData' =>
                         'Finna\AjaxHandler\GetFacetDataFactory',
                     'Finna\AjaxHandler\GetFeed' =>
@@ -475,6 +509,7 @@ $config = [
                 ],
                 'aliases' => [
                     'addToList' => 'Finna\AjaxHandler\AddToList',
+                    'bazaarDestroySession' => 'Finna\AjaxHandler\BazaarDestroySession',
                     'checkRequestsAreValid' => 'Finna\AjaxHandler\CheckRequestsAreValid',
                     'editList' => 'Finna\AjaxHandler\EditList',
                     'editListResource' => 'Finna\AjaxHandler\EditListResource',
@@ -485,6 +520,7 @@ $config = [
                     'getDescription' => 'Finna\AjaxHandler\GetDescription',
                     'getModel' => 'Finna\AjaxHandler\GetModel',
                     'getDateRangeVisual' => 'Finna\AjaxHandler\GetDateRangeVisual',
+                    'getEncapsulatedRecords' => 'Finna\AjaxHandler\GetEncapsulatedRecords',
                     'getFeed' => 'Finna\AjaxHandler\GetFeed',
                     'getFieldInfo' => 'Finna\AjaxHandler\GetFieldInfo',
                     'getHoldingsDetails' => 'Finna\AjaxHandler\GetHoldingsDetails',
@@ -506,7 +542,6 @@ $config = [
 
                     // Overrides:
                     'VuFind\AjaxHandler\CommentRecord' => 'Finna\AjaxHandler\CommentRecord',
-                    'VuFind\AjaxHandler\DeleteRecordComment' => 'Finna\AjaxHandler\DeleteRecordComment',
                     'VuFind\AjaxHandler\GetACSuggestions' => 'Finna\AjaxHandler\GetACSuggestions',
                     'VuFind\AjaxHandler\GetFacetData' => 'Finna\AjaxHandler\GetFacetData',
                     'VuFind\AjaxHandler\GetItemStatuses' => 'Finna\AjaxHandler\GetItemStatuses',
@@ -799,6 +834,7 @@ $config = [
                 'factories' => [
                     'Finna\Search\Blender\Results' => '\VuFind\Search\Solr\ResultsFactory',
                     'Finna\Search\Combined\Results' => 'VuFind\Search\Results\ResultsFactory',
+                    'Finna\Search\EncapsulatedRecords\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Favorites\Results' => 'Finna\Search\Favorites\ResultsFactory',
                     'Finna\Search\R2\Results' => 'VuFind\Search\Solr\ResultsFactory',
                     'Finna\Search\R2Collection\Results' => 'VuFind\Search\Solr\ResultsFactory',
@@ -816,18 +852,29 @@ $config = [
                     'VuFind\Search\Solr\Results' => 'Finna\Search\Solr\Results',
                     'VuFind\Search\SolrAuth\Results' => 'Finna\Search\SolrAuth\Results',
 
+                    'EncapsulatedRecords' => 'Finna\Search\EncapsulatedRecords\Results',
                     'L1' => 'Finna\Search\L1\Results',
                     'R2' => 'Finna\Search\R2\Results',
                     'R2Collection' => 'Finna\Search\R2Collection\Results',
                     'SolrBrowse' => 'Finna\Search\SolrBrowse\Results',
                 ]
             ],
+            'session' => [
+                'factories' => [
+                    'Finna\Session\Redis' => 'Finna\Session\RedisFactory',
+                ],
+                'aliases' => [
+                    'VuFind\Session\Redis' => 'Finna\Session\Redis',
+                ]
+            ],
             'statistics_driver' => [
                 'factories' => [
                     'Finna\Statistics\Driver\Database' => 'Finna\Statistics\Driver\DatabaseFactory',
+                    'Finna\Statistics\Driver\Redis' => 'Finna\Statistics\Driver\RedisFactory',
                 ],
                 'aliases' => [
                     'Database' => 'Finna\Statistics\Driver\Database',
+                    'Redis' => 'Finna\Statistics\Driver\Redis',
                 ]
             ],
             'content_covers' => [
@@ -846,6 +893,8 @@ $config = [
             ],
             'recorddriver' => [
                 'factories' => [
+                    'Finna\RecordDriver\CuratedRecord' =>
+                        'VuFind\RecordDriver\AbstractBaseFactory',
                     'Finna\RecordDriver\EDS' =>
                         'VuFind\RecordDriver\NameBasedConfigFactory',
                     'Finna\RecordDriver\R2Ead3' =>
@@ -881,6 +930,7 @@ $config = [
                     'r2ead3' => 'Finna\RecordDriver\R2Ead3',
                     'r2ead3missing' => 'Finna\RecordDriver\R2Ead3Missing',
 
+                    'CuratedRecord' => 'Finna\RecordDriver\CuratedRecord',
                     'SolrAuthEaccpf' => 'Finna\RecordDriver\SolrAuthEaccpf',
                     'SolrAuthForwardAuthority' => 'Finna\RecordDriver\SolrAuthForward',
                     'SolrAuthMarcAuthority' => 'Finna\RecordDriver\SolrAuthMarc',
@@ -1035,7 +1085,8 @@ $staticRoutes = [
     'Barcode/Show', 'Search/MapFacet',
     'L1/Advanced', 'L1/FacetList', 'L1/Home', 'L1/Results',
     'Record/DownloadModel',
-    'Record/DownloadFile'
+    'Record/DownloadFile',
+    'Bazaar/Home', 'Bazaar/Cancel',
 ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();

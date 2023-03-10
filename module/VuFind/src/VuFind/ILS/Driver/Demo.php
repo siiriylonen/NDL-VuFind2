@@ -8,7 +8,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) Villanova University 2007.
+ * Copyright (C) Villanova University 2007, 2022.
  * Copyright (C) The National Library of Finland 2014.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -38,6 +38,7 @@ use Laminas\Http\Request as HttpRequest;
 use Laminas\Session\Container as SessionContainer;
 use VuFind\Date\DateException;
 use VuFind\Exception\ILS as ILSException;
+use VuFindSearch\Command\RandomCommand;
 use VuFindSearch\Query\Query;
 use VuFindSearch\Service as SearchService;
 
@@ -313,14 +314,14 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
     {
         $loc = rand() % 10;
         switch ($loc) {
-        case 10:
-            return "Missing";
-        case  9:
-            return "On Order";
-        case  8:
-            return "Invoiced";
-        default:
-            return "Available";
+            case 10:
+                return "Missing";
+            case  9:
+                return "On Order";
+            case  8:
+                return "Invoiced";
+            default:
+                return "Available";
         }
     }
 
@@ -373,7 +374,8 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
     {
         $source = $this->getRecordSource();
         $query = $this->config['Records']['query'] ?? '*:*';
-        $result = $this->searchService->random($source, new Query($query), 1);
+        $command = new RandomCommand($source, new Query($query), 1);
+        $result = $this->searchService->invoke($command)->getResult();
         if (count($result) === 0) {
             throw new \Exception("Problem retrieving random record from $source.");
         }
@@ -462,6 +464,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
         $locationhref = ($location === 'Campus A') ? 'http://campus-a' : false;
         $result = [
             'id'           => $id,
+            'record_id'    => $id, // for hold links to not rely on id from route
             'source'       => $this->getRecordSource(),
             'item_id'      => $number,
             'number'       => $number,
@@ -485,19 +488,19 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
         ];
 
         switch (rand(1, 5)) {
-        case 1:
-            $result['location'] = 'Digital copy available';
-            $result['locationhref'] = 'http://digital';
-            $result['__electronic__'] = true;
-            $result['availability'] = true;
-            $result['status'] = '';
-            break;
-        case 2:
-            $result['location'] = 'Electronic Journals';
-            $result['locationhref'] = 'http://electronic';
-            $result['__electronic__'] = true;
-            $result['availability'] = true;
-            $result['status'] = 'Available from ' . rand(2010, 2019);
+            case 1:
+                $result['location'] = 'Digital copy available';
+                $result['locationhref'] = 'http://digital';
+                $result['__electronic__'] = true;
+                $result['availability'] = true;
+                $result['status'] = '';
+                break;
+            case 2:
+                $result['location'] = 'Electronic Journals';
+                $result['locationhref'] = 'http://electronic';
+                $result['__electronic__'] = true;
+                $result['availability'] = true;
+                $result['status'] = 'Available from ' . rand(2010, 2019);
         }
 
         return $result;
@@ -512,12 +515,12 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
     protected function getRandomItemIdentifier()
     {
         switch (rand(1, 4)) {
-        case 1:
-            return ['isbn' => '1558612742'];
-        case 2:
-            return ['oclc' => '55114477'];
-        case 3:
-            return ['issn' => '1133-0686'];
+            case 1:
+                return ['isbn' => '1558612742'];
+            case 2:
+                return ['oclc' => '55114477'];
+            case 3:
+                return ['issn' => '1133-0686'];
         }
         return ['upc' => '733961100525'];
     }
@@ -594,6 +597,9 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
                 $currentItem['cancel_details'] = $currentItem['updateDetails']
                     = (!$currentItem['available'] && !$currentItem['in_transit'])
                     ? $currentItem['reqnum'] : '';
+                if (rand(0, 3) === 1) {
+                    $currentItem['proxiedBy'] = 'Fictional Proxy User';
+                }
             } else {
                 $status = rand() % 5;
                 $currentItem['available'] = $status == 1;
@@ -1335,36 +1341,36 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
         $historicLoans = $session->historicLoans;
         if (isset($params['sort'])) {
             switch ($params['sort']) {
-            case 'checkout asc':
-                $sorter = function ($a, $b) {
-                    return strcmp($a['_checkoutDate'], $b['_checkoutDate']);
-                };
-                break;
-            case 'return desc':
-                $sorter = function ($a, $b) {
-                    return strcmp($b['_returnDate'], $a['_returnDate']);
-                };
-                break;
-            case 'return asc':
-                $sorter = function ($a, $b) {
-                    return strcmp($a['_returnDate'], $b['_returnDate']);
-                };
-                break;
-            case 'due desc':
-                $sorter = function ($a, $b) {
-                    return strcmp($b['_dueDate'], $a['_dueDate']);
-                };
-                break;
-            case 'due asc':
-                $sorter = function ($a, $b) {
-                    return strcmp($a['_dueDate'], $b['_dueDate']);
-                };
-                break;
-            default:
-                $sorter = function ($a, $b) {
-                    return strcmp($b['_checkoutDate'], $a['_checkoutDate']);
-                };
-                break;
+                case 'checkout asc':
+                    $sorter = function ($a, $b) {
+                        return strcmp($a['_checkoutDate'], $b['_checkoutDate']);
+                    };
+                    break;
+                case 'return desc':
+                    $sorter = function ($a, $b) {
+                        return strcmp($b['_returnDate'], $a['_returnDate']);
+                    };
+                    break;
+                case 'return asc':
+                    $sorter = function ($a, $b) {
+                        return strcmp($a['_returnDate'], $b['_returnDate']);
+                    };
+                    break;
+                case 'due desc':
+                    $sorter = function ($a, $b) {
+                        return strcmp($b['_dueDate'], $a['_dueDate']);
+                    };
+                    break;
+                case 'due asc':
+                    $sorter = function ($a, $b) {
+                        return strcmp($a['_dueDate'], $b['_dueDate']);
+                    };
+                    break;
+                default:
+                    $sorter = function ($a, $b) {
+                        return strcmp($b['_checkoutDate'], $a['_checkoutDate']);
+                    };
+                    break;
             }
 
             usort($historicLoans, $sorter);
@@ -2032,7 +2038,11 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
             ? $session->holds[$lastHold]['item_id'] + 1 : 0;
 
         // Figure out appropriate expiration date:
-        $expire = $holdDetails['requiredByTS'] ?: strtotime('now + 30 days');
+        $expire = !empty($holdDetails['requiredByTS'])
+            ? $this->dateConverter->convertToDisplayDate(
+                'Y-m-d',
+                gmdate('Y-m-d', $holdDetails['requiredByTS'])
+            ) : null;
 
         $requestGroup = '';
         foreach ($this->getRequestGroups(null, null) as $group) {
@@ -2058,13 +2068,17 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
             $frozenThrough = '';
         }
         $reqNum = sprintf('%06d', $nextId);
+        $proxiedFor = null;
+        if (!empty($holdDetails['proxiedUser'])) {
+            $proxies = $this->getProxiedUsers($holdDetails['patron']);
+            $proxiedFor = $proxies[$holdDetails['proxiedUser']];
+        }
         $session->holds->append(
             [
-                'id'       => $holdDetails['id'],
+                'id'       => $holdDetails['record_id'],
                 'source'   => $this->getRecordSource(),
                 'location' => $holdDetails['pickUpLocation'],
-                'expire'   =>
-                    $this->dateConverter->convertToDisplayDate('U', $expire),
+                'expire'   => $expire,
                 'create'   =>
                     $this->dateConverter->convertToDisplayDate('U', time()),
                 'reqnum'   => $reqNum,
@@ -2076,6 +2090,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
                 'frozenThrough' => $frozenThrough,
                 'updateDetails' => $reqNum,
                 'cancel_details' => $reqNum,
+                'proxiedFor' => $proxiedFor,
             ]
         );
 
@@ -2400,32 +2415,32 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
     {
         $this->checkIntermittentFailure();
         switch ($pickupLib) {
-        case 1:
-            return [
-                [
-                    'id' => 1,
-                    'name' => 'Circulation Desk',
-                    'isDefault' => true
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Reference Desk',
-                    'isDefault' => false
-                ]
-            ];
-        case 2:
-            return [
-                [
-                    'id' => 3,
-                    'name' => 'Main Desk',
-                    'isDefault' => false
-                ],
-                [
-                    'id' => 4,
-                    'name' => 'Library Bus',
-                    'isDefault' => true
-                ]
-            ];
+            case 1:
+                return [
+                    [
+                        'id' => 1,
+                        'name' => 'Circulation Desk',
+                        'isDefault' => true
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'Reference Desk',
+                        'isDefault' => false
+                    ]
+                ];
+            case 2:
+                return [
+                    [
+                        'id' => 3,
+                        'name' => 'Main Desk',
+                        'isDefault' => false
+                    ],
+                    [
+                        'id' => 4,
+                        'name' => 'Library Bus',
+                        'isDefault' => true
+                    ]
+                ];
         }
         return [];
     }
@@ -2538,7 +2553,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
         if ($function == 'Holds') {
             return $this->config['Holds']
                 ?? [
-                    'HMACKeys' => 'id:item_id:level',
+                    'HMACKeys' => 'record_id:item_id:level',
                     'extraHoldFields' =>
                         'comments:requestGroup:pickUpLocation:requiredByDate',
                     'defaultRequiredDate' => 'driver:0:2:0',
@@ -2659,5 +2674,20 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
     {
         // This is similar to getRecentlyReturnedBibs for demo purposes.
         return $this->getRecentlyReturnedBibs($limit, $maxage, $patron);
+    }
+
+    /**
+     * Get list of users for whom the provided patron is a proxy.
+     *
+     * This requires the FOLIO user configured in Folio.ini to have the permission:
+     * proxiesfor.collection.get
+     *
+     * @param array $patron The patron array with username and password
+     *
+     * @return array
+     */
+    public function getProxiedUsers(array $patron): array
+    {
+        return $this->config['ProxiedUsers'] ?? [];
     }
 }
