@@ -235,13 +235,6 @@
   .dropdown-menu > li:last-child, li:last-child a {
     border-radius: 0;
   }
-  .fa {
-    font-size: 0.8em;
-    font-weight: 500;
-  }
-  .fa.fa-globe {
-    font-size: 1.1em;
-  }
   .dropdown-header {
     margin-top: 5px;
     margin-bottom: 10px;
@@ -261,6 +254,9 @@
     padding-right: 10px !important;
     font-weight: 350;
   }
+  .fa.fa-globe {
+    font-size: 1.2em;
+  }
   .preserve-anchor:hover {
     border-bottom: 1.75px solid;
   }
@@ -277,8 +273,8 @@
     text-decoration: none;
     border-radius: 0;
     color: @btn-primary-bg;
-    font-size: @navbar-font-size;
-    font-weight: @navbar-font-weight;
+    font-size: @font-size-base;
+    font-weight: 600;
     vertical-align: baseline;
   }
   #dropdownMenuButton:hover, #dropdownmenuButton:focus {
@@ -333,7 +329,13 @@
     padding-bottom: 3px;
     border: 1.75px solid @gray-lighter;
     background-color: @dropdown-link-active-color;
+    font-size: @font-size-base;
+    font-weight: 600;
     vertical-align: baseline;
+    span.fa-chevron {
+      font-size: 0.8em;
+      font-weight: 500;
+    }
   }
 }
 .lang-login-buttons {
