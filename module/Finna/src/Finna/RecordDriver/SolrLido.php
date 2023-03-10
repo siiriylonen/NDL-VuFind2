@@ -1768,21 +1768,31 @@ implements \Laminas\Log\LoggerAwareInterface
     public function getAllSubjectHeadingsWithoutPlaces(bool $extended = false): array
     {
         $headings = [];
+        $creationDates = [];
         $language = $this->getLocale();
         foreach (['topic', 'genre'] as $field) {
             if (isset($this->fields[$field])) {
                 $headings = array_merge($headings, (array)$this->fields[$field]);
             }
         }
-        // Include all display dates from events
+        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
+            ->eventWrap->eventSet ?? [] as $node) {
+            $type = isset($node->event->eventType->term)
+                ? mb_strtolower((string)$node->event->eventType->term, 'UTF-8') : '';
+            if ($type == 'valmistus') {
+                $date = (string)$node->event->eventDate->displayDate;
+                $creationDates[] = $date;
+            }
+        }
+        // Include all display dates from events except creation date
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap
-            ->eventSet ?? [] as $node) {
+            ->eventSet->event ?? [] as $node) {
             if (!empty($node->eventDate->displayDate)) {
                 $date = (string)($this->getLanguageSpecificItem(
                     $node->eventDate->displayDate,
                     $language
                 ));
-                if ($date) {
+                if ($date && !in_array($date, $creationDates)) {
                     $headings[] = $date;
                 }
             }
