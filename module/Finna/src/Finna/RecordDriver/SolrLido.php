@@ -2168,7 +2168,7 @@ implements \Laminas\Log\LoggerAwareInterface
         }
         //Collect all apellationValues to be checked
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
-        ->objectIdentificationWrap->titleWrap->titleSet
+            ->objectIdentificationWrap->titleWrap->titleSet
         ?? [] as $node) {
             foreach ($node->appellationValue ?? [] as $title) {
                 if ($title->attributes()->pref != 'alternate') {
@@ -2201,24 +2201,20 @@ implements \Laminas\Log\LoggerAwareInterface
         if ($titleValues) {
             $keyword = $this->getTitle();
             foreach ($titleValues as $item) {
-                $checkItem = preg_replace('/[^a-zA-Z0-9]/','', (string)$item);
-                $checkWord = preg_replace('/[^a-zA-Z0-9]/','', $keyword);
-                if (
-                    strncmp(
-                    $checkItem,
-                    $checkWord,
-                    strlen($checkWord)
-                    ) == 0
+                $checkItem = preg_replace('/[^a-zA-Z0-9]/', '', (string)$item);
+                $checkWord = preg_replace('/[^a-zA-Z0-9]/', '', $keyword);
+                if (strncmp($checkItem, $checkWord, strlen($checkWord)) == 0
                     && strlen($checkWord) != strlen($checkItem)
-                )
-                {
+                ) {
                     $item = substr($item, strlen($keyword));
                     $collectedTitles[] = (string)$item;
                 } elseif ($keyword != $item) {
                     $collectedTitles[] = (string)$item;
                 }
             }
-            $descriptions = array_merge($collectedTitles, $descriptions);
+            if (isset($collectedTitles)) {
+                $descriptions = array_merge($collectedTitles, $descriptions);
+            }
         }
 
         return $descriptions;
