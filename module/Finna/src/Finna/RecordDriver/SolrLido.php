@@ -224,7 +224,7 @@ implements \Laminas\Log\LoggerAwareInterface
                 }
             }
         }
-        return $restrictions;
+        return array_unique($restrictions);
     }
 
     /**
