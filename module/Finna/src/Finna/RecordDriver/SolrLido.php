@@ -1768,34 +1768,26 @@ implements \Laminas\Log\LoggerAwareInterface
     public function getAllSubjectHeadingsWithoutPlaces(bool $extended = false): array
     {
         $headings = [];
-        $creationDates = [];
         $language = $this->getLocale();
         foreach (['topic', 'genre'] as $field) {
             if (isset($this->fields[$field])) {
                 $headings = array_merge($headings, (array)$this->fields[$field]);
             }
         }
-        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
-            ->eventWrap->eventSet ?? [] as $node) {
-            $type = isset($node->event->eventType->term)
-                ? mb_strtolower((string)$node->event->eventType->term, 'UTF-8') : '';
-            if ($type == 'valmistus') {
-                $date = (string)$node->event->eventDate->displayDate;
-                $creationDates[] = $date;
-            }
-        }
         // Include all display dates from events except creation date
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap
-            ->eventSet->event ?? [] as $node) {
-            if (!empty($node->eventDate->displayDate)) {
-                $date = (string)($this->getLanguageSpecificItem(
-                    $node->eventDate->displayDate,
-                    $language
-                ));
-                if (false !== $key = array_search($date, $creationDates)) {
-                    unset($creationDates[$key]);
-                } else {
-                    $headings[] = $date;
+            ->eventSet ?? [] as $node) {
+            foreach ($node->event ?? [] as $node) {
+                $type = isset($node->eventType->term)
+                ? mb_strtolower((string)$node->eventType->term, 'UTF-8') : '';
+                if ($type != 'valmistus') {
+                    if (!empty($node->eventDate->displayDate)) {
+                        $date = (string)($this->getLanguageSpecificItem(
+                            $node->eventDate->displayDate,
+                            $language
+                        ));
+                        $headings[] = $date;
+                    }
                 }
             }
         }
