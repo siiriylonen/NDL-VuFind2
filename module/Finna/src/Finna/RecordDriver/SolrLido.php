@@ -2114,11 +2114,14 @@ implements \Laminas\Log\LoggerAwareInterface
     protected function compareToTitle(array $compare): array
     {
         $compareDone = [];
-        $title = str_replace([',', ';'], ' ', $this->getTitle());
-        foreach ($compare as $item) {
-            $checkTitle = str_replace([',', ';'], ' ', (string)$item) != $title;
-            if ($checkTitle) {
-                $compareDone[] = (string)$item;
+        $title = str_replace([',', ';'], '', $this->getTitle());
+        $compareFull = str_replace([',', ';'], '', implode(' ', $compare));
+        if ($compareFull != $title) {
+            foreach ($compare as $item) {
+                $checkTitle = str_replace([',', ';'], ' ', (string)$item) != $title;
+                if ($checkTitle) {
+                    $compareDone[] = (string)$item;
+                }
             }
         }
         return array_unique($compareDone);
@@ -2166,24 +2169,13 @@ implements \Laminas\Log\LoggerAwareInterface
                 }
             }
         }
-        //Collect all apellationValues to be checked
-        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
-            ->objectIdentificationWrap->titleWrap->titleSet
-        ?? [] as $node) {
-            foreach ($node->appellationValue ?? [] as $title) {
-                $pref = $title->attributes()->pref;
-                if ($pref != 'alternate' && $pref != 'preferred') {
-                    $titleValues[] = $title;
-                }
-            }
-        }
         //Check for matching language variations
-        //And check for items matching object title
         if ($descriptionsTyped ?: $descriptionsUntyped) {
             $collectedDesc = $this->getAllLanguageSpecificItems(
                 $descriptionsTyped ?: $descriptionsUntyped,
                 $language
             );
+            //Discard values matching the object title
             $collected = $this->compareToTitle($collectedDesc);
             foreach ($collected as $item) {
                 $descriptions[] = (string)$item;
@@ -2199,24 +2191,47 @@ implements \Laminas\Log\LoggerAwareInterface
                 $descriptions[] = (string)$item;
             }
         }
+
+        //Collect all titles to be checked
+        $displayTitle = $this->getTitle();
+        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
+            ->objectIdentificationWrap->titleWrap->titleSet
+            ?? [] as $node) {
+            foreach ($node->appellationValue ?? [] as $title) {
+                $pref = $title->attributes()->pref;
+                $titleValues[] = $title;
+                if ($pref == 'preferred' || $pref == 'alternate') {
+                    $titlesNotInDesc[] = $title;
+                }
+            }
+        }
+        //Get language specific titles
         if ($titleValues) {
             $titleValues = $this->getAllLanguageSpecificItems(
                 $titleValues,
                 $language
             );
-            $keyword = $this->getTitle();
-            foreach ($titleValues as $item) {
-                $checkItem = preg_replace('/[^a-zA-Z0-9]/', '', (string)$item);
-                $checkWord = preg_replace('/[^a-zA-Z0-9]/', '', $keyword);
-                if (strncmp($checkItem, $checkWord, strlen($checkWord)) == 0
-                    && strlen($checkWord) != strlen($checkItem)
+            //Discard values matching the object title
+            $titleValues = $this->compareToTitle($titleValues);
+            //Discard values matching the alternate titles
+            if (isset($titlesNotInDesc)) {
+                $titleValues = array_diff($titleValues, $titlesNotInDesc);
+            }
+            //Check for partial titles
+            $checkWord = preg_replace('/[^a-zA-Z0-9]/', '', $displayTitle);
+            $checkLength = strlen($checkWord);
+            foreach ($titleValues as $title) {
+                $checkItem = preg_replace('/[^a-zA-Z0-9]/', '', (string)$title);
+                if (strncmp($checkItem, $checkWord, $checkLength) == 0
+                    && $checkLength !== strlen($checkItem)
                 ) {
-                    $item = substr($item, strlen($keyword));
-                    $collectedTitles[] = (string)$item;
-                } elseif ($keyword != $item) {
-                    $collectedTitles[] = (string)$item;
+                    $title = substr($title, strlen($displayTitle));
+                    $collectedTitles[] = (string)$title;
+                } elseif ($displayTitle != $title) {
+                    $collectedTitles[] = (string)$title;
                 }
             }
+            //Add titles to the beginning of descriptions
             if (isset($collectedTitles)) {
                 $descriptions = array_merge($collectedTitles, $descriptions);
             }

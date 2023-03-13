@@ -31,6 +31,7 @@
           <titleSet>
             <appellationValue>Otsikko näkyy partial.</appellationValue>
             <appellationValue>Näkyy kokonaan.</appellationValue>
+            <appellationValue pref="preferred">Ei näy preferred.</appellationValue>
             <appellationValue pref="alternate">Ei näy alternate.</appellationValue>
           </titleSet>
         </titleWrap>
