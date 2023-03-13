@@ -1777,17 +1777,16 @@ implements \Laminas\Log\LoggerAwareInterface
         // Include all display dates from events except creation date
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap
             ->eventSet ?? [] as $node) {
-            foreach ($node->event ?? [] as $node) {
-                $type = isset($node->eventType->term)
-                ? mb_strtolower((string)$node->eventType->term, 'UTF-8') : '';
-                if ($type != 'valmistus') {
-                    if (!empty($node->eventDate->displayDate)) {
-                        $date = (string)($this->getLanguageSpecificItem(
-                            $node->eventDate->displayDate,
-                            $language
-                        ));
-                        $headings[] = $date;
-                    }
+            $type = isset($node->event->eventType->term)
+            ? mb_strtolower((string)$node->event->eventType->term, 'UTF-8') : '';
+            if ($type != 'valmistus') {
+                $displayDate = $node->event->eventDate->displayDate;
+                if (!empty($displayDate)) {
+                    $date = (string)($this->getLanguageSpecificItem(
+                        $displayDate,
+                        $language
+                    ));
+                    $headings[] = $date;
                 }
             }
         }
