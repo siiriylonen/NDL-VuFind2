@@ -1792,7 +1792,9 @@ implements \Laminas\Log\LoggerAwareInterface
                     $node->eventDate->displayDate,
                     $language
                 ));
-                if ($date && !in_array($date, $creationDates)) {
+                if (false !== $key = array_search($date, $creationDates)) {
+                    unset($creationDates[$key]);
+                } else {
                     $headings[] = $date;
                 }
             }
