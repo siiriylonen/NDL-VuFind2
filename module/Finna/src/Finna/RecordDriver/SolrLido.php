@@ -2171,7 +2171,8 @@ implements \Laminas\Log\LoggerAwareInterface
             ->objectIdentificationWrap->titleWrap->titleSet
         ?? [] as $node) {
             foreach ($node->appellationValue ?? [] as $title) {
-                if ($title->attributes()->pref != 'alternate') {
+                $pref = $title->attributes()->pref;
+                if ($pref != 'alternate' && $pref != 'preferred') {
                     $titleValues[] = $title;
                 }
             }
@@ -2199,6 +2200,10 @@ implements \Laminas\Log\LoggerAwareInterface
             }
         }
         if ($titleValues) {
+            $titleValues = $this->getAllLanguageSpecificItems(
+                $titleValues,
+                $language
+            );
             $keyword = $this->getTitle();
             foreach ($titleValues as $item) {
                 $checkItem = preg_replace('/[^a-zA-Z0-9]/', '', (string)$item);
