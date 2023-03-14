@@ -1778,8 +1778,8 @@ implements \Laminas\Log\LoggerAwareInterface
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap
             ->eventSet ?? [] as $node) {
             $type = isset($node->event->eventType->term)
-            ? mb_strtolower((string)$node->event->eventType->term, 'UTF-8') : '';
-            if ($type != 'valmistus') {
+                ? mb_strtolower((string)$node->event->eventType->term, 'UTF-8') : '';
+            if ($type !== 'valmistus') {
                 $displayDate = $node->event->eventDate->displayDate;
                 if (!empty($displayDate)) {
                     $date = (string)($this->getLanguageSpecificItem(
