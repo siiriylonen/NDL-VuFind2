@@ -2199,7 +2199,7 @@ implements \Laminas\Log\LoggerAwareInterface
             ?? [] as $node
         ) {
             foreach ($node->appellationValue ?? [] as $title) {
-                $pref = $title->attributes()->pref;
+                $pref = (string)($title->attributes()->pref ?? '');
                 $titleValues[] = $title;
                 if ($pref === 'preferred' || $pref === 'alternate') {
                     $titlesNotInDesc[] = $title;
