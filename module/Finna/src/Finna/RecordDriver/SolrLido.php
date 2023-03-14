@@ -2196,11 +2196,12 @@ implements \Laminas\Log\LoggerAwareInterface
         $displayTitle = $this->getTitle();
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata
             ->objectIdentificationWrap->titleWrap->titleSet
-            ?? [] as $node) {
+            ?? [] as $node
+        ) {
             foreach ($node->appellationValue ?? [] as $title) {
                 $pref = $title->attributes()->pref;
                 $titleValues[] = $title;
-                if ($pref == 'preferred' || $pref == 'alternate') {
+                if ($pref === 'preferred' || $pref === 'alternate') {
                     $titlesNotInDesc[] = $title;
                 }
             }
@@ -2227,7 +2228,7 @@ implements \Laminas\Log\LoggerAwareInterface
                 ) {
                     $title = substr($title, strlen($displayTitle));
                     $collectedTitles[] = (string)$title;
-                } elseif ($displayTitle != $title) {
+                } elseif ($displayTitle !== $title) {
                     $collectedTitles[] = (string)$title;
                 }
             }
