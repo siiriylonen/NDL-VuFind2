@@ -511,23 +511,34 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 'lido_test.xml',
-                ['Visible description.', 'Visible subject labeled.'],
+                [
+                    'Visible description.',
+                    'Visible subject labeled.'
+                ],
                 [],
                 'en-gb'
 
             ],
             [
                 'lido_test2.xml',
-                [' näkyy partial.', 'Näkyy kokonaan.',
-                'Näkyy description untyped.', 'Näkyy subject unlabeled.'
+                [
+                    'näkyy partial.',
+                    'Näkyy kokonaan.',
+                    'Näkyy description untyped.',
+                    'Näkyy subject unlabeled.'
                 ],
                 ['title' => 'Otsikko'],
                 'fi'
             ],
             [
                 'lido_test.xml',
-                ['Näkyy description typed.', 'Visible description.', 'Visible subject labeled.',
-                'Näkyy subject labeled.', 'Synas subject labeled.'],
+                [
+                    'Näkyy description typed.',
+                    'Visible description.',
+                    'Visible subject labeled.',
+                    'Näkyy subject labeled.',
+                    'Synas subject labeled.'
+                ],
                 [],
                 'xy'
             ]

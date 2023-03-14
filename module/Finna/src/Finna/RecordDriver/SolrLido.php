@@ -2105,13 +2105,13 @@ implements \Laminas\Log\LoggerAwareInterface
     }
 
     /**
-     * Compare the title of current object to items from given array as titles
+     * Compare the title of current object with items from given array as titles
      *
-     * @param array $compare An array of items compared to title
+     * @param array $compare An array of items to compare
      *
      * @return array
      */
-    protected function compareToTitle(array $compare): array
+    protected function compareWithTitle(array $compare): array
     {
         $compareDone = [];
         $title = str_replace([',', ';'], '', $this->getTitle());
@@ -2176,7 +2176,7 @@ implements \Laminas\Log\LoggerAwareInterface
                 $language
             );
             //Discard values matching the object title
-            $collected = $this->compareToTitle($collectedDesc);
+            $collected = $this->compareWithTitle($collectedDesc);
             foreach ($collected as $item) {
                 $descriptions[] = (string)$item;
             }
@@ -2186,7 +2186,7 @@ implements \Laminas\Log\LoggerAwareInterface
                 $subjectsLabeled ?: $subjectsUnlabeled,
                 $language
             );
-            $collected = $this->compareToTitle($collectedSubj);
+            $collected = $this->compareWithTitle($collectedSubj);
             foreach ($collected as $item) {
                 $descriptions[] = (string)$item;
             }
@@ -2213,7 +2213,7 @@ implements \Laminas\Log\LoggerAwareInterface
                 $language
             );
             //Discard values matching the object title
-            $titleValues = $this->compareToTitle($titleValues);
+            $titleValues = $this->compareWithTitle($titleValues);
             //Discard values matching the alternate titles
             if (isset($titlesNotInDesc)) {
                 $titleValues = array_diff($titleValues, $titlesNotInDesc);
@@ -2226,7 +2226,7 @@ implements \Laminas\Log\LoggerAwareInterface
                 if (strncmp($checkItem, $checkWord, $checkLength) == 0
                     && $checkLength !== strlen($checkItem)
                 ) {
-                    $title = substr($title, strlen($displayTitle));
+                    $title = ltrim(substr($title, strlen($displayTitle)), ' .,;:!?');
                     $collectedTitles[] = (string)$title;
                 } elseif ($displayTitle !== $title) {
                     $collectedTitles[] = (string)$title;
