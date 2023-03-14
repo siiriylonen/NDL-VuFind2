@@ -1774,15 +1774,18 @@ implements \Laminas\Log\LoggerAwareInterface
                 $headings = array_merge($headings, (array)$this->fields[$field]);
             }
         }
-        // Include all display dates from events
+        // Include all display dates from events except creation date
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap
             ->eventSet ?? [] as $node) {
-            if (!empty($node->eventDate->displayDate)) {
-                $date = (string)($this->getLanguageSpecificItem(
-                    $node->eventDate->displayDate,
-                    $language
-                ));
-                if ($date) {
+            $type = isset($node->event->eventType->term)
+                ? mb_strtolower((string)$node->event->eventType->term, 'UTF-8') : '';
+            if ($type !== 'valmistus') {
+                $displayDate = $node->event->eventDate->displayDate;
+                if (!empty($displayDate)) {
+                    $date = (string)($this->getLanguageSpecificItem(
+                        $displayDate,
+                        $language
+                    ));
                     $headings[] = $date;
                 }
             }
