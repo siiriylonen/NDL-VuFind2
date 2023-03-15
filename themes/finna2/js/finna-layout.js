@@ -647,21 +647,32 @@ finna.layout = (function finnaLayout() {
       navDropdownToggleClassName: "nav-dropdown-toggle",
       breakPoint: 400
     });
-
-    $('#language_menu').on('show.bs.dropdown', function changeIcon() {
-      $('#dropdownMenuButton').children('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-up');
-    });
-    $('#language_menu').on('hide.bs.dropdown', function changeIcon() {
-      $('#dropdownMenuButton').children('.fa-chevron-up').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-    });
-    $('#language_menu_mobile').on('show.bs.collapse', function changeIcon() {
-      $('#collapseMenuButton').children('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-up');
-    });
-    $('#language_menu_mobile').on('hide.bs.collapse', function changeIcon() {
-      $('#collapseMenuButton').children('.fa-chevron-up').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-    });
   }
 
+  function initLanguageMenu() {  
+    const open = '.show--open';
+    const closed = '.show--closed';
+    const hidden = 'hidden';
+    $('#language_menu').find(open).addClass(hidden);
+    $('#collapseMenuButton').find(open).addClass(hidden);
+    $('#language_menu').on('show.bs.dropdown', function change() {
+      $(this).find(open).toggleClass(hidden);
+      $(this).find(closed).toggleClass(hidden);
+    });
+    $('#language_menu').on('hide.bs.dropdown', function change() {
+      $(this).find(open).toggleClass(hidden);
+      $(this).find(closed).toggleClass(hidden);
+    });
+    $('#language_menu_mobile').on('show.bs.collapse', function change() {
+      $('#collapseMenuButton').find(open).toggleClass(hidden);
+      $('#collapseMenuButton').find(closed).toggleClass(hidden);
+    });
+    $('#language_menu_mobile').on('hide.bs.collapse', function change() {
+      $('#collapseMenuButton').find(open).toggleClass(hidden);
+      $('#collapseMenuButton').find(closed).toggleClass(hidden);
+    });
+  }
+  
   function initFiltersToggle () {
     var win = $(window);
 
@@ -846,6 +857,7 @@ finna.layout = (function finnaLayout() {
       initAudioButtons();
       initKeyboardNavigation();
       initPriorityNav();
+      initLanguageMenu();
       initFiltersToggle();
       initCookieConsent();
       setImagePaginatorTranslations();

@@ -21,7 +21,7 @@
 
       <div class="language-menu-mobile visible-xs">
         <button class="btn collapse-mobile" aria-label="<?=$this->transEscAttr('select_language')?>" type="button" id="collapseMenuButton" data-toggle="collapse" data-target="#language_menu_mobile" aria-haspopup="true" aria-expanded="false">
-          <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <?=$this->icon('collapse-open')?>
+          <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <?=$this->icon('collapse', 'collapse-closed')?>
         </button>
         <ul id="language_menu_mobile" class="collapse" aria-labelledby="dropdownMenuButton">
           <h2 class="dropdown-header">
@@ -140,104 +140,104 @@
     <?php endif; ?>
     </div>
 
-    <ul role="menubar" class="nav navbar-nav nav-absolute">
-      <div class="lang-login-buttons">
+    <div role="menubar" class="nav navbar-nav nav-absolute">
+      <ul class="lang-login-buttons">
         <li id="language_menu" class="dropdown hidden-xs" role="navigation" aria-label="<?=$this->transEscAttr('select_language')?>">
-         <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" role="menuitem" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <?=$this->icon('collapse-open')?>
-         </a>
-         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuButton">
-           <h2 class="dropdown-header">
-             <?=$this->transEscAttr('select_language')?>
-           </h2>
-           <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
-             <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
-               <?php if ($this->layout()->userLang == $langCode): ?>
-                 <li class="dropdown-item">
-                   <a class="preserve-anchor active" lang="<?=$this->escapeHtmlAttr($langCode)?>"> <?=$this->displayLanguageOption($langName)?></a>
-                 </li>
-                 <?php break; ?>
-               <?php endif ?>
-             <?php endforeach; ?>
-             <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
-               <?php if ($this->layout()->userLang != $langCode): ?>
-                 <li class="dropdown-item">
-                   <a class="preserve-anchor" lang="<?=$this->escapeHtmlAttr($langCode)?>" href="<?=$this->escapeHtmlAttr($this->navibar()->getLanguageUrl($langCode))?>"><?=$this->displayLanguageOption($langName)?></a>
-                 </li>
-               <?php endif ?>
-             <?php endforeach; ?>
-           <?php endif; ?>
-         </ul>
+          <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" role="menuitem" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class='fa fa-globe'></i> <?=$this->displayLanguageOption($selectedLang)?> <?=$this->icon('collapse', 'collapse-closed')?>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuButton">
+            <h2 class="dropdown-header">
+              <?=$this->transEscAttr('select_language')?>
+            </h2>
+            <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
+              <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
+                <?php if ($this->layout()->userLang == $langCode): ?>
+                  <li class="dropdown-item">
+                    <a class="preserve-anchor active" lang="<?=$this->escapeHtmlAttr($langCode)?>"> <?=$this->displayLanguageOption($langName)?></a>
+                  </li>
+                  <?php break; ?>
+                <?php endif ?>
+              <?php endforeach; ?>
+              <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
+                <?php if ($this->layout()->userLang != $langCode): ?>
+                  <li class="dropdown-item">
+                    <a class="preserve-anchor" lang="<?=$this->escapeHtmlAttr($langCode)?>" href="<?=$this->escapeHtmlAttr($this->navibar()->getLanguageUrl($langCode))?>"><?=$this->displayLanguageOption($langName)?></a>
+                  </li>
+                <?php endif ?>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </ul>
         </li>
         
-      <?php if (is_object($account) && $account->loginEnabled()): ?>
-        <?php if ($user): ?>
-          <li id="logout" class="logoutOptions">
-            <a href="#" role="menuitem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="account-icon" class="fa fa-user fa-lg" aria-hidden="true"></i><span class="username login-text"><?=$this->transEsc("Your Account")?></span><?=$this->icon('collapse-open')?></a>
-            <ul role="menu" id="my-info-dropdown-menu" class="dropdown-menu">
-              <?php if ($user->getLibraryCards()->count() > 0): ?>
+        <?php if (is_object($account) && $account->loginEnabled()): ?>
+          <?php if ($user): ?>
+            <li class="top-right-nav logoutOptions">
+              <a href="#" role="menuitem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="account-icon" class="fa fa-user fa-lg" aria-hidden="true"></i><span class="username login-text"><?=$this->transEsc("Your Account")?></span><?=$this->icon('collapse-open')?></a>
+              <ul role="menu" id="my-info-dropdown-menu" class="dropdown-menu">
+                <?php if ($user->getLibraryCards()->count() > 0): ?>
+                  <li>
+                    <a <?=$this->url('myresearch-checkedout') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-checkedout')?>">
+                      <?=$this->transEsc('Checked Out Items')?>
+                      <span class="checkedout-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
+                    </a>
+                  </li>
+                  <?php if ($this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams)): ?>
+                  <li>
+                    <a <?=$this->url('myresearch-historicloans') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-historicloans')?>">
+                      <?=$this->transEsc('Loan History')?>
+                    </a>
+                  </li>
+                  <?php endif; ?>
+                  <li>
+                    <a <?=$this->url('holds-list') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('holds-list')?>">
+                      <?=$this->transEsc('Holds and Recalls')?>
+                      <span class="holds-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a <?=$this->url('myresearch-fines') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-fines')?>">
+                      <?=$this->transEsc('Fines')?>
+                      <span class="fines-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
+                    </a>
+                  </li>
+                <?php endif; ?>
+                <?=$this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $user, 'loginMenu' => 'true', 'label' => 'Library Cards','limit' => 0]);?>
                 <li>
-                  <a <?=$this->url('myresearch-checkedout') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-checkedout')?>">
-                    <?=$this->transEsc('Checked Out Items')?>
-                    <span class="checkedout-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
+                  <a <?=$this->url('myresearch-profile') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-profile')?>">
+                    <?=$this->transEsc('Profile')?>
+                    <span class="profile-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
                   </a>
                 </li>
-                <?php if ($this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams)): ?>
-                <li>
-                  <a <?=$this->url('myresearch-historicloans') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-historicloans')?>">
-                    <?=$this->transEsc('Loan History')?>
-                  </a>
-                </li>
+                <?php if ($this->R2()->isAvailable()): ?>
+                  <?php $registered = $this->R2()->isRegistered(); ?>
+                  <li>
+                    <a <?=$this->url('myresearch-r2accessrights') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-r2accessrights')?>">
+                      <?=$this->transEsc($registered ? 'R2_accessrights_title' : 'R2_menu_heading_register')?>
+                      <?php if (!$registered): ?>
+                        <i class="fa fa-research pull-right" aria-hidden="true"></i>
+                      <?php endif; ?>
+                    </a>
+                  </li>
                 <?php endif; ?>
                 <li>
-                  <a <?=$this->url('holds-list') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('holds-list')?>">
-                    <?=$this->transEsc('Holds and Recalls')?>
-                    <span class="holds-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
+                  <a <?=$this->url('search-history') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('search-history')?>?require_login">
+                    <?=$this->transEsc('history_saved_searches')?>
                   </a>
                 </li>
+                <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
+                  <li>
+                    <a <?=$this->url('myresearch-favorites') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role ="menuitem" href="<?=$this->url('myresearch-favorites')?>">
+                      <?=$this->transEsc('Favorites')?>
+                    </a>
+                  </li>
+                <?php endif; ?>
                 <li>
-                  <a <?=$this->url('myresearch-fines') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-fines')?>">
-                    <?=$this->transEsc('Fines')?>
-                    <span class="fines-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
-                  </a>
+                  <a <?=$this->url('myresearch-logout') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-logout')?>" title="<?=$this->transEsc("Log Out")?>"><?=$this->transEsc("Log Out")?><i class="pull-right fa fa-sign-out fa-lg" aria-hidden="true"></i></a>
                 </li>
-              <?php endif; ?>
-              <?=$this->context($this)->renderInContext('librarycards/selectcard.phtml', ['user' => $user, 'loginMenu' => 'true', 'label' => 'Library Cards','limit' => 0]);?>
-              <li>
-                <a <?=$this->url('myresearch-profile') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-profile')?>">
-                  <?=$this->transEsc('Profile')?>
-                  <span class="profile-status status hidden"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></span>
-                </a>
-              </li>
-              <?php if ($this->R2()->isAvailable()): ?>
-                <?php $registered = $this->R2()->isRegistered(); ?>
-                <li>
-                  <a <?=$this->url('myresearch-r2accessrights') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-r2accessrights')?>">
-                    <?=$this->transEsc($registered ? 'R2_accessrights_title' : 'R2_menu_heading_register')?>
-                    <?php if (!$registered): ?>
-                      <i class="fa fa-research pull-right" aria-hidden="true"></i>
-                    <?php endif; ?>
-                  </a>
-                </li>
-              <?php endif; ?>
-              <li>
-                <a <?=$this->url('search-history') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('search-history')?>?require_login">
-                  <?=$this->transEsc('history_saved_searches')?>
-                </a>
-              </li>
-              <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
-                <li>
-                  <a <?=$this->url('myresearch-favorites') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role ="menuitem" href="<?=$this->url('myresearch-favorites')?>">
-                    <?=$this->transEsc('Favorites')?>
-                  </a>
-                </li>
-              <?php endif; ?>
-              <li>
-                <a <?=$this->url('myresearch-logout') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-logout')?>" title="<?=$this->transEsc("Log Out")?>"><?=$this->transEsc("Log Out")?><i class="pull-right fa fa-sign-out fa-lg" aria-hidden="true"></i></a>
-              </li>
-            </ul>
-          </li>
-        <?php endif; ?>
+              </ul>
+            </li>
+          <?php endif; ?>
 
         <li id="loginOptions"<?= $account->isLoggedIn() ?  " class='hidden'" : '';?>>
           <?php if ($sessionInitiator = $account->getSessionInitiator($this->serverUrl($this->url('myresearch-home')))): ?>
@@ -254,9 +254,9 @@
             <?php endif; ?>
           <?php endif; ?>
         </li>
-        </div>
+      </ul>
       <?php endif; ?>
-    </ul>
+    </div>
   <?php endif; ?>
 </div>
 <!-- END of: finna - navibar.phtml -->
