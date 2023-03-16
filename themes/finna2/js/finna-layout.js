@@ -650,26 +650,16 @@ finna.layout = (function finnaLayout() {
   }
 
   function initLanguageMenu() {  
-    const open = '.show--open';
-    const closed = '.show--closed';
+    const open = '.fa-chevron-down';
+    const closed = '.fa-chevron-up';
     const hidden = 'hidden';
-    $('#language_menu').find(open).addClass(hidden);
-    $('#collapseMenuButton').find(open).addClass(hidden);
-    $('#language_menu').on('show.bs.dropdown', function change() {
+    $('#language_menu').on('show.bs.dropdown', function changeIcon() {
       $(this).find(open).toggleClass(hidden);
       $(this).find(closed).toggleClass(hidden);
     });
-    $('#language_menu').on('hide.bs.dropdown', function change() {
+    $('#language_menu').on('hide.bs.dropdown', function changeIcon() {
       $(this).find(open).toggleClass(hidden);
       $(this).find(closed).toggleClass(hidden);
-    });
-    $('#language_menu_mobile').on('show.bs.collapse', function change() {
-      $('#collapseMenuButton').find(open).toggleClass(hidden);
-      $('#collapseMenuButton').find(closed).toggleClass(hidden);
-    });
-    $('#language_menu_mobile').on('hide.bs.collapse', function change() {
-      $('#collapseMenuButton').find(open).toggleClass(hidden);
-      $('#collapseMenuButton').find(closed).toggleClass(hidden);
     });
   }
   
