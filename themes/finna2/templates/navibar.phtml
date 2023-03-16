@@ -111,8 +111,8 @@
     </div>
 
     <div role="menubar" class="nav navbar-nav nav-absolute">
-      <ul class="lang-login-buttons">
-        <li id="language_menu" class="dropdown" role="navigation" aria-label="<?=$this->transEscAttr('Language')?>">
+      <div class="lang-login-buttons">
+        <div id="language_menu" class="dropdown" role="navigation" aria-label="<?=$this->transEscAttr('Language')?>">
           <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" role="menuitem" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class='fa fa-globe'></i>
             <span class="hidden-xs"><?=$this->displayLanguageOption($selectedLang)?></span>
@@ -137,10 +137,10 @@
               <?php endforeach; ?>
             <?php endif; ?>
           </ul>
-        </li>
+        </div>
         <?php if (is_object($account) && $account->loginEnabled()): ?>
           <?php if ($user): ?>
-            <div class="top-right-nav logoutOptions">
+            <div class="logoutOptions">
               <a href="#" role="menuitem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="account-icon" class="fa fa-user fa-lg" aria-hidden="true"></i><span class="username login-text"><?=$this->transEsc("Your Account")?></span><?=$this->icon('collapse-open')?></a>
               <ul role="menu" id="my-info-dropdown-menu" class="dropdown-menu">
                 <?php if ($user->getLibraryCards()->count() > 0): ?>
@@ -206,7 +206,7 @@
               </ul>
             </div>
           <?php endif; ?>
-        <li id="loginOptions"<?= $account->isLoggedIn() ?  " class='hidden'" : '';?>>
+        <div id="loginOptions"<?= $account->isLoggedIn() ?  " class='hidden'" : '';?>>
           <?php if ($sessionInitiator = $account->getSessionInitiator($this->serverUrl($this->url('myresearch-home')))): ?>
             <a <?=$this->url('myresearch-userlogin') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-userlogin')?>"><i class="fa fa-user" aria-hidden="true"></i> <?=$this->transEsc("Institutional Login")?></a>
           <?php else: ?>
@@ -220,8 +220,8 @@
               </div>
             <?php endif; ?>
           <?php endif; ?>
-        </li>
-      </ul>
+        </div>
+      </div>
       <?php endif; ?>
     </div>
   <?php endif; ?>
