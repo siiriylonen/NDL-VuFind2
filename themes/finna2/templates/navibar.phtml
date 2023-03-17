@@ -209,7 +209,7 @@
         <?php endif; ?>
         <div id="loginOptions"<?= $account->isLoggedIn() ?  " class='hidden'" : '';?>>
         <?php if ($sessionInitiator = $account->getSessionInitiator($this->serverUrl($this->url('myresearch-home')))): ?>
-          <a <?=$this->url('myresearch-userlogin') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-userlogin')?>"><i class="fa fa-user" aria-hidden="true"></i> <?=$this->transEsc("Institutional Login")?></a>
+          <a <?=$this->url('myresearch-userlogin') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> href="<?=$this->url('myresearch-userlogin')?>"><i class="fa fa-user" aria-hidden="true"></i> <?=$this->transEsc("Institutional Login")?></a>
         <?php else: ?>
           <?php if ($this->templateDir === 'myresearch' && $this->templateName === 'login'): ?>
             <div>
