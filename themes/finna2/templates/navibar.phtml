@@ -114,7 +114,7 @@
 <?php if (!isset($this->layout()->renderingError)): ?>
   <div class="lang-login-buttons">
     <div id="language_menu" class="dropdown" role="navigation" aria-label="<?=$this->transEscAttr('Language')?>">
-      <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" role="menuitem" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class='fa fa-globe'></i>
         <span class="hidden-xs"><?=$this->displayLanguageOption($selectedLang)?></span>
         <?=$this->icon('collapse-close', 'hidden') ?><?=$this->icon('collapse-open') ?>
@@ -142,7 +142,7 @@
       <?php if (is_object($account) && $account->loginEnabled()): ?>
         <?php if ($user): ?>
           <div class="logoutOptions">
-            <a href="#" role="menuitem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="account-icon" class="fa fa-user fa-lg" aria-hidden="true"></i><span class="username login-text"><?=$this->transEsc("Your Account")?></span><?=$this->icon('collapse-open')?></a>
+            <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="account-icon" class="fa fa-user fa-lg" aria-hidden="true"></i><span class="username login-text"><?=$this->transEsc("Your Account")?></span><?=$this->icon('collapse-open')?></a>
             <ul role="menu" id="my-info-dropdown-menu" class="dropdown-menu dropdown-menu-right">
               <?php if ($user->getLibraryCards()->count() > 0): ?>
                 <li>
