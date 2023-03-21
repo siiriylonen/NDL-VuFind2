@@ -27,8 +27,10 @@
 }
 
 .navbar-collapse {
+  border-top: 3px solid @brand-primary;
   @media (min-width: @grid-float-breakpoint) {
     box-shadow: none;
+    border-top: 0;
   }
 }
 
@@ -307,10 +309,6 @@
   #header-collapse {
     padding-left: 0;
     padding-right: 0;
-    border-top: 3px solid @brand-primary;
-  }
-  .navbar-collapse {
-    border-top: 0px;
   }
 }
 
