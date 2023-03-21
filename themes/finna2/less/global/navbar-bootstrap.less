@@ -254,31 +254,21 @@
     width: 100%;
   }
 }
-.lang-login-buttons {
-  margin-left: auto;
+.header-navbar-right {
   display: flex;
   flex-direction: row;
   align-items: center;
   height: @navbar-height;
   margin-bottom: 0;
-  margin-right: 2em;
-  z-index: 100;
   .username {
     padding-right: 3px;
     font-weight: 600;
   }
   div.logoutOptions {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-right: 12px;
   }
   .logoutOptions, #loginOptions {
     position: relative;
-  }
-
-  @media(max-width: @screen-md) {
-    position: fixed;
-    right: 1em;
-    margin-right: 60px;
   }
 }
 
@@ -327,4 +317,14 @@
 .navbar .navbar-logo {
   height: @navbar-logo-height;
   margin-right: 10px;
+}
+
+//Focus outline for dropdowns in Firefox
+@supports (-moz-appearance:none) {
+  a.dropdown-toggle:focus {
+    outline: none;
+  }
+  a.dropdown-toggle:focus-visible {
+    outline: revert;
+  }
 }

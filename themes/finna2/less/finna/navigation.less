@@ -1,7 +1,3 @@
-.container-fluid {
-  display: flex;
-}
-
 .swipe-arrow-navigation {
   position: fixed;
   width: 50px;
@@ -44,7 +40,6 @@
     color: @action-link-color;
   }
   .dropdown-menu {
-    right: 5px;
     left: auto;
     > li {
       > a {
@@ -282,12 +277,15 @@
   z-index: 1; /* this is necessary for overcome the pseudo element */
 }
 
+@media(max-width: @screen-md) {
+  .navbar-collapse {
+    border-top: 3px solid @brand-primary;
+  }
+}
+
 @media(min-width: @grid-float-breakpoint) {
   .finna-navbar {
     display: flex;
-    .nav.nav-absolute {
-      position: relative;
-    }
     .navbar-collapse {
       flex: 1;
       display: flex !important; // Needed to override bootstrap defaults
