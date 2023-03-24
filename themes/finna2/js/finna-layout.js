@@ -649,20 +649,6 @@ finna.layout = (function finnaLayout() {
     });
   }
 
-  function initLanguageMenu() {  
-    const open = '.fa-chevron-down';
-    const closed = '.fa-chevron-up';
-    const hidden = 'hidden';
-    $('#language_menu').on('show.bs.dropdown', function changeIcon() {
-      $(this).find(open).toggleClass(hidden);
-      $(this).find(closed).toggleClass(hidden);
-    });
-    $('#language_menu').on('hide.bs.dropdown', function changeIcon() {
-      $(this).find(open).toggleClass(hidden);
-      $(this).find(closed).toggleClass(hidden);
-    });
-  }
-  
   function initFiltersToggle () {
     var win = $(window);
 
@@ -847,7 +833,6 @@ finna.layout = (function finnaLayout() {
       initAudioButtons();
       initKeyboardNavigation();
       initPriorityNav();
-      initLanguageMenu();
       initFiltersToggle();
       initCookieConsent();
       setImagePaginatorTranslations();
