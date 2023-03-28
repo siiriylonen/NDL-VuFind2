@@ -115,7 +115,7 @@
       <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class='fa fa-globe'></i>
         <span class="hidden-xs"><?=$this->displayLanguageOption($selectedLang)?></span>
-        <?=$this->icon('collapse-close', 'hidden') ?><?=$this->icon('collapse-open') ?>
+        <?=$this->icon('collapse-open') ?>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenuButton">
         <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
