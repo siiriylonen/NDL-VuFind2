@@ -649,19 +649,6 @@ finna.layout = (function finnaLayout() {
     });
   }
 
-  function initNavMenus() {
-    const navbar = $('.finna-navbar');
-    navbar.find('a[data-toggle]').each(function findToggles() {
-      $(this).siblings().on('keydown', function doToggle(e) {
-        if (e.keyCode === 27) {
-          $(this).click();
-          $(document.activeElement).blur();
-          $(this).siblings().focus();
-        }
-      });
-    });
-  }
-
   function initFiltersToggle () {
     var win = $(window);
 
@@ -846,7 +833,6 @@ finna.layout = (function finnaLayout() {
       initAudioButtons();
       initKeyboardNavigation();
       initPriorityNav();
-      initNavMenus();
       initFiltersToggle();
       initCookieConsent();
       setImagePaginatorTranslations();
