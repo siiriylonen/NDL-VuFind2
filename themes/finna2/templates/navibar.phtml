@@ -9,7 +9,7 @@
 ?>
 <div role="navigation" aria-label="<?=$this->transEscAttr('Main Menu')?>" class="finna-navbar">
   <div class="navbar-header">
-    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-collapse" aria-label="<?=$this->transEscAttr('Mobile Menu') ?>" aria-expanded="false">
+    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-collapse" aria-label="<?=$this->transEscAttr('Mobile Menu') ?>" aria-expanded="false">
       <i class="fa fa-bars" aria-hidden="true"></i>
       <i class="fa fa-times" aria-hidden="true"></i>
     </button>
@@ -90,7 +90,7 @@
   <?php endif; ?>
   <div class="nav navbar-nav nav-absolute header-navbar-right">
     <div id="language_menu" class="dropdown" role="navigation" aria-label="<?=$this->transEscAttr('Language')?>">
-      <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class='fa fa-globe'></i>
         <span class="hidden-xs"><?=$this->displayLanguageOption($selectedLang)?></span>
         <?=$this->icon('collapse-open') ?>
@@ -118,7 +118,7 @@
     <?php if (is_object($account) && $account->loginEnabled()): ?>
       <?php if ($user): ?>
         <div class="logoutOptions">
-          <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="account-icon" class="fa fa-user fa-lg" aria-hidden="true"></i><span class="username login-text"><?=$this->transEsc("Your Account")?></span><?=$this->icon('collapse-open')?></a>
+          <a href="#" class="btn" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="account-icon" class="fa fa-user fa-lg" aria-hidden="true"></i><span class="username login-text"><?=$this->transEsc("Your Account")?></span><?=$this->icon('collapse-open')?></a>
           <ul role="menu" id="my-info-dropdown-menu" class="dropdown-menu dropdown-menu-right">
             <?php if ($user->getLibraryCards()->count() > 0): ?>
               <li role="none">
