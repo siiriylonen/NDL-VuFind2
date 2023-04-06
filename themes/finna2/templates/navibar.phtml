@@ -86,28 +86,6 @@
           <?=$this->render($template)?>
         <?php endif; ?>
       </ul>
-      <?php //hide login if unavailable ?>
-      <?php if (is_object($account) && $account->loginEnabled()): ?>
-        <?php if (!$user): ?>
-          <ul role="menubar" class="nav navbar-nav nav-login">
-            <li class="nav-login" id="loginOptions-navi">
-              <?php if ($sessionInitiator = $account->getSessionInitiator($this->serverUrl($this->url('myresearch-home')))): ?>
-                <a <?=$this->url('myresearch-userlogin') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-userlogin')?>"><i class="fa fa-user" aria-hidden="true"></i> <?=$this->transEsc("Institutional Login")?></a>
-              <?php else: ?>
-                <?php if ($this->templateDir === 'myresearch' && $this->templateName === 'login'): ?>
-                  <div>
-                    <a role="menuitem" class="btn btn-primary btn-uppercase"><i class="fa fa-user fa-lg" aria-hidden="true"></i><span  class="login-text"><?=$this->transEsc("Login")?></span></a>
-                  </div>
-                <?php else: ?>
-                  <div>
-                    <a <?=$this->url('myresearch-userlogin') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-userlogin')?>" class="btn btn-primary btn-uppercase" data-lightbox data-lightbox-onclose="window.location.href='<?=$this->escapeHtmlAttr($this->url('myresearch-home')) ?>'"><i class="fa fa-user fa-lg" aria-hidden="true"></i><span class="login-text"><?=$this->transEsc("Login")?></span></a>
-                  </div>
-                <?php endif; ?>
-              <?php endif; ?>
-            </li>
-          </ul>
-        <?php endif; ?>
-      <?php endif; ?>
     </div>
   <?php endif; ?>
   <div class="nav navbar-nav nav-absolute header-navbar-right">
