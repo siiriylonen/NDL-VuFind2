@@ -35,7 +35,7 @@
                 ?>
                   <li>
                     <a <?=$url === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" <?= $target ? ' target="' . $this->escapeHtmlAttr($target) . '"' : ''?> href="<?=$this->escapeHtmlAttr($url)?>">
-                    <div><?= $this->transEsc($label) ?></div>
+                      <div><?= $this->transEsc($label) ?></div>
                       <?php if ($desc): ?>
                         <div class="description" role="note"><?= $this->transEsc($desc) ?></div>
                       <?php endif; ?>
@@ -90,12 +90,12 @@
   <?php endif; ?>
   <div class="nav navbar-nav nav-absolute header-navbar-right">
     <div id="language_menu" class="dropdown" role="navigation" aria-label="<?=$this->transEscAttr('Language')?>">
-      <a href="#" id="dropdownMenuButton" class="btn dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class='fa fa-globe'></i>
+      <a href="#" id="language_menu_dropdown_button" class="btn dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class='fa fa-globe lang-icon'></i>
         <span class="hidden-xs"><?=$this->displayLanguageOption($selectedLang)?></span>
         <?=$this->icon('collapse-open') ?>
       </a>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenuButton">
+      <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="language_menu_dropdown_button">
         <?php if (isset($this->layout()->allLangs) && count($this->layout()->allLangs) > 1): ?>
           <?php foreach ($this->layout()->allLangs as $langCode => $langName): ?>
             <?php if ($this->layout()->userLang == $langCode): ?>
