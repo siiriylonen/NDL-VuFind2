@@ -4,7 +4,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2015-2016.
+ * Copyright (C) The National Library of Finland 2015-2023.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -28,6 +28,7 @@
  */
 namespace Finna\Search\Solr;
 
+use Laminas\Config\Config;
 use VuFind\Solr\Utils;
 
 /**
@@ -44,6 +45,13 @@ class Params extends \VuFind\Search\Solr\Params
 {
     use \Finna\Search\FinnaParams;
     use ParamsSharedTrait;
+
+    /**
+     * Maximum facet limit
+     *
+     * @var int
+     */
+    public const MAX_FACET_LIMIT = 100;
 
     /**
      * Date converter
@@ -741,6 +749,34 @@ class Params extends \VuFind\Search\Solr\Params
                 = $this->buildFullDateRangeFilter('first_indexed', $from, '*');
             $this->addFilter($rangeFacet);
         }
+    }
+
+    /**
+     * Initialize facet limit from a Config object.
+     *
+     * @param Config $config Configuration
+     *
+     * @return void
+     */
+    protected function initFacetLimitsFromConfig(Config $config = null)
+    {
+        parent::initFacetLimitsFromConfig($config);
+        $this->constrainFacetLimits();
+    }
+
+    /**
+     * Constrain facet limits to 1-100.
+     *
+     * @return void
+     */
+    protected function constrainFacetLimits(): void
+    {
+        $this->facetLimit
+            = max(min((int)$this->facetLimit, static::MAX_FACET_LIMIT), 1);
+        foreach ($this->facetLimitByField as &$value) {
+            $value = max(min((int)$value, static::MAX_FACET_LIMIT), 1);
+        }
+        unset($value);
     }
 
     /**
