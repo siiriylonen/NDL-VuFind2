@@ -230,11 +230,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         if ((!$pageOptions['ilsPaging'] || !$paginator)
             && !empty($this->getConfig()->Authentication->enableAjax)
         ) {
-            $accountStatus = [
-                'ok' => 0,
-                'warn' => 0,
-                'overdue' => 0
-            ];
+            $accountStatus = $this->getTransactionSummary($result['records']);
         } else {
             $accountStatus = null;
         }
@@ -252,20 +248,6 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
             ) {
                 // Enable renewal form if necessary:
                 $renewForm = true;
-            }
-
-            if (null !== $accountStatus) {
-                switch ($current['dueStatus'] ?? '') {
-                    case 'due':
-                        $accountStatus['warn']++;
-                        break;
-                    case 'overdue':
-                        $accountStatus['overdue']++;
-                        break;
-                    default:
-                        $accountStatus['ok']++;
-                        break;
-                }
             }
 
             // Build record driver (only for the current visible page):
