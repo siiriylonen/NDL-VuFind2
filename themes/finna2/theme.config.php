@@ -253,6 +253,7 @@ $config = [
         'vendor/leaflet.min.js',
         'vendor/leaflet.draw.min.js',
         'vendor/js.cookie.js',
+        'jstree-vufind-facet-plugin.js', // Load after jstree
         'finna-multiselect.js',
         'finna-model-viewer.js',
         'finna-video-element.js',
