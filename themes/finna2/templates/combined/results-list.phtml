@@ -109,7 +109,8 @@ JS;
       'showCartControls' => $this->showCartControls,
       'showBulkOptions' => $this->showBulkOptions,
       'showCheckboxes' => $this->showCartControls || $this->showBulkOptions,
-      'searchClassId' => $searchClassId
+      'excludeResultIds' => true, // Don't add id attributes to results to avoid duplicates
+      'searchClassId' => $searchClassId,
     ];
   ?>
   <?= $this->authorizationNote($searchClassId) ?>
