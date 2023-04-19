@@ -175,11 +175,9 @@ $config = [
         'vendor/select2.min.css',
         'finna.css',
         'vendor/priority-nav-core.css',
-        'finna-flex-fallback.css::lt IE 10', // flex polyfill
     ],
     'js' => [
         'finna-object-editor.js',
-        'vendor/event-stub.js:lt IE 9',
         'account_ajax.js',
         'advanced_search.js',
         'cart.js',
@@ -196,6 +194,7 @@ $config = [
         'record.js',
         'record_versions.js',
         'requests.js',
+        'lib/autocomplete.js',
         'finna-polyfill.js',
         'finna.js',
         'finna-script-loader.js',
@@ -236,7 +235,6 @@ $config = [
         'vendor/bootstrap-datepicker.fi.min.js',
         'vendor/bootstrap-datepicker.sv.min.js',
         'vendor/bootstrap-slider.min.js',
-        'vendor/hunt.min.js',
         'vendor/jquery.colorhelpers.min.js',
         'vendor/jquery.dataTables.min.js',
         'vendor/dataTables.bootstrap.min.js',
