@@ -42,14 +42,14 @@
 </div>
 <?php
 $script = <<<JS
-$(document).ready(function() {
-  finna.dateRangeVis.initVis(
-      '{$backend}',
-      '{$daterangeFacet}',
-      '{$searchParams}',
-      '{$baseParams}',
-      $('.daterange-vis'),
-JS;
+    $(document).ready(function() {
+      finna.dateRangeVis.initVis(
+          '{$backend}',
+          '{$daterangeFacet}',
+          '{$searchParams}',
+          '{$baseParams}',
+          $('.daterange-vis'),
+    JS;
 
 $script .= isset($this->plotFrom) ? "{$this->plotFrom}," : 'false,';
 $script .= isset($this->plotTo) ? "{$this->plotTo}," : 'false,';

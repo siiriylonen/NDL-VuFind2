@@ -42,9 +42,9 @@
 </div>
 
 <?php $emailFormScript = <<<'JS'
-    $('#email_to, #email_from, #email_subject').on('invalid', function($e) {
-        $('#modal .fa-spinner').remove();
-    });
-JS;
+        $('#email_to, #email_from, #email_subject').on('invalid', function($e) {
+            $('#modal .fa-spinner').remove();
+        });
+    JS;
 ?>
 <?=$this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $emailFormScript, 'SET');

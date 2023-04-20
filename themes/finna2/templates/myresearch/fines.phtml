@@ -114,7 +114,7 @@
           <?php endif; ?>
       <?php elseif (!empty($this->nonPayableReason) && !empty($this->fines)): ?>
         <div class="fines-info-area">
-          <p><?=$this->transEsc($this->nonPayableReason); ?><?=$this->nonPayableReason == 'online_payment_minimum_fee' ?  (': <span class="amount">' . $this->safeMoneyFormat($this->minimumFee / 100.00)) . '</span>' : '';?></p>
+          <p><?=$this->transEsc($this->nonPayableReason); ?><?=$this->nonPayableReason == 'online_payment_minimum_fee' ? (': <span class="amount">' . $this->safeMoneyFormat($this->minimumFee / 100.00)) . '</span>' : '';?></p>
         </div>
       <?php endif; ?>
     <?php endif; ?>
@@ -270,10 +270,10 @@
   if (!empty($this->registerPayment)) {
     $paramsJson = json_encode($registerPaymentParams);
     $js = <<<JS
-$(document).ready(function() {
-  finna.onlinePayment.registerPayment($paramsJson);
-});
-JS;
+        $(document).ready(function() {
+          finna.onlinePayment.registerPayment($paramsJson);
+        });
+        JS;
     echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $js, 'SET');
   }
 ?>

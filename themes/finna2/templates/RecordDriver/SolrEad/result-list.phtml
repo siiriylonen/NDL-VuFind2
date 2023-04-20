@@ -83,7 +83,7 @@ if ($img):
             <?php if (!$fondsOrCollection && $this->driver->isPartOfArchiveSeries()): ?>
               <?php foreach ([
                 ['Archive Series', \Finna\RecordDriver\SolrEad::SERIES_LEVELS],
-                ['Archive File', \Finna\RecordDriver\SolrEad::FILE_LEVELS]
+                ['Archive File', \Finna\RecordDriver\SolrEad::FILE_LEVELS],
               ] as [$label, $levels]):
               ?>
                 <?php $parentIds = $this->driver->getHierarchyParentId($levels); $parentTitles = $this->driver->getHierarchyParentTitle($levels); ?>
@@ -152,7 +152,7 @@ if ($img):
             <?php endif; ?>
 
             <?php $openUrl = $this->driver->getOpenURL(); ?>
-            <?=$openUrl?'<span class="Z3988" title="' . $this->escapeHtmlAttr($openUrl) . '"></span>':''?>
+            <?=$openUrl ? '<span class="Z3988" title="' . $this->escapeHtmlAttr($openUrl) . '"></span>' : ''?>
         </div>
         <div class="clearfix visible-xs"></div>
         <?php if ($this->userlist()->getMode() !== 'disabled'): ?>

@@ -85,8 +85,8 @@
 <?php
   $methods = json_encode($this->loginMethods);
   $script = <<<EOT
-  setupMultiILSLoginFields($methods, 'profile_cat_');
-EOT;
+        setupMultiILSLoginFields($methods, 'profile_cat_');
+      EOT;
 
   // Inline the script for lightbox compatibility
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');

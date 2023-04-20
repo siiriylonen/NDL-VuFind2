@@ -44,8 +44,8 @@
 
   $methods = json_encode($methods);
   $script = <<<EOT
-  setupMultiILSLoginFields($methods, 'login_{$topClass}_');
-EOT;
+        setupMultiILSLoginFields($methods, 'login_{$topClass}_');
+      EOT;
 
   // Inline the script for lightbox compatibility
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');

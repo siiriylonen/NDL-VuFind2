@@ -20,12 +20,12 @@
 
 <?php
   $script = <<<JS
-$(document).ready(function() {
-  $('.online-payment-form').on('submit', function() {
-    $(this).find('input[type=submit]').prop('disabled', 'disabled');
-  });
-});
-JS;
+      $(document).ready(function() {
+        $('.online-payment-form').on('submit', function() {
+          $(this).find('input[type=submit]').prop('disabled', 'disabled');
+        });
+      });
+      JS;
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');
 ?>
 <!-- END of: finna - Helpers/OnlinePayment/terms-TurkuPaymentAPI.phtml -->

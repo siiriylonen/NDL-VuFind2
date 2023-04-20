@@ -36,14 +36,14 @@
 
 <?php
 $script = <<<EOT
-if ($.isReady) {
-  finna.myList.initFavoriteOrderingFunctionality();
-} else {
-  $(document).ready(function(){
-    finna.myList.initFavoriteOrderingFunctionality();
-  });
-}
-EOT;
+    if ($.isReady) {
+      finna.myList.initFavoriteOrderingFunctionality();
+    } else {
+      $(document).ready(function(){
+        finna.myList.initFavoriteOrderingFunctionality();
+      });
+    }
+    EOT;
 
 // Inline the script for lightbox compatibility
 echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');

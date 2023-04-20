@@ -63,7 +63,7 @@
             'markdown' => $markdown,
             'html' => $markdown ? $this->markdown()->toHtml($markdown, false) : '',
             'emptyHtml' => $this->translate('Add list description'),
-            'preview' => true
+            'preview' => true,
           ]); ?>
         <?php if ($this->usertags()->getListMode() === 'enabled'): ?>
           <?php $listTags = $list->getListTags(); ?>

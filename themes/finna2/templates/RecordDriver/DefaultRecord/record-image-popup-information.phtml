@@ -113,13 +113,13 @@ $this->matomo([
   'context' => 'lightbox',
   'record' => $this->driver,
   'action' => 'imagePopup',
-  'recordUrl' => $this->recordLinker()->getUrl($this->driver)
+  'recordUrl' => $this->recordLinker()->getUrl($this->driver),
 ]);
 ?>
 
 <?php
   $script = <<<JS
-finna.layout.initOrganisationPageLinks();
-JS;
+      finna.layout.initOrganisationPageLinks();
+      JS;
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');
 ?>

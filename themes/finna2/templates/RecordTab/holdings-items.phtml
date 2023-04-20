@@ -5,7 +5,7 @@
     if ($titleLocation) {
         $dialogTitle .= " - $titleLocation";
     }
-    $holdsAllowed = $holdsAllowed ?? $this->driver->tryMethod('getHoldsAllowed');
+    $holdsAllowed ??= $this->driver->tryMethod('getHoldsAllowed');
 
     $branches = false;
     foreach ($holding['items'] as $row) {

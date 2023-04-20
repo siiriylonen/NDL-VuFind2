@@ -60,9 +60,9 @@
   $recovery = json_encode($recovery);
   $register = json_encode($register);
   $script = <<<EOT
-  finna.layout.initILSPasswordRecoveryLink($recovery, 'login_{$topClass}_');
-  finna.layout.initILSSelfRegistrationLink($register, 'login_{$topClass}_');
-EOT;
+        finna.layout.initILSPasswordRecoveryLink($recovery, 'login_{$topClass}_');
+        finna.layout.initILSSelfRegistrationLink($register, 'login_{$topClass}_');
+      EOT;
 
   // Inline the script for lightbox compatibility
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');

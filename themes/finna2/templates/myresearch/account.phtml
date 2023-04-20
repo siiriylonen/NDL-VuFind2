@@ -24,14 +24,14 @@
 <?php
 // Set up validation; we do this inline instead of in the header for lightbox compatibility:
 $js = <<<JS
-  if ($.isReady) {
-    $('#accountForm').validator();
-  } else {
-    $(document).ready(function(){
-      $('#accountForm').validator();
-    });
-  }
-JS;
+      if ($.isReady) {
+        $('#accountForm').validator();
+      } else {
+        $(document).ready(function(){
+          $('#accountForm').validator();
+        });
+      }
+    JS;
 
 echo $this->inlineScript()->appendScript($js);
 ?>

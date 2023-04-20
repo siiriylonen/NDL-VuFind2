@@ -160,7 +160,7 @@ $config = [
             'searchtabs' => 'searchTabs',
             'transesc' => 'transEsc',
             'inlinescript' => 'inlineScript',
-        ]
+        ],
     ],
     'css' => [
         'vendor/bootstrap-datepicker3.min.css',
@@ -256,10 +256,10 @@ $config = [
         'finna-model-viewer.js',
         'finna-video-element.js',
         'finna-feed-element.js',
-        'finna-carousel-manager.js'
+        'finna-carousel-manager.js',
     ],
     'less' => [
-        'active' => false
+        'active' => false,
     ],
     'favicon' => 'favicon.ico',
     'icons' => [
@@ -272,8 +272,8 @@ $config = [
             'service-available' => 'FontAwesome:ok',
             'service-unavailable' => 'FontAwesome:remove',
             'twitter' => 'FontAwesome:twitter',
-        ]
-    ]
+        ],
+    ],
 ];
 include 'components.config.php';
 return $config;

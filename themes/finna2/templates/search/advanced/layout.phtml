@@ -154,7 +154,7 @@
                     'title' => $msgSearchWords,
                     'type' => 'text',
                     'aria-label' => $msgSearchWords,
-                    'class' => 'adv-term-input form-control form-inline responsive-field search-text'
+                    'class' => 'adv-term-input form-control form-inline responsive-field search-text',
                   ]);
 
                   $this->htmlElement()->addAttributeTemplate('select-field', [
@@ -187,7 +187,7 @@
                           <?php
                           $optionElement = [
                             'value' => $this->escapeHtml($searchVal),
-                            'selected' => ($isQuerySearchSet && $searchVal == $setQueries[$group][$search]->getHandler()) ? 'selected' : ''
+                            'selected' => ($isQuerySearchSet && $searchVal == $setQueries[$group][$search]->getHandler()) ? 'selected' : '',
                           ];
                           ?>
                           <option <?= $this->htmlElement()->getAttributes($optionElement) ?>>
@@ -249,11 +249,11 @@
 </form>
 <?php
 $script = <<<JS
-$('#groupPlaceHolder button').on('click', function(e) {
-  addGroup(null, null, null, true);
-  return false;
-});
-JS;
+                              $('#groupPlaceHolder button').on('click', function(e) {
+                                addGroup(null, null, null, true);
+                                return false;
+                              });
+                              JS;
 ?>
 <?=$this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');?>
 <!-- END of: finna - search/advanced/layout.phtml -->

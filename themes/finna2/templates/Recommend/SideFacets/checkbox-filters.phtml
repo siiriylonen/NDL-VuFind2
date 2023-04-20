@@ -20,9 +20,9 @@
 <?php endforeach; ?>
 <?php
   $script = <<<JS
-$('input.checkbox-filter').on('click', function() {
-  document.location.href = $(this).data('location');
-});
-JS;
+      $('input.checkbox-filter').on('click', function() {
+        document.location.href = $(this).data('location');
+      });
+      JS;
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');
 ?>

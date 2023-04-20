@@ -16,7 +16,7 @@
   $addRenderedUrl = function (array $url) use (&$renderedURLs) {
     $renderedURLs[] = [
       'url' => $url['url'],
-      'desc' => $url['desc'] ?? $url['text'] ?? ''
+      'desc' => $url['desc'] ?? $url['text'] ?? '',
     ];
   };
 

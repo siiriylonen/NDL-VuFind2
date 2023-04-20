@@ -77,8 +77,8 @@
   if ($this->targets !== null) {
       $methods = json_encode($this->loginMethods);
       $script = <<<EOT
-  setupMultiILSLoginFields($methods, 'login_');
-EOT;
+            setupMultiILSLoginFields($methods, 'login_');
+          EOT;
 
       // Inline the script for lightbox compatibility
       echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');

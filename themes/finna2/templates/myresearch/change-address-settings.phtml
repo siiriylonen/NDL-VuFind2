@@ -80,7 +80,7 @@
             <legend class="control-label radio-label"><?=$this->transEsc($data['label']) ?>:</legend>
             <?php foreach($data['options'] as $optionId => $option): ?>
               <?php $name = is_string($option) ? $option : ($option['name'] ?? $optionId); ?>
-              <input type="radio" name="<?=$this->escapeHtmlAttr($field)?>" id="<?=$this->escapeHtmlAttr($field . '_' . $optionId) ?>" class="form-control" value="<?=$this->escapeHtmlAttr($optionId)?>"<?=$optionId == $value ? ' checked' : ''?><?=$data['required'] ?? false ? ' required aria-required="true"': ''?><?=$data['readonly'] ?? false ? ' readonly': ''?>>
+              <input type="radio" name="<?=$this->escapeHtmlAttr($field)?>" id="<?=$this->escapeHtmlAttr($field . '_' . $optionId) ?>" class="form-control" value="<?=$this->escapeHtmlAttr($optionId)?>"<?=$optionId == $value ? ' checked' : ''?><?=$data['required'] ?? false ? ' required aria-required="true"' : ''?><?=$data['readonly'] ?? false ? ' readonly' : ''?>>
               <label class="control-label" for="<?=$this->escapeHtmlAttr($field . '_' . $optionId) ?>"><?=$this->transEsc($name) ?></label>
               <br>
             <?php endforeach; ?>
@@ -102,7 +102,7 @@
                 'name' => $field,
                 'type' => $data['type'],
                 'value' => $value,
-                'class' => 'form-control'
+                'class' => 'form-control',
               ];
               if ($data['required']) {
                 $attrs['required'] = true;
