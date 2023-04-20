@@ -399,8 +399,12 @@ class Record extends \VuFind\View\Helper\Root\Record
         );
 
         if ($searchTabsFilters) {
-            $result .= $this->getView()->plugin('searchTabs')
-                ->getCurrentHiddenFilterParams($this->driver->getSourceIdentifier());
+            $prepend = (strpos($result, '?') === false) ? '?' : '&amp;';
+            $result .= $this->getView()->plugin('searchTabs')->getCurrentHiddenFilterParams(
+                $this->driver->getSourceIdentifier(),
+                false,
+                $prepend
+            );
         }
 
         return $withInfo ? [$result, $type] : $result;
