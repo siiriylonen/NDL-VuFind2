@@ -86,7 +86,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
                                 0 => [
                                     'data' => [
                                         'size' => [
-                                            'unit' => 'bytes',
+                                            'unit' => 'byte',
                                             'value' => '123',
                                         ],
                                         'width' => [
@@ -127,7 +127,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
                                 0 => [
                                     'data' => [
                                         'size' => [
-                                            'unit' => 'bytes',
+                                            'unit' => 'byte',
                                             'value' => '5',
                                         ],
                                         'width' => [
@@ -147,7 +147,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
                             'master' => [
                                 [
                                     'url' => 'https://masterkuvanlinkki2.com',
-                                    'data' => false,
+                                    'data' => [],
                                     'format' => 'jpg',
                                     'resourceID' => '607643',
                                 ],
