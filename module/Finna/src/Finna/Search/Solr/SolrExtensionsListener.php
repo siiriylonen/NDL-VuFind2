@@ -340,7 +340,7 @@ class SolrExtensionsListener
         echo "<!--\n";
         echo 'Raw query string: ' . $debugInfo['rawquerystring'] . "\n\n";
         echo 'Query string: ' . $debugInfo['querystring'] . "\n\n";
-        echo 'Parsed query: ' . $debugInfo['parsedquery'] . "\n\n";
+        echo 'Parsed query: ' . var_export($debugInfo['parsedquery'], true) . "\n\n";
         echo 'Query parser: ' . $debugInfo['QParser'] . "\n\n";
         if (!empty($debugInfo['altquerystring'])) {
             echo 'Alt query string: ' . $debugInfo['altquerystring'] . "\n\n";
