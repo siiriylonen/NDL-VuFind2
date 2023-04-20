@@ -13,7 +13,7 @@
   <div class="collection-list-controls">
     <div class="filter-input">
       <span class="hidden-xs"><?=$this->transEsc('Search from collection')?></span>
-      <form class="form-inline" role="form" method="get" name="keywordFilterForm" id="keywordFilterForm">
+      <form class="form-inline" method="get" name="keywordFilterForm" id="keywordFilterForm">
         <div class="input-group">
           <input id="keywordFilter_lookfor" type="text" name="lookfor" aria-label="<?=$this->transEscAttr('Search from collection')?>" placeholder="<?=$this->transEscAttr('Search from collection')?>" value="<?=$this->escapeHtmlAttr($params->getDisplayQuery())?>" class="form-control">
             <?php foreach ($params->getFilterList(true) as $field => $filters): ?>

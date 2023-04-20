@@ -16,7 +16,7 @@
 <div>
   <div class="my-research-content">
     <?=$this->flashmessages()?>
-    <form id="purgecheckouthistory" action="<?=$this->url('myresearch-purgehistoricloans')?>" method="post" role="form">
+    <form id="purgecheckouthistory" action="<?=$this->url('myresearch-purgehistoricloans')?>" method="post">
       <p><?=$this->translate('loan_history_purge_prompt_html')?></p>
       <input type="hidden" value="<?=$this->escapeHtmlAttr($this->csrf)?>" name="csrf">
       <div class="form-group">
