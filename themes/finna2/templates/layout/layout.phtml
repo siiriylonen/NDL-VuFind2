@@ -5,10 +5,10 @@
 <html lang="<?=$this->layout()->userLang?>"<?php if ($this->layout()->rtl): ?> dir="rtl"<?php endif; ?>>
   <head>
     <?php $this->setupThemeResources(); ?>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <?php // Turn off automatic telephone number detection on iOS ?>
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="telephone=no">
     <?php // set finna-facebook.png image for Facebook sharing if image is present and we aren't on record view
       if ($this->imageLink('finna-facebook.png') != '' && $this->layout()->templateName != 'view') {
         $this->headMeta()->setProperty('og:image', $this->serverUrl() . $this->imageLink('finna-facebook.png'));

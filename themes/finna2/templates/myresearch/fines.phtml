@@ -132,14 +132,14 @@
         <h3><?=$this->transEsc('You do not have any fines')?></h3>
       <?php else: ?>
         <?php if ($this->onlinePaymentEnabled && $this->selectFees): ?>
-          <input type="hidden" value="<?=$this->escapeHtmlAttr($this->auth()->getManager()->getCsrfHash())?>" name="csrf"/>
+          <input type="hidden" value="<?=$this->escapeHtmlAttr($this->auth()->getManager()->getCsrfHash())?>" name="csrf">
           <div class="myresearch-table online-payment" aria-label="<?=$this->transEscAttr('Actions');?>">
             <div class="toolbar">
               <div class="text-left checkbox-col">
                 <div class="checkboxFilter mylist-select-all">
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" name="selectAll" class="checkbox-select-all"/>
+                      <input type="checkbox" name="selectAll" class="checkbox-select-all">
                       <?=$this->transEsc('Select All')?>
                       <span class="selected"></span>
                     </label>

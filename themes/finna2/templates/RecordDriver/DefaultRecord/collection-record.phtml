@@ -57,7 +57,7 @@
   <?php $langs = $this->driver->getLanguages(); if (!empty($langs)): ?>
     <tr valign="top">
       <th><?=$this->transEsc('Language')?>: </th>
-      <td><?php foreach ($langs as $lang): ?><?= $this->transEsc($lang)?><br/><?php endforeach; ?></td>
+      <td><?php foreach ($langs as $lang): ?><?= $this->transEsc($lang)?><br><?php endforeach; ?></td>
     </tr>
   <?php endif; ?>
 
@@ -73,7 +73,7 @@
       <th><?=$this->transEsc('Access')?>: </th>
       <td>
         <?php foreach ($access as $field): ?>
-          <?=$this->escapeHtml($field)?><br/>
+          <?=$this->escapeHtml($field)?><br>
         <?php endforeach; ?>
       </td>
     </tr>
@@ -84,7 +84,7 @@
       <th><?=$this->transEsc('Related Items')?>: </th>
       <td>
         <?php foreach ($related as $field): ?>
-          <?=$this->escapeHtml($field)?><br/>
+          <?=$this->escapeHtml($field)?><br>
         <?php endforeach; ?>
       </td>
     </tr>

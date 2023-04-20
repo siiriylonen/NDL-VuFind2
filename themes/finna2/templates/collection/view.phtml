@@ -55,8 +55,8 @@
   <div>
     <?=$this->record($this->driver)->getToolbar()?>
   </div>
-  <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getUniqueId())?>" class="hiddenId" id="record_id" />
-  <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getSourceIdentifier())?>" class="hiddenSource" />
+  <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getUniqueId())?>" class="hiddenId" id="record_id">
+  <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getSourceIdentifier())?>" class="hiddenSource">
   <div class="record-main<?=!$largeImageLayout ? ' mainbody left' : ''?>">
     <?=$this->flashmessages()?>
     <?php if ($displayAsFullRecord): ?>
@@ -67,7 +67,7 @@
       <?= $this->R2()->register($this->driver, ['brief' => true])?>
       <?php $formats = $this->driver->getFormats(); if (!empty($formats)): ?>
         <div class="recordFormat collection-format">
-          <?=$this->record($this->driver)->getFormatList()?><br/>
+          <?=$this->record($this->driver)->getFormatList()?><br>
         </div>
       <?php endif; ?>
       <?php if ($summary = $this->driver->tryMethod('getSummaryExtended')): ?>

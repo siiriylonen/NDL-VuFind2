@@ -44,7 +44,7 @@ if ($otherTitles):?>
           <?=implode('&ndash;', array_map($this->escapeHtml, $dates)) ?>
         <?php endif; ?>
         <?php if (($results = $this->driver->getSubjectDates()) && !isset($dates[0])): ?>
-          <?=implode('<br/>', array_map([$this, 'escapeHtml'], $results))?>
+          <?=implode('<br>', array_map([$this, 'escapeHtml'], $results))?>
         <?php endif; ?>
         </div>
       <?php endif; ?>

@@ -36,10 +36,10 @@
         <?php else: ?>
           <?=$this->escapeHtml($part['title']) ?>
         <?php endif; ?>
-        <br/>
+        <br>
         <?php if (!empty($part['uniformTitle'])): ?>
           <?=$this->escapeHtml($part['uniformTitle']) ?>
-          <br/>
+          <br>
         <?php endif; ?>
         <div class="part-authors<?=empty($part['id']) || !empty($part['uniformTitle']) ? '-padded' : '' ?>" title="<?=$this->escapeHtmlAttr(implode(' ; ', $part['otherAuthors'])) ?>">
 	        <?=$this->escapeHtml(implode(' ; ', array_slice($part['otherAuthors'], 0, 3)) . (count($part['otherAuthors']) > 3 ? $this->transEsc('eol_ellipsis') : '')) ?>
