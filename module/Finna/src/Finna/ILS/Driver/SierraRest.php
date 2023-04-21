@@ -754,7 +754,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
            'location' => '__HOLDINGSSUMMARYLOCATION__',
         ];
         if ($this->config['Holdings']['display_total_hold_count'] ?? true) {
-            $result['reservations'] = $bib['holdCount'];
+            $result['reservations'] = $bib['holdCount'] ?? null;
         }
         return $result;
     }
@@ -888,7 +888,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                     'number' => $callnumber,
                     'barcode' => $item['barcode'],
                     'sort' => $sort--,
-                    'requests_placed' => $displayItemHoldCount ? $item['holdCount'] : null,
+                    'requests_placed' => $displayItemHoldCount ? ($item['holdCount'] ?? null) : null,
                 ];
                 if ($notes) {
                     $entry['item_notes'] = $notes;
