@@ -70,6 +70,13 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
     ];
 
     /**
+     * Days before account expiration to start displaying a notification
+     *
+     * @var int
+     */
+    protected $daysBeforeAccountExpirationNotification = 30;
+
+    /**
      * Initialize the driver.
      *
      * Validate configuration and perform all resource-intensive tasks needed to
@@ -87,6 +94,12 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         }
         $this->onlinePayableManualFineDescriptionPatterns
             = $this->config['OnlinePayment']['manualFineDescriptions'] ?? [];
+
+        $key = 'daysBeforeAccountExpirationNotification';
+        if (isset($this->config['Catalog'][$key])) {
+            $this->daysBeforeAccountExpirationNotification
+                = $this->config['Catalog'][$key];
+        }
     }
 
     /**
@@ -230,11 +243,6 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 $city = $postalParts[0];
             }
         }
-        $expirationDate = !empty($result['expirationDate'])
-                ? $this->dateConverter->convertToDisplayDate(
-                    'Y-m-d',
-                    $result['expirationDate']
-                ) : '';
 
         $messages = [];
         foreach ($result['message']['accountMessages'] ?? [] as $message) {
@@ -265,10 +273,28 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             'zip' => $zip,
             'city' => $city,
             'birthdate' => $result['birthDate'] ?? '',
-            'expiration_date' => $expirationDate,
             'messages' => $messages,
             'home_library' => $result['homeLibraryCode'],
         ];
+
+        if (!empty($result['expirationDate'])) {
+            $profile['expiration_date'] = $this->dateConverter->convertToDisplayDate(
+                'Y-m-d',
+                $result['expirationDate']
+            );
+            $date = \DateTime::createFromFormat('Y-m-d', $result['expirationDate']);
+            $diff = $date->diff(new \Datetime());
+            if (!$diff->invert && $diff->days > 0) {
+                $profile['expired'] = true;
+            } elseif (
+                $this->daysBeforeAccountExpirationNotification
+                && $diff->days === 0
+                || ($diff->invert
+                && $diff->days <= $this->daysBeforeAccountExpirationNotification)
+            ) {
+                $profile['expiration_soon'] = true;
+            }
+        }
 
         // Checkout history:
         $result = $this->makeRequest(

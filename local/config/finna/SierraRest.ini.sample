@@ -20,6 +20,10 @@ http_timeout = 30
 ; need to be a properly working url)
 redirect_uri = "http://localhost:8080/vufind/MyResearch/Home?auth_method=sierra"
 
+; Days before account expiration to start displaying a notification for the user.
+; Default is 30.
+;daysBeforeAccountExpirationNotification = 30
+
 ; This section controls hold behavior; note that you must also ensure that Holds are
 ; enabled in the [Catalog] section of config.ini in order to take advantage of these
 ; settings.
