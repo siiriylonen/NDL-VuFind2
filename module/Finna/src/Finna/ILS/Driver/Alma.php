@@ -613,8 +613,9 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
                 $profile['expired'] = true;
             } elseif (
                 $this->daysBeforeAccountExpirationNotification
-                && $diff->invert
-                && $diff->days <= $this->daysBeforeAccountExpirationNotification
+                && $diff->days === 0
+                || ($diff->invert
+                && $diff->days <= $this->daysBeforeAccountExpirationNotification)
             ) {
                 $profile['expiration_soon'] = true;
             }
