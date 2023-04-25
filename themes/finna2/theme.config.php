@@ -269,6 +269,7 @@ $config = [
             'external-link' => 'FontAwesome:external-link',
             'facebook' => 'FontAwesome:facebook',
             'instagram' => 'FontAwesome:instagram',
+            'language' => 'FontAwesome:globe',
             'qrcode' => 'FontAwesome:qr-code',
             'service-available' => 'FontAwesome:ok',
             'service-unavailable' => 'FontAwesome:remove',
