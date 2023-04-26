@@ -670,7 +670,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                         ],
                     ],
                     'expr' => [
-                        'op' => 'has',
+                        'op' => 'equals',
                         'operands' => [
                             str_replace(' ', '', $params['cat_username']),
                         ],
@@ -687,7 +687,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                         ],
                     ],
                     'expr' => [
-                        'op' => 'has',
+                        'op' => 'equals',
                         'operands' => [
                             trim($params['email']),
                         ],
