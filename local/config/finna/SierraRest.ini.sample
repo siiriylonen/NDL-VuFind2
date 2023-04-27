@@ -124,6 +124,11 @@ url = ""
 [ItemStatusMappings]
 ;d = "In Processing"
 
+; This section allows mapping of patron block codes to VuFind translation strings
+[PatronBlockMappings]
+k = patron_status_card_lost
+e = patron_status_card_blocked
+
 ; Uncomment the following lines to enable password (PIN) change
 [changePassword]
 ; PIN change parameters. The default limits are taken from the interface documentation.
