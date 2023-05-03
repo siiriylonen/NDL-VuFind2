@@ -143,6 +143,12 @@ pattern = "numeric"
 [TransactionHistory]
 ; By default the loan history is disabled. Uncomment the following line to enable it.
 enabled = true
+; By default selective purging of loan history is enabled. Uncomment the following
+; line to disable it:
+;purgeSelected = false
+; By default purging of all loan history is enabled. Uncomment the following line
+; to disable it:
+;purgeAll = false
 
 ; Changing of loan history state is enabled if method parameter is set. Only
 ; valid value is 'driver'.

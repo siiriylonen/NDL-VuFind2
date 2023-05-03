@@ -858,40 +858,6 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
     }
 
     /**
-     * Purge Patron Transaction History
-     *
-     * @param array $patron The patron array from patronLogin
-     *
-     * @throws ILSException
-     * @return array Associative array of the results
-     */
-    public function purgeTransactionHistory($patron)
-    {
-        $result = $this->makeRequest(
-            [
-                'v6', 'patrons', $patron['id'], 'checkouts', 'history',
-            ],
-            '',
-            'DELETE',
-            $patron
-        );
-
-        if (!empty($result['code'])) {
-            return [
-                'success' => false,
-                'status' => $this->formatErrorMessage(
-                    $result['description'] ?? $result['name']
-                ),
-            ];
-        }
-        return [
-            'success' => true,
-            'status' => 'loan_history_purged',
-            'sysMessage' => '',
-        ];
-    }
-
-    /**
      * Return summary of holdings items.
      *
      * @param array $holdings Parsed holdings items

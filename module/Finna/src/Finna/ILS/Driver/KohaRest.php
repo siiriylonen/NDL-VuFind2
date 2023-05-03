@@ -416,13 +416,17 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
     /**
      * Purge Patron Transaction History
      *
-     * @param array $patron The patron array from patronLogin
+     * @param array  $patron The patron array from patronLogin
+     * @param ?array $ids    IDs to purge, or null for all
      *
      * @throws ILSException
      * @return array Associative array of the results
      */
-    public function purgeTransactionHistory($patron)
+    public function purgeTransactionHistory(array $patron, ?array $ids): array
     {
+        if (null !== $ids) {
+            throw new ILSException('Unsupported function');
+        }
         $result = $this->makeRequest(
             [
                 'path' => [
@@ -989,6 +993,11 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                 $functionConfig['exactBalanceRequired'] = false;
             }
         }
+        if ($functionConfig && 'getMyTransactionHistory' === $function) {
+            $functionConfig['purge_all']
+                = $this->config['TransactionHistory']['purgeAll'] ?? true;
+        }
+
         return $functionConfig;
     }
 

@@ -129,7 +129,7 @@
               </li>
               <?php if ($this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams)): ?>
                 <li role="none">
-                  <a <?=$this->url('myresearch-historicloans') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-historicloans')?>">
+                  <a <?=$this->url('checkouts-history') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-historicloans')?>">
                     <?=$this->transEsc('Loan History')?>
                   </a>
                 </li>
