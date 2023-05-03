@@ -248,7 +248,12 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      */
     public function getHolding($id, array $patron = null, array $options = [])
     {
-        return $this->getItemStatusesForBiblio($id, $patron);
+        $data = $this->getItemStatusesForBiblio($id, $patron);
+        if (!empty($data)) {
+            $summary = $this->getHoldingsSummary($data);
+            $data[] = $summary;
+        }
+        return $data;
     }
 
     /**
@@ -1749,8 +1754,6 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             }
 
             usort($statuses, [$this, 'statusSortFunction']);
-            $summary = $this->getHoldingsSummary($statuses);
-            $statuses[] = $summary;
         }
         return $statuses;
     }
