@@ -50,4 +50,15 @@ class Config extends \VuFind\View\Helper\Root\Config
     {
         return !empty($this->get('config')->Record->embedVideo);
     }
+
+    /**
+     * Get default facet fields
+     *
+     * @return array
+     */
+    public function getFacetFields(): array
+    {
+        $config = $this->get('facets')->Results ?? null;
+        return $config ? $config->toArray() : [];
+    }
 }
