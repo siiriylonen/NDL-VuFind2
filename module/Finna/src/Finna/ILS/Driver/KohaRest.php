@@ -414,45 +414,6 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
     }
 
     /**
-     * Purge Patron Transaction History
-     *
-     * @param array  $patron The patron array from patronLogin
-     * @param ?array $ids    IDs to purge, or null for all
-     *
-     * @throws ILSException
-     * @return array Associative array of the results
-     */
-    public function purgeTransactionHistory(array $patron, ?array $ids): array
-    {
-        if (null !== $ids) {
-            throw new ILSException('Unsupported function');
-        }
-        $result = $this->makeRequest(
-            [
-                'path' => [
-                    'v1', 'contrib', 'kohasuomi', 'patrons', $patron['id'],
-                    'checkouts', 'history',
-                ],
-                'method' => 'DELETE',
-                'errors' => true,
-            ]
-        );
-        if (!in_array($result['code'], [200, 202, 204])) {
-            return  [
-                'success' => false,
-                'status' => 'Purging the loan history failed',
-                'sys_message' => $result['data']['error'] ?? $result['code'],
-            ];
-        }
-
-        return [
-            'success' => true,
-            'status' => 'loan_history_purged',
-            'sys_message' => '',
-        ];
-    }
-
-    /**
      * Update Patron Transaction History State
      *
      * Enable or disable patron's transaction history
@@ -992,10 +953,6 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             if (!isset($functionConfig['exactBalanceRequired'])) {
                 $functionConfig['exactBalanceRequired'] = false;
             }
-        }
-        if ($functionConfig && 'getMyTransactionHistory' === $function) {
-            $functionConfig['purge_all']
-                = $this->config['TransactionHistory']['purgeAll'] ?? true;
         }
 
         return $functionConfig;
