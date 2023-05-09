@@ -490,7 +490,6 @@ class Form extends \VuFind\Form\Form
                 $preParagraphs[] = '<span class="datasource-info">'
                     . $this->translate($datasourceKey) . '</span>';
             }
-<<<<<<< HEAD
         }
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
@@ -500,11 +499,6 @@ class Form extends \VuFind\Form\Form
             }
         } elseif (!(($this->formConfig['hideRecipientInfo'] ?? false)
             && $this->institution)
-=======
-        } elseif (
-            !($this->formConfig['hideRecipientInfo'] ?? false)
-            && $this->institution
->>>>>>> dev
         ) {
             // Receiver info
             $institution = $this->institution;
