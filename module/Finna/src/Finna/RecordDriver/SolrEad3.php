@@ -387,6 +387,33 @@ class SolrEad3 extends SolrEad
     }
 
     /**
+     * See if holdings tab is shown on current item
+     *
+     * @return bool
+     */
+    public function allowRequestForm()
+    {
+        $xml = $this->getXmlRecord();
+        if (isset($xml)) {
+            // Requests only allowed on fonte items
+            if ($this->getDataSource() === 'fonte'
+                && !empty($this->getFilingUnit())
+            ) {
+                // If object is item or file level item, holdings tab is visible
+                $attributes = $xml->attributes();
+                if (isset($attributes->level)) {
+                    if ($attributes->level == 'item'
+                        || $attributes->level == 'file'
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get all authors apart from presenters
      *
      * @return array
