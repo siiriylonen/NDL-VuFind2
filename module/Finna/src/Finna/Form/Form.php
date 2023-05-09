@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Configurable form.
  *
@@ -26,6 +27,7 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
+
 namespace Finna\Form;
 
 /**
@@ -300,7 +302,7 @@ class Form extends \VuFind\Form\Form
      *
      * @return void
      */
-    public function setRecordRequestFormsWithBarcode(array $formIds) : void
+    public function setRecordRequestFormsWithBarcode(array $formIds): void
     {
         $this->recordRequestFormsWithBarcode = $formIds;
     }
@@ -365,8 +367,8 @@ class Form extends \VuFind\Form\Form
             return [
                 [
                     'name' => '',
-                    'email' => $recipientEmail
-                ]
+                    'email' => $recipientEmail,
+                ],
             ];
         }
 
@@ -406,7 +408,7 @@ class Form extends \VuFind\Form\Form
             if ($recipientField === $param['name']) {
                 return [
                     'email' => $param['value'],
-                    'name' => $this->translate($param['valueLabel'])
+                    'name' => $this->translate($param['valueLabel']),
                 ];
             }
         }
@@ -478,7 +480,7 @@ class Form extends \VuFind\Form\Form
                     'feedback_recipient_info_record',
                     [
                         '%%institution%%'
-                            => $organisationDisplayName($this->record, true)
+                            => $organisationDisplayName($this->record, true),
                     ]
                 );
             }
@@ -488,6 +490,7 @@ class Form extends \VuFind\Form\Form
                 $preParagraphs[] = '<span class="datasource-info">'
                     . $this->translate($datasourceKey) . '</span>';
             }
+<<<<<<< HEAD
         }
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
@@ -497,6 +500,11 @@ class Form extends \VuFind\Form\Form
             }
         } elseif (!(($this->formConfig['hideRecipientInfo'] ?? false)
             && $this->institution)
+=======
+        } elseif (
+            !($this->formConfig['hideRecipientInfo'] ?? false)
+            && $this->institution
+>>>>>>> dev
         ) {
             // Receiver info
             $institution = $this->institution;
@@ -507,7 +515,8 @@ class Form extends \VuFind\Form\Form
             );
 
             // Try to handle cases like tritonia-tria
-            if ($institutionName === $institution && strpos($institution, '-') > 0
+            if (
+                $institutionName === $institution && strpos($institution, '-') > 0
             ) {
                 $part = substr($institution, 0, strpos($institution, '-'));
                 $institutionName = $this->translate(
@@ -532,7 +541,8 @@ class Form extends \VuFind\Form\Form
         }
 
         // Append record title
-        if (null !== $this->record
+        if (
+            null !== $this->record
             && ($this->formId === self::RECORD_FEEDBACK_FORM
             || $this->formId === self::ARCHIVE_MATERIAL_REQUEST
             || $this->isRecordRequestFormWithBarcode())
@@ -597,7 +607,7 @@ class Form extends \VuFind\Form\Form
                 'type' => 'text',
                 'name' => 'userCatUsername',
                 'label' => $this->translate('Library Catalog Username'),
-                'value' => $this->userCatUsername
+                'value' => $this->userCatUsername,
             ];
             if ($idx = array_search('email', array_column($params, 'type'))) {
                 array_splice($params, $idx + 1, 0, [$field]);
@@ -612,7 +622,7 @@ class Form extends \VuFind\Form\Form
                 'type' => 'text',
                 'name' => 'userCatId',
                 'label' => $this->translate('Unique patron identifier'),
-                'value' => $this->userCatId
+                'value' => $this->userCatId,
             ];
             if ($idx = array_search('email', array_column($params, 'type'))) {
                 array_splice($params, $idx + 1, 0, [$field]);
@@ -635,7 +645,7 @@ class Form extends \VuFind\Form\Form
                 'name' => 'userLoginMethod',
                 'type' => 'text',
                 'label' => $label,
-                'value' => $loginMethod
+                'value' => $loginMethod,
             ];
 
             if ($this->user) {
@@ -644,7 +654,7 @@ class Form extends \VuFind\Form\Form
                     'name' => 'userRoles',
                     'type' => 'text',
                     'label' => $label,
-                    'value' => implode(', ', $this->userRoles)
+                    'value' => implode(', ', $this->userRoles),
                 ];
             }
         }
@@ -728,7 +738,8 @@ class Form extends \VuFind\Form\Form
             $filtered = [];
             $configFieldNames = array_column($config['fields'] ?? [], 'name');
             foreach ($elements as $el) {
-                if (isset($el['group']) && $el['group'] === '__sender__'
+                if (
+                    isset($el['group']) && $el['group'] === '__sender__'
                     && !in_array($el['name'] ?? '', $configFieldNames)
                 ) {
                     continue;
@@ -842,7 +853,8 @@ class Form extends \VuFind\Form\Form
         if (empty($config['primaryHandler']) && !empty($config['sendMethod'])) {
             $config['primaryHandler'] = $config['sendMethod'];
         }
-        if (empty($viewConfig['primaryHandler'])
+        if (
+            empty($viewConfig['primaryHandler'])
             && !empty($viewConfig['sendMethod'])
         ) {
             $viewConfig['primaryHandler'] = $viewConfig['sendMethod'];
@@ -852,7 +864,8 @@ class Form extends \VuFind\Form\Form
             return $config;
         }
 
-        if (isset($config['allowLocalOverride'])
+        if (
+            isset($config['allowLocalOverride'])
             && $config['allowLocalOverride'] === false
         ) {
             return $config;
@@ -874,7 +887,7 @@ class Form extends \VuFind\Form\Form
      *
      * @return boolean
      */
-    protected function isRecordRequestFormWithBarcode() : bool
+    protected function isRecordRequestFormWithBarcode(): bool
     {
         return in_array($this->formId, $this->recordRequestFormsWithBarcode);
     }
