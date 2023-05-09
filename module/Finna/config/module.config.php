@@ -1111,8 +1111,8 @@ $config['router']['routes']['archive-request'] = [
         'defaults' => [
             'controller' => 'ArchiveRequest',
             'action'     => 'ArchiveRequest',
-        ]
-    ]
+        ],
+    ],
 ];
 $config['router']['routes']['l1record-feedback'] = [
     'type'    => 'Laminas\Router\Http\Segment',

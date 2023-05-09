@@ -68,7 +68,8 @@ class TabManager extends \VuFind\RecordTab\TabManager
     {
         $result = parent::getTabServiceNames($driver);
         // Holdings tab only on certain archives and specified archive level items
-        if ($driver->tryMethod('allowRequestForm') !== null
+        if (
+            $driver->tryMethod('allowRequestForm') !== null
             && !$driver->tryMethod('allowRequestForm')
         ) {
             unset($result['Holdings']);

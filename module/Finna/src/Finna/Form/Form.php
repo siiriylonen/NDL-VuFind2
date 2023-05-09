@@ -491,13 +491,15 @@ class Form extends \VuFind\Form\Form
                     . $this->translate($datasourceKey) . '</span>';
             }
         }
-        if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST
+        if (
+            $this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
         ) {
             if (!$translationEmpty('reserve_material_info')) {
                 $preParagraphs[] = $transEsc('reserve_material_info');
             }
-        } elseif (!(($this->formConfig['hideRecipientInfo'] ?? false)
+        } elseif (
+            !(($this->formConfig['hideRecipientInfo'] ?? false)
             && $this->institution)
         ) {
             // Receiver info
@@ -546,7 +548,8 @@ class Form extends \VuFind\Form\Form
                 . $escapeHtml($this->record->getTitle());
         }
 
-        if (null !== $this->record
+        if (
+            null !== $this->record
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
             $identifier = $this->record->tryMethod('getIdentifier');

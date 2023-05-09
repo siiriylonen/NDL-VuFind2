@@ -1,10 +1,10 @@
 <?php
+
 namespace Finna\Controller;
 
 use Finna\Form\Form;
 
-class ArchiveRequestController extends FeedbackController
-implements \Laminas\Log\LoggerAwareInterface
+class ArchiveRequestController extends FeedbackController implements \Laminas\Log\LoggerAwareInterface
 {
     use \VuFind\Log\LoggerAwareTrait;
 
@@ -59,7 +59,7 @@ implements \Laminas\Log\LoggerAwareInterface
                 'layout' => $this->getRequest()->getQuery('layout', false),
                 'record_id'
                     => $recordId,
-                'user_lang' => $userLang
+                'user_lang' => $userLang,
             ]]
         );
     }

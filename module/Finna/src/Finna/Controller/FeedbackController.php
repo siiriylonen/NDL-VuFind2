@@ -73,7 +73,8 @@ class FeedbackController extends \VuFind\Controller\FeedbackController implement
         ) {
             $request->getPost()->set('record_id', $recordId);
         }
-        if (null === $request->getPost('user_lang')
+        if (
+            null === $request->getPost('user_lang')
             && $userLang = $request->getQuery('user_lang')
         ) {
             $request->getPost()->set('user_lang', $userLang);
