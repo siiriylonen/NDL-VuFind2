@@ -400,7 +400,7 @@ class SolrEad3 extends SolrEad
     public function allowRequestForm()
     {
         $xml = $this->getXmlRecord();
-        if (isset($xml)) {
+        if ($xml) {
             // Requests only allowed on fonte items
             if (
                 $this->getDataSource() === 'fonte'

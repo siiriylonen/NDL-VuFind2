@@ -756,7 +756,13 @@ class Form extends \VuFind\Form\Form
                 }
             }
         }
-
+        if ($formId === self::ARCHIVE_MATERIAL_REQUEST) {
+            foreach ($elements as &$value) {
+                if ($value['name'] === 'submit') {
+                    $value['label'] = 'request_submit_text';
+                }
+            }
+        }
         return $elements;
     }
 
