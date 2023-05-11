@@ -499,8 +499,8 @@ class Form extends \VuFind\Form\Form
                 $preParagraphs[] = $transEsc('reserve_material_info');
             }
         } elseif (
-            !(($this->formConfig['hideRecipientInfo'] ?? false)
-            && $this->institution)
+            !($this->formConfig['hideRecipientInfo'] ?? false)
+            && $this->institution
         ) {
             // Receiver info
             $institution = $this->institution;
@@ -707,7 +707,7 @@ class Form extends \VuFind\Form\Form
             }
         }
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
-            foreach (['user_lang', 'record_id', 'record_info'] as $key) {
+            foreach (['record_id', 'record_info'] as $key) {
                 $elements[$key]
                     = ['type' => 'hidden', 'name' => $key, 'value' => null];
             }

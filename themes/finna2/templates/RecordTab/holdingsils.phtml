@@ -106,7 +106,7 @@
       $recordId = $this->driver->getUniqueID();
       $userLang = $this->layout()->userLang;
     ?>
-    <a href="<?=$this->url('archive-request', ['id' => $recordId, 'user_lang' => $userLang])?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('title_hold_place')?></a>
+    <a href="<?=$this->url('archive-request', ['id' => $recordId, 'user_lang' => $userLang])?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('reserve_material_action')?></a>
   </div>
 <?php elseif (!$user && $allowArchiveRequest): ?>
   <div class="text-right">    
@@ -217,8 +217,8 @@
   ?>
 <?php endif; ?>
 <?php
-// If holdings tab visible for archive request form, other items not shown.
-if ($allowArchiveRequest) {
+// If holdings tab visible for archive request form only
+if ($allowArchiveRequest && !$holdsAllowed) {
   return;
 }
 ?>

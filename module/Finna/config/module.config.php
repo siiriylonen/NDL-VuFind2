@@ -1103,7 +1103,7 @@ $routeGenerator->addStaticRoutes($config, $staticRoutes);
 $config['router']['routes']['archive-request'] = [
     'type'    => 'Laminas\Router\Http\Segment',
     'options' => [
-        'route'    => '/ArchiveRequest/[:id]/[:user_lang]/Feedback',
+        'route'    => '/ArchiveRequest/[:id]',
         'constraints' => [
             'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
             'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
