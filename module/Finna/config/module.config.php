@@ -237,7 +237,6 @@ $config = [
     'controllers' => [
         'factories' => [
             'Finna\Controller\AjaxController' => 'VuFind\Controller\AjaxControllerFactory',
-            'Finna\Controller\ArchiveRequestController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\AuthorityController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\AuthorityRecordController' => 'Finna\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\BarcodeController' => 'VuFind\Controller\AbstractBaseFactory',
@@ -278,8 +277,6 @@ $config = [
             'Finna\Controller\ShibbolethLogoutNotificationController' => 'Finna\Controller\ShibbolethLogoutNotificationControllerFactory',
         ],
         'aliases' => [
-            'ArchiveRequest' => 'Finna\Controller\ArchiveRequestController',
-            'archiverequest' => 'Finna\Controller\ArchiveRequestController',
             'AuthorityRecord' => 'Finna\Controller\AuthorityRecordController',
             'Barcode' => 'Finna\Controller\BarcodeController',
             'barcode' => 'Finna\Controller\BarcodeController',
@@ -1062,7 +1059,7 @@ $recordRoutes = [
 
 // Define non tab record actions
 $nonTabRecordActions = [
-    'Feedback', 'RepositoryLibraryRequest',
+    'Feedback', 'RepositoryLibraryRequest', 'ArchiveRequest',
 ];
 
 // Define dynamic routes -- controller => [route name => action]
@@ -1100,20 +1097,6 @@ $routeGenerator->addDynamicRoutes($config, $dynamicRoutes);
 $routeGenerator->addStaticRoutes($config, $staticRoutes);
 
 // These need to be defined after VuFind's record routes:
-$config['router']['routes']['archive-request'] = [
-    'type'    => 'Laminas\Router\Http\Segment',
-    'options' => [
-        'route'    => '/ArchiveRequest/[:id]',
-        'constraints' => [
-            'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-        ],
-        'defaults' => [
-            'controller' => 'ArchiveRequest',
-            'action'     => 'ArchiveRequest',
-        ],
-    ],
-];
 $config['router']['routes']['l1record-feedback'] = [
     'type'    => 'Laminas\Router\Http\Segment',
     'options' => [

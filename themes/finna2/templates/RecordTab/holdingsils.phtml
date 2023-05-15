@@ -102,11 +102,7 @@
 <?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
 <?php if ($user && $allowArchiveRequest): ?>
   <div class="text-right">
-    <?php
-      $recordId = $this->driver->getUniqueID();
-      $userLang = $this->layout()->userLang;
-    ?>
-    <a href="<?=$this->url('archive-request', ['id' => $recordId, 'user_lang' => $userLang])?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('reserve_material_action')?></a>
+    <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getActionUrl($driver, 'ArchiveRequest'))?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('reserve_material_action')?></a>
   </div>
 <?php elseif (!$user && $allowArchiveRequest): ?>
   <div class="text-right">    
