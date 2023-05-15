@@ -451,7 +451,7 @@ class Form extends \VuFind\Form\Form
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
             $key = 'reserve_material_pre_html';
             $instructions = $this->translate($key);
-            if ($instructions !== $key && !$translationEmpty($instructions)) {
+            if (!$translationEmpty($instructions)) {
                 $preParagraphs[] = $instructions;
             }
         }
@@ -553,9 +553,11 @@ class Form extends \VuFind\Form\Form
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
             $identifier = $this->record->tryMethod('getIdentifier');
-            $preParagraphs[] = '<strong>'
-                . $transEsc('adv_search_identifier') . '</strong>:<br>'
-                . $escapeHtml($identifier[0]);
+            if ($identifier) {
+                $preParagraphs[] = '<strong>'
+                    . $transEsc('adv_search_identifier') . '</strong>:<br>'
+                    . $escapeHtml($identifier[0]);
+            }
         }
 
         if ($this->userCatUsername) {
@@ -762,6 +764,7 @@ class Form extends \VuFind\Form\Form
                     $value['label'] = 'request_submit_text';
                 }
             }
+            unset($value);
         }
         return $elements;
     }

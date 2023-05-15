@@ -83,10 +83,6 @@ class ArchiveRequestController extends FeedbackController implements \Laminas\Lo
             'id',
             $this->params()->fromQuery('id')
         );
-        $userLang = $this->params()->fromRoute(
-            'user_lang',
-            $this->params()->fromQuery('user_lang')
-        );
 
         if ($this->formWasSubmitted()) {
             $recordId = $recordIdPart;
