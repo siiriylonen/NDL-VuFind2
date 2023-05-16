@@ -85,7 +85,6 @@ class RecordController extends \VuFind\Controller\RecordController
     public function archiveRequestAction()
     {
         return $this->getRecordForm(Form::ARCHIVE_MATERIAL_REQUEST);
-
     }
 
     /**

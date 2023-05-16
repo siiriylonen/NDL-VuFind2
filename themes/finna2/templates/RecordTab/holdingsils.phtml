@@ -104,7 +104,7 @@
   <div class="text-right">
     <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getActionUrl($driver, 'ArchiveRequest'))?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('reserve_material_action')?></a>
   </div>
-<?php elseif (!$user && $allowArchiveRequest): ?>
+<?php elseif (!$user && $allowArchiveRequest && !$holdsAllowed): ?>
   <div class="text-right">    
     <a href="/vufind2/MyResearch/UserLogin" class="btn btn-primary" data-lightbox><span><?=$this->transEsc('title_hold_login')?></span></a>
   </div>

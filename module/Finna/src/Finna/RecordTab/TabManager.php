@@ -67,13 +67,6 @@ class TabManager extends \VuFind\RecordTab\TabManager
     protected function getTabServiceNames(AbstractRecordDriver $driver)
     {
         $result = parent::getTabServiceNames($driver);
-        // Holdings tab only on certain archives and specified archive level items
-        if (
-            $driver->tryMethod('allowRequestForm') !== null
-            && !$driver->tryMethod('allowRequestForm')
-        ) {
-            unset($result['Holdings']);
-        }
         // Make sure Details is always the last tab
         if (isset($result['Details'])) {
             $details = $result['Details'];
