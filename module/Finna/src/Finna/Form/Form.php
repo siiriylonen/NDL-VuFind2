@@ -446,11 +446,10 @@ class Form extends \VuFind\Form\Form
                 $preParagraphs[] = $instructions;
             }
         }
-
+        $suffix = '_' . $this->record->tryMethod('getDataSource') ?? '';
         // 'reserve_material_pre_html' translation
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
             $key = 'reserve_material_pre_html';
-            $prefix = 'fetch the prefix here' ?? '';
             $instructions = $this->translate($key);
             if (!$translationEmpty($instructions)) {
                 $preParagraphs[] = $instructions;
@@ -497,7 +496,9 @@ class Form extends \VuFind\Form\Form
             && null !== $this->record
         ) {
             $key = 'reserve_material_info';
-            $preParagraphs[] = $this->translateWithPrefix($prefix, $key);
+            if ($suffix) {
+                $preParagraphs[] = $this->translate($key . $suffix);
+            }
         } elseif (
             !($this->formConfig['hideRecipientInfo'] ?? false)
             && $this->institution
@@ -578,8 +579,10 @@ class Form extends \VuFind\Form\Form
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
             $key = 'reserve_material_arrival_info_html';
-            $postParagraphs[] = '<div class="alert alert-info">'
-            . $this->translateWithPrefix($prefix, $key) . '</div>';
+            if ($suffix) {
+                $postParagraphs[] = '<div class="alert alert-info">'
+                . $this->translate($key . $suffix) . '</div>';
+            }
         }
 
         $pre = implode('</div><div>', $preParagraphs);

@@ -403,14 +403,15 @@ class SolrEad3 extends SolrEad
     {
         $xml = $this->getXmlRecord();
         $datasourceSettings = $this->datasourceSettings[$this->getDataSource()];
-        $recordLevels = explode(';', $datasourceSettings['requestFormRecordlevels']);
-        if ($xml) {
+        if ($xml && $datasourceSettings) {
             // Requests only allowed on specified datasource
-            if ($datasourceSettings['allowArchiveRequest']
+            if (
+                $datasourceSettings['allowArchiveRequest']
                 && !empty($this->getFilingUnit())
             ) {
                 // If object is item or file level item, holdings tab is visible
                 $attributes = $xml->attributes();
+                $recordLevels = explode(';', $datasourceSettings['requestFormRecordlevels']);
                 if (isset($attributes->level)) {
                     if (
                         in_array($attributes->level, $recordLevels)
