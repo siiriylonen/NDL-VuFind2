@@ -51,6 +51,8 @@ namespace Finna\RecordDriver;
  */
 class SolrEad3 extends SolrEad
 {
+    use Feature\SolrFinnaTrait;
+
     // Image types
     public const IMAGE_MEDIUM = 'medium';
     public const IMAGE_LARGE = 'large';
@@ -400,18 +402,18 @@ class SolrEad3 extends SolrEad
     public function allowRequestForm()
     {
         $xml = $this->getXmlRecord();
+        $datasourceSettings = $this->datasourceSettings[$this->getDataSource()];
+        $recordLevels = explode(';', $datasourceSettings['requestFormRecordlevels']);
         if ($xml) {
-            // Requests only allowed on fonte items
-            if (
-                $this->getDataSource() === 'fonte'
+            // Requests only allowed on specified datasource
+            if ($datasourceSettings['allowArchiveRequest']
                 && !empty($this->getFilingUnit())
             ) {
                 // If object is item or file level item, holdings tab is visible
                 $attributes = $xml->attributes();
                 if (isset($attributes->level)) {
                     if (
-                        $attributes->level == 'item'
-                        || $attributes->level == 'file'
+                        in_array($attributes->level, $recordLevels)
                     ) {
                         return true;
                     }
