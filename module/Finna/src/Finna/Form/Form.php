@@ -495,9 +495,10 @@ class Form extends \VuFind\Form\Form
             $this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
         ) {
-            $key = 'reserve_material_info';
-            if ($suffix) {
-                $preParagraphs[] = $this->translate($key . $suffix);
+            $prefix = 'reserve_material_info';
+            $key = $prefix . $suffix;
+            if (!$translationEmpty($key)) {
+                $preParagraphs[] = $this->translate($key);
             }
         } elseif (
             !($this->formConfig['hideRecipientInfo'] ?? false)
@@ -578,10 +579,11 @@ class Form extends \VuFind\Form\Form
             null !== $this->record
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
-            $key = 'reserve_material_arrival_info_html';
-            if ($suffix) {
+            $prefix = 'reserve_material_arrival_info_html';
+            $key = $prefix . $suffix;
+            if (!$translationEmpty($key)) {
                 $postParagraphs[] = '<div class="alert alert-info">'
-                . $this->translate($key . $suffix) . '</div>';
+                . $this->translate($key) . '</div>';
             }
         }
 
