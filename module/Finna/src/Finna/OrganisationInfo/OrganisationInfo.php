@@ -4,7 +4,7 @@
  * Service for querying Kirjastohakemisto database.
  * See: https://api.kirjastot.fi/
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2023.
  *
