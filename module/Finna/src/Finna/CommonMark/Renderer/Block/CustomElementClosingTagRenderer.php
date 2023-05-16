@@ -57,7 +57,7 @@ class CustomElementClosingTagRenderer implements NodeRendererInterface
     {
         if (!($node instanceof CustomElementClosingTag)) {
             throw new \InvalidArgumentException(
-                'Incompatible block type: ' . \get_class($node)
+                'Incompatible block type: ' . $node::class
             );
         }
 

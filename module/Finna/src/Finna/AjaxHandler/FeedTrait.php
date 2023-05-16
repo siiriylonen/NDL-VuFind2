@@ -120,7 +120,7 @@ trait FeedTrait
             $feed['visualItems'] = $config->visualItems;
         }
 
-        $template = strpos($type, 'carousel') !== false ? 'carousel' : $type;
+        $template = str_contains($type, 'carousel') ? 'carousel' : $type;
         $html = $viewRenderer->partial("ajax/feed-$template.phtml", $feed);
 
         $settings = [

@@ -257,7 +257,7 @@ class SolrLrmi extends SolrQdc
             $thing = $about->thing;
             $name = trim((string)$thing->name);
             if (
-                $name && strpos((string)$thing->identifier, $type) !== false
+                $name && str_contains((string)$thing->identifier, $type)
             ) {
                 $topics[] = $name;
             }

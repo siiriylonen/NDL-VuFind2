@@ -70,7 +70,7 @@ class OrganisationDisplayName extends \Laminas\View\Helper\AbstractHelper
         // use the first one found
         if ($buildings) {
             foreach ($buildings as $building) {
-                if (strpos($building, $institution) !== false) {
+                if (str_contains($building, $institution)) {
                     $displayName = (string)$translate($building);
                     break;
                 }

@@ -1163,7 +1163,7 @@ class SolrForward extends \VuFind\RecordDriver\SolrDefault implements \Laminas\L
                 $results['broadcastingInfo'][] = $broadcastingResult;
             }
             if ($inspectionResult) {
-                if (strpos($dateText, '0000') === false) {
+                if (!str_contains($dateText, '0000')) {
                     $inspectionResult['date'] = $dateText;
                 }
                 $results['inspectionDetails'][] = $inspectionResult;

@@ -959,7 +959,7 @@ class OrganisationInfo implements
             $phones = [];
             foreach ($response['phoneNumbers'] as $phone) {
                 // Check for email data in phone numbers
-                if (strpos($phone['number'], '@') !== false) {
+                if (str_contains($phone['number'], '@')) {
                     continue;
                 }
                 $name = $phone['name'];

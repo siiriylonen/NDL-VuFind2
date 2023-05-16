@@ -1909,7 +1909,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             // Prepend parent name to department names
             $parentName = $parent['name'];
             $unitName = $unit['name'];
-            if (strpos(trim($unitName), trim($parentName)) === 0) {
+            if (str_starts_with(trim($unitName), trim($parentName))) {
                 continue;
             }
             $unit['name'] = "$parentName - $unitName";

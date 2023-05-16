@@ -95,7 +95,7 @@ class CleanHtml extends \Laminas\View\Helper\AbstractHelper
      */
     public function __invoke($html, $targetBlank = false)
     {
-        if (false === strpos($html, '<')) {
+        if (!str_contains($html, '<')) {
             return $html;
         }
         if (null === $this->purifier || $targetBlank !== $this->currentTargetBlank) {

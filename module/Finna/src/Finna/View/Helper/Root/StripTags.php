@@ -52,7 +52,7 @@ class StripTags extends \Laminas\View\Helper\AbstractHelper
      */
     public function __invoke($string, $remove_whitespace = true)
     {
-        if (false === strpos($string, '<')) {
+        if (!str_contains($string, '<')) {
             return $string;
         }
 

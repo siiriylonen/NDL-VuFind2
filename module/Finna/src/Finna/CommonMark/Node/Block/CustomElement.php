@@ -118,7 +118,7 @@ class CustomElement extends AbstractBlock
     public function shouldSsr(): bool
     {
         return $this->canSsr
-            && false === strpos($this->openingTag, 'ssr="false"');
+            && !str_contains($this->openingTag, 'ssr="false"');
     }
 
     /**

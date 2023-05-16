@@ -59,7 +59,7 @@ class CustomElementRenderer extends AbstractCustomElementEnabledBase implements 
     {
         if (!($node instanceof CustomElement)) {
             throw new \InvalidArgumentException(
-                'Incompatible block type: ' . \get_class($node)
+                'Incompatible block type: ' . $node::class
             );
         }
 

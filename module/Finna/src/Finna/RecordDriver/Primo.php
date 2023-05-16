@@ -523,7 +523,7 @@ class Primo extends \VuFind\RecordDriver\Primo
 
         $params = [];
         // Take params from the OpenURL returned from Primo, if available
-        if ($link && strpos($link, 'url_ver=Z39.88-2004') !== false) {
+        if ($link && str_contains($link, 'url_ver=Z39.88-2004')) {
             parse_str(substr($link, strpos($link, '?') + 1), $params);
             $params = $this->processOpenUrlParams($params);
         }
@@ -552,7 +552,7 @@ class Primo extends \VuFind\RecordDriver\Primo
     protected function processOpenUrlParams($params)
     {
         foreach ($params as $key => $val) {
-            if (strpos($key, 'rft_') === 0) {
+            if (str_starts_with($key, 'rft_')) {
                 $params['rft.' . substr($key, 4)] = $val;
             }
         }

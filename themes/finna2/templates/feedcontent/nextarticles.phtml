@@ -15,7 +15,7 @@ $cnt = 0;
         ? $element === $cnt
         : $element === $item['id'];
 
-      $link = $item['link'] . ($this->feedId ? (strpos($item['link'], '?') === false ? '?id=' : '&id=') . urlencode($this->feedId) : '');
+      $link = $item['link'] . ($this->feedId ? (!str_contains($item['link'], '?') ? '?id=' : '&id=') . urlencode($this->feedId) : '');
 
       if ($selected) {
         $from = $cnt;
