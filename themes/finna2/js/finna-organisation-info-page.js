@@ -147,7 +147,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     var count = Object.keys(list).length;
     var translation = VuFind.translate('organisationInfoAutocomplete').replace('%%count%%', count);
 
-    $(document).ready(function initSelect() {
+    $(function initSelect() {
       var select = document.querySelector('#office-search');
       var placeholder = document.createElement('option');
       select.append(placeholder);
