@@ -450,6 +450,7 @@ class Form extends \VuFind\Form\Form
         // 'reserve_material_pre_html' translation
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
             $key = 'reserve_material_pre_html';
+            $prefix = 'fetch the prefix here' ?? '';
             $instructions = $this->translate($key);
             if (!$translationEmpty($instructions)) {
                 $preParagraphs[] = $instructions;
@@ -495,9 +496,8 @@ class Form extends \VuFind\Form\Form
             $this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
         ) {
-            if (!$translationEmpty('reserve_material_info')) {
-                $preParagraphs[] = $transEsc('reserve_material_info');
-            }
+            $key = 'reserve_material_info';
+            $preParagraphs[] = $this->translateWithPrefix($prefix, $key);
         } elseif (
             !($this->formConfig['hideRecipientInfo'] ?? false)
             && $this->institution
@@ -571,6 +571,15 @@ class Form extends \VuFind\Form\Form
                 'feedback_library_patron_id_html',
                 ['%%id%%' => $escapeHtml($this->userCatId)]
             );
+        }
+
+        if (
+            null !== $this->record
+            && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
+        ) {
+            $key = 'reserve_material_arrival_info_html';
+            $postParagraphs[] = '<div class="alert alert-info">'
+            . $this->translateWithPrefix($prefix, $key) . '</div>';
         }
 
         $pre = implode('</div><div>', $preParagraphs);
