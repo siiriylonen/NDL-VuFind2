@@ -356,8 +356,14 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     }
 
     var hasSchedules = 'openTimes' in data && 'schedules' in data.openTimes && data.openTimes.schedules.length > 0;
-
-    if (hasSchedules) {
+    var schedules = data.openTimes.schedules;
+    var isClosedForWeek = schedules.every(schedule => schedule.closed === true);
+    var hasScheduleExplanation = (data.details.scheduleDescriptions[0].length !== 0);
+    
+    if (isClosedForWeek && !hasScheduleExplanation) {
+      holder.find('.open-or-closed').hide();
+    }
+    else if (hasSchedules) {
       holder.find('.open-or-closed').toggleClass('hidden', null === data.openNow);
       holder.find('.open-or-closed > span.library-is-' + (data.openNow ? 'open' : 'closed')).show();
     }
