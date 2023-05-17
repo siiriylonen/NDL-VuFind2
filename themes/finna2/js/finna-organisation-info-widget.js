@@ -69,8 +69,7 @@ finna.organisationInfoWidget = (function finnaOrganisationInfoWidget() {
       && response.openTimes.schedules.length > 0;
     var schedules = response.openTimes.schedules;
     var isClosedForWeek = schedules.every(schedule => schedule.closed === true);
-    var hasScheduleExplanation = (response.scheduleDescriptions[0].length !== 0);
-
+    var hasScheduleExplanation = (response.scheduleDescriptions.every(description => description.length !== 0));
     if (hasSchedules && !isClosedForWeek) {
 
       // Check if there are self-service times
