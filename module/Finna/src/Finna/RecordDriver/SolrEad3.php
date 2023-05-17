@@ -402,21 +402,25 @@ class SolrEad3 extends SolrEad
     public function allowRequestForm()
     {
         $xml = $this->getXmlRecord();
-        $datasourceSettings = $this->datasourceSettings[$this->getDataSource()];
-        if ($xml && $datasourceSettings) {
-            // Requests only allowed on specified datasource
-            if (
-                $datasourceSettings['allowArchiveRequest']
-                && !empty($this->getFilingUnit())
-            ) {
-                // If object is item or file level item, holdings tab is visible
-                $attributes = $xml->attributes();
-                $recordLevels = explode(';', $datasourceSettings['requestFormRecordlevels']);
-                if (isset($attributes->level)) {
-                    if (
-                        in_array($attributes->level, $recordLevels)
-                    ) {
-                        return true;
+        if ($xml) {
+            $attributes = $xml->attributes();
+            if (isset($attributes->level)) {
+                $datasourceSettings = $this->datasourceSettings[$this->getDataSource()];
+                if ($datasourceSettings) {
+                    // Requests only allowed on specified datasource and if required filing unit exists
+                    if ($datasourceSettings['allowArchiveRequest']) {
+                        if ($datasourceSettings['filinUnitRequired'] && empty($this->getFilingUnit())) {
+                            return false;
+                        }
+                        // Requests allowed on specified item hierarchy levels
+                        else if ($datasourceSettings['requestFormRecordLevels']) {
+                            $recordLevels = explode(';', $datasourceSettings['requestFormRecordLevels']);
+                            if (
+                                in_array($attributes->level, $recordLevels)
+                            ) {
+                                return true;
+                            }
+                        }
                     }
                 }
             }

@@ -303,19 +303,19 @@ forms:
 # Archive material request form
   ArchiveRequest:
       allowLocalOverride: true
-      title: reserve_material
+      title: archive_request_reserve_material
       enabled: true
       sendMethod: "email"
 
       onlyForLoggedUsers: true
       emailSubject: "Varauspyyntö: %%record%%"
-      response: repository_library_request_response
+      response: archive_request_response
       senderInfoRequired: true
       hideSenderInfo: true
       hideRecipientInfo: false
       help:
-        pre: reserve_material_pre_information_html
-        post: reserve_material_arrival_info_html
+        pre: archive_request_pre_information_html
+        post: archive_request_post_information_html
 
       fields:
         - name: name
@@ -332,7 +332,7 @@ forms:
           label: Phone
         - name: desiredDateForOrder
           type: textarea
-          label: reserve_material_request_info
+          label: archive_request_request_info
           required: true
           settings:
             - [rows, 3]

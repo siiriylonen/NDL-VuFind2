@@ -102,11 +102,11 @@
 <?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
 <?php if ($user && $allowArchiveRequest): ?>
   <div class="text-right">
-    <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getActionUrl($driver, 'ArchiveRequest'))?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('reserve_material_action')?></a>
+    <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getActionUrl($driver, 'ArchiveRequest'))?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('archive_request_reserve_action')?></a>
   </div>
 <?php elseif (!$user && $allowArchiveRequest && !$holdsAllowed): ?>
   <div class="text-right">    
-    <a href="/vufind2/MyResearch/UserLogin" class="btn btn-primary" data-lightbox><span><?=$this->transEsc('title_hold_login')?></span></a>
+    <a href="/vufind2/MyResearch/UserLogin" class="btn btn-primary" data-lightbox><span><?=$this->transEsc('archive_request_login')?></span></a>
   </div>
 <?php endif; ?>
 <?php if ($this->driver && $recordSource && $externalInterfaceUrl):?>

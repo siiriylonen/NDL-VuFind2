@@ -447,12 +447,11 @@ class Form extends \VuFind\Form\Form
             }
         }
         $suffix = '_' . $this->record->tryMethod('getDataSource') ?? '';
-        // 'reserve_material_pre_html' translation
+        // 'archive_request_reserve_material_pre_{$suffix}_html' translation
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
-            $key = 'reserve_material_pre_html';
-            $instructions = $this->translate($key);
-            if (!$translationEmpty($instructions)) {
-                $preParagraphs[] = $instructions;
+            $key = $this->translateWithSuffix('archive_request_pre', $suffix, true);
+            if ($key) {
+                $preParagraphs[] = $key;
             }
         }
 
@@ -495,10 +494,9 @@ class Form extends \VuFind\Form\Form
             $this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
         ) {
-            $prefix = 'reserve_material_info';
-            $key = $prefix . $suffix;
-            if (!$translationEmpty($key)) {
-                $preParagraphs[] = $this->translate($key);
+            $key = $this->translateWithSuffix('archive_request_info', $suffix);
+            if ($key) {
+                $preParagraphs[] = $key;
             }
         } elseif (
             !($this->formConfig['hideRecipientInfo'] ?? false)
@@ -579,11 +577,10 @@ class Form extends \VuFind\Form\Form
             null !== $this->record
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
-            $prefix = 'reserve_material_arrival_info_html';
-            $key = $prefix . $suffix;
-            if (!$translationEmpty($key)) {
+            $key = $this->translateWithSuffix('archive_request_material_arrival_info', $suffix, true);
+            if ($key) {
                 $postParagraphs[] = '<div class="alert alert-info">'
-                . $this->translate($key) . '</div>';
+                . $key . '</div>';
             }
         }
 
@@ -593,6 +590,29 @@ class Form extends \VuFind\Form\Form
         $help['post'] = $post ? "<div>$post</div>" : '';
 
         return $help;
+    }
+
+    /**
+     * Combine base translation key with an identifying suffix
+     *
+     * @param string $translateKey The base translation key
+     * @param string $suffix       The identifying suffix added to base key
+     * @param bool   $html         If the translation should have '_html' added
+     *
+     * @return string
+     */
+    public function translateWithSuffix(string $translateKey, string $suffix, bool $html = false)
+    {
+        $translationEmpty = $this->viewHelperManager->get('translationEmpty');
+        $translate = $translateKey . $suffix;
+        if ($html) {
+            $translate .= '_html';
+        }
+        if (!$translationEmpty($translate)) {
+            $translation = $this->translate($translate);
+            return $translation;
+        }
+        return null;
     }
 
     /**
