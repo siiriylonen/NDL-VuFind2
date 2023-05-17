@@ -1549,7 +1549,7 @@ class OrganisationInfo implements
      */
     protected function getMuseumDaySchedule($day, $json)
     {
-        $today = date('d.m');
+        $today = date('d.n') . '.';
         $currentHour = date('H:i');
         $return = [];
         $dayShortcode = substr($day, 0, 3);
@@ -1574,7 +1574,7 @@ class OrganisationInfo implements
             $return['times'][] = $time;
         }
         $return['day'] = $this->translator->translate("day-name-short-$day");
-        $return['date'] = $dayDate->format('d.n');
+        $return['date'] = $dayDate->format('d.n') . '.';
         if ($today === $return['date']) {
             $return['today'] = true;
             if (
