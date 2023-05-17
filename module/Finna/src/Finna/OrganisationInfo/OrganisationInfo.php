@@ -1574,7 +1574,7 @@ class OrganisationInfo implements
             $return['times'][] = $time;
         }
         $return['day'] = $this->translator->translate("day-name-short-$day");
-        $return['date'] = $dayDate->format('d.m');
+        $return['date'] = $dayDate->format('d.n');
         if ($today === $return['date']) {
             $return['today'] = true;
             if (
