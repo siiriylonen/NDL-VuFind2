@@ -407,13 +407,12 @@ class SolrEad3 extends SolrEad
             if (isset($attributes->level)) {
                 $datasourceSettings = $this->datasourceSettings[$this->getDataSource()];
                 if ($datasourceSettings) {
-                    // Requests only allowed on specified datasource and if required filing unit exists
+                    // Requests only allowed on specified datasource
                     if ($datasourceSettings['allowArchiveRequest']) {
+                        // Check if required filing unit exists and specified item hierarchy levels match the item's
                         if ($datasourceSettings['filinUnitRequired'] && empty($this->getFilingUnit())) {
                             return false;
-                        }
-                        // Requests allowed on specified item hierarchy levels
-                        else if ($datasourceSettings['requestFormRecordLevels']) {
+                        } elseif ($datasourceSettings['requestFormRecordLevels']) {
                             $recordLevels = explode(';', $datasourceSettings['requestFormRecordLevels']);
                             if (
                                 in_array($attributes->level, $recordLevels)
