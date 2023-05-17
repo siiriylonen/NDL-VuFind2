@@ -241,7 +241,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     contactHolder.show();
 
     holder.find('.office-quick-information .service-title').text(data.name);
-    if ('address' in data) {
+    if ('address' in data && data.address) {
       holder.find('.office-links.address').html(data.address);
       if (!data.details.museum) {
         var address = holder.find('.address-contact');
@@ -388,23 +388,23 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       holder.find('.extra-image-2').hide();
     }
 
-    if ('buildingYear' in data.details) {
+    if ('buildingYear' in data.details && data.details.buildingYear) {
       var year = holder.find('.building-year');
       year.find('> span').text(data.details.buildingYear);
       year.show();
     }
 
-    if ('phone' in data.details) {
+    if ('phone' in data.details && data.details.phone) {
       var phones = holder.find('.phone-numbers');
       phones.find('> p').html(data.details.phone);
       phones.show();
     }
-    if ('contactInfo' in data.details) {
+    if ('contactInfo' in data.details && data.details.contactInfo) {
       var contactInfo = holder.find('.phone-numbers');
       contactInfo.find('> p').html(data.details.contactInfo);
       contactInfo.show();
     }
-    if ('accessibilityInfo' in data.details) {
+    if ('accessibilityInfo' in data.details && data.details.accessibilityInfo) {
       let template = document.getElementById('accessibility_info_template');
       let blocks = [];
       data.details.accessibilityInfo.forEach((info) => {

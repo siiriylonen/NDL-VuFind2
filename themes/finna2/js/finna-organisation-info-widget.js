@@ -67,9 +67,11 @@ finna.organisationInfoWidget = (function finnaOrganisationInfoWidget() {
     var data = organisationList[id];
     var hasSchedules = 'openTimes' in response && 'schedules' in response.openTimes
       && response.openTimes.schedules.length > 0;
+    var schedules = response.openTimes.schedules;
+    var isClosedForWeek = schedules.every(schedule => schedule.closed === true);
+    var hasScheduleExplanation = (response.scheduleDescriptions[0] !== (null || ''));
 
-    if (hasSchedules) {
-      var schedules = response.openTimes.schedules;
+    if (hasSchedules && !isClosedForWeek) {
 
       // Check if there are self-service times
       var selfServiceTimes = false;
@@ -188,7 +190,10 @@ finna.organisationInfoWidget = (function finnaOrganisationInfoWidget() {
           links = true;
         }
       }
-      if (!links) {
+      if (hasScheduleExplanation) {
+        holder.find('.no-schedules').hide();
+      }
+      else if (!links) {
         holder.find('.no-schedules').show();
       }
     }

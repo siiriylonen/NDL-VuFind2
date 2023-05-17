@@ -1497,13 +1497,15 @@ class OrganisationInfo implements
                         $key['contact_info']['phone_email_' . $language . ''],
                 ];
         }
-        try {
-            $contactInfoToResult = $this->viewRenderer->partial(
-                "Helpers/organisation-info-museum-page.phtml",
-                ['contactInfo' => $contactInfo]
-            );
-        } catch (\Exception $e) {
-            $this->logError($e->getmessage());
+        if (!empty($contactInfo)) {
+            try {
+                $contactInfoToResult = $this->viewRenderer->partial(
+                    "Helpers/organisation-info-museum-page.phtml",
+                    ['contactInfo' => $contactInfo]
+                );
+            } catch (\Exception $e) {
+                $this->logError($e->getmessage());
+            }
         }
         // All data to view
         $result = [
