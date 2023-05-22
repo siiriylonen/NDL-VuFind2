@@ -437,6 +437,7 @@ class Form extends \VuFind\Form\Form
 
         $preParagraphs = [];
         $postParagraphs = [];
+        $datasource = '_' . $this->record->tryMethod('getDataSource') ?? '';
 
         // 'feedback_instructions_html' translation
         if ($this->formId === self::FEEDBACK_FORM) {
@@ -446,10 +447,9 @@ class Form extends \VuFind\Form\Form
                 $preParagraphs[] = $instructions;
             }
         }
-        $suffix = '_' . $this->record->tryMethod('getDataSource') ?? '';
-        // 'archive_request_reserve_material_pre_{$suffix}_html' translation
+        // 'archive_request{$datasource}_reserve_material_pre_html' translation
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
-            $key = $this->translateWithSuffix('archive_request_pre', $suffix, true);
+            $key = $this->translateCombinedString('archive_request', $datasource, '_reserve_material_pre_html');
             if ($key) {
                 $preParagraphs[] = $key;
             }
@@ -494,7 +494,7 @@ class Form extends \VuFind\Form\Form
             $this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
         ) {
-            $key = $this->translateWithSuffix('archive_request_info', $suffix);
+            $key = $this->translateCombinedString('archive_request', $datasource, '_info');
             if ($key) {
                 $preParagraphs[] = $key;
             }
@@ -577,7 +577,7 @@ class Form extends \VuFind\Form\Form
             null !== $this->record
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
-            $key = $this->translateWithSuffix('archive_request_material_arrival_info', $suffix, true);
+            $key = $this->translateCombinedString('archive_request', $datasource, '_material_arrival_info');
             if ($key) {
                 $postParagraphs[] = '<div class="alert alert-info">'
                 . $key . '</div>';
@@ -593,21 +593,18 @@ class Form extends \VuFind\Form\Form
     }
 
     /**
-     * Combine base translation key with an identifying suffix
+     * Combine a translation key from two or three strings
      *
-     * @param string $translateKey The base translation key
-     * @param string $suffix       The identifying suffix added to base key
-     * @param bool   $html         If the translation should have '_html' added
+     * @param string $prefix The prefix/first part of translation key
+     * @param string $middle The second part of translation key
+     * @param string $suffix The suffix for translation key (optional)
      *
      * @return string
      */
-    public function translateWithSuffix(string $translateKey, string $suffix, bool $html = false)
+    public function translateCombinedString(string $prefix, string $middle, string $suffix = '')
     {
         $translationEmpty = $this->viewHelperManager->get('translationEmpty');
-        $translate = $translateKey . $suffix;
-        if ($html) {
-            $translate .= '_html';
-        }
+        $translate = $prefix . $middle . $suffix;
         if (!$translationEmpty($translate)) {
             $translation = $this->translate($translate);
             return $translation;
