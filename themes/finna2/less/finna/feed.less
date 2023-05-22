@@ -613,20 +613,21 @@ finna-feed.splide--ltr {
             background: @carousel-text-background-color;
             opacity: 0;
             padding: 10px;
+            overflow-x: auto;
+            overflow-wrap: break-word;
             box-shadow: inset 0 -10px 20px -10px #000;//@carousel-slide-header-text-shadow
             .text {
-                height: 100%;
-                overflow: hidden;
+                height: fit-content;
             }
         }
 
         .carousel-slide-header {
-            &.title-bottom {
-                position: initial;
-                height: 100%;
-                width: 100%;
-            }
             .carousel-slide-content {
+                &.title-bottom {
+                    position: initial;
+                    height: 100%;
+                    width: 100%;
+                }
                 display: flex;
                 flex-direction: row;
                 position: absolute;
@@ -643,10 +644,6 @@ finna-feed.splide--ltr {
                 margin-bottom: 0;
                 letter-spacing: 0.2px;
                 text-shadow: @carousel-slide-header-text-shadow;
-                p {
-                    @media(min-width: @screen-md) {
-                    }
-                }
                 .carousel-slide-more {
                     float: right;
                     margin-left: auto;
