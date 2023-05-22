@@ -59,7 +59,7 @@ class FinnaFeedElement extends HTMLElement {
   setTitleBottom(settings) {
     // Move title field below image
     let maxH = 0;
-    this.querySelectorAll('.carousel-slide-header p').forEach(el => {
+    this.querySelectorAll('.carousel-slide-header p'/*, '.carousel-slide-content'*/).forEach(el => {
       maxH = Math.max(maxH, el.getBoundingClientRect().height + 10);
       el.classList.add('title-bottom');
       el.parentNode.classList.add('title-bottom');
@@ -177,16 +177,23 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-text').forEach(el => {
             el.style.paddingBottom = '30px';
           });
-          const onSlideClick = function onSlideClick () {
-            const slide = this.closest('.feed-item-holder');
-            if (slide && !slide.classList.contains('clicked')) {
-              slide.classList.add('clicked');
+          $(holder).find('.feed-link a, .feed-link').on('click', function onClickSlideLink() {
+            var closestSlide = $(this).closest('.feed-link');
+            if (!closestSlide.hasClass('clicked')) {
+              closestSlide.addClass('clicked');
               return false;
             }
-          };
-          holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
-            el.addEventListener('click', onSlideClick);
-          }); 
+          });
+          $(holder).find('.feed-link').on('focusout', function removeClicked(event){
+            if ($(this).has(event.relatedTarget).length === 0) {
+              $(this).removeClass('clicked');
+            }
+          });
+          if (navigator.userAgent.match()) {
+            $('.feed-link').on('click', function onIeClick() {
+              $(this).toggleClass('ie-mobile-tap');
+            });
+          }
         } else {
           holder.querySelectorAll('.carousel').forEach(el => {
             el.classList.add('carousel-non-touch-device');

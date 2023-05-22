@@ -18,7 +18,10 @@
 <?php endif; ?>
 <div class="carousel-text" aria-hidden="true">
   <?php if (isset($item['title'])): ?>
-    <p class="carousel-hover-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></p>
+    <div class="carousel-hover-title">
+    <p><?=$this->escapeHtml($this->truncate($item['title'], 70))?></p>
+    <p class="carousel-more"><?=$this->icon('export')?></p>
+    </div>
   <?php endif; ?>
   <?php if (isset($item['dateFull'])): ?>
     <span class="carousel-date carousel-hover-date"><?=$this->transEsc('Published')?> <?=$this->escapeHtml($item['dateFull'])?></span>
@@ -52,15 +55,18 @@
 <?php endif; ?>
 <?php if (isset($item['title']) || isset($item['dateFull'])): ?>
   <div class="carousel-slide-header">
-    <p>
-      <?php if ($hasIcon && !$hasImg): ?><?=$this->partial('Helpers/feed-icon.phtml', ['icon' => $item['icon']]);?><?php endif; ?>
-      <?php if (isset($item['title'])): ?>
-        <?=$this->escapeHtml($this->truncate($item['title'], 70));?>
-      <?php endif; ?>
-      <?php if (isset($item['dateFull'])): ?>
-        <span class="carousel-header-date carousel-date"><?=$this->transEsc('Published')?> <?=$this->escapeHtml($item['dateFull'])?></span>
-      <?php endif; ?>
-    </p>
+    <div class=carousel-slide-content>
+      <p>
+        <?php if ($hasIcon && !$hasImg): ?><?=$this->partial('Helpers/feed-icon.phtml', ['icon' => $item['icon']]);?><?php endif; ?>
+        <?php if (isset($item['title'])): ?>
+          <?=$this->escapeHtml($this->truncate($item['title'], 70));?>
+        <?php endif; ?>
+        <?php if (isset($item['dateFull'])): ?>
+          <span class="carousel-header-date carousel-date"><?=$this->transEsc('Published')?> <?=$this->escapeHtml($item['dateFull'])?></span>
+        <?php endif; ?>
+      </p>
+      <p class="carousel-slide-more"><?=$this->icon('collapse-close')?></p>
+    </div>
   </div>
 <?php endif; ?>
 <!-- END of: finna - ajax/feed-carousel-item.phtml -->
