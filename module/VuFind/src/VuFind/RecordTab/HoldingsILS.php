@@ -163,7 +163,8 @@ class HoldingsILS extends AbstractBase
      */
     public function isActive()
     {
-        return parent::isActive();
+        return ($this->catalog && $this->hideWhenEmpty)
+            ? $this->catalog->hasHoldings($this->driver->getUniqueID()) : true;
     }
 
     /**

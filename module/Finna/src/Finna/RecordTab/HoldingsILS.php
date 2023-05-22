@@ -51,7 +51,6 @@ class HoldingsILS extends \VuFind\RecordTab\HoldingsILS
         if ($this->getRecordDriver()->tryMethod('allowRequestForm')) {
             return true;
         }
-        return ($this->catalog && $this->hideWhenEmpty)
-            ? $this->catalog->hasHoldings($this->driver->getUniqueID()) : true;
+        return parent::isActive();
     }
 }
