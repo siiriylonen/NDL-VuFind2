@@ -201,6 +201,12 @@ class FinnaFeedElement extends HTMLElement {
         }
       }
 
+      this.querySelectorAll('.carousel-text').forEach(el => {
+        if (el.clientHeight < el.scrollHeight && !el.classList.contains('text-bottom')) {
+          el.parentNode.classList.add('scrollable');
+        }
+      });
+
       // Bind lightbox if feed content is shown in modal
       if (typeof settings.modal !== 'undefined' && settings.modal) {
         const onClickHolderLink = function onClickHolderLink() {

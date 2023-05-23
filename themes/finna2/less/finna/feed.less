@@ -596,6 +596,21 @@ finna-feed.splide--ltr {
         }
         .feed-link {
             flex-flow: column;
+            &:is(.scrollable):hover {
+                &:after {
+                    content: '';
+                    margin: 0;
+                    padding: 0;
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 40px;
+                    background-image: linear-gradient(to bottom, fade(@carousel-slider-background, 0%), @carousel-slider-background);
+                    pointer-events: none;
+                }
+            }
         }
         .wrapper {
             flex: 1 1 100%;
@@ -613,9 +628,8 @@ finna-feed.splide--ltr {
             background: @carousel-text-background-color;
             opacity: 0;
             padding: 10px;
-            overflow-x: auto;
+            overflow-y: auto;
             overflow-wrap: break-word;
-            box-shadow: inset 0 -10px 20px -10px #000;//@carousel-slide-header-text-shadow
             .text {
                 height: fit-content;
             }
@@ -655,7 +669,7 @@ finna-feed.splide--ltr {
                     }
                 }
             }
-    }
+        }
     }
 }
 
