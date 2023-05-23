@@ -179,7 +179,7 @@ class FinnaFeedElement extends HTMLElement {
           });
           holder.querySelectorAll('.carousel-slide-more').forEach(el => {
             el.classList.remove('hidden');
-          })
+          });
           $(holder).find('.feed-link a, .feed-link').on('click', function onClickSlideLink() {
             var closestSlide = $(this).closest('.feed-link');
             if (!closestSlide.hasClass('clicked')) {
