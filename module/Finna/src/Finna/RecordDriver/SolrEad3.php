@@ -399,7 +399,7 @@ class SolrEad3 extends SolrEad
      *
      * @return bool
      */
-    public function allowRequestForm()
+    public function archiveRequestAllowed()
     {
         $xml = $this->getXmlRecord();
         if ($xml) {

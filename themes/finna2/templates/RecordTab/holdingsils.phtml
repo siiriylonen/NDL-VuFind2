@@ -7,7 +7,7 @@
     $openUrlActive = $openUrl->isActive();
     $doi = $this->doi($this->driver, 'holdings');
     $doiActive = $doi->isActive();
-    $allowArchiveRequest = $this->driver->tryMethod('allowRequestForm');
+    $allowArchiveRequest = $this->driver->tryMethod('archiveRequestAllowed');
     // Account for replace_other_urls setting
     $urls = $this->record($this->driver)->getLinkDetails($openUrlActive);
     $offlineMode = $this->ils()->getOfflineMode();
@@ -212,12 +212,6 @@
     )
   ?>
 <?php endif; ?>
-<?php
-// If holdings tab visible for archive request form only
-if ($allowArchiveRequest && !$holdsAllowed) {
-  return;
-}
-?>
 <div class="table record-holdings-table">
   <div class="headers">
     <?php $mergedData = $this->driver->tryMethod('getMergedRecordData'); ?>

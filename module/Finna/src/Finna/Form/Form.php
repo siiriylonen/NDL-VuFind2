@@ -437,7 +437,7 @@ class Form extends \VuFind\Form\Form
 
         $preParagraphs = [];
         $postParagraphs = [];
-        $datasource = '_' . $this->record->tryMethod('getDataSource') ?? '';
+        $datasource = $this->record->tryMethod('getDataSource') ?? '';
 
         // 'feedback_instructions_html' translation
         if ($this->formId === self::FEEDBACK_FORM) {
@@ -449,9 +449,9 @@ class Form extends \VuFind\Form\Form
         }
         // 'archive_request{$datasource}_reserve_material_pre_html' translation
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
-            $key = $this->translateCombinedString('archive_request', $datasource, '_reserve_material_pre_html');
-            if ($key) {
-                $preParagraphs[] = $key;
+            $text = $this->translateCombinedString('archive_request', $datasource, 'reserve_material_pre_html');
+            if ($text) {
+                $preParagraphs[] = $text;
             }
         }
 
@@ -494,9 +494,9 @@ class Form extends \VuFind\Form\Form
             $this->formId === self::ARCHIVE_MATERIAL_REQUEST
             && null !== $this->record
         ) {
-            $key = $this->translateCombinedString('archive_request', $datasource, '_info');
-            if ($key) {
-                $preParagraphs[] = $key;
+            $text = $this->translateCombinedString('archive_request', $datasource, 'info');
+            if ($text) {
+                $preParagraphs[] = $text;
             }
         } elseif (
             !($this->formConfig['hideRecipientInfo'] ?? false)
@@ -555,7 +555,7 @@ class Form extends \VuFind\Form\Form
             $identifier = $this->record->tryMethod('getIdentifier');
             if ($identifier) {
                 $preParagraphs[] = '<strong>'
-                    . $transEsc('adv_search_identifier') . '</strong>:<br>'
+                    . $transEsc('Inventory ID') . '</strong>:<br>'
                     . $escapeHtml($identifier[0]);
             }
         }
@@ -577,10 +577,10 @@ class Form extends \VuFind\Form\Form
             null !== $this->record
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
-            $key = $this->translateCombinedString('archive_request', $datasource, '_material_arrival_info');
-            if ($key) {
+            $text = $this->translateCombinedString('archive_request', $datasource, 'material_arrival_info');
+            if ($text) {
                 $postParagraphs[] = '<div class="alert alert-info">'
-                . $key . '</div>';
+                . $text . '</div>';
             }
         }
 
@@ -604,12 +604,8 @@ class Form extends \VuFind\Form\Form
     public function translateCombinedString(string $prefix, string $middle, string $suffix = '')
     {
         $translationEmpty = $this->viewHelperManager->get('translationEmpty');
-        $translate = $prefix . $middle . $suffix;
-        if (!$translationEmpty($translate)) {
-            $translation = $this->translate($translate);
-            return $translation;
-        }
-        return null;
+        $translate = $prefix . '_' . $middle . '_' . $suffix;
+        return !$translationEmpty($translate) ? $this->translate($translate) : '';
     }
 
     /**
