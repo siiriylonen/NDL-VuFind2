@@ -202,6 +202,8 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
             const isEmpty = Object.values(museumCoordinates).every(value => value === '');
             if (isEmpty) {
               holder.find('.map-ui').hide();
+            } else {
+              initMap();
             }
           } else {
             initMap();      
