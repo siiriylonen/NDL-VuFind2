@@ -65,7 +65,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     }
 
     var notification = holder.find('.office-search-notifications .notification');
-    if (id in organisationList) {
+    if (id in organisationList && organisationList.id) {
       var data = organisationList[id];
       map.hideMarker();
       if ('address' in data && 'coordinates' in data.address) {
@@ -196,7 +196,16 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
         infoWidget.organisationListLoaded(response);
         if (cnt > 0) {
-          initMap();
+          // Map not shown when museum's information has no coordinates
+          if (cnt === 1 && response.list[0].type === 'museum') {
+            var museumCoordinates = response.list[0].address.coordinates;
+            const isEmpty = Object.values(museumCoordinates).every(value => value === '');
+            if (isEmpty) {
+              holder.find('.map-ui').hide();
+            }
+          } else {
+            initMap();      
+          }
           holder.find('.office-quick-information').show();
 
           // if theres only one service point, hide searchbox and ignore initSearch
@@ -274,7 +283,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       holder.find('.contact-info-header').hide();
     }
 
-    if ('routeUrl' in data) {
+    if ('routeUrl' in data && data.address !== '') {
       holder.find('.office-links.route').attr('href', data.routeUrl).show();
     }
 
