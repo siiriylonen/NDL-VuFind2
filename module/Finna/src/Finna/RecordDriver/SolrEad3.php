@@ -402,24 +402,21 @@ class SolrEad3 extends SolrEad
     public function archiveRequestAllowed()
     {
         $xml = $this->getXmlRecord();
-        if ($xml) {
-            $attributes = $xml->attributes();
-            if (isset($attributes->level)) {
-                $datasourceSettings = $this->datasourceSettings[$this->getDataSource()];
-                if ($datasourceSettings) {
-                    // Requests only allowed on specified datasource
-                    if ($datasourceSettings['allowArchiveRequest']) {
-                        // Check if required filing unit exists and specified item hierarchy levels match the item's
-                        if ($datasourceSettings['filinUnitRequired'] && empty($this->getFilingUnit())) {
-                            return false;
-                        } elseif ($datasourceSettings['requestFormRecordLevels']) {
-                            $recordLevels = explode(';', $datasourceSettings['requestFormRecordLevels']);
-                            if (
-                                in_array($attributes->level, $recordLevels)
-                            ) {
-                                return true;
-                            }
-                        }
+        $attributes = $xml->attributes();
+        if (isset($attributes->level)) {
+            $datasourceSettings = $this->datasourceSettings[$this->getDataSource()] ?? [];
+            // Requests only allowed on specified datasource
+            if ($datasourceSettings['allowArchiveRequest'] ?? false) {
+                // Check if required filing unit exists and specified item hierarchy levels match the item's
+                if ($datasourceSettings['filingUnitRequired'] ?? false && empty($this->getFilingUnit())) {
+                    return false;
+                }
+                if ($datasourceSettings['requestFormRecordLevels'] ?? false) {
+                    $recordLevels = explode(';', $datasourceSettings['requestFormRecordLevels']);
+                    if (!in_array($attributes->level, $recordLevels)) {
+                        return false;
+                    } else {
+                        return true;
                     }
                 }
             }
