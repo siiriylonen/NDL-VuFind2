@@ -22,14 +22,8 @@
     <ul aria-multiselectable="true" role="listbox" aria-label="<?= $this->transEsc('Add filter') . ' ' . $this->transEsc($this->list['label']) ?>" tabindex="0" class="finna-multiselect done" aria-activedescendant=""></ul>
     <button type="button" class="finna-multiselect clear btn btn-link"><?= $this->transEsc('Clear Selections') ?></button> 
   </div>
-  <?php if ($field === 'usage_rights_ext_str_mv'): ?>
-          <div class="information additional-info">
-            <p class="information-text"><?=$this->translate('usage_rights_ext_header')?></p>
-          </div>
-          <div class="information additional-info">  
-            <p class="information-text"><?=$this->translate('usage_rights_ext_info')?></p>
-            <a class="additional-info additional-info-link" href="<?=$this->url('content-page', ['page' => 'terms'])?>#terms"><?=$this->transEsc('usage_rights_ext_info_more_link')?></a>
-          </div>
+  <?php if (!$this->translationEmpty($field . '_facet_information_html')): ?>
+    <?=$this->translate($field . '_facet_information_html'); ?>    
   <?php endif; ?>
 </div>
 <!-- END of: finna - search/advanced/multiselect.phtml -->
