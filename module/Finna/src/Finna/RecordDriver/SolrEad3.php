@@ -408,7 +408,7 @@ class SolrEad3 extends SolrEad
             // Requests only allowed on specified datasource
             if ($datasourceSettings['allowArchiveRequest'] ?? false) {
                 // Check if required filing unit exists and specified item hierarchy levels match the item's
-                if ($datasourceSettings['filingUnitRequired'] ?? false && empty($this->getFilingUnit())) {
+                if (($datasourceSettings['filingUnitRequired'] ?? false) && empty($this->getFilingUnit())) {
                     return false;
                 }
                 if ($datasourceSettings['requestFormRecordLevels'] ?? false) {
