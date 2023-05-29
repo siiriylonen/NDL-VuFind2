@@ -403,22 +403,27 @@ class SolrEad3 extends SolrEad
     {
         $xml = $this->getXmlRecord();
         $attributes = $xml->attributes();
-        if (isset($attributes->level)) {
-            $datasourceSettings = $this->datasourceSettings[$this->getDataSource()] ?? [];
-            // Requests only allowed on specified datasource
-            if ($datasourceSettings['allowArchiveRequest'] ?? false) {
+        $datasourceSettings = $this->datasourceSettings[$this->getDataSource()] ?? [];
+        // Requests only allowed on specified datasource
+        if ($datasourceSettings['allowArchiveRequest'] ?? false) {
+            $levelRequired = $datasourceSettings['archiveRequestRequireRecordLevel'] ?? false;
+            if (!$levelRequired || isset($attributes->level)) {
                 // Check if required filing unit exists and specified item hierarchy levels match the item's
-                if (($datasourceSettings['filingUnitRequired'] ?? false) && empty($this->getFilingUnit())) {
+                if (
+                    ($datasourceSettings['archiveRequestRequireFilingUnit'] ?? false)
+                    && empty($this->getFilingUnit())
+                ) {
                     return false;
                 }
-                if ($datasourceSettings['requestFormRecordLevels'] ?? false) {
-                    $recordLevels = explode(';', $datasourceSettings['requestFormRecordLevels']);
-                    if (!in_array($attributes->level, $recordLevels)) {
+                if ($levelRequired && ($datasourceSettings['requestedFormRecordLevels'] ?? false)) {
+                    $recordLevels = explode(';', $datasourceSettings['requestedFormRecordLevels']);
+                    if (!in_array((string)$attributes->level ?? '', $recordLevels)) {
                         return false;
                     } else {
                         return true;
                     }
                 }
+                return true;
             }
         }
         return false;
