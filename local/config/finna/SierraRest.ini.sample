@@ -31,7 +31,7 @@ redirect_uri = "http://localhost:8080/vufind/MyResearch/Home?auth_method=sierra"
 ; If a colon separated list of item statuses is provided here, only matching items
 ; will show hold links.  Skip this setting to allow all statuses.
 ; Note that VuFind-style statuses are used here.
-valid_hold_statuses = Charged:Renewed:Overdue:On Shelf:In Transit
+valid_hold_statuses = Charged:Renewed:Overdue:On Shelf:In Transit:On Holdshelf
 
 ; HMACKeys - A list of hold form element names that will be analyzed for consistency
 ; during hold form processing. Most users should not need to change this setting.
