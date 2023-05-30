@@ -141,7 +141,8 @@
             <?php if (!empty($profile['addresses'])): ?>
               <?php $updateAddressParam = $updateAddress; ?>
               <?php foreach ($profile['addresses'] as $address): ?>
-                <?php $addressParams['address'] = $address; $addressParams['updateAddress'] = $updateAddressParam; ?>
+                <?php $addressParams['address'] = $address;
+                $addressParams['updateAddress'] = $updateAddressParam; ?>
                 <div class="profile-title profile-address-type">
                   <?=$this->transEsc('Address')?>
                   <?=!empty($address['preferred']) ? (' (' . $this->transEsc('address_preferred') . ')') : '' ?>

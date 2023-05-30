@@ -18,7 +18,9 @@
     ?>
     <ul class="nav nav-tabs <?=$isManyTabs ? ' many-tabs hidden-xs' : '';?>">
       <?php foreach ($searchTabs as $tab): ?>
-        <?php if ($tab['selected']) { $this->layout()->currentTabId = $tab['id']; } ?>
+        <?php if ($tab['selected']) {
+          $this->layout()->currentTabId = $tab['id'];
+        } ?>
         <li class="<?=$tab['selected'] ? 'active' : 'hidden-print'?>">
           <a <?=$tab['selected'] ? 'aria-current="true"' : 'href="' . $this->escapeHtmlAttr($tab['url']) . '"' ?>><?=$this->transEsc($tab['label']); ?></a>
           <?php if (!$this->translationEmpty('tooltip_' . $tab['label'] . '_html') && $this->layout()->templateName !== 'advanced'): ?>
@@ -53,7 +55,9 @@
         <?php endforeach; ?>
         <ul class="dropdown-menu" role="menu">
           <?php foreach ($searchTabs as $tab): ?>
-            <?php if ($tab['selected']) { $this->layout()->currentTabId = $tab['id']; } ?>
+            <?php if ($tab['selected']) {
+              $this->layout()->currentTabId = $tab['id'];
+            } ?>
             <li role="menuitem" class="<?=$tab['selected'] ? 'active' : ''?>">
               <a <?=$tab['selected'] ? 'aria-current="true"' : 'href="' . $this->escapeHtmlAttr($tab['url']) . '"' ?>><?=$this->transEsc($tab['label']); ?></a>
             </li>
