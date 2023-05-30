@@ -6623,44 +6623,37 @@
         },
         {
             "name": "paytrail/paytrail-php-sdk",
-            "version": "1.1.0",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paytrail/paytrail-php-sdk.git",
-                "reference": "b61ec2cb7b18c98d4f16676b7663fcd5997335da"
+                "reference": "12989e7a40a223b976cedc702b1596ff6cc0b568"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paytrail/paytrail-php-sdk/zipball/b61ec2cb7b18c98d4f16676b7663fcd5997335da",
-                "reference": "b61ec2cb7b18c98d4f16676b7663fcd5997335da",
+                "url": "https://api.github.com/repos/paytrail/paytrail-php-sdk/zipball/12989e7a40a223b976cedc702b1596ff6cc0b568",
+                "reference": "12989e7a40a223b976cedc702b1596ff6cc0b568",
                 "shasum": ""
             },
             "require": {
+                "ext-curl": "*",
                 "ext-json": "*",
-                "php": ">=7.3",
-                "psr/http-message": "~1.0",
-                "ralouphie/getallheaders": "^2.0.5 || ^3.0.0",
-                "symfony/polyfill-intl-idn": "^1.17.0"
+                "php": ">=7.3"
             },
             "require-dev": {
+                "guzzlehttp/guzzle": "^7.0|^6.0",
                 "mockery/mockery": "^1.5",
                 "phpcompatibility/php-compatibility": "^9.3",
                 "phpmd/phpmd": "^2.10",
-                "phpunit/phpunit": "^8.4",
+                "phpstan/phpstan": "1.9.14",
+                "phpunit/phpunit": "^10.0 || ^9.0",
                 "squizlabs/php_codesniffer": "^3.6"
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "lib/guzzlehttp/guzzle/src/functions_include.php",
-                    "lib/guzzlehttp/psr7/src/functions_include.php",
-                    "lib/guzzlehttp/promises/src/functions_include.php"
-                ],
                 "psr-4": {
-                    "Guzzle6\\": "lib/guzzlehttp/guzzle/src/",
-                    "Guzzle6\\Psr7\\": "lib/guzzlehttp/psr7/src/",
-                    "Paytrail\\SDK\\": "src/",
-                    "Guzzle6\\Promise\\": "lib/guzzlehttp/promises/src/"
+                    "Tests\\": "tests/",
+                    "Paytrail\\SDK\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6682,9 +6675,9 @@
             ],
             "support": {
                 "issues": "https://github.com/paytrail/paytrail-php-sdk/issues",
-                "source": "https://github.com/paytrail/paytrail-php-sdk/tree/1.1.0"
+                "source": "https://github.com/paytrail/paytrail-php-sdk/tree/2.5.2"
             },
-            "time": "2022-03-23T12:48:52+00:00"
+            "time": "2023-05-05T09:45:27+00:00"
         },
         {
             "name": "pcrov/jsonreader",
