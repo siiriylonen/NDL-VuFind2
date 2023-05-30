@@ -1459,7 +1459,7 @@ class OrganisationInfo implements
             }
         }
         // Address handling
-        if (!empty($details['address'])) {
+        if (!empty($details['address']['street'])) {
             $mapUrl = $this->config->General->mapUrl;
             $routeUrl = $this->config->General->routeUrl;
             $replace['street'] = $details['address']['street'];
