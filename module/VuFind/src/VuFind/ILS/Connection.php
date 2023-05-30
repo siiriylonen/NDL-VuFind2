@@ -657,7 +657,7 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
      */
     protected function checkMethodchangePassword($functionConfig, $params)
     {
-        if ($this->checkCapability('changePassword', $params ?: [])) {
+        if ($this->checkCapability('changePassword', [$params ?: []])) {
             return ['function' => 'changePassword'];
         }
         return false;
