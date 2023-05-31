@@ -405,28 +405,25 @@ class SolrEad3 extends SolrEad
         $attributes = $xml->attributes();
         $datasourceSettings = $this->datasourceSettings[$this->getDataSource()] ?? [];
         // Requests only allowed on specified datasource
-        if ($datasourceSettings['allowArchiveRequest'] ?? false) {
-            $levelRequired = $datasourceSettings['archiveRequestRequireRecordLevel'] ?? false;
-            if (!$levelRequired || isset($attributes->level)) {
-                // Check if required filing unit exists and specified item hierarchy levels match the item's
-                if (
-                    ($datasourceSettings['archiveRequestRequireFilingUnit'] ?? false)
-                    && empty($this->getFilingUnit())
-                ) {
-                    return false;
-                }
-                if ($levelRequired && ($datasourceSettings['requestedFormRecordLevels'] ?? false)) {
-                    $recordLevels = explode(';', $datasourceSettings['requestedFormRecordLevels']);
-                    if (!in_array((string)$attributes->level ?? '', $recordLevels)) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-                return true;
+        if (!$datasourceSettings['allowArchiveRequest'] ?? false) {
+            return false;
+        }
+        $levelRequired = $datasourceSettings['archiveRequestRequireRecordLevel'] ?? false;
+        if ($levelRequired && (string)$attributes->level === '') {
+            return false;
+        }
+        // Check if specified item hierarchy levels match the item's
+        if ($levelRequired && ($datasourceSettings['allowedRecordLevels'] ?? false)) {
+            $recordLevels = explode(';', $datasourceSettings['allowedRecordLevels']);
+            if (!in_array((string)$attributes->level ?? '', $recordLevels)) {
+                return false;
             }
         }
-        return false;
+        // Check if required filing unit exists
+        if (($datasourceSettings['archiveRequestRequireFilingUnit'] ?? false) && empty($this->getFilingUnit())) {
+            return false;
+        }
+        return true;
     }
 
     /**

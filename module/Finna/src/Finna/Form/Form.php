@@ -605,11 +605,11 @@ class Form extends \VuFind\Form\Form
     {
         $translate = '';
         $translationEmpty = $this->viewHelperManager->get('translationEmpty');
-        if (!empty($middle)) {
+        if ('' !== $middle) {
             $translate = $prefix . '_' . $middle;
-            if ($suffix) {
-                $translate .= '_' . $suffix;
-            }
+        }
+        if ('' !== $suffix) {
+            $translate .= '_' . $suffix;
         }
         return !$translationEmpty($translate) ? $this->translate($translate) : '';
     }
