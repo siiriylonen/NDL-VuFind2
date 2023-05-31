@@ -212,7 +212,6 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
         infoWidget.organisationListLoaded(response);
         if (cnt > 0) {
           initMap();
-
           holder.find('.office-quick-information').show();
 
           // if theres only one service point, hide searchbox and ignore initSearch
