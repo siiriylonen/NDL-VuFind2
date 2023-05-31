@@ -214,7 +214,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             [$this->apiBase, 'patrons', $patron['id']],
             [
                 'fields' => 'names,emails,phones,addresses,birthDate,expirationDate'
-                    . ',message,homeLibraryCode',
+                    . ',message,homeLibraryCode,fixedFields',
             ],
             'GET',
             $patron
@@ -294,6 +294,11 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             ) {
                 $profile['expiration_soon'] = true;
             }
+        }
+
+        // PCODE3: self-service library access
+        if ($field = $result['fixedFields'][46] ?? null) {
+            $profile['self_service_library'] = (string)$field['value'] === '1';
         }
 
         // Checkout history:
