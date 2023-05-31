@@ -84,12 +84,11 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
   function initMap() {
     // If all coordinates are empty, hide map
-    var isEmpty = false;
     var empty = [];
     $.each(organisationList, function checkEmptyCoordinates(i, obj) {
       if (obj.address && obj.address.coordinates) {
         var coordinates = obj.address.coordinates;
-        isEmpty = Object.values(coordinates).some(value => (value === '' || value === null));
+        var isEmpty = Object.values(coordinates).some(value => (value === '' || value === null));
         if (!isEmpty) {
           empty.push(false);
         }
