@@ -285,7 +285,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       holder.find('.contact-info-header').hide();
     }
 
-    if ('routeUrl' in data && data.address !== '') {
+    if ('routeUrl' in data) {
       holder.find('.office-links.route').attr('href', data.routeUrl).show();
     }
 
