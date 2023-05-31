@@ -83,6 +83,24 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
   }
 
   function initMap() {
+    // If all coordinates are empty, hide map
+    var isEmpty = false;
+    var empty = [];
+    $.each(organisationList, function checkEmptyCoordinates(i, obj) {
+      if (obj.address && obj.address.coordinates) {
+        var coordinates = obj.address.coordinates;
+        isEmpty = Object.values(coordinates).every(value => (value === '' || value === null));
+        if (isEmpty) {
+          empty.push(true);
+        } else {
+          empty.push(false);
+        }
+      }
+    });
+    let checkTrue = empty.every(value => value === true);
+    if (checkTrue) {
+      holder.find('.map-ui').hide();
+    }
     $.each(organisationList, function handleOrganisation(ind, obj) {
       // Map data (info bubble, icon)
       var bubble = holder.find('.map-bubble-template').clone();
@@ -196,18 +214,8 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
         infoWidget.organisationListLoaded(response);
         if (cnt > 0) {
-          // Map not shown when museum's information has no coordinates
-          if (cnt === 1 && response.list[0].type === 'museum') {
-            var museumCoordinates = response.list[0].address.coordinates;
-            const isEmpty = Object.values(museumCoordinates).every(value => value === '');
-            if (isEmpty) {
-              holder.find('.map-ui').hide();
-            } else {
-              initMap();
-            }
-          } else {
-            initMap();      
-          }
+          initMap();
+
           holder.find('.office-quick-information').show();
 
           // if theres only one service point, hide searchbox and ignore initSearch
