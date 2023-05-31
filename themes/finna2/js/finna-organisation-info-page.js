@@ -65,7 +65,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     }
 
     var notification = holder.find('.office-search-notifications .notification');
-    if (id in organisationList && organisationList.id) {
+    if (id in organisationList) {
       var data = organisationList[id];
       map.hideMarker();
       if ('address' in data && 'coordinates' in data.address) {
