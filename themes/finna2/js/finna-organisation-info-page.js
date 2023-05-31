@@ -89,16 +89,13 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     $.each(organisationList, function checkEmptyCoordinates(i, obj) {
       if (obj.address && obj.address.coordinates) {
         var coordinates = obj.address.coordinates;
-        isEmpty = Object.values(coordinates).every(value => (value === '' || value === null));
-        if (isEmpty) {
-          empty.push(true);
-        } else {
+        isEmpty = Object.values(coordinates).some(value => (value === '' || value === null));
+        if (!isEmpty) {
           empty.push(false);
         }
       }
     });
-    let checkTrue = empty.every(value => value === true);
-    if (checkTrue) {
+    if (empty.length === 0) {
       holder.find('.map-ui').hide();
     }
     $.each(organisationList, function handleOrganisation(ind, obj) {
