@@ -603,10 +603,10 @@ class Form extends \VuFind\Form\Form
      */
     public function translateCombinedString(string $prefix, string $middle, string $suffix = '')
     {
-        $translate = '';
+        $translate = $prefix;
         $translationEmpty = $this->viewHelperManager->get('translationEmpty');
         if ('' !== $middle) {
-            $translate = $prefix . '_' . $middle;
+            $translate .= '_' . $middle;
         }
         if ('' !== $suffix) {
             $translate .= '_' . $suffix;

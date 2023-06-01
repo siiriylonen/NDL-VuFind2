@@ -405,16 +405,12 @@ class SolrEad3 extends SolrEad
         $attributes = $xml->attributes();
         $datasourceSettings = $this->datasourceSettings[$this->getDataSource()] ?? [];
         // Requests only allowed on specified datasource
-        if (!$datasourceSettings['allowArchiveRequest'] ?? false) {
-            return false;
-        }
-        $levelRequired = $datasourceSettings['archiveRequestRequireRecordLevel'] ?? false;
-        if ($levelRequired && (string)$attributes->level === '') {
+        if (!($datasourceSettings['allowArchiveRequest'] ?? false)) {
             return false;
         }
         // Check if specified item hierarchy levels match the item's
-        if ($levelRequired && ($datasourceSettings['allowedRecordLevels'] ?? false)) {
-            $recordLevels = explode(';', $datasourceSettings['allowedRecordLevels']);
+        if (($datasourceSettings['archiveRequestAllowedRecordLevels'] ?? false) && (string)$attributes->level !== '') {
+            $recordLevels = explode(':', $datasourceSettings['archiveRequestAllowedRecordLevels']);
             if (!in_array((string)$attributes->level ?? '', $recordLevels)) {
                 return false;
             }

@@ -15,6 +15,10 @@
 ; This configuration file is compatible with RecordManager's datasources.ini, so the
 ; same file can be shared by RecordManager and VuFind.
 
+allowArchiveRequest = true
+archiveRequestAllowedRecordLevels = 'file:item'
+archiveRequestRequireFilingUnit = true
+
 [OJS]
 feedbackEmail = email@somewhere.invalid
 mainView = web
