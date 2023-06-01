@@ -184,12 +184,14 @@ class FinnaFeedElement extends HTMLElement {
             var closestSlide = $(this).closest('.feed-link');
             if (!closestSlide.hasClass('clicked')) {
               closestSlide.addClass('clicked');
+              closestSlide.children('.scrollable').addClass('scrollable-clicked');
               return false;
             }
           });
           $(holder).find('.feed-link').on('focusout', function removeClicked(event){
             if ($(this).has(event.relatedTarget).length === 0) {
               $(this).removeClass('clicked');
+              $(this).children('.scrollable').removeClass('scrollable-clicked');
             }
           });
           if (navigator.userAgent.match()) {
@@ -205,8 +207,8 @@ class FinnaFeedElement extends HTMLElement {
       }
 
       this.querySelectorAll('.carousel-text').forEach(el => {
-        if (el.clientHeight < el.scrollHeight && !el.classList.contains('text-bottom')) {
-          el.parentNode.classList.add('scrollable');
+        if (el.clientHeight < el.scrollHeight) {
+          el.classList.add('scrollable');
         }
       });
 
