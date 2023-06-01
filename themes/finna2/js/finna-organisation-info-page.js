@@ -84,17 +84,17 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
   function initMap() {
     // If all coordinates are empty, hide map
-    var empty = [];
+    var coordinatesExist = false;
     $.each(organisationList, function checkEmptyCoordinates(i, obj) {
       if (obj.address && obj.address.coordinates) {
         var coordinates = obj.address.coordinates;
         var isEmpty = Object.values(coordinates).some(value => (value === '' || value === null));
         if (!isEmpty) {
-          empty.push(false);
+          coordinatesExist = true;
         }
       }
     });
-    if (empty.length === 0) {
+    if (!coordinatesExist) {
       holder.find('.map-ui').hide();
     }
     $.each(organisationList, function handleOrganisation(ind, obj) {
