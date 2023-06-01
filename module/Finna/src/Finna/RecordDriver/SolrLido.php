@@ -2092,8 +2092,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         $languages = [];
         if ($language) {
             $languages[] = $language;
-            if (strlen($language) > 2) {
-                $languages[] = substr($language, 0, 2);
+            // Add region-less language if needed:
+            $parts = explode('-', $language, 2);
+            if (isset($parts[1])) {
+                $languages[] = $parts[0];
             }
         }
         foreach ($languages as $lng) {
