@@ -180,25 +180,20 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-slide-more').forEach(el => {
             el.classList.remove('hidden');
           });
-          $(holder).find('.feed-link a, .feed-link').on('click', function onClickSlideLink() {
-            var closestSlide = $(this).closest('.feed-link');
-            if (!closestSlide.hasClass('clicked')) {
-              closestSlide.addClass('clicked');
-              closestSlide.children('.scrollable').addClass('scrollable-clicked');
-              return false;
+          const onSlideClick = function onSlideClick (e) {
+            e.stopImmediatePropagation();
+            const slide = this.closest('.feed-item-holder');
+            if (slide && !slide.classList.contains('clicked')) {
+              holder.querySelectorAll('.feed-item-holder.clicked').forEach(el => {
+                el.classList.remove('.clicked');
+              });
+              slide.classList.add('clicked');
+              e.preventDefault();
             }
-          });
-          $(holder).find('.feed-link').on('focusout', function removeClicked(event){
-            if ($(this).has(event.relatedTarget).length === 0) {
-              $(this).removeClass('clicked');
-              $(this).children('.scrollable').removeClass('scrollable-clicked');
-            }
-          });
-          if (navigator.userAgent.match()) {
-            $('.feed-link').on('click', function onIeClick() {
-              $(this).toggleClass('ie-mobile-tap');
-            });
-          }
+          };
+          holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
+            el.addEventListener('click', onSlideClick);
+          }); 
         } else {
           holder.querySelectorAll('.carousel').forEach(el => {
             el.classList.add('carousel-non-touch-device');

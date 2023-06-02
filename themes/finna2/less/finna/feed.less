@@ -586,7 +586,7 @@ finna-feed.splide--ltr {
         }
     }
     .feed-item-holder {
-        &:hover, .clicked {
+        &:hover, &.clicked {
             .carousel-text:not(.no-text) {
                 opacity: 1;
             }
@@ -615,21 +615,14 @@ finna-feed.splide--ltr {
             padding: 10px;
             overflow-y: auto;
             overflow-wrap: break-word;
-            :is(&.scrollable):hover, :is(&.scrollable-clicked) {
+            &:hover.scrollable, &.clicked.scrollable {
                 .shadow {
                     position: sticky;
                     z-index: 1;
-                    height: 15px;
-                    bottom: -10px;
                     height: 20px;
-                    margin: 0 -10px -10px -10px;
+                    margin: 0 -10px -30px -10px;
                     background-image: linear-gradient(to bottom, transparent 0px, rgba(0, 0, 0, 1) 100%);
-                }
-            }
-            :is(&.scrollable-clicked) {
-                .shadow {
                     bottom: -30px;
-                    margin-bottom: -30px;
                 }
             }
             .text {
