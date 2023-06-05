@@ -907,24 +907,25 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
      *
      * @param string $id            The record id to retrieve the holdings for
      * @param bool   $checkHoldings Whether to check holdings records
+     * @param ?array $patron        Patron information, if available
      *
      * @return array An associative array with the following keys:
      * id, availability (boolean), status, location, reserve, callnumber.
      */
-    protected function getItemStatusesForBib($id, $checkHoldings)
+    protected function getItemStatusesForBib(string $id, bool $checkHoldings, ?array $patron = null): array
     {
-        $bibFields = 'bibLevel';
+        $bibFields = ['bibLevel'];
         // If we need to look at bib call numbers, retrieve varFields:
         if (!empty($this->config['CallNumber']['bib_fields'])) {
-            $bibFields .= ',varFields';
+            $bibFields[] = 'varFields';
         }
         // Retrieve orders if needed:
         if (!empty($this->config['Holdings']['display_orders'])) {
-            $bibFields .= ',orders';
+            $bibFields[] = 'orders';
         }
         // Retrieve hold count if needed:
         if ($this->config['Holdings']['display_total_hold_count'] ?? true) {
-            $bibFields .= ',holdCount';
+            $bibFields[] = 'holdCount';
         }
         $bib = $this->getBibRecord($id, $bibFields);
         $bibCallNumber = $this->getBibCallNumber($bib);
@@ -949,7 +950,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 $location = '';
                 foreach ($entry['fixedFields'] as $code => $field) {
                     if (
-                        $code === static::HOLDINGS_LINE_NUMBER
+                        $code === static::HOLDINGS_LOCATION_FIELD
                         || $field['label'] === 'LOCATION'
                     ) {
                         $location = $field['value'];
@@ -1037,9 +1038,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                     $entry['item_notes'] = $notes;
                 }
 
-                if (
-                    $this->isHoldable($item) && $this->itemHoldAllowed($item, $bib)
-                ) {
+                if ($this->isHoldable($item, $bib)) {
                     $entry['is_holdable'] = true;
                     $entry['level'] = 'copy';
                     $entry['addLink'] = true;

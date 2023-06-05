@@ -254,17 +254,16 @@
     ++$holdingsGroup;
 
     $available = 0;
+    $uncertain = false;
     $firstDueDate = '';
     $firstDueStr = '';
     $statuses = [];
     $requests = 0;
     foreach ($holding['items'] as $row) {
-      if ($row['availability']) {
-        if (is_int($row['availability'])) {
-          $available += $row['availability'];
-        } else {
-          ++$available;
-        }
+      if ((int)$row['availability'] === \VuFind\ILS\Logic\ItemStatus::STATUS_AVAILABLE) {
+        $available += $row['availabilityInfo']['available'] ?? 1;
+      } elseif ($row['availability'] === \VuFind\ILS\Logic\ItemStatus::STATUS_UNCERTAIN) {
+        $uncertain = true;
       }
       if (!empty($row['duedate']) && empty($row['ignoreDueDate'])) {
         $date = strtotime($row['duedate']);
@@ -281,13 +280,17 @@
       }
     }
     if ($available) {
-      $holdingSummary = '<span class="text-success"><i class="fa fa-ok" aria-hidden="true"></i> ' . $this->translate('status_items_available_html', ['%%count%%' => $available]) . '</span>';
+      $holdingSummary = '<span class="text-success">' . $this->icon('status-available', 'text-success') . ' ' . $this->translate('status_items_available_html', ['%%count%%' => $available]) . '</span>';
     } elseif ($firstDueStr) {
-      $holdingSummary = '<span class="text-danger"><i class="fa fa-remove" aria-hidden="true"></i> ' . $this->transEsc('closest_due_date', ['%%date%%' => $firstDueStr]) . '</span>';
+      $holdingSummary = '<span class="text-danger">' . $this->icon('status-unavailable', 'text-danger') . ' ' . $this->transEsc('closest_due_date', ['%%date%%' => $firstDueStr]) . '</span>';
     } elseif ($statuses) {
-      $holdingSummary = '<span class="text-danger"> ' . $this->escapeHtml(implode(' ', array_flip($statuses))) . '</span>';
+      if ($uncertain) {
+        $holdingSummary = '<span class="text-warning">' . $this->icon('status-unknown', 'text-warning') . ' ' . $this->escapeHtml(implode(' ', array_flip($statuses))) . '</span>';
+      } else {
+        $holdingSummary = '<span class="text-danger"> ' . $this->escapeHtml(implode(' ', array_flip($statuses))) . '</span>';
+      }
     } else {
-      $holdingSummary = '<span class="text-success"><i class="fa fa-ok" aria-hidden="true"></i> ' . $this->transEsc('Available') . '</span>';
+      $holdingSummary = '<span class="text-success">' . $this->icon('status-available', 'text-success') . ' ' . $this->transEsc('Available') . '</span>';
     }
 
     $additionalSummary = [];
