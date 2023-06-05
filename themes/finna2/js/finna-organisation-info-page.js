@@ -95,7 +95,8 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       }
     });
     if (!coordinatesExist) {
-      holder.find('.office-search.map-ui').hide();
+      holder.find('.office.map-ui').hide();
+      holder.find('.map-control-buttons').hide();
     }
     $.each(organisationList, function handleOrganisation(ind, obj) {
       // Map data (info bubble, icon)
