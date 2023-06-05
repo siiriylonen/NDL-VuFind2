@@ -176,7 +176,7 @@ class FinnaFeedElement extends HTMLElement {
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
           holder.querySelectorAll('.carousel-slide-more').forEach(el => {
             el.style.display = 'visible';
-          })
+          });
           holder.querySelectorAll('.carousel-slide-more').forEach(el => {
             el.classList.remove('hidden');
           });
