@@ -451,7 +451,7 @@ class Form extends \VuFind\Form\Form
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
             $text = $this->translateCombinedString('archive_request', $datasource, 'reserve_material_pre_html');
             if ($text) {
-                $preParagraphs[] = $text;
+                $preParagraphs[] = $escapeHtml($text);
             }
         }
 
@@ -496,7 +496,7 @@ class Form extends \VuFind\Form\Form
         ) {
             $text = $this->translateCombinedString('archive_request', $datasource, 'info');
             if ($text) {
-                $preParagraphs[] = $text;
+                $preParagraphs[] = $escapeHtml($text);
             }
         } elseif (
             !($this->formConfig['hideRecipientInfo'] ?? false)
@@ -579,7 +579,7 @@ class Form extends \VuFind\Form\Form
         ) {
             $text = $this->translateCombinedString('archive_request', $datasource, 'material_arrival_info');
             if ($text) {
-                $postParagraphs[] = '<div class="alert alert-info">' . $text . '</div>';
+                $postParagraphs[] = '<div class="alert alert-info">' . $escapeHtml($text) . '</div>';
             }
         }
 
