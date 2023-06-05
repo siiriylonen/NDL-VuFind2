@@ -447,7 +447,7 @@ class Form extends \VuFind\Form\Form
                 $preParagraphs[] = $instructions;
             }
         }
-        // 'archive_request{$datasource}_reserve_material_pre_html' translation
+        // 'archive_request_{$datasource}_reserve_material_pre_html' translation
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
             $text = $this->translateCombinedString('archive_request', $datasource, 'reserve_material_pre_html');
             if ($text) {
@@ -579,8 +579,7 @@ class Form extends \VuFind\Form\Form
         ) {
             $text = $this->translateCombinedString('archive_request', $datasource, 'material_arrival_info');
             if ($text) {
-                $postParagraphs[] = '<div class="alert alert-info">'
-                . $text . '</div>';
+                $postParagraphs[] = '<div class="alert alert-info">' . $text . '</div>';
             }
         }
 
@@ -737,14 +736,12 @@ class Form extends \VuFind\Form\Form
         if ($includeRecordData) {
             // Add hidden fields for record data
             foreach (['record_id', 'record', 'record_info'] as $key) {
-                $elements[$key]
-                    = ['type' => 'hidden', 'name' => $key, 'value' => null];
+                $elements[$key] = ['type' => 'hidden', 'name' => $key, 'value' => null];
             }
         }
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
             foreach (['record_id', 'record_info'] as $key) {
-                $elements[$key]
-                    = ['type' => 'hidden', 'name' => $key, 'value' => null];
+                $elements[$key] = ['type' => 'hidden', 'name' => $key, 'value' => null];
             }
         }
 
