@@ -524,19 +524,6 @@ finna-feed {
             height: 100%;
             width: 100%;
         }
-        &.clicked {
-            .carousel-text.scrollable {
-                padding-bottom: 0;
-                .shadow {
-                    position: sticky;
-                    z-index: 1;
-                    height: 20px;
-                    margin: 30px -10px -30px -10px;
-                    background-image: linear-gradient(to bottom, transparent 0px, rgba(0, 0, 0, 1) 100%);
-                    bottom: 0;
-                }
-            } 
-        }
     }
     .wrapper {
         display: flex;
@@ -606,6 +593,17 @@ finna-feed.splide--ltr {
             .carousel-slide-header:not(.title-bottom) {
                 opacity: 0;
             }
+            .carousel-text.scrollable {
+                padding-bottom: 0;
+                .shadow {
+                    position: sticky;
+                    z-index: 1;
+                    height: 20px;
+                    margin: 30px -10px -30px -10px;
+                    background-image: linear-gradient(to bottom, transparent 0px, rgba(0, 0, 0, 1) 100%);
+                    bottom: 0;
+                }
+            } 
         }
         .feed-link {
             flex-flow: column;
@@ -628,17 +626,6 @@ finna-feed.splide--ltr {
             padding: 10px;
             overflow-y: auto;
             overflow-wrap: break-word;
-            &:hover.scrollable {
-                padding-bottom: 0;
-                .shadow {
-                    position: sticky;
-                    z-index: 1;
-                    height: 20px;
-                    margin: 30px -10px -30px -10px;
-                    background-image: linear-gradient(to bottom, transparent 0px, rgba(0, 0, 0, 1) 100%);
-                    bottom: 0;
-                }
-            }
             .text {
                 height: fit-content;
             }
