@@ -194,7 +194,7 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
             el.addEventListener('focusout', function removeClicked() {
               this.classList.remove('clicked');
-            })
+            });
           });
         } else {
           holder.querySelectorAll('.carousel').forEach(el => {
