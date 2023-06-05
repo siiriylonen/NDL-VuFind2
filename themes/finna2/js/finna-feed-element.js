@@ -59,12 +59,12 @@ class FinnaFeedElement extends HTMLElement {
   setTitleBottom(settings) {
     // Move title field below image
     let maxH = 0;
-    this.querySelectorAll('.carousel-slide-content').forEach(el => {
+    this.querySelectorAll('.carousel-slide-header p').forEach(el => {
       maxH = Math.max(maxH, el.getBoundingClientRect().height + 10);
       el.classList.add('title-bottom');
       el.parentNode.classList.add('title-bottom');
     });
-    this.querySelectorAll('.carousel-slide-content, .carousel-slide-content p').forEach(el => {
+    this.querySelectorAll('.carousel-slide-header, .carousel-slide-header p').forEach(el => {
       el.style.minHeight = el.style.height = `${maxH}px`;
     });
     this.querySelectorAll('.carousel-feed .carousel-text').forEach(el => {
@@ -174,9 +174,9 @@ class FinnaFeedElement extends HTMLElement {
 
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
-          holder.querySelectorAll('.carousel-text').forEach(el => {
-            el.style.paddingBottom = '30px';
-          });
+          holder.querySelectorAll('.carousel-slide-more').forEach(el => {
+            el.style.display = 'visible';
+          })
           holder.querySelectorAll('.carousel-slide-more').forEach(el => {
             el.classList.remove('hidden');
           });
