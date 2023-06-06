@@ -181,6 +181,7 @@ class FinnaFeedElement extends HTMLElement {
             e.stopImmediatePropagation();
             const slide = this.closest('.feed-item-holder');
             if (slide && !slide.classList.contains('clicked')) {
+              slide.focus();
               slide.classList.add('clicked');
               e.preventDefault();
             }
