@@ -188,7 +188,7 @@ class FinnaFeedElement extends HTMLElement {
               e.preventDefault();
             }
           };
-          holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
+          holder.querySelectorAll('.carousel-slide-header p, .carousel-slide-header').forEach(el => {
             el.addEventListener('click', onSlideClick);
           });
         } else {
