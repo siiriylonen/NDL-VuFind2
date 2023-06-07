@@ -579,7 +579,7 @@ class Form extends \VuFind\Form\Form
         ) {
             $text = $this->translateCombinedString('archive_request', $datasource, 'material_arrival_info');
             if ($text) {
-                $postParagraphs[] = '<div class="alert alert-info">' . $escapeHtml($text) . '</div>';
+                $postParagraphs[] = '<div class="alert alert-info">' . $text . '</div>';
             }
         }
 
