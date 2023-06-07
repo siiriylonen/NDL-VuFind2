@@ -410,13 +410,9 @@ class SolrEad3 extends SolrEad
         }
         // Check if specified item hierarchy levels match the item's
         if ($datasourceSettings['archiveRequestAllowedRecordLevels'] ?? false) {
-            if ((string)$attributes->level === '') {
+            $recordLevels = explode(':', $datasourceSettings['archiveRequestAllowedRecordLevels']);
+            if (!in_array((string)$attributes->level, $recordLevels)) {
                 return false;
-            } else {
-                $recordLevels = explode(':', $datasourceSettings['archiveRequestAllowedRecordLevels']);
-                if (!in_array((string)$attributes->level ?? '', $recordLevels)) {
-                    return false;
-                }
             }
         }
         // Check if required filing unit exists
