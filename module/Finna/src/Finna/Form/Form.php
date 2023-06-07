@@ -577,7 +577,7 @@ class Form extends \VuFind\Form\Form
             null !== $this->record
             && $this->formId === self::ARCHIVE_MATERIAL_REQUEST
         ) {
-            $text = $this->translateCombinedString('archive_request', $datasource, 'material_arrival_info');
+            $text = $this->translateCombinedString('archive_request', $datasource, 'material_arrival_info_html');
             if ($text) {
                 $postParagraphs[] = '<div class="alert alert-info">' . $text . '</div>';
             }
