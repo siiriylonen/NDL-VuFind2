@@ -962,8 +962,8 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 ['v5', 'holdings'],
                 [
                     'bibIds' => $this->extractBibId($id),
-                    //'deleted' => 'false',
-                    //'suppressed' => 'false',
+                    'deleted' => 'false',
+                    'suppressed' => 'false',
                     'fields' => 'fixedFields,varFields',
                 ],
                 'GET'
