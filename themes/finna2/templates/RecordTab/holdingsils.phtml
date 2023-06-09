@@ -107,7 +107,7 @@
   </div>
 <?php elseif (!$user && $allowArchiveRequest && !$holdsAllowed): ?>
   <div class="text-right">    
-    <a href="/vufind2/MyResearch/UserLogin" class="btn btn-primary" data-lightbox><span><?=$this->transEsc('archive_request_login')?></span></a>
+    <a href="<?=$this->url('myresearch-userlogin') ?>" class="btn btn-primary" data-lightbox><span><?=$this->transEsc('archive_request_login')?></span></a>
   </div>
 <?php endif; ?>
 <?php if ($this->driver && $recordSource && $externalInterfaceUrl):?>

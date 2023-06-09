@@ -451,7 +451,7 @@ class Form extends \VuFind\Form\Form
         if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
             $text = $this->translateCombinedString('archive_request', $datasource, 'reserve_material_pre_html');
             if ($text) {
-                $preParagraphs[] = $escapeHtml($text);
+                $preParagraphs[] = $text;
             }
         }
 
