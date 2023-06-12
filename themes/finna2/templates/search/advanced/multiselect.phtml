@@ -1,4 +1,7 @@
 <!-- START of: finna - search/advanced/multiselect.phtml -->
+<?php
+  $facetInformation = ['usage_rights_ext_str_mv'];
+?>
 <div class="facet">
   <div class="solr-adv-filter <?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>-container">
     <label id="limit_<?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>"><?=$this->transEsc($this->list['label'])?>:</label>
@@ -22,8 +25,8 @@
     <ul aria-multiselectable="true" role="listbox" aria-label="<?= $this->transEsc('Add filter') . ' ' . $this->transEsc($this->list['label']) ?>" tabindex="0" class="finna-multiselect done" aria-activedescendant=""></ul>
     <button type="button" class="finna-multiselect clear btn btn-link"><?= $this->transEsc('Clear Selections') ?></button> 
   </div>
-  <?php if (!$this->translationEmpty($field . '_facet_information_html')): ?>
-    <?=$this->translate($field . '_facet_information_html'); ?>    
-  <?php endif; ?>
+  <?php if (in_array($field, $facetInformation)): ?>
+    <?=$this->render('advanced/' . $field . '-facet-information.phtml') ?>
+  <?php endif; ?>  
 </div>
 <!-- END of: finna - search/advanced/multiselect.phtml -->
