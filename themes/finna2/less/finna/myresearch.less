@@ -75,6 +75,15 @@
   }
 }
 
+.toolbar-sticky {
+  position: sticky;
+  @media(max-width: @screen-md) {
+    top: @navbar-height;
+  }
+  background-color: @body-bg;
+  z-index: 2;
+}
+
 .myresearch-table {
   width: 100%;
   margin: 0;
@@ -111,6 +120,13 @@
       margin: 6px 12px 6px 0px;
     }
   }
+  #renewSelected, #update_selected {
+    border-radius: 4px 0 0 4px;
+    margin-right: 0;
+  }
+  #renewAll, #cancel_selected, #cancelSelected {
+    border-radius: 0 4px 4px 0;
+  }
   .save-list-wrapper {
     padding: 0;
     a {
@@ -118,10 +134,23 @@
       padding-top: 8px;
     }
   }
+  .renew-button-col {
+    float: left;
+    text-align: left;
+  }
   .sort-col .dropdown-toggle {
     margin-bottom: 0;
+    float: right;
+    text-align: right;
     @media (max-width: @screen-md) {
       margin-top: 6px;
+    }
+  }
+  .sort-option-container {
+    display: flex;
+    align-items: center;
+    .button-label {
+      padding-right: 5px;
     }
   }
   @media(min-width: @screen-sm) {
@@ -138,32 +167,7 @@
       float: left;
     }
   }
-  @media(min-width: @screen-xs-min) {
-    .renew-button-col {
-      float: left;
-      text-align: left;
-    }
-    .sort-col {
-      float: right;
-      text-align: right;
-      .sort-button {
-        margin-bottom: 0px;
-      }
-    }
-  }
-  @media(max-width: @screen-xxs-max) {
-    .renew-button-col {
-      width: 100%;
-      float: left;
-      input {
-        min-width: 170px;
-      }
-    }
-    .sort-col {
-      float: left;
-    }
-  }
-  .checkbox-col{
+  .checkbox-col {
     width: 10%;
   }
   .myresearch-count {

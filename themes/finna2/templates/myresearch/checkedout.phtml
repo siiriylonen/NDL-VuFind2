@@ -47,6 +47,7 @@
           <?php endif; ?>
 
           <?php if ($this->renewForm): ?>
+            <div class="toolbar-sticky">
             <form name="renewals" method="post" id="renewals" data-clear-account-cache="checkedOut" data-disable-on-submit>
               <input type="hidden" value="<?=$this->escapeHtmlAttr($this->auth()->getManager()->getCsrfHash())?>" name="csrf">
               <input type="hidden" id="submitType" name="renewSelected" value="1">
@@ -57,7 +58,6 @@
                       <div class="checkbox">
                         <label>
                           <input type="checkbox" name="selectAll" class="checkbox-select-all">
-                          <?=$this->transEsc($this->ilsPaging ? 'select_page' : 'Select All')?>
                           <span class="selected"></span> <span class="loans-renewal-available"></span>
                         </label>
                       </div>
@@ -104,6 +104,7 @@
               </div>
             </div>
           <?php endif; ?>
+                  </div>
 
           <?php foreach ($hiddenTransactions as $ilsDetails): ?>
             <?php if (isset($this->renewResult[$ilsDetails['item_id']])): ?>
@@ -279,7 +280,6 @@
                         <div class="checkbox">
                           <label>
                             <input type="checkbox" name="selectAll" class="checkbox-select-all">
-                            <?=$this->transEsc($this->ilsPaging ? 'select_page' : 'Select All')?>
                           </label>
                         </div>
                       </div>
