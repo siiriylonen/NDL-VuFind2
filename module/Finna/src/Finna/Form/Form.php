@@ -437,7 +437,7 @@ class Form extends \VuFind\Form\Form
 
         $preParagraphs = [];
         $postParagraphs = [];
-        $datasource = isset($this->record) ? $this->record->tryMethod('getDataSource') : '';
+        $datasource = null !== $this->record ? $this->record->tryMethod('getDataSource') : '';
 
         // 'feedback_instructions_html' translation
         if ($this->formId === self::FEEDBACK_FORM) {
