@@ -437,8 +437,9 @@ class Form extends \VuFind\Form\Form
 
         $preParagraphs = [];
         $postParagraphs = [];
-        $datasource = $this->record->tryMethod('getDataSource') ?? '';
-
+        if ($this->formId === self::ARCHIVE_MATERIAL_REQUEST) {
+            $datasource = $this->record->tryMethod('getDataSource') ?? '';
+        }
         // 'feedback_instructions_html' translation
         if ($this->formId === self::FEEDBACK_FORM) {
             $key = 'feedback_instructions_html';
