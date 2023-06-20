@@ -67,11 +67,17 @@ finna.organisationInfoWidget = (function finnaOrganisationInfoWidget() {
     var data = organisationList[id];
     var hasSchedules = 'openTimes' in response && 'schedules' in response.openTimes
       && response.openTimes.schedules.length > 0;
+    var schedules = response.openTimes.schedules;
+    // Check that if the organisation has any knowledge about the actual location.
+    // If it does not, then we can assume that the information in schedules might be void.
+    var hasLocation = !!(data.address && data.address.city);
+    var isClosedForWeek = schedules.every(schedule => schedule.closed === true);
+    var hasScheduleDescriptions = 'scheduleDescriptions' in response
+      ? response.scheduleDescriptions.every(description => description !== '')
+      : false;
 
-    if (hasSchedules) {
-      var schedules = response.openTimes.schedules;
-
-      // Check if there are self-service times
+    if ((hasSchedules && hasLocation) || (hasSchedules && !hasLocation && !isClosedForWeek)) {
+      // Check if there are self-service times or gaps
       var selfServiceTimes = false;
       var gaps = false;
       $.each(schedules, function checkSchedule(ind, obj) {
@@ -188,7 +194,9 @@ finna.organisationInfoWidget = (function finnaOrganisationInfoWidget() {
           links = true;
         }
       }
-      if (!links) {
+      if (hasScheduleDescriptions) {
+        holder.find('.no-schedules').hide();
+      } else if (!links) {
         holder.find('.no-schedules').show();
       }
     }
