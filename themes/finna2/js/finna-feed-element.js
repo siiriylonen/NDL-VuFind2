@@ -172,24 +172,41 @@ class FinnaFeedElement extends HTMLElement {
           }
         }
 
+
+        //ATM works on the first click!!! There's something off with the seting, timer is sometimes always 0??
+        //Wehn are things initiated etc?
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
           holder.querySelectorAll('.carousel-slide-more').forEach(el => {
             el.classList.remove('hidden');
           });
+          var longtouch = false;
+          var timer;
           const onSlideClick = function onSlideClick (e) {
-            e.stopImmediatePropagation();
-            const slide = this.closest('.feed-item-holder');
-            if (slide && !slide.classList.contains('clicked')) {
-              holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
-                el.classList.remove('clicked');
-              });
-              slide.classList.add('clicked');
-              e.preventDefault();
+            if (!longtouch && timer !== 0) {
+              e.stopImmediatePropagation();
+              const slide = this.closest('.feed-item-holder');
+              if (slide && !slide.classList.contains('clicked')) {
+                holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
+                  el.classList.remove('clicked');
+                });
+                slide.classList.add('clicked');
+                e.preventDefault();
+              }
+            }
+            if (timer !== 0) {
+              timer = 0;
             }
           };
           holder.querySelectorAll('.carousel-slide-header p, .carousel-slide-header').forEach(el => {
-            el.addEventListener('click', onSlideClick);
+            el.addEventListener('touchstart', onTouchstart);
+            el.addEventListener('touchend', onSlideClick);
+            function onTouchstart() {
+              longtouch = false;
+              timer = setTimeout(function touchTimer() {
+                longtouch = true;
+              }, 100);
+            }
           });
         } else {
           holder.querySelectorAll('.carousel').forEach(el => {
