@@ -274,32 +274,6 @@
             <?php endforeach; ?>
             </table>
             <?php if ($this->renewForm): ?>
-              <?php if ($totalCount > 5): ?>
-                <table class="myresearch-table bottom">
-                  <tr class="toolbar bottom">
-                    <td>
-                      <div class="checkboxFilter mylist-select-all">
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" name="selectAll" class="checkbox-select-all">
-                          </label>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="renew-button-col">
-                        <input type="submit" class="btn btn-primary renew-button" name="renewSelected" value="<?=$this->transEscAttr("renew_selected")?>">
-                        <?php if ($renewAll): ?>
-                          <input type="submit" class="btn btn-primary renew-button" name="renewAll" value="<?=$this->transEscAttr('renew_all')?>">
-                        <?php endif; ?>
-                      </div>
-                      <div class="sort-col">
-                        <span class="myresearch-count"><?=$this->transEsc('total_borrowed_items', ['%%count%%' => count($this->transactions) + count($this->hiddenTransactions)]);?></span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              <?php endif;?>
             </form>
           <?php endif; ?>
           <?php if ($template = $this->content()->findTemplateForLng("content/Additions/checkedout-post-list")): ?>
