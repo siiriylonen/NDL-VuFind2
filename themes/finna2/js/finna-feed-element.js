@@ -196,14 +196,14 @@ class FinnaFeedElement extends HTMLElement {
             }
           };
           holder.querySelectorAll('.carousel-slide-header p, .carousel-slide-header').forEach(el => {
-            el.addEventListener('touchstart', onTouchstart);
-            el.addEventListener('touchend', onSlideClick);
             function onTouchstart() {
               longtouch = false;
               timer = setTimeout(function touchTimer() {
                 longtouch = true;
               }, 100);
             }
+            el.addEventListener('touchstart', onTouchstart);
+            el.addEventListener('touchend', onSlideClick);
           });
         } else {
           holder.querySelectorAll('.carousel').forEach(el => {
