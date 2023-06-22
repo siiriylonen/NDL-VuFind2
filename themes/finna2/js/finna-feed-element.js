@@ -172,9 +172,6 @@ class FinnaFeedElement extends HTMLElement {
           }
         }
 
-
-        //ATM works on the first click!!! There's something off with the seting, timer is sometimes always 0??
-        //Wehn are things initiated etc?
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
           holder.querySelectorAll('.carousel-slide-more').forEach(el => {
