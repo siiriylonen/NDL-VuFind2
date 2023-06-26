@@ -244,7 +244,35 @@ finna.myList = (function finnaMyList() {
 
     refreshLists();
   }
+  function isTouchDevice() {
+    return (('ontouchstart' in window)
+      || (navigator.maxTouchPoints > 0)
+      || (navigator.msMaxTouchPoints > 0)); // IE10, IE11, Edge
+  }
 
+  function checkStickyToolbar() {
+    const stickyElement = document.querySelector('.toolbar-sticky');
+    if (stickyElement && isTouchDevice()) {
+      const navbar = document.querySelector('header').offsetHeight;
+      let height = '-' + navbar + 'px 0px 0px 0px';
+      const observer = new IntersectionObserver(
+        ([e]) => e.target.classList.toggle('isSticky', e.intersectionRatio < 1), {rootMargin: height, threshold: [1]}
+      );
+      observer.observe(stickyElement);
+      
+      // To create a full width toolbar
+      var toolbarWidth = stickyElement.offsetWidth;
+      var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+      var gapWidth = (viewportWidth - toolbarWidth) / 2 + 'px';
+      var styleChange = stickyElement.style;
+      styleChange.marginLeft = '-' + gapWidth;
+      styleChange.marginRight = '-' + gapWidth;
+      styleChange.paddingLeft = gapWidth;
+      styleChange.paddingRight = gapWidth;
+    }
+  }
+
+/*
   function updateBulkActionsToolbar() {
     var buttons = $('.bulk-action-buttons-col');
     if ($(document).scrollTop() > $('.bulk-action-buttons-row').offset().top) {
@@ -253,7 +281,7 @@ finna.myList = (function finnaMyList() {
       buttons.removeClass('fixed');
     }
   }
-
+*/
   function updateListResource(params, input /*, row*/) {
     save = true;
     toggleErrorMessage(false);
@@ -294,6 +322,8 @@ finna.myList = (function finnaMyList() {
   function initEditComponents() {
     var isDefaultList = typeof getActiveListId() == 'undefined';
 
+    checkStickyToolbar();
+/*
     // bulk actions
     var buttons = $('.bulk-action-buttons-col');
     if (buttons.length) {
@@ -301,7 +331,7 @@ finna.myList = (function finnaMyList() {
         updateBulkActionsToolbar();
       });
       updateBulkActionsToolbar();
-    }
+    }*/
 
     //Init mobile navigation collapse after list has been reloaded
     finna.layout.initMobileNarrowSearch();

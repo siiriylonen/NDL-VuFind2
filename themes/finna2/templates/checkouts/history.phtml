@@ -42,6 +42,7 @@
           <input type="hidden" name="csrf" value="<?=$this->escapeHtmlAttr($this->auth()->getManager()->getCsrfHash())?>">
         <?php endif; ?>
 
+        <div class="toolbar-sticky">
         <table class="myresearch-table" role="presentation" aria-label="<?=$this->transEscAttr('Actions');?>">
           <tr class="toolbar">
             <td<?=$purgeSelectedAllowed ? ' colspan="2"' : '' ?>>
@@ -97,6 +98,7 @@
             </td>
           </tr>
         </table>
+        </div>
         <table class="myresearch-table" aria-label="<?=$this->transEscAttr('Loan History')?>" tabindex="0">
           <tr class="sr-only myresearch-row" aria-hidden="true">
             <?php if ($purgeSelectedAllowed): ?>

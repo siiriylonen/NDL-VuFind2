@@ -5,7 +5,7 @@
   <input type="hidden" name="listDescription" value="<?=$this->escapeHtmlAttr($list->description)?>">
 <?php endif; ?>
 <?php $user = $this->auth()->isLoggedIn(); ?>
-<div class="bulk-action-buttons-row hidden-print">
+<div class="bulk-action-buttons-row hidden-print toolbar-sticky">
   <div class="bulkActionButtons bulk-action-buttons-col">
     <div class="checkboxFilter mylist-select-all">
       <div class="checkbox">

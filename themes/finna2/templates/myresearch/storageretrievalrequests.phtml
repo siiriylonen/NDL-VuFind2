@@ -37,7 +37,7 @@
         <?php if (!empty($this->recordList)): ?>
           <?php if ($this->cancelForm): ?>
             <form name="updateForm" class="inline" method="post" id="cancelStorageRetrievalRequest"  data-clear-account-cache="storageRetrievalRequests">
-              <div class="toolbar">
+              <div class="toolbar toolbar-sticky">
                 <div>
                   <input type="hidden" id="submitType" name="cancelSelected" value="1">
                   <input type="hidden" id="cancelConfirm" name="confirm" value="0">
