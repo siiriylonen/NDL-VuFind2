@@ -253,10 +253,14 @@ finna.myList = (function finnaMyList() {
   function checkStickyToolbar() {
     const stickyElement = document.querySelector('.toolbar-sticky');
     if (stickyElement && isTouchDevice()) {
-      const navbar = document.querySelector('header').offsetHeight;
-      let height = '-' + navbar + 'px 0px 0px 0px';
+      const navbar = document.querySelector('header');
+      const navbarHeight = navbar.offsetHeight;
+      let height = '-' + navbarHeight + 'px 0px 0px 0px';
       const observer = new IntersectionObserver(
-        ([e]) => e.target.classList.toggle('isSticky', e.intersectionRatio < 1), {rootMargin: height, threshold: [1]}
+        ([e]) => {
+          e.target.classList.toggle('isSticky', e.intersectionRatio < 1);
+          navbar.classList.toggle('noShadow', e.intersectionRatio < 1);
+        }, {rootMargin: height, threshold: [1]}
       );
       observer.observe(stickyElement);
       
