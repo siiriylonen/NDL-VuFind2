@@ -272,16 +272,16 @@ finna.myList = (function finnaMyList() {
     }
   }
 
-/*
-  function updateBulkActionsToolbar() {
-    var buttons = $('.bulk-action-buttons-col');
-    if ($(document).scrollTop() > $('.bulk-action-buttons-row').offset().top) {
-      buttons.addClass('fixed');
-    } else {
-      buttons.removeClass('fixed');
+  /*
+    function updateBulkActionsToolbar() {
+      var buttons = $('.bulk-action-buttons-col');
+      if ($(document).scrollTop() > $('.bulk-action-buttons-row').offset().top) {
+        buttons.addClass('fixed');
+      } else {
+        buttons.removeClass('fixed');
+      }
     }
-  }
-*/
+  */
   function updateListResource(params, input /*, row*/) {
     save = true;
     toggleErrorMessage(false);
@@ -323,7 +323,7 @@ finna.myList = (function finnaMyList() {
     var isDefaultList = typeof getActiveListId() == 'undefined';
 
     checkStickyToolbar();
-/*
+    /*
     // bulk actions
     var buttons = $('.bulk-action-buttons-col');
     if (buttons.length) {
