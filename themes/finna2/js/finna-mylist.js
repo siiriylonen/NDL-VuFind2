@@ -324,7 +324,7 @@ finna.myList = (function finnaMyList() {
   }
 
   // Recount sticky toolbar widths on window resize
-  window.addEventListener('resize', function() {
+  window.addEventListener('resize', function onWindowResize() {
     checkStickyToolbar();
   });
 
