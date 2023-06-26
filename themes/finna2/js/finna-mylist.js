@@ -323,6 +323,11 @@ finna.myList = (function finnaMyList() {
       });
   }
 
+  // Recount sticky toolbar widths on window resize
+  window.addEventListener('resize', function() {
+    checkStickyToolbar();
+  });
+
   function initEditComponents() {
     var isDefaultList = typeof getActiveListId() == 'undefined';
 
