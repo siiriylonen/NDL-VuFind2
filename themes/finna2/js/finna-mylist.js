@@ -244,15 +244,10 @@ finna.myList = (function finnaMyList() {
 
     refreshLists();
   }
-  function isTouchDevice() {
-    return (('ontouchstart' in window)
-      || (navigator.maxTouchPoints > 0)
-      || (navigator.msMaxTouchPoints > 0)); // IE10, IE11, Edge
-  }
 
   function checkStickyToolbar() {
     const stickyElement = document.querySelector('.toolbar-sticky');
-    if (stickyElement && isTouchDevice()) {
+    if (stickyElement) {
       const navbar = document.querySelector('header');
       const navbarHeight = navbar.offsetHeight;
       let height = '-' + navbarHeight + 'px 0px 0px 0px';
@@ -276,16 +271,6 @@ finna.myList = (function finnaMyList() {
     }
   }
 
-  /*
-    function updateBulkActionsToolbar() {
-      var buttons = $('.bulk-action-buttons-col');
-      if ($(document).scrollTop() > $('.bulk-action-buttons-row').offset().top) {
-        buttons.addClass('fixed');
-      } else {
-        buttons.removeClass('fixed');
-      }
-    }
-  */
   function updateListResource(params, input /*, row*/) {
     save = true;
     toggleErrorMessage(false);
@@ -332,15 +317,6 @@ finna.myList = (function finnaMyList() {
     var isDefaultList = typeof getActiveListId() == 'undefined';
 
     checkStickyToolbar();
-    /*
-    // bulk actions
-    var buttons = $('.bulk-action-buttons-col');
-    if (buttons.length) {
-      $(window).on('scroll', function onScrollWindow() {
-        updateBulkActionsToolbar();
-      });
-      updateBulkActionsToolbar();
-    }*/
 
     //Init mobile navigation collapse after list has been reloaded
     finna.layout.initMobileNarrowSearch();

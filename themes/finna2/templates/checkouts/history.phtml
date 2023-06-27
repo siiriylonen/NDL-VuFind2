@@ -74,7 +74,7 @@
             <td>
               <?php if ($purgeSelectedAllowed): ?>
                 <div class="btn-group">
-                  <input type="submit" id="purgeSelected" name="purgeSelected" value="<?=$this->transEscAttr('loan_history_purge_selected')?>" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
+                  <input type="submit" id="purgeSelected" name="purgeSelected" value="<?=$this->transEscAttr('loan_history_purge_selected')?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
                   <ul class="dropdown-menu">
                     <li class="disabled"><span class="prompt-text"><?=$this->transEsc('loan_history_confirm_purge_selected')?></span></li>
                     <li><a href="#" id="confirm_purge_selected_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
@@ -84,7 +84,7 @@
               <?php endif; ?>
               <?php if ($purgeAllAllowed): ?>
                 <div class="btn-group">
-                  <input type="submit" id="purgeAll" name="purgeAll" value="<?=$this->transEscAttr('loan_history_purge_all')?>" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
+                  <input type="submit" id="purgeAll" name="purgeAll" value="<?=$this->transEscAttr('loan_history_purge_all')?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
                   <ul class="dropdown-menu">
                     <li class="disabled"><span class="prompt-text"><?=$this->transEsc('loan_history_confirm_purge_all')?></span></li>
                     <li><a href="#" id="confirm_purge_all_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
@@ -93,7 +93,7 @@
                 </div>
               <?php endif; ?>
               <div class="btn-group save-list-wrapper hidden-print left-control">
-                <a class="btn btn-primary btn-sm" data-lightbox role="button" href="<?=$this->url('myresearch-savehistoricloans') ?>"><?=$this->transEsc('loan_history_save')?></a>
+                <a class="btn btn-lg btn-primary" data-lightbox role="button" href="<?=$this->url('myresearch-savehistoricloans') ?>"><?=$this->transEsc('loan_history_save')?></a>
               </div>
             </td>
           </tr>

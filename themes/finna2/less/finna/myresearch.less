@@ -130,21 +130,14 @@
     padding: 0 10px;
     margin-right: 12px;
     @media (max-width: @screen-md) {
-     // margin: 6px 12px 6px 0px;
-    //  .bulkActionButtons {
-        //& .btn-group {
-          .btn {
-            border: 1px solid @gray-lighter;
-            background: @gray-ultralight;
-            color: @text-color;
-            padding: 5px 10px;
-            font-size: 0.9em;
-           // @media(max-width: @screen-xs-max) {
-             // padding: 5px;
-           // }
-          }
-       // }
-      //}
+      .btn {
+        border: 1px solid @gray-lighter;
+        background: @gray-ultralight;
+        color: @text-color;
+        padding: 5px 10px;
+        font-size: 0.9em;
+      }
+
     }
   }
   #renewSelected, #update_selected {
@@ -169,9 +162,6 @@
     margin-bottom: 0;
     float: right;
     text-align: right;
-    @media (max-width: @screen-md) {
-      margin-top: 6px;
-    }
   }
   .sort-option-container {
     display: flex;
@@ -207,9 +197,6 @@
   .checkboxFilter.mylist-select-all {
     .checkbox {
       margin: 5px 0;
-      @media (max-width: @screen-md) {
-        margin-top: 12px;
-      }
     }
   }
 }
