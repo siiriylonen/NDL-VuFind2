@@ -20,7 +20,8 @@
   <?php if (isset($item['title'])): ?>
     <div class="carousel-hover-title">
       <p><?=$this->escapeHtml($this->truncate($item['title'], 70))?></p>
-      <p class="carousel-more"><?=$this->icon('carousel-more')?></p>
+      <p class="carousel-more show-link"><?=$this->icon('carousel-more')?></p>
+      <p class="carousel-more swipe-down hidden"><?=$this->icon('carousel-swipe-down')?></p>
     </div>
   <?php endif; ?>
   <?php if (isset($item['dateFull'])): ?>
@@ -64,7 +65,7 @@
       <?php if (isset($item['dateFull'])): ?>
         <span class="carousel-header-date carousel-date"><?=$this->transEsc('Published')?> <?=$this->escapeHtml($item['dateFull'])?></span>
       <?php endif; ?>
-      <span class="carousel-slide-more hidden"><?=$this->icon('carousel-slide')?></span>
+      <span class="carousel-slide-more hidden"><?=$this->icon('carousel-swipe-up')?></span>
     </p>
   </div>
 <?php endif; ?>
