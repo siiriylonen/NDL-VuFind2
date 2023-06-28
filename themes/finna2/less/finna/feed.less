@@ -602,8 +602,28 @@ finna-feed.splide--ltr {
                     z-index: 1;
                     height: 20px;
                     margin: 0 -10px;
-                    background-image: linear-gradient(to bottom, transparent 0px, rgba(0, 0, 0, 1) 100%);
+                    background-image: linear-gradient(to bottom, transparent 0px, @carousel-slide-header-background 100%);
                     bottom: 0;
+                }
+                .follow-link-container {
+                    position: sticky;
+                    z-index: 1;
+                    height: 30px;
+                    margin: 0 -10px;
+                    background-color: @carousel-slide-header-background;
+                    bottom: 0;
+                    .follow-link {
+                        position: relative;
+                        .follow-link-button {
+                            position: absolute;
+                            right: 20px;
+                            span {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: baseline;
+                            }
+                        }
+                    }
                 }
             } 
         }
@@ -630,6 +650,21 @@ finna-feed.splide--ltr {
             overflow-wrap: break-word;
             .text {
                 height: fit-content;
+            }
+            .swipe-down {
+                font-size: 12px;
+                font-weight: 900;
+                color: @carousel-slide-header-color;
+                text-shadow: @carousel-slide-header-text-shadow;
+            }
+            .follow-link-button {
+                text-shadow: @carousel-slide-header-text-shadow;
+                float: right;
+                input {
+                    font-weight: bold;
+                    background-color: transparent;
+                    border: none;
+                }
             }
         }
 
@@ -670,6 +705,7 @@ finna-feed.splide--ltr {
                 padding-top: 5px;
                 font-size: 12px;
                 background: transparent;
+                font-weight: 900;
             }
         }
     }

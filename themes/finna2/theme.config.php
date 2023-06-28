@@ -264,6 +264,7 @@ $config = [
     'favicon' => 'favicon.ico',
     'icons' => [
         'aliases' => [
+            'carousel-follow-link' => 'FontAwesome:arrow-right',
             'carousel-more' => 'FontAwesome:arrow-alt-right',
             'carousel-swipe-down' => 'FontAwesome:chevron-down',
             'carousel-swipe-up' => 'FontAwesome:chevron-up',

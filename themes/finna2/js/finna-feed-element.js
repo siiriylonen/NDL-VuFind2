@@ -187,6 +187,12 @@ class FinnaFeedElement extends HTMLElement {
               el.classList.add('hidden');
             }
           });
+          holder.querySelectorAll('.follow-link-container').forEach(el => {
+            el.classList.remove('hidden');
+          });
+          holder.querySelectorAll('.carousel-text-shadow').forEach(el => {
+            el.style.bottom = '30px';
+          });
           holder.querySelectorAll('.carousel-slide-header p, .carousel-slide-header').forEach(el => {
             el.addEventListener('touchstart', function onTouchStart(e) {
               var touchobj = e.changedTouches[0];
