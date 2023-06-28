@@ -176,7 +176,7 @@ class FinnaFeedElement extends HTMLElement {
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
           var locationStart;
           var distance;
-          holder.querySelectorAll('.carousel-slide-more').forEach(el => {
+          holder.querySelectorAll('.carousel-slide-more.swipe-up').forEach(el => {
             el.classList.remove('hidden');
           });
           holder.querySelectorAll('.carousel-more').forEach(el => {
@@ -207,6 +207,30 @@ class FinnaFeedElement extends HTMLElement {
               if (distance < 0) {
                 const slide = this.closest('.feed-item-holder');
                 slide.classList.add('clicked');
+                holder.querySelectorAll('.title-bottom').forEach(header => {
+                  header.querySelectorAll('.carousel-slide-more').forEach(icon => {
+                    if (icon.classList.contains('swipe-up')) {
+                      icon.classList.add('hidden');
+                    }
+                    if (icon.classList.contains('swipe-down')) {
+                      icon.classList.remove('hidden');
+                    }
+                  });
+                });
+              }
+              if (distance > 0) {
+                const slide = this.closest('.feed-item-holder');
+                slide.classList.remove('clicked');
+                holder.querySelectorAll('.title-bottom').forEach(header => {
+                  header.querySelectorAll('.carousel-slide-more').forEach(icon => {
+                    if (icon.classList.contains('swipe-down')) {
+                      icon.classList.add('hidden');
+                    }
+                    if (icon.classList.contains('swipe-up')) {
+                      icon.classList.remove('hidden');
+                    }
+                  });
+                });
               }
             });
           });
