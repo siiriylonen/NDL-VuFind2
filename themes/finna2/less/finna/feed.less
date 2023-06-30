@@ -605,26 +605,6 @@ finna-feed.splide--ltr {
                     background-image: linear-gradient(to bottom, transparent 0px, @carousel-slide-header-background 100%);
                     bottom: 0;
                 }
-                .follow-link-container {
-                    position: sticky;
-                    z-index: 1;
-                    height: 30px;
-                    margin: 0 -10px;
-                    background-color: @carousel-slide-header-background;
-                    bottom: 0;
-                    .follow-link {
-                        position: relative;
-                        .follow-link-button {
-                            position: absolute;
-                            right: 20px;
-                            span {
-                                display: flex;
-                                flex-direction: row;
-                                align-items: baseline;
-                            }
-                        }
-                    }
-                }
             } 
         }
     }
@@ -648,23 +628,9 @@ finna-feed.splide--ltr {
                 }
                 .follow-link-container {
                     position: sticky;
-                    z-index: 1;
-                    height: 30px;
                     margin: 0 -10px;
                     background-color: @carousel-slide-header-background;
-                    bottom: 0;
-                    .follow-link {
-                        position: relative;
-                        .follow-link-button {
-                            position: absolute;
-                            right: 20px;
-                            span {
-                                display: flex;
-                                flex-direction: row;
-                                align-items: baseline;
-                            }
-                        }
-                    }
+                    right: auto;
                 }
             } 
         }
@@ -698,13 +664,30 @@ finna-feed.splide--ltr {
                 color: @carousel-slide-header-color;
                 text-shadow: @carousel-slide-header-text-shadow;
             }
-            .follow-link-button {
-                text-shadow: @carousel-slide-header-text-shadow;
-                float: right;
-                input {
-                    font-weight: bold;
-                    background-color: transparent;
-                    border: none;
+            .follow-link-container {
+                position: absolute;
+                z-index: 1;
+                height: 30px;
+                bottom: 0;
+                right: 0;
+                .follow-link {
+                    position: relative;
+                    .follow-link-button {
+                        position: absolute;
+                        right: 20px;
+                        text-shadow: @carousel-slide-header-text-shadow;
+                        float: right;
+                        span {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: baseline;
+                        }
+                        input {
+                            font-weight: bold;
+                            background-color: transparent;
+                            border: none;
+                        }
+                    }
                 }
             }
         }
