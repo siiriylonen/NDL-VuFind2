@@ -198,7 +198,7 @@ class FinnaFeedElement extends HTMLElement {
             var locationY = e.changedTouches[0];
             startY = parseInt(locationY.clientY);
             e.preventDefault();
-          }
+          };
           const moveTouch = function moveTouch(e) {
             var locationY = e.changedTouches[0];
             distance = parseInt(locationY.clientY) - startY;
@@ -209,12 +209,12 @@ class FinnaFeedElement extends HTMLElement {
               this.closest('.feed-item-holder').classList.remove('clicked');
             }
             e.preventDefault();
-          }
+          };
           const endTouch = function endTouch(e) {
             e.preventDefault();
             startY = 0;
             distance = 0;
-          }
+          };
           holder.querySelectorAll('.carousel-slide-header p, .carousel-slide-header').forEach(el => {
             el.addEventListener('touchstart', startTouch, false);
             el.addEventListener('touchmove', moveTouch, false);
