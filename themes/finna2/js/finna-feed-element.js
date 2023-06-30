@@ -174,8 +174,6 @@ class FinnaFeedElement extends HTMLElement {
 
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
-          var locationStart;
-          var distance;
           holder.querySelectorAll('.carousel-slide-more.swipe-up').forEach(el => {
             el.classList.remove('hidden');
           });
@@ -193,65 +191,39 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-text-shadow').forEach(el => {
             el.style.bottom = '30px';
           });
+          var startY = 0;
+          var distance = 0;
+          var threshold = 100;
+          const startTouch = function startTouch(e) {
+            var locationY = e.changedTouches[0];
+            startY = parseInt(locationY.clientY);
+            e.preventDefault();
+          }
+          const moveTouch = function moveTouch(e) {
+            var locationY = e.changedTouches[0];
+            distance = parseInt(locationY.clientY) - startY;
+            if (distance < 0 && Math.abs(distance) > threshold) {
+              this.closest('.feed-item-holder').classList.add('clicked');
+            }
+            if (distance > 0 && Math.abs(distance) > threshold) {
+              this.closest('.feed-item-holder').classList.remove('clicked');
+            }
+            e.preventDefault();
+          }
+          const endTouch = function endTouch(e) {
+            e.preventDefault();
+            startY = 0;
+            distance = 0;
+          }
           holder.querySelectorAll('.carousel-slide-header p, .carousel-slide-header').forEach(el => {
-            el.addEventListener('touchstart', function onTouchStart(e) {
-              var touchobj = e.changedTouches[0];
-              locationStart = touchobj.pageY;
-            });
-            el.addEventListener('touchmove', function noScroll(e) {
-              e.preventDefault();
-            }, false);
-            el.addEventListener('touchend', function checkDirection(e) {
-              var touchobj = e.changedTouches[0];
-              distance = touchobj.pageY - locationStart;
-              if (distance < 0) {
-                const slide = this.closest('.feed-item-holder');
-                slide.classList.add('clicked');
-                holder.querySelectorAll('.title-bottom').forEach(header => {
-                  header.querySelectorAll('.carousel-slide-more').forEach(icon => {
-                    if (icon.classList.contains('swipe-up')) {
-                      icon.classList.add('hidden');
-                    }
-                    if (icon.classList.contains('swipe-down')) {
-                      icon.classList.remove('hidden');
-                    }
-                  });
-                });
-              }
-              if (distance > 0) {
-                const slide = this.closest('.feed-item-holder');
-                slide.classList.remove('clicked');
-                holder.querySelectorAll('.title-bottom').forEach(header => {
-                  header.querySelectorAll('.carousel-slide-more').forEach(icon => {
-                    if (icon.classList.contains('swipe-down')) {
-                      icon.classList.add('hidden');
-                    }
-                    if (icon.classList.contains('swipe-up')) {
-                      icon.classList.remove('hidden');
-                    }
-                  });
-                });
-              }
-            });
+            el.addEventListener('touchstart', startTouch, false);
+            el.addEventListener('touchmove', moveTouch, false);
+            el.addEventListener('touchend', endTouch, false);
           });
           holder.querySelectorAll('.carousel-hover-title').forEach(el => {
-            el.addEventListener('touchstart', function onTouchStart(e) {
-              var touchobj = e.changedTouches[0];
-              locationStart = touchobj.pageY;
-            });
-            el.addEventListener('touchmove', function noScroll(e) {
-              e.preventDefault();
-            }, false);
-            el.addEventListener('touchend', function checkDirection(e) {
-              var touchobj = e.changedTouches[0];
-              distance = touchobj.pageY - locationStart;
-              if (distance > 0) {
-                const slide = this.closest('.feed-item-holder');
-                if (slide) {
-                  slide.classList.remove('clicked');
-                }
-              }
-            });
+            el.addEventListener('touchstart', startTouch, false);
+            el.addEventListener('touchmove', moveTouch, false);
+            el.addEventListener('touchend', endTouch, false);
           });
         } else {
           holder.querySelectorAll('.carousel').forEach(el => {

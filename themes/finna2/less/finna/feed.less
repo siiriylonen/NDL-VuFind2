@@ -587,8 +587,49 @@ finna-feed.splide--ltr {
             }
         }
     }
+    @media (hover:hover) {
+        .feed-item-holder:hover {
+            .carousel-text:not(.no-text) {
+                opacity: 1;
+            }
+            .carousel-slide-header:not(.title-bottom) {
+                opacity: 0;
+            }
+            .carousel-text.scrollable {
+                padding-bottom: 0;
+                .carousel-text-shadow {
+                    position: sticky;
+                    z-index: 1;
+                    height: 20px;
+                    margin: 0 -10px;
+                    background-image: linear-gradient(to bottom, transparent 0px, @carousel-slide-header-background 100%);
+                    bottom: 0;
+                }
+                .follow-link-container {
+                    position: sticky;
+                    z-index: 1;
+                    height: 30px;
+                    margin: 0 -10px;
+                    background-color: @carousel-slide-header-background;
+                    bottom: 0;
+                    .follow-link {
+                        position: relative;
+                        .follow-link-button {
+                            position: absolute;
+                            right: 20px;
+                            span {
+                                display: flex;
+                                flex-direction: row;
+                                align-items: baseline;
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+    }
     .feed-item-holder {
-        &:hover, &.clicked {
+        &.clicked {
             .carousel-text:not(.no-text) {
                 opacity: 1;
             }
