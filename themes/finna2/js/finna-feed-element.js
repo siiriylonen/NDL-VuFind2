@@ -202,11 +202,16 @@ class FinnaFeedElement extends HTMLElement {
           const moveTouch = function moveTouch(e) {
             var locationY = e.changedTouches[0];
             distance = parseInt(locationY.clientY) - startY;
+            var element = this.closest('.feed-item-holder');
             if (distance < 0 && Math.abs(distance) > threshold) {
-              this.closest('.feed-item-holder').classList.add('clicked');
+              element.classList.add('clicked');
+              element.querySelector('.carousel-slide-more.swipe-down').classList.remove('hidden');
+              element.querySelector('.carousel-slide-more.swipe-up').classList.add('hidden');
             }
             if (distance > 0 && Math.abs(distance) > threshold) {
-              this.closest('.feed-item-holder').classList.remove('clicked');
+              element.classList.remove('clicked');
+              element.querySelector('.carousel-slide-more.swipe-down').classList.add('hidden');
+              element.querySelector('.carousel-slide-more.swipe-up').classList.remove('hidden');
             }
             e.preventDefault();
           };
