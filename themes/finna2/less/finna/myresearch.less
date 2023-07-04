@@ -90,6 +90,12 @@
   }
 }
 
+.holds-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
 .noShadow {
   .finna-navbar {
     box-shadow: none;
@@ -125,7 +131,11 @@
       }
     }
   }
-  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected, #pay_selected, #purgeSelected, #purgeAll, .save-list-wrapper {
+  #purgeSelected, #purgeAll {
+    height: 35px;
+    padding: 0 10px;
+  }
+  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected, #pay_selected, .save-list-wrapper {
     height: 35px;
     padding: 0 10px;
     margin-right: 12px;
@@ -140,9 +150,14 @@
 
     }
   }
+  #update_selected {
+    margin-right: 3px;
+  }
+  #renewSelected {
+    margin-right: 0;
+  }
   #renewSelected, #update_selected {
     border-radius: 4px 0 0 4px;
-    margin-right: 0;
   }
   #renewAll, #cancel_selected, #cancelSelected {
     border-radius: 0 4px 4px 0;
@@ -227,17 +242,6 @@
   }
   .myresearch-row:last-child {
     box-shadow: none;
-  }
-  .holds-sort {
-    margin-bottom: 6px;
-  }
-  #cancelSelected, #cancelAll {
-    height: 35px;
-    padding: 0 10px;
-    margin-right: 12px;
-    @media (max-width: @screen-md) {
-      margin: 6px 12px 6px 0;
-    }
   }
 }
 .list-description,
@@ -420,6 +424,14 @@
   h3 {
     font-size: @font-size-h4;
   }
+  @media (max-width: @screen-sm) {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: baseline;
+    .sort-col {
+      margin-left: 10px;    }
+  }
 }
 
 .online-payment-form > .payment-row {
@@ -527,9 +539,6 @@
   padding: 5px;
   .btn-group {
     margin: 0;
-  }
-  @media (max-width: @screen-md) {
-    padding: 0;
   }
 }
 

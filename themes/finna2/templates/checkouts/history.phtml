@@ -36,6 +36,11 @@
         <div class="historic-loans-pre-list"><?=$this->render($template)?></div>
       <?php endif; ?>
       <?php if (!empty($this->transactions)): ?>
+        <div>
+          <?php if ($this->sortList): ?>
+            <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
+          <?php endif; ?>
+        </div>
         <?php if ($purgeAllAllowed || $purgeSelectedAllowed): ?>
           <form name="purge_history" method="post" action="<?=$this->url('checkouts-purgehistory')?>" id="purge_history" data-disable-on-submit>
           <input type="hidden" id="submitType" name="purgeSelected" value="1">
@@ -51,11 +56,6 @@
                   <?=$this->paginationControl($paginator, 'Sliding', 'Helpers/pagination-simple.phtml', ['params' => $params])?>
                 </div>
               <?php endif; ?>
-              <div>
-                <?php if ($this->sortList): ?>
-                  <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
-                <?php endif; ?>
-              </div>
             </td>
           </tr>
           <tr class="toolbar">

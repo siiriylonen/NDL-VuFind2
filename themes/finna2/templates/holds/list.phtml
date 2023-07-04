@@ -22,6 +22,11 @@
       </div>
       <div class="useraccount-header">
         <h2><?=$this->transEsc('Your Holds and Recalls') ?> (<?=count($this->recordList ?? []);?>)</h2>
+        <?php if(!empty($this->recordList)): ?>
+          <div class="sort-col holds-sort visible-xs">
+            <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
+          </div>
+        <?php endif; ?>
       </div>
       <?php if (isset($this->noSupport)): ?>
         <?php if ($user->getLibraryCards()->count() > 1): ?>
@@ -34,7 +39,6 @@
           <div class="holds-pre-list"><?=$this->render($template)?></div>
         <?php endif; ?>
         <?php if (!empty($this->recordList)): ?>
-          <div class="holds-sort"><?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?></div>
           <?php if ($this->cancelForm || $this->updateForm): ?>
             <form name="updateForm" class="inline" method="post" action="<?=$this->escapeHtmlAttr($this->url('holds-list'))?>" id="update_holds" data-clear-account-cache="holds" data-lightbox>
               <input type="hidden" id="submitType" name="cancelSelected" value="1">
@@ -51,7 +55,7 @@
                       </div>
                     </div>
                   </td>
-                  <td>
+                  <td class="holds-toolbar">
                     <?php if ($this->updateForm): ?>
                       <div class="btn-group">
                         <input id="update_selected" name="updateSelected" type="submit" value="<?=$this->transEscAttr('hold_edit_selected') ?>" class="btn btn-primary hidden">
@@ -73,6 +77,9 @@
                           <li><a href="#" id="confirm_cancel_all_yes"><?=$this->transEsc('confirm_dialog_yes') ?></a></li>
                           <li><a href="#" class="confirm_cancel_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                         </ul>
+                      </div>
+                      <div class="sort-col holds-sort hidden-xs">
+                        <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
                       </div>
                     <?php endif; ?>
                   </td>
