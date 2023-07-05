@@ -131,14 +131,9 @@
       }
     }
   }
-  #purgeSelected, #purgeAll {
+  #purgeSelected, #purgeAll, .save-list-wrapper {
     height: 35px;
     padding: 0 10px;
-  }
-  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected, #pay_selected, .save-list-wrapper {
-    height: 35px;
-    padding: 0 10px;
-    margin-right: 12px;
     @media (max-width: @screen-md) {
       .btn {
         border: 1px solid @gray-lighter;
@@ -147,7 +142,18 @@
         padding: 5px 10px;
         font-size: 0.9em;
       }
-
+    }
+  }
+  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected, #pay_selected {
+    height: 35px;
+    padding: 0 10px;
+    margin-right: 12px;
+    @media (max-width: @screen-md) {
+      border: 1px solid @gray-lighter;
+      background: @gray-ultralight;
+      color: @text-color;
+      padding: 5px 10px;
+      font-size: 0.9em;
     }
   }
   #update_selected {
