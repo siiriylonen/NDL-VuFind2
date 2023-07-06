@@ -20,10 +20,13 @@ $this->jsTranslations()->addStrings(
   }
 ?>
 <div aria-hidden="true" class="search-map-container">
-  <div>
-    <h4><?=$this->transEsc('Geographical Area') ?></h4>
-  </div>
-  <div class="map-container">
+  <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#" controls="" aria-expanded="false">
+    <span class="facet-title">
+      <?=$this->transEsc('Geographical Area') ?>
+      <?=$this->icon('collapse', 'facet-title-icon') ?>
+    </span>
+  </button>
+  <div class="map-container collapse">
     <fieldset class="well map">
       <legend class="sr-only"><?=$this->transEsc('Geographical Area') ?></legend>
       <div class="selection-map-canvas"></div>

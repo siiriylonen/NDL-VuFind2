@@ -4,10 +4,13 @@
   <?php foreach ($this->ranges as $current): $escField = $this->escapeHtmlAttr($current['field']); ?>
     <fieldset>
       <legend class="sr-only"><?=$this->transEsc($params->getFacetLabel($current['field']))?></legend>
-      <div>
-        <span class="label-block form-inline"><?=$this->transEsc($params->getFacetLabel($current['field']))?>:</span>
-      </div>
-      <div>
+      <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#<?=$this->transEsc($params->getFacetLabel($current['field']))?>" controls="<?=$this->transEsc($params->getFacetLabel($current['field']))?>" aria-expanded="false">
+        <span class="facet-title">
+          <?=$this->transEsc($params->getFacetLabel($current['field']))?>
+          <?=$this->icon('collapse', 'facet-title-icon') ?>
+        </span>
+      </button>
+      <div id="<?=$this->transEsc($params->getFacetLabel($current['field']))?>" class="range-selection collapse">
         <div class="year-input-container text-center">
           <input type="hidden" name="<?=$this->escapeHtmlAttr($current['type'])?>range[]" value="<?=$escField?>">
           <?php if (isset($current['rangeType'])): ?>

@@ -302,6 +302,9 @@
     float: left;
     margin-top: 30px;
   }
+  .search-map-container {
+    margin-bottom: 30px;
+  }
   .well.map {
     background: @body-bg;
     .information {
@@ -309,6 +312,47 @@
     }
     .information-text {
       margin: 0;
+    }
+  }
+  .facet-title span {
+    float: right;
+    color: @brand-primary;
+  }
+  .well.limit-to {
+    background: @body-bg;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 10px;
+    &.facets {
+      margin-bottom: 30px;
+    }
+    &:not('.ranges-container') {
+      column-gap: 5px;
+    }
+    .finna-multiselect.search {
+      border: 0;
+      border-bottom: 1px solid lightgray;
+      box-shadow: none;
+      }
+    ul.finna-multiselect.done {
+      border: 0;
+      box-shadow: none;
+    }
+    .facet-container {
+      align-items: flex-start;
+      justify-content: flex-start;
+      .list-group.facet {
+        margin-right: 10px;
+      }
+    }
+    .range-selection {
+      padding: 20px;
+    }
+    .facet {
+      button {
+        border: 1px solid @facet-border-color;
+      }
     }
   }
   .search_bool {
@@ -333,9 +377,6 @@
       position: absolute;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-    }
-    &.information-multiselect {
-      padding-top: 20px;
     }
   }
   .additional-info {

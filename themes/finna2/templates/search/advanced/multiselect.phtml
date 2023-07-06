@@ -3,9 +3,14 @@
   $filenameHeader = 'advanced/' . $field . '-facet-information-header.phtml';
   $filenameFooter = 'advanced/' . $field . '-facet-information-footer.phtml';
 ?>
-<div class="facet">
-  <div class="solr-adv-filter <?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>-container">
-    <label id="limit_<?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>"><?=$this->transEsc($this->list['label'])?>:</label>
+<div class="list-group facet">
+  <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#<?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>" controls="<?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>" aria-expanded="false">
+    <span id="limit_<?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>" class="facet-title">
+      <?=$this->transEsc($this->list['label'])?>
+      <?=$this->icon('collapse', 'facet-title-icon') ?>
+    </span>
+  </button>
+  <div id="<?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>" class="solr-adv-filter <?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>-container collapse">
     <?php if ($this->resolver($filenameHeader)): ?>
       <?=$this->render($filenameHeader) ?>
     <?php endif; ?> 
@@ -28,9 +33,9 @@
     <input aria-labelledby="limit_<?=$this->escapeHtmlAttr(str_replace(' ', '', $this->field))?>" class="finna-multiselect search form-control" type="text" placeholder="<?= $this->transEsc('search_placeholder') ?>">
     <ul aria-multiselectable="true" role="listbox" aria-label="<?= $this->transEsc('Add filter') . ' ' . $this->transEsc($this->list['label']) ?>" tabindex="0" class="finna-multiselect done" aria-activedescendant=""></ul>
     <button type="button" class="finna-multiselect clear btn btn-link"><?= $this->transEsc('Clear Selections') ?></button> 
+    <?php if ($this->resolver($filenameFooter)): ?>
+      <?=$this->render($filenameFooter) ?>
+    <?php endif; ?>  
   </div>
-  <?php if ($this->resolver($filenameFooter)): ?>
-    <?=$this->render($filenameFooter) ?>
-  <?php endif; ?>  
 </div>
 <!-- END of: finna - search/advanced/multiselect.phtml -->
