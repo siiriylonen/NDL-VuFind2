@@ -141,6 +141,7 @@
         color: @text-color;
         padding: 5px 10px;
         font-size: 0.9em;
+        height: 30px;
       }
     }
   }
@@ -154,6 +155,7 @@
       color: @text-color;
       padding: 5px 10px;
       font-size: 0.9em;
+      height: 30px;
     }
   }
   #update_selected {
@@ -221,7 +223,16 @@
     }
   }
 }
-
+.sort-option-container {
+  @media (max-width: @screen-md) {
+    .sort-button {
+      .dropdown-toggle {
+        font-size: 0.9em;
+        height: 30px;
+      }
+    }
+  }
+}
 .myresearch-notes {
   clear: both;
   margin-top: 10px;
