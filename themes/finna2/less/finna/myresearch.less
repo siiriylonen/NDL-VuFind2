@@ -135,14 +135,12 @@
     height: 35px;
     padding: 0 10px;
     @media (max-width: @screen-md) {
-      .btn {
-        border: 1px solid @gray-lighter;
-        background: @gray-ultralight;
-        color: @text-color;
-        padding: 5px 10px;
-        font-size: 0.9em;
-        height: 30px;
-      }
+      border: 1px solid @gray-lighter;
+      background: @gray-ultralight;
+      color: @text-color;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      height: 30px;
     }
   }
   .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected, #pay_selected {
@@ -162,7 +160,9 @@
     margin-right: 3px;
   }
   #renewSelected {
-    margin-right: 0;
+    @media (max-width: @screen-md) {
+      margin-right: 0;
+    }
   }
   #renewSelected, #update_selected {
     border-radius: 4px 0 0 4px;
