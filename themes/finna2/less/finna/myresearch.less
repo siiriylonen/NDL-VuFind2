@@ -103,7 +103,14 @@
       }
     }
   }
-  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected, #pay_selected, #purgeSelected, #purgeAll, .save-list-wrapper {
+  &.history-table {
+    .toolbar {
+      display: flex;
+      align-items: baseline;
+      border-bottom: 1px solid #d1d1d1;
+    }
+  }
+  .renew-button, #renewAll, #renewSelected, #update_selected, #cancelAll, #cancelSelected, #pay_selected, #purgeSelected, #purgeAll {
     height: 35px;
     padding: 0 10px;
     margin-right: 12px;
@@ -111,17 +118,42 @@
       margin: 6px 12px 6px 0px;
     }
   }
-  .save-list-wrapper {
-    padding: 0;
-    a {
-      height: 35px;
-      padding-top: 8px;
-    }
+  #renewSelected, #update_selected {
+    border-radius: 4px 0 0 4px;
+    margin-right: 2px;
+  }
+  #renewAll, #cancel_selected, #cancelSelected {
+    border-radius: 0 4px 4px 0;
   }
   .sort-col .dropdown-toggle {
     margin-bottom: 0;
     @media (max-width: @screen-md) {
       margin-top: 6px;
+    }
+  }
+  // My account buttons on mobile screens
+  // Sort button and checkbox
+  @media (max-width: @screen-md) {
+    a.dropdown-toggle {
+      font-size: 0.9em;
+      height: 30px;
+    }
+    .mylist-select-all {
+      padding-top: 0;
+    }
+  }
+  // Loans and Holds and Recalls
+  @media (max-width: @screen-md) {
+    #renewSelected, #renewAll, #update_selected, #cancelSelected, #cancelAll {
+      border: 1px solid @gray-lighter;
+      background: @gray-ultralight;
+      color: @text-color;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      height: 30px;
+    }
+    #renewSelected, #update_selected {
+      margin-right: 0;
     }
   }
   @media(min-width: @screen-sm) {
@@ -153,11 +185,7 @@
   }
   @media(max-width: @screen-xxs-max) {
     .renew-button-col {
-      width: 100%;
       float: left;
-      input {
-        min-width: 170px;
-      }
     }
     .sort-col {
       float: left;
@@ -180,6 +208,22 @@
         margin-top: 12px;
       }
     }
+  }
+}
+@media (max-width: 500px) {
+  .visible-xxs {
+    display: inline-block;
+  }
+  .hidden-xxs {
+    display: none;
+  }
+}
+@media (min-width: 500px) {
+  .visible-xxs {
+    display: none;
+  }
+  .hidden-xxs {
+    display: inline-block;
   }
 }
 
@@ -213,13 +257,34 @@
   .holds-sort {
     margin-bottom: 6px;
   }
-  #cancelSelected, #cancelAll {
+  .toolbar-button-sort {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    a.dropdown-toggle {
+      font-size: 0.9em;
+      height: 30px;
+      margin-right: 12px;
+    }
+  }
+  // My account buttons on mobile screens
+  // Interlibrary Loan Requests and Storage Retrieval Requests
+  #cancelSelected, #cancelAll, #purgeSelected, #purgeAll, #copyToFavourites {
     height: 35px;
     padding: 0 10px;
     margin-right: 12px;
     @media (max-width: @screen-md) {
       margin: 6px 12px 6px 0;
+      border: 1px solid @gray-lighter;
+      background: @gray-ultralight;
+      color: @text-color;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      height: 30px;
     }
+  }
+  #copyToFavourites {
+    padding-top: 5px;
   }
 }
 .list-description,
@@ -390,6 +455,10 @@
 }
 
 .useraccount-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
   margin-top: 5px;
   margin-bottom: 5px;
   h2, h3 {
@@ -401,6 +470,10 @@
   }
   h3 {
     font-size: @font-size-h4;
+  }
+  a.dropdown-toggle {
+    font-size: 0.9em;
+    height: 30px;
   }
 }
 
@@ -479,6 +552,21 @@
     align-items: center;
     div {
       flex: 1 1;
+    }
+  }
+}
+
+.toolbar-sticky {
+  @media(max-width: @screen-md) {
+    position: sticky;
+    top: @navbar-height - 1px;
+    background-color: @body-bg;
+    z-index: 2;
+    &.isSticky {
+      box-shadow: 0 0 3px 3px rgba(0,0,0,0.1);
+      .toolbar {
+        border-bottom: none;
+      }
     }
   }
 }

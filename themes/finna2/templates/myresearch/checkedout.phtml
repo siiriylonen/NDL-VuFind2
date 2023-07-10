@@ -28,6 +28,11 @@
       </div>
       <div class="useraccount-header">
         <h2><?=$this->transEsc('Your Checked Out Items')?> (<?=$totalCount?>)</h2>
+        <div class="sort-col visible-xxs">
+          <?php if ($this->sortList): ?>
+            <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
+          <?php endif; ?>
+        </div>
       </div>
       <?php if (isset($this->noSupport)): ?>
         <?php if ($user->getLibraryCards()->count() > 1): ?>
@@ -50,48 +55,47 @@
             <form name="renewals" method="post" id="renewals" data-clear-account-cache="checkedOut" data-disable-on-submit>
               <input type="hidden" value="<?=$this->escapeHtmlAttr($this->auth()->getManager()->getCsrfHash())?>" name="csrf">
               <input type="hidden" id="submitType" name="renewSelected" value="1">
-              <table class="myresearch-table" role="presentation" aria-label="<?=$this->transEscAttr('Actions');?>">
-                <tr class="toolbar">
-                  <td class="text-left checkbox-col">
-                    <div class="checkboxFilter mylist-select-all">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" name="selectAll" class="checkbox-select-all">
-                          <?=$this->transEsc($this->ilsPaging ? 'select_page' : 'Select All')?>
-                          <span class="selected"></span> <span class="loans-renewal-available"></span>
-                        </label>
+              <div class="toolbar-sticky">
+                <table class="myresearch-table" role="presentation" aria-label="<?=$this->transEscAttr('Actions');?>">
+                  <tr class="toolbar">
+                    <td class="text-left checkbox-col">
+                      <div class="checkboxFilter mylist-select-all">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="selectAll" class="checkbox-select-all">
+                            <span class="selected"></span> <span class="loans-renewal-available"></span>
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="renew-button-col">
-                      <div class="btn-group">
-                        <input type="submit" class="btn btn-primary dropdown-toggle" id="renewSelected" name="renewSelected" value="<?=$this->transEscAttr('renew_selected')?>" data-toggle="dropdown" data-lightbox-ignore>
-                        <ul class="dropdown-menu useraccount-confirm">
-                          <li class="disabled"><a><?=$this->transEsc('confirm_renew_selected_text')?></a></li>
-                          <li><a href="#" id="confirm_renew_selected_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
-                          <li><a href="#" class="confirm_renew_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
-                        </ul>
-                      </div>
-                      <?php if ($renewAll): ?>
+                    </td>
+                    <td>
+                      <div class="renew-button-col">
                         <div class="btn-group">
+                          <input type="submit" class="btn btn-primary dropdown-toggle" id="renewSelected" name="renewSelected" value="<?=$this->transEscAttr('renew_selected')?>" data-toggle="dropdown" data-lightbox-ignore>
+                          <ul class="dropdown-menu useraccount-confirm">
+                            <li class="disabled"><a><?=$this->transEsc('confirm_renew_selected_text')?></a></li>
+                            <li><a href="#" id="confirm_renew_selected_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
+                            <li><a href="#" class="confirm_renew_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
+                          </ul>
+                        <?php if ($renewAll): ?>
                           <input type="submit" class="btn btn-primary dropdown-toggle" id="renewAll" name="renewAll" value="<?=$this->transEscAttr('renew_all')?>" data-toggle="dropdown" data-lightbox-ignore>
                           <ul class="dropdown-menu useraccount-confirm">
                             <li class="disabled"><a><?=$this->transEsc('confirm_renew_all_text')?></a></li>
                             <li><a href="#" id="confirm_renew_all_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
                             <li><a href="#" class="confirm_renew_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                           </ul>
+                        <?php endif; ?>
                         </div>
-                      <?php endif; ?>
-                    </div>
-                    <div class="sort-col">
-                      <?php if ($this->sortList): ?>
-                        <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
-                      <?php endif; ?>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+                      </div>
+                      <div class="sort-col hidden-xxs">
+                        <?php if ($this->sortList): ?>
+                          <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
+                        <?php endif; ?>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
           <?php else: ?>
             <div class="myresearch-table" aria-label="<?=$this->transEscAttr('Your Checked Out Items')?>">
               <div class="toolbar">
@@ -272,34 +276,7 @@
               </tr>
             <?php endforeach; ?>
             </table>
-            <?php if ($this->renewForm): ?>
-              <?php if ($totalCount > 5): ?>
-                <table class="myresearch-table bottom">
-                  <tr class="toolbar bottom">
-                    <td>
-                      <div class="checkboxFilter mylist-select-all">
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" name="selectAll" class="checkbox-select-all">
-                            <?=$this->transEsc($this->ilsPaging ? 'select_page' : 'Select All')?>
-                          </label>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="renew-button-col">
-                        <input type="submit" class="btn btn-primary renew-button" name="renewSelected" value="<?=$this->transEscAttr("renew_selected")?>">
-                        <?php if ($renewAll): ?>
-                          <input type="submit" class="btn btn-primary renew-button" name="renewAll" value="<?=$this->transEscAttr('renew_all')?>">
-                        <?php endif; ?>
-                      </div>
-                      <div class="sort-col">
-                        <span class="myresearch-count"><?=$this->transEsc('total_borrowed_items', ['%%count%%' => count($this->transactions) + count($this->hiddenTransactions)]);?></span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              <?php endif;?>
+          <?php if ($this->renewForm): ?>
             </form>
           <?php endif; ?>
           <?php if ($template = $this->content()->findTemplateForLng("content/Additions/checkedout-post-list")): ?>
