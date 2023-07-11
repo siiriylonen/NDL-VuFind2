@@ -307,6 +307,7 @@
   }
   .well.map {
     background: @body-bg;
+    border: 0;
     .information {
       margin-top: 10px;
     }
@@ -349,11 +350,6 @@
     .range-selection {
       padding: 20px;
     }
-    .facet {
-      button {
-        border: 1px solid @facet-border-color;
-      }
-    }
   }
   .search_bool {
     margin-right: 10px;
@@ -381,13 +377,17 @@
   }
   .additional-info {
     padding: 8px;
-    &.alert-info {
+    &.alert-info.information {
+      width: 100%;
       margin-top: 10px;
     }
     .information-text {
       padding-bottom: 5px;
       padding-left: 2.4em;
       font-size: .9em;
+    }
+    a.information-text {
+      background-color: transparent;
     }
   }
   .information-geo {
@@ -543,7 +543,7 @@
       }
     }
     .info {
-      padding-bottom: 5px;
+      padding: 10px 5px;
       font-size: .9em;
       font-weight: 600;
     }
