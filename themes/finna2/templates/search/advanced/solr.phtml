@@ -16,7 +16,7 @@
     $searchFilters = $this->saved->getParams()->removeGeographicFilters($searchFilters);
     $hiddenFilters = $this->saved->getParams()->getHiddenFilters();
   }
-  [$column1, $column2] = array_chunk($this->facetList, ceil(count($this->facetList) / 2), true); 
+  [$column1, $column2] = array_chunk($this->facetList, ceil(count($this->facetList) / 2), true);
 ?>
   <div>
     <h3><?=$this->transEsc('Limit To')?></h3>
