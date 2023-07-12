@@ -253,6 +253,17 @@ finna.myList = (function finnaMyList() {
       buttons.removeClass('fixed');
     }
   }
+  function stickyToolbar() {
+    const stickyElement = $('.toolbar-sticky');
+    const navbar = $('header');
+    if ($(document).scrollTop() > $('.toolbar-sticky-container').offset().top) {
+      stickyElement.addClass('isSticky');
+      navbar.addClass('noShadow');
+    } else {
+      stickyElement.removeClass('isSticky');
+      navbar.removeClass('noShadow');
+    }
+  }
 
   function updateListResource(params, input /*, row*/) {
     save = true;
@@ -301,6 +312,13 @@ finna.myList = (function finnaMyList() {
         updateBulkActionsToolbar();
       });
       updateBulkActionsToolbar();
+    }
+    var stickyElement = $('.toolbar-sticky');
+    if (stickyElement.length) {
+      $(window).on('scroll', function onScrollWindow() {
+        stickyToolbar();
+      });
+      stickyToolbar();
     }
 
     //Init mobile navigation collapse after list has been reloaded

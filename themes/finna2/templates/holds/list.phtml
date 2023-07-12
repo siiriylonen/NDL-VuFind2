@@ -41,6 +41,7 @@
         <?php if (!empty($this->recordList)): ?>
           
           <?php if ($this->cancelForm || $this->updateForm): ?>
+            <div class="toolbar-sticky-container">
             <form name="updateForm" class="inline" method="post" action="<?=$this->escapeHtmlAttr($this->url('holds-list'))?>" id="update_holds" data-clear-account-cache="holds" data-lightbox>
               <input type="hidden" id="submitType" name="cancelSelected" value="1">
               <input type="hidden" id="cancelConfirm" name="confirm" value="0">
@@ -277,7 +278,7 @@
               </tr>
             <?php endforeach; ?>
           </table>
-          <?php if ($this->cancelForm): ?></form> <?php endif; ?>
+          <?php if ($this->cancelForm): ?></form></div> <?php endif; ?>
           <?php if ($template = $this->content()->findTemplateForLng("content/Additions/holds-post-list")): ?>
             <div class="holds-post-list"><?=$this->render($template)?></div>
           <?php endif; ?>

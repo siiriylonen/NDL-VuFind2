@@ -37,6 +37,7 @@
         <?php endif; ?>
         <?php if (!empty($this->recordList)): ?>
           <?php if ($this->cancelForm): ?>
+          <div class="toolbar-sticky-container">
           <form name="updateForm" class="inline" method="post" id="cancelILLRequest"  data-clear-account-cache="illRequests">
             <div class="toolbar-sticky">
               <div class="toolbar">
@@ -202,7 +203,7 @@
             </tr>
           <?php endforeach; ?>
           </table>
-          <?php if ($this->cancelForm): ?></form><?php endif; ?>
+          <?php if ($this->cancelForm): ?></form></div><?php endif; ?>
           <?php if ($template = $this->content()->findTemplateForLng("content/Additions/illrequests-post-list")): ?>
             <div class="illrequests-post-list"><?=$this->render($template)?></div>
           <?php endif; ?>

@@ -48,19 +48,10 @@
                 <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
               <?php endif; ?>
             </div>
-            <?php if ($purgeAllAllowed): ?>
-              <div class="btn-group visible-xxs">
-                <input type="submit" id="purgeAll" name="purgeAll" value="<?=$this->transEscAttr('loan_history_purge_all')?>" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
-                <ul class="dropdown-menu">
-                  <li class="disabled"><span class="prompt-text"><?=$this->transEsc('loan_history_confirm_purge_all')?></span></li>
-                  <li><a href="#" id="confirm_purge_all_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
-                  <li><a href="#" class="confirm_purge_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
-                </ul>
-              </div>
-            <?php endif; ?>
           </div>
           
           <?php if ($purgeAllAllowed || $purgeSelectedAllowed): ?>
+            <div class="toolbar-sticky-container">
             <form name="purge_history" method="post" action="<?=$this->url('checkouts-purgehistory')?>" id="purge_history" data-disable-on-submit>
             <input type="hidden" id="submitType" name="purgeSelected" value="1">
             <input type="hidden" name="csrf" value="<?=$this->escapeHtmlAttr($this->auth()->getManager()->getCsrfHash())?>">
@@ -93,7 +84,7 @@
                       </div>
                     <?php endif; ?>
                     <?php if ($purgeAllAllowed): ?>
-                      <div class="btn-group hidden-xxs">
+                      <div class="btn-group">
                         <input type="submit" id="purgeAll" name="purgeAll" value="<?=$this->transEscAttr('loan_history_purge_all')?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
                         <ul class="dropdown-menu">
                           <li class="disabled"><span class="prompt-text"><?=$this->transEsc('loan_history_confirm_purge_all')?></span></li>
@@ -102,9 +93,6 @@
                         </ul>
                       </div>
                     <?php endif; ?>
-                    <div class="btn-group save-list-wrapper hidden-print left-control">
-                      <a id="copyToFavourites" class="btn btn-primary" data-lightbox role="button" href="<?=$this->url('myresearch-savehistoricloans') ?>"><?=$this->transEsc('loan_history_save')?></a>
-                    </div>
                     <div class="sort-col hidden-xs">
                       <?php if ($this->sortList): ?>
                         <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
@@ -223,6 +211,7 @@
           <?php if ($purgeAllAllowed || $purgeSelectedAllowed): ?>
               </div>
             </form>
+            </div>
           <?php endif; ?>
 
           <?=$this->paginator ? $this->paginationControl($this->paginator, 'Sliding', 'Helpers/pagination.phtml', ['params' => $this->params]) : ''?>
