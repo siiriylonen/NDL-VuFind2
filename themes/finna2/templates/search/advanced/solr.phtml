@@ -16,6 +16,7 @@
     $searchFilters = $this->saved->getParams()->removeGeographicFilters($searchFilters);
     $hiddenFilters = $this->saved->getParams()->getHiddenFilters();
   }
+  list($column1, $column2) = array_chunk($this->facetList, ceil(count($this->facetList) / 2), true); 
 ?>
   <div>
     <h3><?=$this->transEsc('Limit To')?></h3>
@@ -30,9 +31,16 @@
       <fieldset class="well limit-to facets">
         <legend class="sr-only"><?=$this->transEsc('Limit To')?></legend>
         <div class="facet-container">
-          <?php foreach ($this->facetList as $field => $list): ?>
-            <?= $this->render('search/advanced/multiselect.phtml', ['field' => $field, 'list' => $list, 'hierarchicalFacets' => $this->hierarchicalFacets]); ?>
-          <?php endforeach; ?>
+          <div class="facet-column">
+            <?php foreach ($column1 as $field => $list): ?>
+              <?= $this->render('search/advanced/multiselect.phtml', ['field' => $field, 'list' => $list, 'hierarchicalFacets' => $this->hierarchicalFacets]); ?>
+            <?php endforeach; ?>
+          </div>
+          <div class="facet-column">
+            <?php foreach ($column2 as $field => $list): ?>
+              <?= $this->render('search/advanced/multiselect.phtml', ['field' => $field, 'list' => $list, 'hierarchicalFacets' => $this->hierarchicalFacets]); ?>
+            <?php endforeach; ?>
+          </div>
         </div>
       </fieldset>
       <?php if (!empty($this->daterange)): ?>

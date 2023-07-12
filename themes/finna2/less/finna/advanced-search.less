@@ -341,10 +341,19 @@
       box-shadow: none;
     }
     .facet-container {
+      display: flex;
+      flex-direction: row;
       align-items: flex-start;
-      justify-content: flex-start;
-      .list-group.facet {
-        margin-right: 10px;
+      margin-right: 100px;
+      gap: 10px;
+      .facet-column {
+        flex: 45%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        .facet {
+          width: 100%;
+        }
       }
     }
     .range-selection {
