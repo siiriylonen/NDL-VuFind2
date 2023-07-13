@@ -304,10 +304,15 @@
   }
   .search-map-container {
     margin-bottom: 30px;
+    .list-group-item.title {
+      margin-bottom: 10px;
+    }
   }
   .well.map {
     background: @body-bg;
     border: 0;
+    box-shadow: none;
+    padding: 5px;
     .information {
       margin-top: 10px;
     }
@@ -346,13 +351,28 @@
       align-items: flex-start;
       margin-right: 100px;
       gap: 10px;
+      @media (max-width: @screen-sm) {
+        gap: 0;
+      }
+      @media (max-width: @screen-xs) {
+        margin-right: 0;
+      }
       .facet-column {
         flex: 45%;
+        @media (max-width: @screen-sm) {
+          flex: 100%;
+          .list-group.facet {
+            max-width: 400px;
+          }
+        }
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         .facet {
           width: 100%;
+          .list-group-item.title {
+            border: 1px solid lightgray;
+          }
         }
       }
     }

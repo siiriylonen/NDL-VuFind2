@@ -104,7 +104,9 @@ button.list-group-item {
   position: relative;
   font-size: 1em;
   vertical-align: middle;
-  border: none;
+  &:not('.ranges-container') {
+    border: none;
+  }
   &:first-child {
     .border-top-radius(0px);
   }
