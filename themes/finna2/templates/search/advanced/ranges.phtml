@@ -4,13 +4,13 @@
   <?php foreach ($this->ranges as $current): $escField = $this->escapeHtmlAttr($current['field']); ?>
     <fieldset>
       <legend class="sr-only"><?=$this->transEsc($params->getFacetLabel($current['field']))?></legend>
-      <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#<?=$current['field']?>" controls="#<?=$current['field']?>" aria-expanded="false">
+      <button class="list-group-item title" type="button" data-toggle="collapse" data-target="#<?=$current['field']?>" controls="#<?=$current['field']?>" aria-expanded="false">
         <span class="facet-title">
           <?=$this->transEsc($params->getFacetLabel($current['field']))?>
           <?=$this->icon('collapse', 'facet-title-icon') ?>
         </span>
       </button>
-      <div id="<?=$current['field']?>" class="range-selection collapse">
+      <div id="<?=$current['field']?>" class="range-selection collapse in">
         <div class="year-input-container text-center">
           <input type="hidden" name="<?=$this->escapeHtmlAttr($current['type'])?>range[]" value="<?=$escField?>">
           <?php if (isset($current['rangeType'])): ?>
