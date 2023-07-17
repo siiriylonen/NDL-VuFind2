@@ -731,6 +731,30 @@ finna-feed.splide--ltr {
                 font-size: 12px;
                 background: transparent;
                 font-weight: 900;
+                span {
+                    animation: swipeArrow 2s 1;
+                    animation-delay: 3s;
+                }
+            }
+            @keyframes swipeArrow {
+                0% {
+                    opacity: 0;
+                    transform: translate(0px, 7px);
+                }
+                30% {
+                    opacity: 1;
+                }
+                60% {
+                    opacity: 0;
+                    transform: translate(0px, -5px);
+                }
+                60.5% {
+                    opacity: 0;
+                    transform: translate(0px, 7px);
+                }
+                100% {
+                    opacity: 1;
+                }
             }
         }
     }
