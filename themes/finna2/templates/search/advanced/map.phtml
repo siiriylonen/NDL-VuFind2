@@ -20,13 +20,13 @@ $this->jsTranslations()->addStrings(
   }
 ?>
 <div aria-hidden="true" class="search-map-container">
-  <button class="list-group-item title" type="button" data-toggle="collapse" data-target="#advanced-search-map" controls="advanced-search-map" aria-expanded="false">
+  <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#advanced-search-map" controls="advanced-search-map" aria-expanded="false">
     <span class="facet-title">
       <?=$this->transEsc('Geographical Area') ?>
       <?=$this->icon('collapse', 'facet-title-icon') ?>
     </span>
   </button>
-  <div id="advanced-search-map" class="map-container collapse in">
+  <div id="advanced-search-map" class="map-container collapse">
     <fieldset class="well map">
       <legend class="sr-only"><?=$this->transEsc('Geographical Area') ?></legend>
       <div class="selection-map-canvas"></div>
@@ -38,11 +38,14 @@ $this->jsTranslations()->addStrings(
 <?php
   $jsItems = json_encode($items);
   $script = <<<JS
-      $(document).ready(function() {
+      function setMapFacet() {
         var options = {
           items: $jsItems
         };
         finna.advSearch.initMap(options);
+      };
+      $('#advanced-search-map').one('shown.bs.collapse', function openMapFacet() {
+        setMapFacet();
       });
       JS;
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');

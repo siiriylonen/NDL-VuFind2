@@ -4,13 +4,13 @@
   <?php foreach ($this->ranges as $current): $escField = $this->escapeHtmlAttr($current['field']); ?>
     <fieldset>
       <legend class="sr-only"><?=$this->transEsc($params->getFacetLabel($current['field']))?></legend>
-      <button class="list-group-item title" type="button" data-toggle="collapse" data-target="#<?=$current['field']?>" controls="#<?=$current['field']?>" aria-expanded="false">
+      <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#<?=$current['field']?>" controls="#<?=$current['field']?>" aria-expanded="false">
         <span class="facet-title">
           <?=$this->transEsc($params->getFacetLabel($current['field']))?>
           <?=$this->icon('collapse', 'facet-title-icon') ?>
         </span>
       </button>
-      <div id="<?=$current['field']?>" class="range-selection collapse in">
+      <div id="<?=$current['field']?>" class="range-selection collapse">
         <div class="year-input-container text-center">
           <input type="hidden" name="<?=$this->escapeHtmlAttr($current['type'])?>range[]" value="<?=$escField?>">
           <?php if (isset($current['rangeType'])): ?>
@@ -45,7 +45,7 @@
         $ticks = $ticks_labels = '[' . implode(', ', $current['ticks']) . ']';
         $ticks_positions = '[' . implode(', ', $current['ticks_positions']) . ']';
         $script = <<<JS
-            $(document).ready(function() {
+            function setRangeSlider() {
               var fillTexts = function() {
                 var v = {$escField}dateSlider.getValue();
                 $('#${escField}from').val(v[0]).change();
@@ -66,6 +66,9 @@
                 .change(fillTexts)
                 .data('slider');
               {$init}
+            };
+            $('#{$escField}').one('shown.bs.collapse', function openRangeSlider() {
+              setRangeSlider();
             });
             JS;
       ?>
