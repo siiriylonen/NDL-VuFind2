@@ -1306,7 +1306,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 // For backward compatibility
                 'description' => $descriptions[0] ?? '',
             ];
-            var_dump($event);
             // Only add the event if it has content
             foreach ($event as $key => $field) {
                 if ('type' !== $key && !empty($field)) {
