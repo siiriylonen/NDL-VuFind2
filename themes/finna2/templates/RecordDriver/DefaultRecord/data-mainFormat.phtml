@@ -11,7 +11,19 @@
     <?=implode('<br>', array_map([$this, 'escapeHtml'], $event['materials']))?><br>
   <?php endif; ?>
   <?php if (!empty($event['places'])): ?>
-    <?=implode('<br>', array_map([$this, 'escapeHtml'], $event['places']))?><br>
+    <?php foreach ($event['places'] as $placeEvent): ?>
+      <?php if (!is_array($placeEvent)): ?>
+        <?=$this->record($this->driver)->getLinkedFieldElement($this->headingType ?? 'subject', $placeEvent, ['name' => $placeEvent], ['class' => ['backlink'], 'description' => true])?>
+      <?php else: ?>
+        <?php
+          $id = $placeEvent['id'] ?? null;
+          $ids = $placeEvent['ids'] ?? null;
+          $authType = $placeEvent['authType'] ?? null;
+          $detail = $placeEvent['details'] ?? null;
+        ?>
+        <?=$this->record($this->driver)->getLinkedFieldElement($this->headingType ?? 'subject', $placeEvent[0], ['name' => $placeEvent[0], 'id' => $id, 'ids' => $ids, 'description' => $detail], ['authorityType' => $authType, 'class' => ['backlink'], 'description' => true])?>
+      <?php endif; ?>
+    <?php endforeach; ?>
   <?php endif; ?>
   <?php if (!empty($event['culture'])): ?><?=$this->escapeHtml($event['culture'])?><br><?php endif; ?>
   <?php if (!empty($event['actors'])): ?>

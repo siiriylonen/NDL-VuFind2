@@ -1205,6 +1205,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             $places = [];
             foreach ($node->eventPlace ?? [] as $placenode) {
                 $place = trim((string)$placenode->displayPlace ?? '');
+                $placeId = trim((string)$placenode->place->placeID ?? '');
                 if (!$place) {
                     $eventPlace = [];
                     foreach ($placenode->place->namePlaceSet ?? [] as $nameSet) {
@@ -1231,6 +1232,33 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                             $places[] = implode(', ', $partOfPlaceName);
                         }
                     }
+                } elseif ($placeId) {
+                    $place = [
+                        $place,
+                    ];
+                    $details = [];
+                    foreach ($placenode->place->placeID ?? [] as $item) {
+                        $id = (string)$item;
+                        $idType = (string)($item->attributes()->type ?? '');
+                        if ($idType) {
+                            $id = "($idType)$id";
+                        }
+                        $typeDesc = $this->translate('place_id_type_' . $type, [], '');
+                        if ($typeDesc) {
+                            $details[] = $typeDesc;
+                        }
+                        if (isset($place['type'])) {
+                            $place['ids'][] = $id;
+                            continue;
+                        }
+                        $place['type'] = $idType;
+                        $place['id'] = $id;
+                        $place['ids'][] = $id;
+                    }
+                    if ($details) {
+                        $place['details'] = implode(', ', $details);
+                    }
+                    $places[] = $place;
                 } else {
                     $places[] = $place;
                 }
@@ -1278,6 +1306,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 // For backward compatibility
                 'description' => $descriptions[0] ?? '',
             ];
+            var_dump($event);
             // Only add the event if it has content
             foreach ($event as $key => $field) {
                 if ('type' !== $key && !empty($field)) {
