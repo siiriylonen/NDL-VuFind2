@@ -13,7 +13,7 @@
   <?php if (!empty($event['places'])): ?>
     <?php foreach ($event['places'] as $placeEvent): ?>
       <?php if (!is_array($placeEvent)): ?>
-        <?=$this->record($this->driver)->getLinkedFieldElement($this->headingType ?? 'subject', $placeEvent, ['name' => $placeEvent], ['class' => ['backlink'], 'description' => true])?>
+        <?=$this->record($this->driver)->getLinkedFieldElement($this->headingType ?? 'subject', $placeEvent, ['name' => $placeEvent], ['class' => ['backlink'], 'description' => true])?><br>
       <?php else: ?>
         <?php
           $id = $placeEvent['id'] ?? null;
@@ -21,7 +21,7 @@
           $authType = $placeEvent['authType'] ?? null;
           $detail = $placeEvent['details'] ?? null;
         ?>
-        <?=$this->record($this->driver)->getLinkedFieldElement($this->headingType ?? 'subject', $placeEvent[0], ['name' => $placeEvent[0], 'id' => $id, 'ids' => $ids, 'description' => $detail], ['authorityType' => $authType, 'class' => ['backlink'], 'description' => true])?>
+        <?=$this->record($this->driver)->getLinkedFieldElement($this->headingType ?? 'subject', $placeEvent[0], ['name' => $placeEvent[0], 'id' => $id, 'ids' => $ids, 'description' => $detail], ['authorityType' => $authType, 'class' => ['backlink'], 'description' => true])?><br>
       <?php endif; ?>
     <?php endforeach; ?>
   <?php endif; ?>
