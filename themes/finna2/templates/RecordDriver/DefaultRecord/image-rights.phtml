@@ -45,9 +45,13 @@
     </div>
     <?php if ($descriptions): ?>
       <div class="copyright<?=$this->truncateLicense ? ' truncate-field' : ''?>">
-        <?php foreach ($descriptions as $item): ?>
-          <p><?=$this->transEsc($item)?></p>
-        <?php endforeach ?>
+        <?php if (is_array($descriptions)): ?>  
+          <?php foreach ($descriptions as $item): ?>
+            <p><?=$this->transEsc($item)?></p>
+          <?php endforeach ?>
+        <?php else: ?>
+          <p><?=$this->transEsc($descriptions)?></p>
+        <?php endif; ?>
       </div>
     <?php endif; ?>
   <?php else: ?>
