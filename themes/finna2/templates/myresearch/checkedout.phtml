@@ -73,13 +73,12 @@
                     </td>
                     <td>
                       <div class="renew-button-col">
-                        <div class="btn-group">
-                          <input type="submit" class="btn btn-primary dropdown-toggle" id="renewSelected" name="renewSelected" value="<?=$this->transEscAttr('renew_selected')?>" data-toggle="dropdown" data-lightbox-ignore>
-                          <ul class="dropdown-menu useraccount-confirm">
-                            <li class="disabled"><a><?=$this->transEsc('confirm_renew_selected_text')?></a></li>
-                            <li><a href="#" id="confirm_renew_selected_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
-                            <li><a href="#" class="confirm_renew_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
-                          </ul>
+                        <input type="submit" class="btn btn-primary dropdown-toggle" id="renewSelected" name="renewSelected" value="<?=$this->transEscAttr('renew_selected')?>" disabled="disabled" data-toggle="dropdown" data-lightbox-ignore>
+                        <ul class="dropdown-menu useraccount-confirm">
+                          <li class="disabled"><a><?=$this->transEsc('confirm_renew_selected_text')?></a></li>
+                          <li><a href="#" id="confirm_renew_selected_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
+                          <li><a href="#" class="confirm_renew_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
+                        </ul>
                         <?php if ($renewAll): ?>
                           <input type="submit" class="btn btn-primary dropdown-toggle" id="renewAll" name="renewAll" value="<?=$this->transEscAttr('renew_all')?>" data-toggle="dropdown" data-lightbox-ignore>
                           <ul class="dropdown-menu useraccount-confirm">
@@ -88,7 +87,6 @@
                             <li><a href="#" class="confirm_renew_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                           </ul>
                         <?php endif; ?>
-                        </div>
                       </div>
                       <div class="sort-col hidden-xxs">
                         <?php if ($this->sortList): ?>
@@ -134,7 +132,7 @@
             <?php $i = 0;
             foreach ($this->transactions as $resource): ?>
               <?php $ilsDetails = $resource->getExtraDetail('ils_details'); ?>
-              <tr id="record<?=$this->escapeHtmlAttr($resource->getUniqueId())?>" class="myresearch-row<?=!empty($ilsDetails['onsite']) ? ' onsite-checkout' : ''?>">
+              <tr id="record<?=$this->escapeHtmlAttr($resource->getUniqueId())?>" class="myresearch-row<?=!empty($ilsDetails['onsite']) ? ' onsite-checkout' : ''?> result">
                 <td class="text-left checkbox-col" headers="label-select-column" aria-labelledby="label-select-column">
                   <?php if ($this->renewForm): ?>
                     <?php if (isset($ilsDetails['renewable']) && $ilsDetails['renewable'] && isset($ilsDetails['renew_details'])): ?>
