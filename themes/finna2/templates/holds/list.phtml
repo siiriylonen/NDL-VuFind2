@@ -23,7 +23,7 @@
       <div class="useraccount-header">
         <h2><?=$this->transEsc('Your Holds and Recalls') ?> (<?=count($this->recordList ?? []);?>)</h2>
         <?php if(!empty($this->recordList)): ?>
-          <div class="sort-col holds-sort visible-xxs">
+          <div class="sort-col holds-sort visible-xs">
             <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
           </div>
         <?php endif; ?>
@@ -78,7 +78,7 @@
                             <li><a href="#" class="confirm_cancel_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                           </ul>
                         </div>
-                        <div class="sort-col holds-sort hidden-xxs">
+                        <div class="sort-col holds-sort hidden-xs">
                           <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
                         </div>
                       <?php else: ?>
