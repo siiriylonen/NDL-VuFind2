@@ -75,7 +75,7 @@
                   <div class="renew-button-col">
                     <?php if ($purgeSelectedAllowed): ?>
                       <div class="btn-group">
-                        <input type="submit" id="purgeSelected" name="purgeSelected" value="<?=$this->transEscAttr('loan_history_purge_selected')?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
+                        <input type="submit" id="purgeSelected" name="purgeSelected" value="<?=$this->transEscAttr('loan_history_purge_selected')?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore disabled="disabled">
                         <ul class="dropdown-menu">
                           <li class="disabled"><span class="prompt-text"><?=$this->transEsc('loan_history_confirm_purge_selected')?></span></li>
                           <li><a href="#" id="confirm_purge_selected_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
@@ -116,7 +116,7 @@
             <?php $i = 0;
             foreach ($this->transactions as $resource): ?>
               <?php $ilsDetails = $resource->getExtraDetail('ils_details'); ?>
-              <tr class="myresearch-row">
+              <tr class="myresearch-row result">
                 <?php if ($this->purgeSelectedAllowed): ?>
                   <td class="text-left checkbox-col" headers="label-select-column" aria-labelledby="label-select-column">
                     <div class="checkboxFilter">
