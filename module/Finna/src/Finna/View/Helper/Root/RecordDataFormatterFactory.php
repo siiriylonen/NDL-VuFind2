@@ -1224,7 +1224,7 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             'getSecurityClassification',
             'data-escapeHtml.phtml',
             [
-                'context' => ['class' => 'SecurityClassification'],
+                'context' => ['class' => 'security-classification'],
             ]
         );
         $setTemplateLine(
