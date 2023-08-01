@@ -1962,30 +1962,32 @@ class SolrEad3 extends SolrEad
         $record = $this->getXmlRecord();
 
         $topics = [];
-        if (isset($record->controlaccess->subject)) {
-            foreach ([true, false] as $obeyPreferredLanguage) {
-                foreach ($record->controlaccess->subject as $subject) {
-                    $attr = $subject->attributes();
-                    if (
-                        $topic = $this->getDisplayLabel(
-                            $subject,
-                            'part',
-                            $obeyPreferredLanguage
-                        )
-                    ) {
-                        if (!$topic[0]) {
-                            continue;
+        foreach ($record->controlaccess ?? [] as $controlaccess) {
+            if (isset($controlaccess->subject)) {
+                foreach ([true, false] as $obeyPreferredLanguage) {
+                    foreach ($controlaccess->subject as $subject) {
+                        $attr = $subject->attributes();
+                        if (
+                            $topic = $this->getDisplayLabel(
+                                $subject,
+                                'part',
+                                $obeyPreferredLanguage
+                            )
+                        ) {
+                            if (!$topic[0]) {
+                                continue;
+                            }
+                            $topics[] = [
+                                'data' => $topic[0],
+                                'id' => (string)$attr->identifier,
+                                'source' => (string)$attr->source,
+                                'detail' => (string)$subject->attributes()->relator,
+                            ];
                         }
-                        $topics[] = [
-                            'data' => $topic[0],
-                            'id' => (string)$attr->identifier,
-                            'source' => (string)$attr->source,
-                            'detail' => (string)$subject->attributes()->relator,
-                        ];
                     }
-                }
-                if (!empty($topics)) {
-                    return $topics;
+                    if (!empty($topics)) {
+                        return $topics;
+                    }
                 }
             }
         }
