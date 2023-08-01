@@ -1430,42 +1430,43 @@ class SolrEad3 extends SolrEad
     public function getRelatedPlacesExtended($include = [], $exclude = ['aihe'])
     {
         $record = $this->getXmlRecord();
-        if (!isset($record->controlaccess->geogname)) {
-            return [];
-        }
 
         $languageResult = $languageResultDetail = $result = $resultDetail = [];
         $languages = $this->preferredLanguage
             ? $this->mapLanguageCode($this->preferredLanguage)
             : [];
 
-        foreach ($record->controlaccess->geogname as $name) {
-            $attr = $name->attributes();
-            $relator = (string)$attr->relator;
-            if (!empty($include) && !in_array($relator, $include)) {
-                continue;
-            }
-            if (!empty($exclude) && in_array($relator, $exclude)) {
-                continue;
-            }
-            $parts = [];
-            foreach ($name->part ?? [] as $place) {
-                if ($p = trim((string)$place)) {
-                    $parts[] = $p;
-                }
-            }
-            if ($parts) {
-                $part = implode(', ', $parts);
-                $data = ['data' => $part, 'detail' => $relator];
-                if (
-                    $attr->lang && in_array((string)$attr->lang, $languages)
-                    && !in_array($part, $languageResult)
-                ) {
-                    $languageResultDetail[] = $data;
-                    $languageResult[] = $part;
-                } elseif (!in_array($part, $result)) {
-                    $resultDetail[] = $data;
-                    $result[] = $part;
+        foreach ($record->controlaccess ?? [] as $controlaccess) {
+            if (isset($controlaccess->geogname)) {
+                foreach ($controlaccess->geogname as $name) {
+                    $attr = $name->attributes();
+                    $relator = (string)$attr->relator;
+                    if (!empty($include) && !in_array($relator, $include)) {
+                        continue;
+                    }
+                    if (!empty($exclude) && in_array($relator, $exclude)) {
+                        continue;
+                    }
+                    $parts = [];
+                    foreach ($name->part ?? [] as $place) {
+                        if ($p = trim((string)$place)) {
+                            $parts[] = $p;
+                        }
+                    }
+                    if ($parts) {
+                        $part = implode(', ', $parts);
+                        $data = ['data' => $part, 'detail' => $relator];
+                        if (
+                            $attr->lang && in_array((string)$attr->lang, $languages)
+                            && !in_array($part, $languageResult)
+                        ) {
+                            $languageResultDetail[] = $data;
+                            $languageResult[] = $part;
+                        } elseif (!in_array($part, $result)) {
+                            $resultDetail[] = $data;
+                            $result[] = $part;
+                        }
+                    }
                 }
             }
         }
