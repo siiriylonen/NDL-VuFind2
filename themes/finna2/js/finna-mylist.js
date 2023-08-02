@@ -503,6 +503,26 @@ finna.myList = (function finnaMyList() {
         );
       }
     });
+
+    var checkCheckboxes = function CheckCheckboxes() {
+      var checkedRenewals = $('form[name="renewals"] .result .checkbox input[type=checkbox]:checked');
+      var checkedHistory = $('form[name="purge_history"] .result .checkbox input[type=checkbox]:checked');
+      if (checkedRenewals.length > 0) {
+        $('#renewSelected').removeAttr('disabled');
+      } else {
+        $('#renewSelected').attr('disabled', 'disabled');
+      }
+      if (checkedHistory.length > 0) {
+        $('#purgeSelected').removeAttr('disabled');
+        $('#copy_to_favourites').removeAttr('disabled');
+      } else {
+        $('#purgeSelected').attr('disabled', 'disabled');
+        $('#copy_to_favourites').attr('disabled', 'disabled');
+      }
+      $('form[name="renewals"] .result .checkbox input[type=checkbox]').on('change', checkCheckboxes);
+      $('form[name="purge_history"] .result .checkbox input[type=checkbox]').on('change', checkCheckboxes);
+    };
+    checkCheckboxes();
   }
 
   var my = {

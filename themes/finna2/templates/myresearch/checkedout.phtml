@@ -69,9 +69,10 @@
                             <span class="selected"></span> <span class="loans-renewal-available"></span>
                           </label>
                         </div>
+                        <span class="my-list-functions-label"><?=ucfirst($this->transEsc('with_selected'))?>:</span>
                       </div>
                     </td>
-                    <td>
+                    <td class="list-functions">
                       <div class="renew-button-col">
                         <div class="btn-group">
                           <input type="submit" class="btn btn-primary dropdown-toggle" id="renewSelected" name="renewSelected" value="<?=$this->transEscAttr('renew_selected')?>" disabled="disabled" data-toggle="dropdown" data-lightbox-ignore>

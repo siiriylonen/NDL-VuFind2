@@ -49,14 +49,15 @@
                             <span class="selected"></span>
                           </label>
                         </div>
+                        <span class="my-list-functions-label"><?=ucfirst($this->transEsc('with_selected'))?>:</span>
                       </div>
                     </td>
-                    <td class="renew-button-col">
-                      <div>
-                        <input type="hidden" id="submitType" name="cancelSelected" value="1">
-                        <input type="hidden" id="cancelConfirm" name="confirm" value="0">
-                      </div>
-                      <div>
+                    <td class="list-functions">
+                      <div class="renew-button-col">
+                        <div>
+                          <input type="hidden" id="submitType" name="cancelSelected" value="1">
+                          <input type="hidden" id="cancelConfirm" name="confirm" value="0">
+                        </div>
                         <div class="btn-group">
                           <input id="cancelSelected" name="cancelSelected" type="submit" value="<?=$this->transEscAttr("storage_retrieval_request_cancel_selected") ?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                           <ul class="dropdown-menu useraccount-confirm">

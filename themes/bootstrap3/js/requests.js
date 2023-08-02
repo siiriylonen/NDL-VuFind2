@@ -23,8 +23,6 @@ $(function setupRequests() {
 
   var checkCheckboxes = function CheckCheckboxes() {
     var checkedCheckedout = $('form[name="updateForm"] .result .checkbox input[type=checkbox]:checked');
-    var checkedRenewals = $('form[name="renewals"] .result .checkbox input[type=checkbox]:checked');
-    var checkedHistory = $('form[name="purge_history"] .result .checkbox input[type=checkbox]:checked');
     if (checkedCheckedout.length > 0) {
       $('#update_selected').removeAttr('disabled');
       $('#cancelSelected').removeAttr('disabled');
@@ -32,20 +30,8 @@ $(function setupRequests() {
       $('#update_selected').attr('disabled', 'disabled');
       $('#cancelSelected').attr('disabled', 'disabled');
     }
-    if (checkedRenewals.length > 0) {
-      $('#renewSelected').removeAttr('disabled');
-    } else {
-      $('#renewSelected').attr('disabled', 'disabled');
-    }
-    if (checkedHistory.length > 0) {
-      $('#purgeSelected').removeAttr('disabled');
-    } else {
-      $('#purgeSelected').attr('disabled', 'disabled');
-    }
   };
   $('form[name="updateForm"] .result .checkbox input[type=checkbox]').on('change', checkCheckboxes);
-  $('form[name="renewals"] .result .checkbox input[type=checkbox]').on('change', checkCheckboxes);
-  $('form[name="purge_history"] .result .checkbox input[type=checkbox]').on('change', checkCheckboxes);
   $('#update_selected').removeClass('hidden');
   checkCheckboxes();
 });
