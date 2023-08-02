@@ -22,8 +22,8 @@ $(function setupRequests() {
   });
 
   var checkCheckboxes = function CheckCheckboxes() {
-    var checkedCheckedout = $('form[name="updateForm"] .result .checkbox input[type=checkbox]:checked');
-    if (checkedCheckedout.length > 0) {
+    var checked = $('form[name="updateForm"] .result .checkbox input[type=checkbox]:checked');
+    if (checked.length > 0) {
       $('#update_selected').removeAttr('disabled');
       $('#cancelSelected').removeAttr('disabled');
     } else {
