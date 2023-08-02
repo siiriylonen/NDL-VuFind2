@@ -1437,35 +1437,33 @@ class SolrEad3 extends SolrEad
             : [];
 
         foreach ($record->controlaccess ?? [] as $controlaccess) {
-            if (isset($controlaccess->geogname)) {
-                foreach ($controlaccess->geogname as $name) {
-                    $attr = $name->attributes();
-                    $relator = (string)$attr->relator;
-                    if (!empty($include) && !in_array($relator, $include)) {
-                        continue;
+            foreach ($controlaccess->geogname as $name) {
+                $attr = $name->attributes();
+                $relator = (string)$attr->relator;
+                if (!empty($include) && !in_array($relator, $include)) {
+                    continue;
+                }
+                if (!empty($exclude) && in_array($relator, $exclude)) {
+                    continue;
+                }
+                $parts = [];
+                foreach ($name->part ?? [] as $place) {
+                    if ($p = trim((string)$place)) {
+                        $parts[] = $p;
                     }
-                    if (!empty($exclude) && in_array($relator, $exclude)) {
-                        continue;
-                    }
-                    $parts = [];
-                    foreach ($name->part ?? [] as $place) {
-                        if ($p = trim((string)$place)) {
-                            $parts[] = $p;
-                        }
-                    }
-                    if ($parts) {
-                        $part = implode(', ', $parts);
-                        $data = ['data' => $part, 'detail' => $relator];
-                        if (
-                            $attr->lang && in_array((string)$attr->lang, $languages)
-                            && !in_array($part, $languageResult)
-                        ) {
-                            $languageResultDetail[] = $data;
-                            $languageResult[] = $part;
-                        } elseif (!in_array($part, $result)) {
-                            $resultDetail[] = $data;
-                            $result[] = $part;
-                        }
+                }
+                if ($parts) {
+                    $part = implode(', ', $parts);
+                    $data = ['data' => $part, 'detail' => $relator];
+                    if (
+                        $attr->lang && in_array((string)$attr->lang, $languages)
+                        && !in_array($part, $languageResult)
+                    ) {
+                        $languageResultDetail[] = $data;
+                        $languageResult[] = $part;
+                    } elseif (!in_array($part, $result)) {
+                        $resultDetail[] = $data;
+                        $result[] = $part;
                     }
                 }
             }
@@ -1964,31 +1962,29 @@ class SolrEad3 extends SolrEad
 
         $topics = [];
         foreach ($record->controlaccess ?? [] as $controlaccess) {
-            if (isset($controlaccess->subject)) {
-                foreach ([true, false] as $obeyPreferredLanguage) {
-                    foreach ($controlaccess->subject as $subject) {
-                        $attr = $subject->attributes();
-                        if (
-                            $topic = $this->getDisplayLabel(
-                                $subject,
-                                'part',
-                                $obeyPreferredLanguage
-                            )
-                        ) {
-                            if (!$topic[0]) {
-                                continue;
-                            }
-                            $topics[] = [
-                                'data' => $topic[0],
-                                'id' => (string)$attr->identifier,
-                                'source' => (string)$attr->source,
-                                'detail' => (string)$subject->attributes()->relator,
-                            ];
+            foreach ([true, false] as $obeyPreferredLanguage) {
+                foreach ($controlaccess->subject as $subject) {
+                    $attr = $subject->attributes();
+                    if (
+                        $topic = $this->getDisplayLabel(
+                            $subject,
+                            'part',
+                            $obeyPreferredLanguage
+                        )
+                    ) {
+                        if (!$topic[0]) {
+                            continue;
                         }
+                        $topics[] = [
+                            'data' => $topic[0],
+                            'id' => (string)$attr->identifier,
+                            'source' => (string)$attr->source,
+                            'detail' => (string)$subject->attributes()->relator,
+                        ];
                     }
-                    if (!empty($topics)) {
-                        return $topics;
-                    }
+                }
+                if (!empty($topics)) {
+                    return $topics;
                 }
             }
         }
