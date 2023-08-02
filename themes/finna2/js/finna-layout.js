@@ -121,6 +121,9 @@ finna.layout = (function finnaLayout() {
         } else {
           self.after([moreLink, lessLink]);
         }
+        if (self.parents('.search-results')) {
+          self.siblings('button').attr('tabindex', -1);
+        }
       }
     });
   }
