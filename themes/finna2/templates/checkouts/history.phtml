@@ -85,7 +85,7 @@
                     </div>
                     <?php if ($purgeAllAllowed): ?>
                       <div class="btn-group">
-                        <input type="submit" id="purgeAll" name="purgeAll" value="<?=$this->transEscAttr('loan_history_purge_all')?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
+                        <input type="submit" id="purgeAll" name="purgeAll" value="<?=$this->transEscAttr('loan_history_purge')?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
                         <ul class="dropdown-menu useraccount-confirm">
                           <li class="disabled"><span class="prompt-text"><?=$this->transEsc('loan_history_confirm_purge_all')?></span></li>
                           <li><a href="#" id="confirm_purge_all_yes"><?=$this->transEsc('confirm_dialog_yes')?></a></li>
