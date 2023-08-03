@@ -303,8 +303,8 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     } else {
       longDesc.html('');
     }
-    longDesc.addClass('truncate-field');
-    longDesc.data('rows', 5);
+    longDesc.removeAttr('style');
+    longDesc.removeClass('truncate-done');
 
     if ('links' in data.details) {
       var links = data.details.links;
@@ -475,7 +475,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
     $('.office-quick-information').show();
     $('.office-information').show();
-    finna.layout.initTruncate(longDesc.parent());
+    VuFind.truncate.initTruncate(longDesc);
     setOfficeInformationLoader(false);
   }
 
