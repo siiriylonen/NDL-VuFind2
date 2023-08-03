@@ -1436,7 +1436,7 @@ class SolrEad3 extends SolrEad
             ? $this->mapLanguageCode($this->preferredLanguage)
             : [];
 
-        foreach ($record->controlaccess ?? [] as $controlaccess) {
+        foreach ($record->controlaccess as $controlaccess) {
             foreach ($controlaccess->geogname as $name) {
                 $attr = $name->attributes();
                 $relator = (string)$attr->relator;
@@ -1961,7 +1961,7 @@ class SolrEad3 extends SolrEad
         $record = $this->getXmlRecord();
 
         $topics = [];
-        foreach ($record->controlaccess ?? [] as $controlaccess) {
+        foreach ($record->controlaccess as $controlaccess) {
             foreach ([true, false] as $obeyPreferredLanguage) {
                 foreach ($controlaccess->subject as $subject) {
                     $attr = $subject->attributes();
