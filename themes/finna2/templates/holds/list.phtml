@@ -23,7 +23,7 @@
       <div class="useraccount-header">
         <h2><?=$this->transEsc('Your Holds and Recalls') ?> (<?=count($this->recordList ?? []);?>)</h2>
         <?php if(!empty($this->recordList)): ?>
-          <div class="sort-col holds-sort visible-xs">
+          <div class="sort-col holds-sort">
             <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
           </div>
         <?php endif; ?>
@@ -84,7 +84,7 @@
                           </div>
                         <?php endif; ?>
                       </div>
-                      <div class="sort-col hidden-xs">
+                      <div class="sort-col">
                         <?php if ($this->sortList): ?>
                           <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
                         <?php endif; ?>

@@ -25,7 +25,7 @@
       </div>
       <div class="useraccount-header">
         <h2><?=$this->transEsc('Loan History')?> (<?=$recordCount;?>)</h2>
-        <div class="sort-col visible-xs">
+        <div class="sort-col">
           <?php if ($this->sortList): ?>
             <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
           <?php endif; ?>
@@ -92,11 +92,6 @@
                           <li><a href="#" class="confirm_purge_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                         </ul>
                       </div>
-                    <?php endif; ?>
-                  </div>
-                  <div class="sort-col hidden-xs">
-                    <?php if ($this->sortList): ?>
-                      <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
                     <?php endif; ?>
                   </div>
                 </td>

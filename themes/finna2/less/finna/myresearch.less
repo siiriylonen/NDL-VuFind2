@@ -208,22 +208,6 @@
     }
   }
 }
-@media (max-width: 500px) {
-  .visible-xxs {
-    display: inline-block;
-  }
-  .hidden-xxs {
-    display: none;
-  }
-}
-@media (min-width: 500px) {
-  .visible-xxs {
-    display: none;
-  }
-  .hidden-xxs {
-    display: inline-block;
-  }
-}
 
 .myresearch-notes {
   clear: both;
@@ -425,7 +409,7 @@
 
 .useraccount-header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: baseline;
   justify-content: space-between;
   margin-top: 5px;
@@ -433,8 +417,8 @@
   @media (max-width: @screen-md-max) {
     margin-top: 10px;
   }
-  @media (max-width: @screen-xxs-min) {
-    flex-direction: column;
+  @media(min-width: @screen-xs) and (max-width: @screen-md) {
+    flex-direction: row;
   }
   h2, h3 {
     line-height: 1.5;
@@ -451,6 +435,34 @@
   a.dropdown-toggle {
     font-size: 0.9em;
     height: 30px;
+  }
+}
+.loans-sort.sort-col {
+  @media(min-width: calc(@screen-xs - 49px)) and (max-width: @screen-md) {
+    display: none;
+  }
+}
+.holds-sort.sort-col {
+  @media(min-width: calc(@screen-sm - 194px)) and (max-width: @screen-md) {
+    display: none;
+  }
+}
+@media(max-width: calc(@screen-xs - 50px)) {
+  #renewals .list-functions .sort-col {
+    display: none;
+  }
+}
+@media(max-width: calc(@screen-sm - 195px)) {
+  #update_holds .list-functions .sort-col {
+    display: none;
+  }
+}
+@media(min-width: @screen-md) {
+  #renewals .list-functions .sort-col {
+    display: none;
+  }
+  #update_holds .list-functions .sort-col {
+    display: none;
   }
 }
 

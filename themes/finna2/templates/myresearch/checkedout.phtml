@@ -29,7 +29,7 @@
       <div class="useraccount-header">
         <h2><?=$this->transEsc('Your Checked Out Items')?> (<?=$totalCount?>)</h2>
         <?php if ($this->renewForm): ?>
-          <div class="sort-col visible-xxs">
+          <div class="sort-col loans-sort">
             <?php if ($this->sortList): ?>
               <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
             <?php endif; ?>
@@ -93,7 +93,7 @@
                           </div>
                         <?php endif; ?>
                       </div>
-                      <div class="sort-col hidden-xxs">
+                      <div class="sort-col">
                         <?php if ($this->sortList): ?>
                           <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
                         <?php endif; ?>
