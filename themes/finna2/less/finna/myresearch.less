@@ -440,6 +440,12 @@
   justify-content: space-between;
   margin-top: 5px;
   margin-bottom: 5px;
+  @media (max-width: @screen-md-max) {
+    margin-top: 10px;
+  }
+  @media (max-width: @screen-xxs-min) {
+    flex-direction: column;
+  }
   h2, h3 {
     line-height: 1.5;
     font-weight: 600;
@@ -737,6 +743,9 @@
     margin-top: 0px;
     &.mainbody.right {
       padding-left: 0px;
+    }
+    .bulkActionButtons.bulk-action-buttons-col {
+      padding-right: 3px;
     }
   }
 }
