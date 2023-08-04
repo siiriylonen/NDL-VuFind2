@@ -497,25 +497,6 @@
 
 finna-feed {
     display: block;
-    .autoplay-button {
-        border: none;
-        background: none;
-        font-size: 20px;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        i {
-            cursor: pointer;
-        }
-        &:not(.is-active) {
-            .pause-icon {
-                display: none;
-            }
-        }
-        @media (max-width: @screen-md) {
-            bottom: -5px;
-        }
-    }
     .arrow-feed-container {
         display: flex;
         flex-direction: row;
@@ -594,30 +575,54 @@ finna-feed {
             }
         }
     }
-    .splide__pagination {
-        li {
-            padding: 5px;
-            button {
-                font-size: 1em;
-                line-height: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 5px;
-                height: 5px;
-                padding: 15px 5px 5px 5px;
+    .carousel-pagination-wrapper {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .carousel-autoplay, .carousel-block {
+            width: 10%;
+        }
+        .autoplay-button {
+            border: none;
+            background: none;
+            font-size: 20px;
+            i {
                 cursor: pointer;
-                color: #cfcfcf;
-                border: 0;
-                outline: none;
-                background: transparent;
-                border-radius: 50%;
-                &.is-active {
-                    color: @brand-primary;
+            }
+            &:not(.is-active) {
+                .pause-icon {
+                    display: none;
                 }
             }
-            @media (min-width: @screen-md) {
-                padding: 8px;
+        }
+        .splide__pagination {
+            padding: 5px 0;
+            li {
+                padding: 5px;
+                button {
+                    font-size: 1em;
+                    line-height: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 5px;
+                    height: 5px;
+                    padding: 5px;
+                    cursor: pointer;
+                    color: #cfcfcf;
+                    border: 0;
+                    outline: none;
+                    background: transparent;
+                    border-radius: 50%;
+                    &.is-active {
+                        color: @brand-primary;
+                    }
+                }
+                @media (min-width: @screen-md) {
+                    padding: 8px;
+                }
             }
         }
     }
