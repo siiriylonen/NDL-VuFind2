@@ -106,6 +106,9 @@ class FinnaFeedElement extends HTMLElement {
 
     autoPlayButton.append(playIcon, pauseIcon);
     this.querySelector('.carousel-autoplay').append(autoPlayButton);
+    this.querySelector('.carousel-pagination-wrapper').style.justifyContent = 'space-between';
+    this.querySelector('.carousel-autoplay').style.display = 'block';
+    this.querySelector('.carousel-block').style.display = 'block';
   }
 
   /**
