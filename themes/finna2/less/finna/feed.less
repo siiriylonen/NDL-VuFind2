@@ -502,6 +502,8 @@ finna-feed {
         background: none;
         font-size: 20px;
         position: absolute;
+        bottom: 0;
+        left: 0;
         i {
             cursor: pointer;
         }
@@ -509,6 +511,9 @@ finna-feed {
             .pause-icon {
                 display: none;
             }
+        }
+        @media (max-width: @screen-md) {
+            bottom: -5px;
         }
     }
     .arrow-feed-container {
@@ -613,9 +618,6 @@ finna-feed {
             }
             @media (min-width: @screen-md) {
                 padding: 8px;
-                button {
-                    font-size: 1.1em;
-                }
             }
         }
     }
