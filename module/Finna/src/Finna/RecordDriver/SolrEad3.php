@@ -1434,42 +1434,41 @@ class SolrEad3 extends SolrEad
     public function getRelatedPlacesExtended($include = [], $exclude = ['aihe'])
     {
         $record = $this->getXmlRecord();
-        if (!isset($record->controlaccess->geogname)) {
-            return [];
-        }
 
         $languageResult = $languageResultDetail = $result = $resultDetail = [];
         $languages = $this->preferredLanguage
             ? $this->mapLanguageCode($this->preferredLanguage)
             : [];
 
-        foreach ($record->controlaccess->geogname as $name) {
-            $attr = $name->attributes();
-            $relator = (string)$attr->relator;
-            if (!empty($include) && !in_array($relator, $include)) {
-                continue;
-            }
-            if (!empty($exclude) && in_array($relator, $exclude)) {
-                continue;
-            }
-            $parts = [];
-            foreach ($name->part ?? [] as $place) {
-                if ($p = trim((string)$place)) {
-                    $parts[] = $p;
+        foreach ($record->controlaccess as $controlaccess) {
+            foreach ($controlaccess->geogname as $name) {
+                $attr = $name->attributes();
+                $relator = (string)$attr->relator;
+                if (!empty($include) && !in_array($relator, $include)) {
+                    continue;
                 }
-            }
-            if ($parts) {
-                $part = implode(', ', $parts);
-                $data = ['data' => $part, 'detail' => $relator];
-                if (
-                    $attr->lang && in_array((string)$attr->lang, $languages)
-                    && !in_array($part, $languageResult)
-                ) {
-                    $languageResultDetail[] = $data;
-                    $languageResult[] = $part;
-                } elseif (!in_array($part, $result)) {
-                    $resultDetail[] = $data;
-                    $result[] = $part;
+                if (!empty($exclude) && in_array($relator, $exclude)) {
+                    continue;
+                }
+                $parts = [];
+                foreach ($name->part ?? [] as $place) {
+                    if ($p = trim((string)$place)) {
+                        $parts[] = $p;
+                    }
+                }
+                if ($parts) {
+                    $part = implode(', ', $parts);
+                    $data = ['data' => $part, 'detail' => $relator];
+                    if (
+                        $attr->lang && in_array((string)$attr->lang, $languages)
+                        && !in_array($part, $languageResult)
+                    ) {
+                        $languageResultDetail[] = $data;
+                        $languageResult[] = $part;
+                    } elseif (!in_array($part, $result)) {
+                        $resultDetail[] = $data;
+                        $result[] = $part;
+                    }
                 }
             }
         }
@@ -1966,9 +1965,9 @@ class SolrEad3 extends SolrEad
         $record = $this->getXmlRecord();
 
         $topics = [];
-        if (isset($record->controlaccess->subject)) {
+        foreach ($record->controlaccess as $controlaccess) {
             foreach ([true, false] as $obeyPreferredLanguage) {
-                foreach ($record->controlaccess->subject as $subject) {
+                foreach ($controlaccess->subject as $subject) {
                     $attr = $subject->attributes();
                     if (
                         $topic = $this->getDisplayLabel(
