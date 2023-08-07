@@ -4,17 +4,12 @@
   <?php foreach ($this->ranges as $current): $escField = $this->escapeHtmlAttr($current['field']); ?>
     <fieldset>
       <legend class="sr-only"><?=$this->transEsc($params->getFacetLabel($current['field']))?></legend>
-      <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#<?=$current['field']?>" controls="#<?=$current['field']?>" aria-expanded="false">
-        <span class="facet-title">
-          <?=$this->transEsc($params->getFacetLabel($current['field']))?>
-          <?=$this->icon('collapse', 'facet-title-icon') ?>
-        </span>
-      </button>
-      <div id="<?=$current['field']?>" class="range-selection collapse">
-        <div class="year-input-container text-center">
+      <div class="range-selection-container">
+        <?php ob_start(); ?>
+        <div id="<?=$current['field']?>" class="range-selection">
           <input type="hidden" name="<?=$this->escapeHtmlAttr($current['type'])?>range[]" value="<?=$escField?>">
           <?php if (isset($current['rangeType'])): ?>
-             <input type="hidden" name="<?=$this->escapeHtmlAttr($current['field']) ?>_type" value="<?=$this->escapeHtmlAttr($current['rangeType']) ?>">
+            <input type="hidden" name="<?=$this->escapeHtmlAttr($current['field']) ?>_type" value="<?=$this->escapeHtmlAttr($current['rangeType']) ?>">
           <?php endif ?>
           <label for="<?=$escField?>from" class="sr-only"><?=$this->transEsc('year_from');?></label>
           <input id="<?=$escField?>from" type="number" class="form-control form-inline input-year" value="<?=isset($current['values'][0]) ? $this->escapeHtmlAttr($current['values'][0]) : ''?>" size="5">
@@ -23,13 +18,24 @@
           <input id="<?=$escField?>to" type="number" class="form-control form-inline input-year" value="<?=isset($current['values'][1]) ? $this->escapeHtmlAttr($current['values'][1]) : ''?>" size="5">
         </div>
         <div class="information"><p class="information-text"><?=$this->transEsc('advanced_search_information_text_range')?></p></div>
-        <?php if ($current['type'] == 'date'): ?>
-        <div aria-hidden="true" class="slider-container">
-          <label for="<?=$escField?><?=$this->escapeHtmlAttr($current['type'])?>Slider" class="sr-only"><?=$this->transEsc('year_slider');?></label>
-          <input type="text" id="<?=$escField?><?=$this->escapeHtmlAttr($current['type'])?>Slider">
+          <?php if ($current['type'] == 'date'): ?>
+            <div aria-hidden="true" class="slider-container">
+              <label for="<?=$escField?><?=$this->escapeHtmlAttr($current['type'])?>Slider" class="sr-only"><?=$this->transEsc('year_slider');?></label>
+              <input type="text" id="<?=$escField?><?=$this->escapeHtmlAttr($current['type'])?>Slider">
+            </div>
+          <?php endif; ?>
         </div>
-        <?php endif; ?>
-      </div>
+          <?php $content = ob_get_clean(); ?>
+          <?= $this->render('components/molecules/containers/finna-panel', [
+            'attributes' => ['class' => ['finna-panel-borderless', 'year-input-container']],
+            'heading' => $this->transEsc($params->getFacetLabel($current['field'])),
+            'headingLevel' => 4,
+            'content' => $content,
+            'headingId' => 'ranges-heading',
+            'collapseId' => 'ranges-collapse',
+            'collapsed' => false,
+          ]); ?>
+        </div>
       <?php if ($current['type'] == 'date'): ?>
       <?php
         $this->headScript()->appendFile('vendor/bootstrap-slider.min.js');
@@ -45,7 +51,7 @@
         $ticks = $ticks_labels = '[' . implode(', ', $current['ticks']) . ']';
         $ticks_positions = '[' . implode(', ', $current['ticks_positions']) . ']';
         $script = <<<JS
-            function setRangeSlider() {
+            $(document).ready(function() {
               var fillTexts = function() {
                 var v = {$escField}dateSlider.getValue();
                 $('#${escField}from').val(v[0]).change();
@@ -66,9 +72,6 @@
                 .change(fillTexts)
                 .data('slider');
               {$init}
-            };
-            $('#{$escField}').one('shown.bs.collapse', function openRangeSlider() {
-              setRangeSlider();
             });
             JS;
       ?>

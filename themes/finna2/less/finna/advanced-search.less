@@ -250,7 +250,6 @@
     .year-input-container {
       margin: 5px 0 10px 0;
       display: inline-block;
-      padding-right: 10px;
       text-align: left;
     }
     label {
@@ -304,9 +303,6 @@
   }
   .search-map-container {
     margin-bottom: 30px;
-    .list-group-item.title {
-      margin-bottom: 10px;
-    }
   }
   .well.map {
     background: @body-bg;
@@ -320,9 +316,36 @@
       margin: 0;
     }
   }
-  .facet-title span {
-    float: right;
-    color: @brand-primary;
+  .panel {
+    margin-bottom: 0;
+    width: 100%;
+    margin-bottom: 10px;
+    .panel-collapse {
+      .panel-body {
+        padding: 0;
+        .list-group-item.facet {
+          border: 0;
+        }
+      }
+    }
+    .panel-heading {
+      color: @text-color;
+      border: 1px solid lightgray;
+      text-shadow: none;
+      background-color: #f2f2f2;
+      .panel-title a {
+        font-size: 0.9em;
+        font-weight: 600;
+        &::after {
+          color: @brand-primary;
+          font-size: 1em;
+          font-weight: 600;
+        }
+        &:hover {
+          background-color: #f2f2f2;
+        }
+      }
+    }
   }
   .well.limit-to {
     background: @body-bg;
@@ -438,9 +461,6 @@
   .ranges-container .year-input-container {
     width: 100%;
     vertical-align: top;
-    @media (min-width: @screen-sm-min) {
-      width: 30%;
-    }
   }
   .ranges-container,
   .solr-adv-filter {

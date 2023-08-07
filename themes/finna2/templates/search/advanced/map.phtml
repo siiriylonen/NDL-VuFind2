@@ -20,34 +20,36 @@ $this->jsTranslations()->addStrings(
   }
 ?>
 <div aria-hidden="true" class="search-map-container">
-  <button class="list-group-item title collapsed" type="button" data-toggle="collapse" data-target="#advanced-search-map" controls="advanced-search-map" aria-expanded="false">
-    <span class="facet-title">
-      <?=$this->transEsc('Geographical Area') ?>
-      <?=$this->icon('collapse', 'facet-title-icon') ?>
-    </span>
-  </button>
-  <div id="advanced-search-map" class="map-container collapse">
+<?php ob_start(); ?>
+  <div id="advanced-search-map" class="map-container">
     <fieldset class="well map">
       <legend class="sr-only"><?=$this->transEsc('Geographical Area') ?></legend>
       <div class="selection-map-canvas"></div>
       <div class="information information-geo bg-info"><p class="information-text"><?=$this->transEsc('advanced_search_information_text_map')?></p></div>
     </fieldset>
   </div>
+  <?php $content = ob_get_clean(); ?>
+  <?= $this->render('components/molecules/containers/finna-panel', [
+    'attributes' => ['class' => ['finna-panel-borderless']],
+    'heading' => $this->transEsc('Geographical Area'),
+    'headingLevel' => 4,
+    'content' => $content,
+    'headingId' => 'map-heading',
+    'collapseId' => 'map-collapse',
+    'collapsed' => false,
+  ]); ?>
 </div>
 
 <?php
   $jsItems = json_encode($items);
   $script = <<<JS
-      function setMapFacet() {
-        var options = {
-          items: $jsItems
-        };
-        finna.advSearch.initMap(options);
-      };
-      $('#advanced-search-map').one('shown.bs.collapse', function openMapFacet() {
-        setMapFacet();
-      });
-      JS;
+  $(document).ready(function() {
+    var options = {
+      items: $jsItems
+    };
+    finna.advSearch.initMap(options);
+  });
+  JS;
   echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');
 ?>
 <!-- END of: finna - search/advanced/map.phtml -->
