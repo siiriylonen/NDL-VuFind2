@@ -174,11 +174,11 @@ class FinnaFeedElement extends HTMLElement {
 
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
-          holder.querySelectorAll('.carousel-slide-more.swipe-up').forEach(el => {
+          holder.querySelectorAll('.carousel-slide-more.arrow-up').forEach(el => {
             el.classList.remove('hidden');
           });
           holder.querySelectorAll('.carousel-more').forEach(el => {
-            if (el.classList.contains('swipe-down')) {
+            if (el.classList.contains('arrow-down')) {
               el.classList.remove('hidden');
             }
             if (el.classList.contains('show-link')) {
@@ -191,44 +191,19 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-text-shadow').forEach(el => {
             el.style.bottom = '30px';
           });
-          var startY = 0;
-          var distance = 0;
-          var threshold = 100;
-          const startTouch = function startTouch(e) {
-            var locationY = e.changedTouches[0];
-            startY = parseInt(locationY.clientY);
-            e.preventDefault();
-          };
-          const moveTouch = function moveTouch(e) {
-            var locationY = e.changedTouches[0];
-            distance = parseInt(locationY.clientY) - startY;
-            var element = this.closest('.feed-item-holder');
-            if (distance < 0 && Math.abs(distance) > threshold) {
-              element.classList.add('clicked');
-              element.querySelector('.carousel-slide-more.swipe-down').classList.remove('hidden');
-              element.querySelector('.carousel-slide-more.swipe-up').classList.add('hidden');
+          const onSlideClick = function onSlideClick (e) {
+            e.stopImmediatePropagation();
+            const slide = this.closest('.feed-item-holder');
+            if (slide && !slide.classList.contains('clicked')) {
+              holder.querySelectorAll('.feed-item-holder.clicked').forEach(el => {
+                el.classList.remove('.clicked');
+              });
+              slide.classList.add('clicked');
+              e.preventDefault();
             }
-            if (distance > 0 && Math.abs(distance) > threshold) {
-              element.classList.remove('clicked');
-              element.querySelector('.carousel-slide-more.swipe-down').classList.add('hidden');
-              element.querySelector('.carousel-slide-more.swipe-up').classList.remove('hidden');
-            }
-            e.preventDefault();
           };
-          const endTouch = function endTouch(e) {
-            e.preventDefault();
-            startY = 0;
-            distance = 0;
-          };
-          holder.querySelectorAll('.carousel-slide-header p, .carousel-slide-header').forEach(el => {
-            el.addEventListener('touchstart', startTouch, false);
-            el.addEventListener('touchmove', moveTouch, false);
-            el.addEventListener('touchend', endTouch, false);
-          });
-          holder.querySelectorAll('.carousel-hover-title').forEach(el => {
-            el.addEventListener('touchstart', startTouch, false);
-            el.addEventListener('touchmove', moveTouch, false);
-            el.addEventListener('touchend', endTouch, false);
+          holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
+            el.addEventListener('click', onSlideClick);
           });
         } else {
           holder.querySelectorAll('.carousel').forEach(el => {
