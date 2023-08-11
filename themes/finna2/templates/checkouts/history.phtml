@@ -25,7 +25,7 @@
       </div>
       <div class="useraccount-header">
         <h2><?=$this->transEsc('Loan History')?> (<?=$recordCount;?>)</h2>
-        <div class="sort-col">
+        <div class="history-sort sort-col">
           <?php if ($this->sortList): ?>
             <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
           <?php endif; ?>
@@ -56,7 +56,7 @@
             <div class="toolbar-sticky">
           <?php endif; ?>
             <table class="myresearch-table history-table" role="presentation" aria-label="<?=$this->transEscAttr('Actions');?>">
-              <tr class="toolbar">
+              <tr id="loan_history" class="toolbar">
                 <?php if ($purgeSelectedAllowed): ?>
                   <td class="text-left checkbox-col">
                     <div class="checkboxFilter mylist-select-all">
@@ -92,6 +92,11 @@
                           <li><a href="#" class="confirm_purge_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                         </ul>
                       </div>
+                    <?php endif; ?>
+                  </div>
+                  <div class="sort-col">
+                    <?php if ($this->sortList): ?>
+                      <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
                     <?php endif; ?>
                   </div>
                 </td>

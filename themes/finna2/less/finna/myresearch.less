@@ -438,12 +438,17 @@
   }
 }
 .loans-sort.sort-col {
-  @media(min-width: calc(@screen-xs - 49px)) and (max-width: @screen-md) {
+  @media(min-width: calc(@screen-xs - 49px)) {
     display: none;
   }
 }
 .holds-sort.sort-col {
-  @media(min-width: calc(@screen-sm - 194px)) and (max-width: @screen-md) {
+  @media(min-width: calc(@screen-sm - 194px)) {
+    display: none;
+  }
+}
+.history-sort.sort-col {
+  @media(min-width: calc(@screen-sm - 99px)) {
     display: none;
   }
 }
@@ -457,11 +462,8 @@
     display: none;
   }
 }
-@media(min-width: @screen-md) {
-  #renewals .list-functions .sort-col {
-    display: none;
-  }
-  #update_holds .list-functions .sort-col {
+@media(max-width: calc(@screen-sm - 100px)) {
+  #loan_history .list-functions .sort-col {
     display: none;
   }
 }
