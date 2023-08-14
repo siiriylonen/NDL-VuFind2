@@ -1205,7 +1205,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             $places = [];
             foreach ($node->eventPlace ?? [] as $placenode) {
                 $place = trim((string)$placenode->displayPlace ?? '');
-                $placeId = $placenode->place->placeID ?? '';
+                $placeId = $placenode->place->placeID ?? [];
                 if (!$place) {
                     $eventPlace = [];
                     foreach ($placenode->place->namePlaceSet ?? [] as $nameSet) {
@@ -1233,32 +1233,27 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         }
                     }
                 } elseif ($place && $placeId) {
-                    $place = [
-                        $place,
+                    $displayPlace = [
+                        'placeName' => $place,
                     ];
                     $details = [];
-                    foreach ($placeId as $item) {
-                        $id = (string)$item;
-                        $idType = (string)($item->attributes()->type ?? '');
-                        if ($idType) {
-                            $id = "($idType)$id";
-                        }
-                        $typeDesc = $this->translate('place_id_type_' . $idType, [], '');
-                        if ($typeDesc) {
-                            $details[] = $typeDesc;
-                        }
-                        if (isset($place['type'])) {
-                            $place['ids'][] = $id;
-                            continue;
-                        }
-                        $place['type'] = $idType;
-                        $place['id'] = $id;
-                        $place['ids'][] = $id;
+                    $id = (string)$placeId;
+                    $idType = (string)($placeId->attributes()->type ?? '');
+                    if ($idType) {
+                        $id = "($idType)$id";
                     }
-                    if ($details) {
-                        $place['details'] = implode(', ', $details);
+                    $typeDesc = 'place_id_type_' . $idType;
+                    if (isset($displayPlace['type'])) {
+                        $displayPlace['ids'][] = $id;
+                        continue;
                     }
-                    $places[] = $place;
+                    $displayPlace['type'] = $idType;
+                    $displayPlace['id'] = $id;
+                    $displayPlace['ids'][] = $id;
+                    if ($typeDesc) {
+                        $displayPlace['details'] = $typeDesc;
+                    }
+                    $places[] = $displayPlace;
                 } else {
                     $places[] = $place;
                 }
