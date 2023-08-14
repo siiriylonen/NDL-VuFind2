@@ -581,14 +581,14 @@
   }
 }
 
-#renewals .toolbar, #update_holds .toolbar, #cancelStorageRetrievalRequest .toolbar, #cancelILLRequest .toolbar {
+#renewals .toolbar, #update_holds .toolbar, #cancelStorageRetrievalRequest .toolbar, #cancelILLRequest .toolbar, #loan_history.toolbar {
   @media (max-width:@screen-xs-max) {
     margin-left: -15px;
   }
   .checkboxFilter.mylist-select-all {
     margin-right: 0;
     float: none;
-    span:not('.mylist-functions-label') {
+    span:not('.my-list-functions-label') {
       font-size: 11px;
       top: 4px;
       left: ~"-webkit-calc(50% + 10px)";
@@ -596,6 +596,9 @@
       left: ~"calc(50% + 10px)";
       position: absolute;
       width: 70px;
+    }
+    .my-list-functions-label {
+      padding-left: 10px;
     }
   }
   .checkboxFilter .checkbox label {
