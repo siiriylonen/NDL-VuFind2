@@ -648,6 +648,14 @@ finna.layout = (function finnaLayout() {
     });
   }
 
+  function srOnlyToNav() {
+    const accountText = document.querySelector('.username.login-text');
+    accountText.classList.toggle('sr-only', window.matchMedia('(max-width:400px)').matches);
+  }
+  window.addEventListener('resize', () => {
+    srOnlyToNav();
+  });
+
   function initFiltersToggle () {
     var win = $(window);
 
@@ -831,6 +839,7 @@ finna.layout = (function finnaLayout() {
       initAudioButtons();
       initKeyboardNavigation();
       initPriorityNav();
+      srOnlyToNav();
       initFiltersToggle();
       initCookieConsent();
       setImagePaginatorTranslations();
