@@ -1244,7 +1244,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         $id = (string)$item;
                         $idType = (string)($item->attributes()->type ?? '');
                         $displayPlace['ids'][] = $idType ? "($idType)$id" : $id;
-                        $typeDesc = 'place_id_type_' . $idType;
+                        $typeDesc = $idType ? 'place_id_type_' . $idType : '';
                         $details[] = $typeDesc;
                         if ($typeDesc) {
                             $displayPlace['details'] = $details;
