@@ -650,7 +650,9 @@ finna.layout = (function finnaLayout() {
 
   function srOnlyToNav() {
     const accountText = document.querySelector('.username.login-text');
-    accountText.classList.toggle('sr-only', window.matchMedia('(max-width:400px)').matches);
+    if (accountText) {
+      accountText.classList.toggle('sr-only', window.matchMedia('(max-width:400px)').matches);
+    }
   }
   window.addEventListener('resize', () => {
     srOnlyToNav();
