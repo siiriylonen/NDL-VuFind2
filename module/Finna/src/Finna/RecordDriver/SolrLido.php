@@ -1249,8 +1249,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         if ($typeDesc) {
                             $displayPlace['details'] = $details;
                         }
-                        $places[] = $displayPlace;
                     }
+                    $places[] = $displayPlace;
                 } else {
                     $places[] = $place;
                 }
