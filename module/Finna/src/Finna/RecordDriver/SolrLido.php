@@ -1238,11 +1238,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     ];
                     $idTypeFirst = (string)($placeId->attributes()->type ?? '');
                     $displayPlace['type'] = $idTypeFirst;
-                    if ($idTypeFirst) {
-                        $placeId = "($idTypeFirst)$placeId";
-                    } else {
-                        $displayPlace['id'] = $placeId;
-                    }
+                    $displayPlace['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
                     foreach ($placenode->place->placeID ?? [] as $item) {
                         $details = [];
                         $id = (string)$item;
