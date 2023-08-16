@@ -1236,24 +1236,28 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     $displayPlace = [
                         'placeName' => $place,
                     ];
-                    $details = [];
-                    $id = (string)$placeId;
-                    $idType = (string)($placeId->attributes()->type ?? '');
-                    if ($idType) {
-                        $id = "($idType)$id";
+                    $idTypeFirst = (string)($placeId->attributes()->type ?? '');
+                    $displayPlace['type'] = $idTypeFirst;
+                    if ($idTypeFirst) {
+                        $placeId = "($idTypeFirst)$placeId";
+                    } else {
+                        $displayPlace['id'] = $placeId;
                     }
-                    $typeDesc = 'place_id_type_' . $idType;
-                    if (isset($displayPlace['type'])) {
-                        $displayPlace['ids'][] = $id;
-                        continue;
+                    foreach ($placenode->place->placeID ?? [] as $item) {
+                        $details = [];
+                        $id = (string)$item;
+                        $idType = (string)($item->attributes()->type ?? '');
+                        if ($idType) {
+                            $id = "($idType)$id";
+                            $displayPlace['ids'][] = $id;
+                        }
+                        $typeDesc = 'place_id_type_' . $idType;
+                        $details[] = $typeDesc;
+                        if ($typeDesc) {
+                            $displayPlace['details'] = $details;
+                        }
+                        $places[] = $displayPlace;
                     }
-                    $displayPlace['type'] = $idType;
-                    $displayPlace['id'] = $id;
-                    $displayPlace['ids'][] = $id;
-                    if ($typeDesc) {
-                        $displayPlace['details'] = $typeDesc;
-                    }
-                    $places[] = $displayPlace;
                 } else {
                     $places[] = $place;
                 }
