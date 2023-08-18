@@ -92,6 +92,10 @@ finna.layout = (function finnaLayout() {
         var moreLink = $('<button type="button" class="more-link" aria-hidden="true">' + moreLabel + ' <i class="fa fa-arrow-down" aria-hidden="true"></i></button>');
         var lessLink = $('<button type="button" class="less-link" aria-hidden="true">' + lessLabel + ' <i class="fa fa-arrow-up" aria-hidden="true"></i></button>');
 
+        if (self.attr('tabindex') === '-1') {
+          moreLink.attr('tabindex', '-1');
+          lessLink.attr('tabindex', '-1');
+        }
         var linkClass = self.data('button-class') || '';
         if (linkClass) {
           moreLink.addClass(linkClass);
@@ -120,9 +124,6 @@ finna.layout = (function finnaLayout() {
           self.after([moreLink]);
         } else {
           self.after([moreLink, lessLink]);
-        }
-        if (self.parents('.search-results')) {
-          self.siblings('button').attr('tabindex', -1);
         }
       }
     });
