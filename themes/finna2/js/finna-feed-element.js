@@ -174,11 +174,11 @@ class FinnaFeedElement extends HTMLElement {
 
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
-          holder.querySelectorAll('.carousel-slide-more.arrow-up').forEach(el => {
+          holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             el.classList.remove('hidden');
           });
           holder.querySelectorAll('.carousel-more').forEach(el => {
-            if (el.classList.contains('arrow-down')) {
+            if (el.classList.contains('carousel-close')) {
               el.classList.remove('hidden');
               el.addEventListener('click', function closeDescription(e) {
                 e.stopImmediatePropagation();
