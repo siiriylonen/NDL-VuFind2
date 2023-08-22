@@ -193,12 +193,6 @@ class FinnaFeedElement extends HTMLElement {
               el.classList.add('hidden');
             }
           });
-          holder.querySelectorAll('.follow-link-container').forEach(el => {
-            el.classList.remove('hidden');
-          });
-          holder.querySelectorAll('.carousel-text-shadow').forEach(el => {
-            el.style.bottom = '30px';
-          });
           const onSlideClick = function onSlideClick (e) {
             e.stopImmediatePropagation();
             const slide = this.closest('.feed-item-holder');

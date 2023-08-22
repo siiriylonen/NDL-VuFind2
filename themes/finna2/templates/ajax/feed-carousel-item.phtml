@@ -46,16 +46,6 @@
     <p><?=$this->escapeHtml($item['text']) ?></p>
   </div>
   <div class="carousel-text-shadow"></div>
-  <div class="follow-link-container hidden">
-    <div class="follow-link">
-      <div class="follow-link-button">
-        <span>
-          <input class="feed-link-button" type="button" value="<?=$this->transEsc('Carousel::open_carousel_link_no_char');?>" />
-          <?=$this->icon('carousel-follow-link'); ?>
-        </span>
-      </div>
-    </div>
-  </div>
   <?php if ($clickableLink): ?>
     <span class="carousel-description"><?= $linkTextEsc ?></span>
   <?php endif; ?>

@@ -628,12 +628,6 @@ finna-feed.splide--ltr {
                     background-image: linear-gradient(to bottom, transparent 0px, @carousel-slide-header-background 100%);
                     bottom: 0;
                 }
-                .follow-link-container {
-                    position: sticky;
-                    margin: 0 -10px;
-                    background-color: @carousel-slide-header-background;
-                    right: auto;
-                }
             } 
         }
         .feed-link {
@@ -665,33 +659,6 @@ finna-feed.splide--ltr {
                 font-weight: 900;
                 color: @carousel-slide-header-color;
                 text-shadow: @carousel-slide-header-text-shadow;
-            }
-            .follow-link-container {
-                position: absolute;
-                z-index: 1;
-                height: 30px;
-                bottom: 0;
-                right: 0;
-                .follow-link {
-                    position: relative;
-                    .follow-link-button {
-                        position: absolute;
-                        right: 20px;
-                        text-shadow: @carousel-slide-header-text-shadow;
-                        float: right;
-                        span {
-                            display: flex;
-                            flex-direction: row;
-                            align-items: baseline;
-                        }
-                        input {
-                            font-weight: bold;
-                            background-color: transparent;
-                            border: none;
-                            padding-right: 2px;
-                        }
-                    }
-                }
             }
         }
 
