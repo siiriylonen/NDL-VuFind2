@@ -190,6 +190,10 @@ class FinnaFeedElement extends HTMLElement {
             });
           });
           holder.querySelectorAll('.carousel-more').forEach(el => {
+            var heightEl = el.previousElementSibling.offsetHeight;
+            if (heightEl) {
+              el.style.height = heightEl + 'px';
+            }
             if (el.classList.contains('carousel-close')) {
               el.classList.remove('hidden');
               el.firstElementChild.addEventListener('click', function closeDescription(e) {
