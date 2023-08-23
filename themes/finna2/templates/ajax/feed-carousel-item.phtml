@@ -21,8 +21,8 @@
     <div class="carousel-hover-title">
       <p><?=$this->escapeHtml($this->truncate($item['title'], 70))?></p>
       <p class="carousel-more show-link"><?=$this->icon('carousel-follow-link')?></p>
-      <p class="carousel-more carousel-close hidden"><?=$this->icon('carousel-close')?></p>
     </div>
+    <p class="carousel-more carousel-close hidden"><?=$this->icon('carousel-close')?></p>
   <?php endif; ?>
   <?php if (isset($item['dateFull'])): ?>
     <span class="carousel-date carousel-hover-date"><?=$this->transEsc('Published')?> <?=$this->escapeHtml($item['dateFull'])?></span>
