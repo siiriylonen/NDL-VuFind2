@@ -186,7 +186,10 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-text').forEach(el => {
             el.addEventListener('click', function doNothing(e) {
               e.stopImmediatePropagation();
-              e.preventDefault();
+              var slide = this.closest('.feed-item-holder');
+              if (slide && slide.classList.contains('clicked')) {
+                e.preventDefault();
+              }
             });
           });
           holder.querySelectorAll('.carousel-more').forEach(el => {
