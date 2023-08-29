@@ -470,6 +470,14 @@
     display: none;
   }
 }
+.myresearch-table .renew-button-col {
+  #renewAll + .useraccount-confirm, #cancelAll + .useraccount-confirm, #cancelAll + .dropdown-backdrop + .useraccount-confirm, #purgeAll + .useraccount-confirm {
+    @media (max-width: @screen-sm) {
+      left: auto;
+      right: 0;
+    }
+  }
+}
 
 .online-payment-form > .payment-row {
   .online-payment-area {
