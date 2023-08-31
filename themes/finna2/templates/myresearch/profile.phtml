@@ -41,7 +41,7 @@
 ?>
 
 <!-- Leftside navigationbar -->
-<?= $this->context($this)->renderInContext("myresearch/menu.phtml", ['active' => 'profile']); ?>
+<?= $this->context($this)->renderInContext('myresearch/menu.phtml', ['active' => 'profile']); ?>
 
 <div class="<?=$this->layoutClass('mainbody-myresearch')?>">
   <h2><?=$this->transEsc('Profile')?></h2>
@@ -272,7 +272,7 @@
             <?php endif; ?>
             <div class="my-profile-row">
               <?php if ($updatePhone || $updateEmail || $updateLoanHistory): ?>
-                <input id="save-library-profile" name="saveLibraryProfile" type="submit" value="<?=$this->transEscAttr("save_my_profile") ?>" class="btn btn-primary my-profile-btn">
+                <input id="save-library-profile" name="saveLibraryProfile" type="submit" value="<?=$this->transEscAttr('save_my_profile') ?>" class="btn btn-primary my-profile-btn">
               <?php endif; ?>
               <div class="clearfix"></div>
             </div>
@@ -281,13 +281,13 @@
       <?php endif; ?>
     </div>
     <div class="myresearch-profile-header">
-      <h3 id="profile-settings"><?= $this->transEsc("finna_account_settings") ?></h3>
+      <h3 id="profile-settings"><?= $this->transEsc('finna_account_settings') ?></h3>
     </div>
     <div class="myresearch-profile-list library-profile">
       <?= $this->partial('myresearch/profile-my-information.phtml', ['user' => $user, 'cards' => $cards, 'hideDueDateReminder' => $this->hideDueDateReminder, 'hideProfileEmailAddress' => $this->hideProfileEmailAddress]); ?>
     </div>
     <div class="myresearch-profile-header">
-      <h3><?= $this->transEsc("my_profile_export_import") . ' / ' . $this->transEsc('delete_account_title') ?></h3>
+      <h3><?= $this->transEsc('my_profile_export_import') . ' / ' . $this->transEsc('delete_account_title') ?></h3>
     </div>
     <div class="myresearch-profile-list library-profile">
       <div class="my-profile-row">

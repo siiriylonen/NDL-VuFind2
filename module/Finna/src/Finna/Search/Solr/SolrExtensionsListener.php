@@ -361,7 +361,7 @@ class SolrExtensionsListener
         }
         echo "\n\n";
         echo "Timing:\n";
-        echo "  Total: " . $debugInfo['timing']['time'] . "\n";
+        echo '  Total: ' . $debugInfo['timing']['time'] . "\n";
         echo "  Prepare:\n";
         foreach ($debugInfo['timing']['prepare'] ?? [] as $key => $value) {
             echo "    $key: ";

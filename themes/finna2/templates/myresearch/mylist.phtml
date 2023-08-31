@@ -11,12 +11,12 @@
   $this->layout()->breadcrumbs = '<li><a href="' . $this->url('myresearch-home') . '">' . $this->transEsc('Your Account') . '</a></li> <li class="active">' . $this->transEsc($currPage) . '</li>';
 
   // Load Javascript dependencies into header:
-  $this->headScript()->appendFile("check_item_statuses.js");
+  $this->headScript()->appendFile('check_item_statuses.js');
 
   // Load Javascript only if list view parameter is NOT full:
-  if ($this->params->getOptions()->getListViewOption() != "full") {
-    $this->headScript()->appendFile("record.js");
-    $this->headScript()->appendFile("embedded_record.js");
+  if ($this->params->getOptions()->getListViewOption() != 'full') {
+    $this->headScript()->appendFile('record.js');
+    $this->headScript()->appendFile('embedded_record.js');
   }
 
   $recordTotal = $this->results->getResultTotal();
@@ -31,7 +31,7 @@
 ?>
 
 <!-- Leftside navigationbar -->
-<?= $this->context($this)->renderInContext("myresearch/menu.phtml", ['active' => isset($list) ? 'list' . $list['id'] : 'favorites']); ?>
+<?= $this->context($this)->renderInContext('myresearch/menu.phtml', ['active' => isset($list) ? 'list' . $list['id'] : 'favorites']); ?>
 
 <?php foreach ($this->results->getRecommendations('side') as $current): ?>
   <?=$this->recommend($current)?>
@@ -99,12 +99,12 @@
         <?php endif ?>
       <?php else: ?>
         <div class="useraccount-header">
-          <h2 class="list-title no-edit"><span><?=$this->transEsc("All Favourites")?></span></h2>
+          <h2 class="list-title no-edit"><span><?=$this->transEsc('All Favourites')?></span></h2>
         </div>
       <?php endif; ?>
     </div>
   </div>
-  <?php if ($template = $this->content()->findTemplateForLng("content/Additions/myresearch-favorites")): ?>
+  <?php if ($template = $this->content()->findTemplateForLng('content/Additions/myresearch-favorites')): ?>
     <div class="myresearch-favorites">
       <?=$this->render($template)?>
     </div>

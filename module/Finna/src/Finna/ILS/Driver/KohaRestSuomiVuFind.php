@@ -2066,7 +2066,7 @@ class KohaRestSuomiVuFind extends \VuFind\ILS\Driver\AbstractBase implements
             }
         } else {
             $this->error(
-                "Unable to determine status for item: " . print_r($item, true)
+                'Unable to determine status for item: ' . print_r($item, true)
             );
         }
 

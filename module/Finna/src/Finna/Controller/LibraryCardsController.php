@@ -561,7 +561,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
             error_log(
                 "Recovery hash expired: $hash, time: $hashtime,"
                 . " lifetime: $hashLifetime, hash age: " . (time() - $hashtime)
-                . ", query: " . $_SERVER['QUERY_STRING']
+                . ', query: ' . $_SERVER['QUERY_STRING']
             );
             $this->flashMessenger()->addErrorMessage('recovery_expired_hash');
             return $this->redirect()->toRoute(

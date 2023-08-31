@@ -1521,7 +1521,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
         foreach ($validServices as $service => $validMethods) {
             $typeLabel = 'dueDateAlert' === $service
                 ? $this->translate(
-                    "messaging_settings_type_dueDateAlertEmail"
+                    'messaging_settings_type_dueDateAlertEmail'
                 )
                 : $this->translate("messaging_settings_type_$service");
             $data = [
@@ -1585,7 +1585,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
 
                     if (!$active) {
                         $methodLabel
-                            =  $this->translate("messaging_settings_method_none");
+                            =  $this->translate('messaging_settings_method_none');
                     }
                     $data['method'] = $methodLabel;
                 }
@@ -3376,7 +3376,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
     protected function pickUpLocationsSortFunction($a, $b)
     {
         $pickUpLocationOrder = isset($this->config['Holds']['pickUpLocationOrder'])
-            ? explode(":", $this->config['Holds']['pickUpLocationOrder']) : [];
+            ? explode(':', $this->config['Holds']['pickUpLocationOrder']) : [];
         $pickUpLocationOrder = array_flip($pickUpLocationOrder);
         if (isset($pickUpLocationOrder[$a['locationID']])) {
             if (isset($pickUpLocationOrder[$b['locationID']])) {

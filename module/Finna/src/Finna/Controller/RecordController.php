@@ -334,7 +334,7 @@ class RecordController extends \VuFind\Controller\RecordController
             $gatheredDetails
         ) : [];
         $extraHoldFields = isset($checkHolds['extraHoldFields'])
-            ? explode(":", $checkHolds['extraHoldFields']) : [];
+            ? explode(':', $checkHolds['extraHoldFields']) : [];
 
         $requestGroupNeeded = in_array('requestGroup', $extraHoldFields)
             && !empty($requestGroups)
@@ -589,7 +589,7 @@ class RecordController extends \VuFind\Controller\RecordController
         // Send various values to the view so we can build the form:
         $pickup = $catalog->getPickUpLocations($patron, $gatheredDetails);
         $extraFields = isset($checkRequests['extraFields'])
-            ? explode(":", $checkRequests['extraFields']) : [];
+            ? explode(':', $checkRequests['extraFields']) : [];
 
         // Process form submissions if necessary:
         if (null !== $this->params()->fromPost('placeStorageRetrievalRequest')) {
@@ -645,7 +645,7 @@ class RecordController extends \VuFind\Controller\RecordController
         $defaultRequired = $this->storageRetrievalRequests()
             ->getDefaultRequiredDate($checkRequests);
         $defaultRequired = $this->serviceLocator->get(\VuFind\Date\Converter::class)
-            ->convertToDisplayDate("U", $defaultRequired);
+            ->convertToDisplayDate('U', $defaultRequired);
         try {
             $defaultPickup
                 = $catalog->getDefaultPickUpLocation($patron, $gatheredDetails);
@@ -724,7 +724,7 @@ class RecordController extends \VuFind\Controller\RecordController
         // Send various values to the view so we can build the form:
 
         $extraFields = isset($checkRequests['extraFields'])
-            ? explode(":", $checkRequests['extraFields']) : [];
+            ? explode(':', $checkRequests['extraFields']) : [];
 
         // Process form submissions if necessary:
         if (null !== $this->params()->fromPost('placeILLRequest')) {
@@ -778,7 +778,7 @@ class RecordController extends \VuFind\Controller\RecordController
         $defaultRequired = $this->ILLRequests()
             ->getDefaultRequiredDate($checkRequests);
         $defaultRequired = $this->serviceLocator->get(\VuFind\Date\Converter::class)
-            ->convertToDisplayDate("U", $defaultRequired);
+            ->convertToDisplayDate('U', $defaultRequired);
 
         // Get pickup libraries
         $pickupLibraries = $catalog->getILLPickUpLibraries(

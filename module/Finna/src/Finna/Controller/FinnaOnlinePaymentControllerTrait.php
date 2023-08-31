@@ -271,7 +271,7 @@ trait FinnaOnlinePaymentControllerTrait
             $csrf = $this->getRequest()->getPost()->get('csrf');
             if (!$csrfValidator->isValid($csrf)) {
                 $this->flashMessenger()->addErrorMessage('online_payment_failed');
-                header("Location: " . $this->getServerUrl('myresearch-fines'));
+                header('Location: ' . $this->getServerUrl('myresearch-fines'));
                 exit();
             }
             // After successful token verification, clear list to shrink session and
@@ -281,7 +281,7 @@ trait FinnaOnlinePaymentControllerTrait
             // Payment requested, do preliminary checks:
             if ($trTable->isPaymentInProgress($patron['cat_username'])) {
                 $this->flashMessenger()->addErrorMessage('online_payment_failed');
-                header("Location: " . $this->getServerUrl('myresearch-fines'));
+                header('Location: ' . $this->getServerUrl('myresearch-fines'));
                 exit();
             }
             if (
@@ -293,7 +293,7 @@ trait FinnaOnlinePaymentControllerTrait
                 // Fines updated, redirect and show updated list.
                 $this->flashMessenger()
                     ->addErrorMessage('online_payment_fines_changed');
-                header("Location: " . $this->getServerUrl('myresearch-fines'));
+                header('Location: ' . $this->getServerUrl('myresearch-fines'));
                 exit();
             }
             $returnUrl = $this->getServerUrl('myresearch-fines');
@@ -322,7 +322,7 @@ trait FinnaOnlinePaymentControllerTrait
                 $result ? $result : 'online_payment_failed',
                 'error'
             );
-            header("Location: " . $this->getServerUrl('myresearch-fines'));
+            header('Location: ' . $this->getServerUrl('myresearch-fines'));
             exit();
         }
 

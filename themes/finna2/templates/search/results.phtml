@@ -200,7 +200,7 @@
       <?php endif; ?>
     </p>
   <?php endif; ?>
-  <div class="<?=$recordTotal < 1 ? "empty-list" : $this->layoutClass('mainbody')?>">
+  <div class="<?=$recordTotal < 1 ? 'empty-list' : $this->layoutClass('mainbody')?>">
     <?=$this->flashmessages()?>
     <?php if ($recordTotal > 0): ?>
       <?php if ($browse): ?>
@@ -260,7 +260,7 @@
   <?php /* End Main Listing */ ?>
 
   <?php /* Narrow Search Options */ ?>
-  <div id="sidebar" class="<?=$recordTotal < 1 ? "empty-list" : $this->layoutClass('sidebar')?>">
+  <div id="sidebar" class="<?=$recordTotal < 1 ? 'empty-list' : $this->layoutClass('sidebar')?>">
     <?php $messageAdded = false; ?>
     <?php foreach ($this->results->getRecommendations('side') as $index => $current): ?>
       <?=$this->recommend($current, 'side', $index)?>
@@ -272,7 +272,7 @@
         $messageAdded = true;
       }?>
     <?php endforeach; ?>
-    <?php if (($template = $this->content()->findTemplateForLng("content/Additions/search-post-facets")) && ($recordTotal > 0)): ?>
+    <?php if (($template = $this->content()->findTemplateForLng('content/Additions/search-post-facets')) && ($recordTotal > 0)): ?>
       <div>
           <?=$this->render($template)?>
       </div>
@@ -307,7 +307,7 @@ if (trim($pagination)): ?>
           <a href="<?=$this->url('myresearch-savesearch')?>?save=<?=urlencode($this->results->getSearchId())?>"><?=$this->icon('search-save') ?> <?=$this->transEsc('save_search')?></a>
         <?php endif; ?>
       <?php endif; ?>
-      <?php if ($template = $this->content()->findTemplateForLng("content/Additions/search-post-tools")): ?>
+      <?php if ($template = $this->content()->findTemplateForLng('content/Additions/search-post-tools')): ?>
         <?=$this->render($template, ['results' => $this->results])?>
       <?php endif; ?>
     </div>

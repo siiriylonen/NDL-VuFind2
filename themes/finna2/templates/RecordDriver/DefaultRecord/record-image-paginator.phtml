@@ -11,7 +11,7 @@
         'recordSource' => $this->driver->tryMethod('getSourceIdentifier'),
         'enableImageZoom' => $this->record($this->driver)->getImagePopupZoom(),
         'maxRows' => 3,
-        'iconlabelClass' => "format-" . $this->record($this->driver)->getFormatClass(end($formats)),
+        'iconlabelClass' => 'format-' . $this->record($this->driver)->getFormatClass(end($formats)),
         'isList' => $type === 'list' || $type === 'list grid',
         'recordCovers' => 'recordcovers',
         'displayIcon' => $displayIcon,

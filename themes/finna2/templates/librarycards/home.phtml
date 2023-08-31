@@ -13,7 +13,7 @@
 ?>
 
 <!-- Leftside navigationbar -->
-<?= $this->context($this)->renderInContext("myresearch/menu.phtml", ['active' => 'librarycards']); ?>
+<?= $this->context($this)->renderInContext('myresearch/menu.phtml', ['active' => 'librarycards']); ?>
 
 <div class="<?=$this->layoutClass('mainbody-myresearch')?>">
   <div class="my-research-content">
@@ -47,9 +47,9 @@
                   <span><?=$libraryCardName?></span>
                 <?php else: ?>
                   <span>
-                    <?=$this->transEsc("Library Card name missing")?>
+                    <?=$this->transEsc('Library Card name missing')?>
                     <?php if ($this->auth()->getManager()->allowsUserIlsLogin()): ?>
-                      <a class="btn-link" href="<?=$this->url('editLibraryCard') . $this->escapeHtmlAttr($record['id']) ?>" title="<?=$this->transEsc('Edit Library Card')?>"> <?=$this->transEsc("Add name")?></a>
+                      <a class="btn-link" href="<?=$this->url('editLibraryCard') . $this->escapeHtmlAttr($record['id']) ?>" title="<?=$this->transEsc('Edit Library Card')?>"> <?=$this->transEsc('Add name')?></a>
                     <?php endif; ?>
                   </span>
                 <?php endif; ?>

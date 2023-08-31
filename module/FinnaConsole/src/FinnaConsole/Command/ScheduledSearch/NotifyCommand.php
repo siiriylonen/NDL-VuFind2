@@ -141,11 +141,11 @@ class NotifyCommand extends \VuFindConsole\Command\ScheduledSearch\NotifyCommand
             }
         } catch (\Exception $e) {
             $this->err(
-                "Exception: " . $e->getMessage(),
+                'Exception: ' . $e->getMessage(),
                 'Exception occurred'
             );
             while ($e = $e->getPrevious()) {
-                $this->err("  Previous exception: " . $e->getMessage());
+                $this->err('  Previous exception: ' . $e->getMessage());
             }
             return 1;
         }

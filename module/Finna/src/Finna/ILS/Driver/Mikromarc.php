@@ -793,7 +793,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 'frozenThrough' => $frozenThrough,
                 'requestGroup' => $this->requestGroupsEnabled &&
                     isset($entry['Scope']) ?
-                    "mikromarc_" . $this->getRequestGroupKey($entry['Scope'])
+                    'mikromarc_' . $this->getRequestGroupKey($entry['Scope'])
                     : '',
                 'cancel_details' => $updateDetails,
                 'updateDetails' => $updateDetails,

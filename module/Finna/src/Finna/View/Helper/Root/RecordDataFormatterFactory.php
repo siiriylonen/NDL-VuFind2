@@ -960,7 +960,7 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             'getAllRecordLinks',
             'data-allRecordLinks.phtml',
             [
-                'context' => ['class' => 'recordLinks', 'title' => ""],
+                'context' => ['class' => 'recordLinks', 'title' => ''],
             ]
         );
         $setTemplateLine(

@@ -262,7 +262,7 @@ class OrganisationInfo implements
         }
 
         if (empty($parent)) {
-            $this->logError("Missing parent");
+            $this->logError('Missing parent');
             return false;
         }
 
@@ -638,7 +638,7 @@ class OrganisationInfo implements
         $allServices
     ) {
         if (!$id) {
-            $this->logError("Missing id");
+            $this->logError('Missing id');
             return false;
         }
 
@@ -1298,7 +1298,7 @@ class OrganisationInfo implements
 
             $dayTime = strtotime($day['date']);
             if ($dayTime === false) {
-                $this->logError("Error parsing date: " . $day['date']);
+                $this->logError('Error parsing date: ' . $day['date']);
                 continue;
             }
 
@@ -1533,7 +1533,7 @@ class OrganisationInfo implements
         if (!empty($contactInfo)) {
             try {
                 $contactInfoToResult = $this->viewRenderer->partial(
-                    "Helpers/organisation-info-museum-page.phtml",
+                    'Helpers/organisation-info-museum-page.phtml',
                     ['contactInfo' => $contactInfo]
                 );
             } catch (\Exception $e) {

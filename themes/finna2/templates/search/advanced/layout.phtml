@@ -80,7 +80,7 @@
 ?>
 
 <?=$this->flashmessages()?>
-<form role="search" aria-label="<?=$this->transEscAttr("Advanced Search")?>" name="searchForm" id="advSearchForm" method="get" action="<?=$this->url($this->options->getSearchAction())?>">
+<form role="search" aria-label="<?=$this->transEscAttr('Advanced Search')?>" name="searchForm" id="advSearchForm" method="get" action="<?=$this->url($this->options->getSearchAction())?>">
   <?php foreach ($hiddenFilters as $key => $filter): ?>
     <?php foreach ($filter as $value): ?>
       <input type="hidden" name="hiddenFilters[]" value="<?=$this->escapeHtmlAttr($key) . ':' . $this->escapeHtmlAttr($value)?>">
@@ -89,7 +89,7 @@
   <div class="advanced-search">
     <div class="">
       <div class="header-container">
-        <h2><?=$this->transEsc("adv_search_label")?></h2>
+        <h2><?=$this->transEsc('adv_search_label')?></h2>
         <?php if (!$this->translationEmpty("tooltip_{$tooltipSource}_advanced_html")): ?>
           <?php
           $tooltipKey = "tooltip_{$tooltipSource}_advanced_html";
@@ -103,14 +103,14 @@
           ];
           ?>
           <button type="button" <?=$this->htmlElement()->getAttributes($tooltipElement)?>><?=$this->icon('help') ?>
-            <span> <?=$this->transEsc("Help with Advanced Search")?> </span>
+            <span> <?=$this->transEsc('Help with Advanced Search')?> </span>
           </button>
         <?php endif; ?>
       </div>
       <input type="hidden" name="sort" value="relevance">
 
       <?php /* An empty div. This is the target for the javascript that builds this screen */ ?>
-      <h3 id="adv-search-groups-header" class="sr-only"><?=$this->transEsc("search_groups")?></h3>
+      <h3 id="adv-search-groups-header" class="sr-only"><?=$this->transEsc('search_groups')?></h3>
       <div id="groupPlaceHolder" class="hidden pull-left">
         <button type="button" class="btn btn-primary"><?=$this->icon('adv-search-group-add') ?> <?= $this->transEsc('add_search_group') ?></button>
       </div>
@@ -122,13 +122,13 @@
           <?php
           //Escaped translations, multiusage
           $msgSearchGroup = $this->transEsc('adv_search_group');
-          $msgDeleteSearch = $this->transEsc("del_search");
-          $msgSearchMatch = $this->transEsc("search_match");
-          $msgSearchWords = $this->translate("Search words");
-          $msgSearchInField = $this->translate("search_in_field");
-          $msgSearchAnd = $this->transEsc("search_AND");
-          $msgSearchOr = $this->transEsc("search_OR");
-          $msgSearchNot = $this->transEsc("search_NOT");
+          $msgDeleteSearch = $this->transEsc('del_search');
+          $msgSearchMatch = $this->transEsc('search_match');
+          $msgSearchWords = $this->translate('Search words');
+          $msgSearchInField = $this->translate('search_in_field');
+          $msgSearchAnd = $this->transEsc('search_AND');
+          $msgSearchOr = $this->transEsc('search_OR');
+          $msgSearchNot = $this->transEsc('search_NOT');
           ?>
           <?php for ($group = 0; $group < 3 || $group <= $setGroupCount; $group++): ?>
             <?php if ($group == 0): ?>
@@ -201,7 +201,7 @@
                       <span class="search_place_holder hidden"></span>
                       <div>
                         <button type="button" class="add_search_link btn btn-primary hidden">
-                        <?=$this->icon('adv-search-group-add') ?> <?=$this->transEsc("add_search")?>
+                        <?=$this->icon('adv-search-group-add') ?> <?=$this->transEsc('add_search')?>
                         </button>
                         <button type="button" class="adv-group-close hidden" title="<?=$msgDeleteSearch?>">
                           <?=$this->icon('adv-search-group-remove') ?> <?=$msgDeleteSearch?>
@@ -221,7 +221,7 @@
       </div>
       <div class="group-join-container">
         <div id="groupJoin" class="form text-center">
-          <label for="groupJoinOptions"><?=$this->transEsc("adv_search_group_join")?>:</label>
+          <label for="groupJoinOptions"><?=$this->transEsc('adv_search_group_join')?>:</label>
           <select id="groupJoinOptions" name="join" class="form-control form-inline">
             <option value="AND"<?php if ($searchDetails && $searchDetails->getOperator() == 'ALL'):?> selected<?php endif?>><?= $this->transEsc('group_AND') ?></option>
             <option value="OR"<?php if ($searchDetails && $searchDetails->getOperator() == 'OR'):?> selected<?php endif?>><?= $this->transEsc('group_OR') ?></option>
@@ -243,7 +243,7 @@
       <input type="hidden" name="dfApplied" value="1">
     <?php endif ?>
   </div>
-  <?php if ($template = $this->content()->findTemplateForLng("content/Additions/solr-advanced-post")): ?>
+  <?php if ($template = $this->content()->findTemplateForLng('content/Additions/solr-advanced-post')): ?>
     <?=$this->render($template)?>
   <?php endif; ?>
 </form>

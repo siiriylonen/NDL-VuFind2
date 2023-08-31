@@ -6,7 +6,7 @@
 <div class="geofacet-header">
   <h5 class="geofacet-title"><?=$this->translate('filter_by_geo_location')?></h5>
   <?php if (!empty($geoFilters)): ?>
-    <a class="remove-facet" href="<?=$removeFacetUrl?>"><?=$this->translate("Remove filter");?></a>
+    <a class="remove-facet" href="<?=$removeFacetUrl?>"><?=$this->translate('Remove filter');?></a>
   <?php endif;?>
   <div class="clearfix"></div>
 </div>
@@ -27,8 +27,8 @@
     </div>
   <?php endif; ?>
   <div class="map-controls text-center">
-    <a class="btn user-location-filter" href="<?=$removeFacetUrl?>"><?=$this->translate("use_my_location");?></a>
-    <a tabindex="-1" class="btn map-control" href="<?=$this->escapeHtmlAttr($mapPopupUrl) ?>" data-lightbox><?=$this->translate("select_from_map");?></a>
+    <a class="btn user-location-filter" href="<?=$removeFacetUrl?>"><?=$this->translate('use_my_location');?></a>
+    <a tabindex="-1" class="btn map-control" href="<?=$this->escapeHtmlAttr($mapPopupUrl) ?>" data-lightbox><?=$this->translate('select_from_map');?></a>
   </div>
   <div class="clearfix"></div>
 </div>

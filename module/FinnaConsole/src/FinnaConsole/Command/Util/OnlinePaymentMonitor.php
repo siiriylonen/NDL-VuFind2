@@ -414,13 +414,13 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
                         $settings['errorEmail']
                             = $this->datasourceConfig[$driver]['feedbackEmail'];
                         $this->warn(
-                            "  No error email for expired transactions defined for "
+                            '  No error email for expired transactions defined for '
                             . "driver $driver, using feedback email ($cnt expired "
-                            . "transactions)"
+                            . 'transactions)'
                         );
                     } else {
                         $this->err(
-                            "  No error email for expired transactions defined for "
+                            '  No error email for expired transactions defined for '
                             . "driver $driver ($cnt expired transactions)",
                             '='
                         );

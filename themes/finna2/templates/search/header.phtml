@@ -39,15 +39,15 @@
         <div id="searchForm" class="hidden-print">
           <div class="adv_search_links">
             <?php if ($advSearch): ?>
-              <a href="<?=$this->url($advSearch)?>?edit=<?=$this->escapeHtmlAttr($searchId)?>"><?=$this->icon('search-edit') ?> <?=$this->transEsc("Edit this search")?></a>
+              <a href="<?=$this->url($advSearch)?>?edit=<?=$this->escapeHtmlAttr($searchId)?>"><?=$this->icon('search-edit') ?> <?=$this->transEsc('Edit this search')?></a>
             <?php endif; ?>
             <div class="adv-search-menu hidden-xs">
               <?php if ($advSearch): ?>
-                <a href="<?=$this->url($advSearch)?>"><?=$this->icon('search-advanced') ?> <?=$this->transEsc("Start a new Advanced Search")?></a>
+                <a href="<?=$this->url($advSearch)?>"><?=$this->icon('search-advanced') ?> <?=$this->transEsc('Start a new Advanced Search')?></a>
               <?php endif; ?>
-              <a href="<?=$this->url($searchHome)?>"><?=$this->icon('search-basic') ?> <?=$this->transEsc("Start a new Basic Search")?></a>
+              <a href="<?=$this->url($searchHome)?>"><?=$this->icon('search-basic') ?> <?=$this->transEsc('Start a new Basic Search')?></a>
             </div>
-            <span class="visible-xs adv-search-menu-toggle"><?=$this->transEsc("adv_search_menu")?> <?=$this->icon('menu-open') ?></span>
+            <span class="visible-xs adv-search-menu-toggle"><?=$this->transEsc('adv_search_menu')?> <?=$this->icon('menu-open') ?></span>
           </div>
         </div>
         <?php if ($this->layout()->templateDir === 'record'): ?>
@@ -121,7 +121,7 @@
               <?=$this->transEsc('Search')?>: <strong><?=$this->escapeHtml($lookfor); ?></strong>
             <?php endif; ?>
           <?php elseif ($searchType == 'advanced'): ?>
-            <span class="adv_search_terms"><strong><?=$this->transEsc("Your search terms")?>:</strong> <?=$this->escapeHtml($this->lookfor)?></span>
+            <span class="adv_search_terms"><strong><?=$this->transEsc('Your search terms')?>:</strong> <?=$this->escapeHtml($this->lookfor)?></span>
           <?php endif; ?>
           <?php else: ?>
             <?=$this->transEsc('nohit_heading')?>

@@ -6,8 +6,8 @@
   $this->inlineScript(
       \Laminas\View\Helper\HeadScript::SCRIPT,
       "var hierarchySettings = {\n"
-      . "    lightboxMode: " . ($this->layout()->getTemplate() == 'layout/lightbox' ? 'true' : 'false') . ",\n"
-      . "    fullHierarchy: " . ($this->tab->isFullHierarchyVisible() ? 'true' : 'false') . "\n"
+      . '    lightboxMode: ' . ($this->layout()->getTemplate() == 'layout/lightbox' ? 'true' : 'false') . ",\n"
+      . '    fullHierarchy: ' . ($this->tab->isFullHierarchyVisible() ? 'true' : 'false') . "\n"
       . "};\n",
       'SET'
   );
@@ -41,7 +41,7 @@
       <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getSourceIdentifier())?>" class="hiddenRecordSource">
       <input type="hidden" value="<?=$this->escapeHtmlAttr($this->treeContext ?? 'Record')?>" class="hiddenContext">
     </div>
-    <div class="back-to-up hidden"><?=$this->transEsc("Back to top")?> <?=$this->icon('back-to-up') ?></div>
+    <div class="back-to-up hidden"><?=$this->transEsc('Back to top')?> <?=$this->icon('back-to-up') ?></div>
   </div>
 <?php endif; ?>
 <!-- END of: finna - RecordTab/hierarchytree.phtml -->

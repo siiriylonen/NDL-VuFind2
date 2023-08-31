@@ -12,7 +12,7 @@
       <?php endif ?>
       <?php if ($this->date): ?>
         <div class="public-list-info">
-          <div><?= $this->transEsc("modified"); ?>: <?=$this->dateTime()->convertToDisplayDate('Y-m-d H:i:s', $this->date); ?></div>
+          <div><?= $this->transEsc('modified'); ?>: <?=$this->dateTime()->convertToDisplayDate('Y-m-d H:i:s', $this->date); ?></div>
         </div>
       <?php endif ?>
     </div>
@@ -56,7 +56,7 @@
   </div>
 </div>
 <?php
-$this->headScript()->appendFile("finna-userlist-embed.js");
+$this->headScript()->appendFile('finna-userlist-embed.js');
 $js = <<<JS
     $(document).ready(function(){
       finna.userListEmbed.init();
