@@ -106,7 +106,7 @@
     <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getActionUrl($driver, 'ArchiveRequest'))?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('archive_request_reserve_action')?></a>
   </div>
 <?php elseif (!$user && $allowArchiveRequest && !$holdsAllowed): ?>
-  <div class="text-right">    
+  <div class="text-right">
     <a href="<?=$this->url('myresearch-userlogin') ?>" class="btn btn-primary" data-lightbox><span><?=$this->transEsc('archive_request_login')?></span></a>
   </div>
 <?php endif; ?>
@@ -139,7 +139,7 @@
   <div class="holdings-urls">
     <?php if (!empty($urls)): ?>
       <?php foreach ($urls as $current): ?>
-        <a class="holdings-url-link" href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank" aria-label="<?=$this->transEscAttr('external_online_link')?>"><i class="fa fa-external-link"></i> <?=$this->transEsc('default::link_' . $current['desc'], null, $current['desc'])?> <?=$current['part'] ?? ''?></a>
+        <a class="holdings-url-link" href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>" target="_blank" aria-label="<?=$this->transEscAttr('external_online_link')?>"><?=$this->icon('external-link') ?> <?=$this->transEsc('default::link_' . $current['desc'], null, $current['desc'])?> <?=$current['part'] ?? ''?></a>
       <?php endforeach; ?>
     <?php endif; ?>
     <?php if ($doiActive): ?>
@@ -349,9 +349,9 @@
         </div>
       <?php endif; ?>
     <?php endif; ?>
-    <div class="holdings-container-heading" tabindex="0" role="button" aria-expanded="<?=$holdingsDetails == 'collapsed' ? 'false' : 'true'?>">
+    <div class="holdings-container-heading <?=$holdingsDetails == 'collapsed' ? '' : 'open'?>" tabindex="0" role="button" aria-expanded="<?=$holdingsDetails == 'collapsed' ? 'false' : 'true'?>">
       <div class="location">
-        <i class="fa fa-arrow-<?=$holdingsDetails == 'collapsed' ? 'right' : 'down'?>" aria-hidden="true"></i>
+        <?=$this->icon('holdings-expand', 'expand') ?><?=$this->icon('holdings-collapse', 'collapse') ?>
         <?php $locationText = $this->transEscWithPrefix('location_', $holding['location']); ?>
         <?php if ($holding['locationhref'] ?? false): ?>
           <a href="<?=$holding['locationhref']?>" target="_blank"><?=$locationText?></a>
@@ -375,7 +375,7 @@
     <div class="clearfix"></div>
     <?php if (isset($holding['items'][0]['detailsGroupKey'])): ?>
       <div class="<?=$this->escapeHtmlAttr($holdingsDetails)?>GetDetails <?=$this->escapeHtmlAttr($holdingsDetails)?> hidden" data-key="<?=$this->escapeHtmlAttr($holding['items'][0]['detailsGroupKey'])?>" data-record-id="<?=$this->escapeHtmlAttr($this->driver->getUniqueId())?>" data-record-source="<?=$this->escapeHtmlAttr($this->driver->getSourceIdentifier())?>">
-        <i class="fa fa-spinner fa-spin"></i> <?=$this->transEsc('loading_ellipsis')?>
+        <?=$this->icon('spinner') ?> <?=$this->transEsc('loading_ellipsis')?>
       </div>
     <?php endif; ?>
     <?php if (!$this->holdings()->showDetailsAfterLocationGroup()): ?>

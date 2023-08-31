@@ -13,15 +13,15 @@
 <div aria-hidden="true" class="geographic-facet">
   <?php if (empty($geoFilters)):?>
     <div class="location-search-info alert alert-info hidden">
-      <div class="fa fa-spinner fa-spin hidden"></div>
+      <?=$this->icon('spinner', 'hidden') ?>
       <div class="info"></div>
     </div>
   <?php else: ?>
     <div class="map-container">
       <div class="map" style="height: 200px"></div>
       <div class="location-search-info info-map hidden">
-        <a class="close-info fa fa-times"></a>
-        <div class="fa fa-spinner fa-spin"></div>
+        <?=$this->icon('ui-close', 'close-info') ?>
+        <?=$this->icon('spinner') ?>
         <div class="info"></div>
       </div>
     </div>
@@ -33,7 +33,7 @@
   <div class="clearfix"></div>
 </div>
 <div class="facet-info bg-info">
-  <i class="fa fa-info3"></i><div class="info"><?=$this->transEsc('geographic_facet_info')?></div>
+  <?=$this->icon('info') ?><div class="info"><?=$this->transEsc('geographic_facet_info')?></div>
 </div>
 
 <?php
