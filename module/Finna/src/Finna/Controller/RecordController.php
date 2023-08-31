@@ -32,6 +32,11 @@ namespace Finna\Controller;
 use Finna\Form\Form;
 use VuFindSearch\ParamBag;
 
+use function count;
+use function in_array;
+use function is_array;
+use function is_string;
+
 /**
  * Record Controller
  *

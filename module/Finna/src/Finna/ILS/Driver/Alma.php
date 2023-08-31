@@ -33,6 +33,12 @@ use VuFind\Exception\ILS as ILSException;
 use VuFind\I18n\Translator\TranslatorAwareInterface;
 use VuFind\Marc\MarcReader;
 
+use function array_key_exists;
+use function count;
+use function floatval;
+use function in_array;
+use function is_array;
+
 /**
  * Alma ILS Driver
  *

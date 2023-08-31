@@ -33,6 +33,9 @@
 
 namespace Finna\RecordDriver;
 
+use function count;
+use function in_array;
+
 /**
  * Model for EAD3 records in Solr.
  *

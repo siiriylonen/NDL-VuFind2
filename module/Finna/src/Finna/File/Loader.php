@@ -32,6 +32,8 @@ namespace Finna\File;
 use Laminas\Config\Config;
 use VuFind\Cache\Manager as CacheManager;
 
+use function strlen;
+
 /**
  * File loader
  *

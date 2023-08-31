@@ -34,6 +34,11 @@ use VuFind\Exception\ILS as ILSException;
 use VuFind\I18n\TranslatableString;
 use VuFind\Marc\MarcReader;
 
+use function array_key_exists;
+use function count;
+use function in_array;
+use function is_array;
+
 /**
  * VuFind Driver for Koha, using REST API
  *

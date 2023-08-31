@@ -38,6 +38,10 @@ use Laminas\Config\Config;
 use Laminas\Mvc\Controller\Plugin\Url;
 use VuFind\Search\Results\PluginManager;
 
+use function in_array;
+use function is_array;
+use function strlen;
+
 /**
  * Service for querying Kirjastohakemisto database.
  * See: https://api.kirjastot.fi/

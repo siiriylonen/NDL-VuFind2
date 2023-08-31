@@ -31,6 +31,12 @@ namespace Finna\ILS\Driver;
 
 use VuFind\Exception\ILS as ILSException;
 
+use function array_key_exists;
+use function count;
+use function in_array;
+use function is_array;
+use function strlen;
+
 /**
  * III Sierra REST API driver
  *

@@ -41,6 +41,9 @@ use Psr\Container\ContainerExceptionInterface as ContainerException;
 use Psr\Container\ContainerInterface;
 use VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder;
 
+use function in_array;
+use function is_array;
+
 /**
  * Factory for record driver data formatting view helper
  *

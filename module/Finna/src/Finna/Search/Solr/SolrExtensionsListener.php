@@ -35,6 +35,9 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use VuFindSearch\Query\Query;
 use VuFindSearch\Query\QueryGroup;
 
+use function in_array;
+use function is_array;
+
 /**
  * Finna Solr extensions listener.
  *

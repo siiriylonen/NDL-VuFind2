@@ -40,6 +40,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use VuFind\Mailer\Mailer;
 
+use function count;
+use function in_array;
+
 /**
  * Console service for sending due date reminders.
  *

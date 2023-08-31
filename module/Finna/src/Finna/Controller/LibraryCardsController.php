@@ -33,6 +33,9 @@ namespace Finna\Controller;
 
 use VuFind\Exception\Auth as AuthException;
 
+use function in_array;
+use function intval;
+
 /**
  * Controller for the library card functionality.
  *

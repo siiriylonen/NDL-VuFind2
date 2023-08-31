@@ -36,6 +36,13 @@ namespace Finna\ILS\Driver;
 use VuFind\Date\DateException;
 use VuFind\Exception\ILS as ILSException;
 
+use function count;
+use function in_array;
+use function is_array;
+use function is_callable;
+use function is_string;
+use function strlen;
+
 /**
  * Mikromarc ILS Driver
  *

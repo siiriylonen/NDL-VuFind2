@@ -33,6 +33,9 @@ namespace Finna\Controller;
 
 use Laminas\Stdlib\Parameters;
 
+use function count;
+use function is_callable;
+
 /**
  * Online payment controller trait.
  *

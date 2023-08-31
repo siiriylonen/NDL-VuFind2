@@ -33,6 +33,14 @@
 
 namespace Finna\RecordDriver;
 
+use function boolval;
+use function call_user_func_array;
+use function count;
+use function in_array;
+use function is_array;
+use function is_string;
+use function strlen;
+
 /**
  * Model for LIDO records in Solr.
  *

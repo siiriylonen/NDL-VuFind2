@@ -34,6 +34,8 @@ namespace Finna\RecordDriver\Feature;
 
 use VuFind\I18n\Locale\LocaleSettings;
 
+use function is_array;
+
 /**
  * Additional functionality for Finna Solr and Finna SolrAuth records.
  *

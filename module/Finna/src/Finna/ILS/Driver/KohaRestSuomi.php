@@ -34,6 +34,11 @@ use VuFind\Date\DateException;
 use VuFind\Exception\ILS as ILSException;
 use VuFind\Marc\MarcReader;
 
+use function array_key_exists;
+use function count;
+use function in_array;
+use function is_array;
+
 /**
  * KohaRest ILS Driver for KohaSuomi
  *

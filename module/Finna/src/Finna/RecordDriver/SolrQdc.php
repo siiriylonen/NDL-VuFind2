@@ -32,6 +32,10 @@
 
 namespace Finna\RecordDriver;
 
+use function array_slice;
+use function count;
+use function in_array;
+
 /**
  * Model for Qualified Dublin Core records in Solr.
  *

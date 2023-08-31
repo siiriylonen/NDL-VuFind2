@@ -31,6 +31,8 @@ namespace FinnaTest\RecordDriver;
 
 use Finna\RecordDriver\SolrForward;
 
+use function is_callable;
+
 /**
  * SolrForward Record Driver Test Class
  *

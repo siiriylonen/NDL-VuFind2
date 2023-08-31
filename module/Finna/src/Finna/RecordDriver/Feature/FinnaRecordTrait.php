@@ -32,6 +32,12 @@ namespace Finna\RecordDriver\Feature;
 
 use Finna\Db\Row\User;
 
+use function count;
+use function in_array;
+use function is_array;
+use function is_bool;
+use function is_callable;
+
 /**
  * Additional functionality for Finna and Primo records.
  *

@@ -29,6 +29,8 @@
 
 namespace Finna\View\Helper\Root;
 
+use function count;
+
 /**
  * Helper class for displaying search-related HTML chunks.
  *

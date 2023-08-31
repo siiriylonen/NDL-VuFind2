@@ -38,6 +38,12 @@ use VuFind\Date\DateException;
 use VuFind\Exception\ILS as ILSException;
 use VuFind\I18n\Translator\TranslatorAwareInterface as TranslatorAwareInterface;
 
+use function count;
+use function in_array;
+use function is_callable;
+use function is_object;
+use function strlen;
+
 /**
  * Axiell Web Services ILS Driver
  *

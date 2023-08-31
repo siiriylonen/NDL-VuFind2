@@ -36,6 +36,8 @@
 
 namespace Finna\View\Helper\Root;
 
+use function func_get_args;
+
 /**
  * RecordLink view helper (DEPRECATED -- use RecordLinker instead)
  *
