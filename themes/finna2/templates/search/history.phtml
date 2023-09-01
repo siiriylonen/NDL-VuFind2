@@ -43,7 +43,7 @@
     <?=$this->flashmessages();?>
     <?php if ($saveSupported): ?>
       <div class="useraccount-header">
-        <h2><?=$this->transEsc("history_saved_searches")?></h2>
+        <h2><?=$this->transEsc('history_saved_searches')?></h2>
       </div>
       <?php if (!empty($this->saved)): ?>
         <?=$this->context()->renderInContext('search/history-table.phtml', ['showSaved' => true]);?>
@@ -57,7 +57,7 @@
     <?php endif; ?>
 
     <div class="useraccount-header">
-      <h2><?=$this->transEsc("history_recent_searches")?></h2>
+      <h2><?=$this->transEsc('history_recent_searches')?></h2>
     </div>
     <?php if (!empty($this->unsaved)): ?>
       <?=$this->context()->renderInContext('search/history-table.phtml', ['showSaved' => false]);?>

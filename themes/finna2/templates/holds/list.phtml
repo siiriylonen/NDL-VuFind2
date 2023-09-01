@@ -24,7 +24,7 @@
         <h2><?=$this->transEsc('Your Holds and Recalls') ?> (<?=count($this->recordList ?? []);?>)</h2>
         <?php if(!empty($this->recordList)): ?>
           <div class="sort-col holds-sort">
-            <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
+            <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList])?>
           </div>
         <?php endif; ?>
       </div>
@@ -65,9 +65,9 @@
                           <input id="update_selected" name="updateSelected" type="submit" value="<?=$this->transEscAttr('hold_edit_selected') ?>" class="btn btn-primary hidden">
                         <?php endif; ?>
                         <?php if ($this->cancelForm): ?>
-                          <input id="cancelSelected" name="cancelSelected" type="submit" value="<?=$this->transEscAttr("hold_cancel_selected") ?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
+                          <input id="cancelSelected" name="cancelSelected" type="submit" value="<?=$this->transEscAttr('hold_cancel_selected') ?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
                           <ul class="dropdown-menu useraccount-confirm" role="presentation">
-                            <li class="disabled"><span class="prompt-text"><?=$this->transEsc("confirm_hold_cancel_selected_text") ?></span></li>
+                            <li class="disabled"><span class="prompt-text"><?=$this->transEsc('confirm_hold_cancel_selected_text') ?></span></li>
                             <li><a href="#" id="confirm_cancel_selected_yes"><?=$this->transEsc('confirm_dialog_yes') ?></a></li>
                             <li><a href="#" class="confirm_cancel_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                           </ul>
@@ -75,9 +75,9 @@
                         </div>
                         <?php if ($this->cancelForm): ?>
                           <div class="btn-group">
-                            <input id="cancelAll" name="cancelAll" type="submit" value="<?=$this->transEscAttr("hold_cancel_all") ?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
+                            <input id="cancelAll" name="cancelAll" type="submit" value="<?=$this->transEscAttr('hold_cancel_all') ?>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
                             <ul class="dropdown-menu useraccount-confirm" role="presentation">
-                              <li class="disabled"><span class="prompt-text"><?=$this->transEsc("confirm_hold_cancel_all_text") ?></span></li>
+                              <li class="disabled"><span class="prompt-text"><?=$this->transEsc('confirm_hold_cancel_all_text') ?></span></li>
                               <li><a href="#" id="confirm_cancel_all_yes"><?=$this->transEsc('confirm_dialog_yes') ?></a></li>
                               <li><a href="#" class="confirm_cancel_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                             </ul>
@@ -86,7 +86,7 @@
                       </div>
                       <div class="sort-col">
                         <?php if ($this->sortList): ?>
-                          <?=$this->context($this)->renderInContext("myresearch/controls/sort.phtml", ['sortList' => $this->sortList])?>
+                          <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList])?>
                         <?php endif; ?>
                       </div>
                     </td>
@@ -248,7 +248,7 @@
             <?php endforeach; ?>
           </table>
           <?php if ($this->cancelForm): ?></form></div> <?php endif; ?>
-          <?php if ($template = $this->content()->findTemplateForLng("content/Additions/holds-post-list")): ?>
+          <?php if ($template = $this->content()->findTemplateForLng('content/Additions/holds-post-list')): ?>
             <div class="holds-post-list"><?=$this->render($template)?></div>
           <?php endif; ?>
         <?php else: ?>
