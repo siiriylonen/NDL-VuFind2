@@ -31,6 +31,14 @@
 
 namespace Finna\RecordDriver;
 
+use function array_slice;
+use function count;
+use function in_array;
+use function intval;
+use function is_array;
+use function is_string;
+use function strlen;
+
 /**
  * Model for MARC records in Solr.
  *

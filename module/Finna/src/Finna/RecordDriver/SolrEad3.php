@@ -33,6 +33,9 @@
 
 namespace Finna\RecordDriver;
 
+use function count;
+use function in_array;
+
 /**
  * Model for EAD3 records in Solr.
  *
@@ -86,14 +89,14 @@ class SolrEad3 extends SolrEad
     public const ALTFORM_FORMAT = 'format';
     public const ALTFORM_ACCESS = 'access';
     public const ALTFORM_ONLINE = 'online';
-    public const ALTFORM_ORIGINAL = "original";
+    public const ALTFORM_ORIGINAL = 'original';
     public const ALTFORM_CONDITION = 'condition';
     public const ALTFORM_IMAGE_SIZE = 'imageSize';
     public const ALTFORM_IMAGE_AREA = 'imageArea';
     public const ALTFORM_IMAGE_TYPE = 'imageType';
     public const ALTFORM_MICROFILM_COPY_TYPE = 'microfilmCopyType';
     public const ALTFORM_MICROFILM_SERIES = 'microfilmSeries';
-    public const ALTFORM_MAP_SCALE = "mapScale";
+    public const ALTFORM_MAP_SCALE = 'mapScale';
 
     // Altformavail label map
     public const ALTFORM_MAP = [

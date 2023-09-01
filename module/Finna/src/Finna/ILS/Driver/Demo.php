@@ -37,6 +37,9 @@ namespace Finna\ILS\Driver;
 
 use VuFind\Exception\ILS as ILSException;
 
+use function in_array;
+use function is_callable;
+
 /**
  * Advanced Dummy ILS Driver -- Returns sample values based on Solr index.
  *

@@ -9,7 +9,7 @@
 ?>
 
 <!-- Leftside navigationbar -->
-<?= $this->context($this)->renderInContext("myresearch/menu.phtml", ['active' => 'holds']); ?>
+<?= $this->context($this)->renderInContext('myresearch/menu.phtml', ['active' => 'holds']); ?>
 
 <div class="<?=$this->layoutClass('mainbody-myresearch')?>">
   <div class="my-research-content">
@@ -31,11 +31,11 @@
       <?php if (isset($this->noSupport)): ?>
         <?php if ($user->getLibraryCards()->count() > 1): ?>
           <div class="support-notice">
-            <p><?=$this->transEsc("no_ils_support_description") ?></p>
+            <p><?=$this->transEsc('no_ils_support_description') ?></p>
           </div>
         <?php endif; ?>
       <?php else: ?>
-        <?php if ($template = $this->content()->findTemplateForLng("content/Additions/holds-pre-list")): ?>
+        <?php if ($template = $this->content()->findTemplateForLng('content/Additions/holds-pre-list')): ?>
           <div class="holds-pre-list"><?=$this->render($template)?></div>
         <?php endif; ?>
         <?php if (!empty($this->recordList)): ?>
@@ -190,17 +190,17 @@
                         <?php endif; ?>
                         <?php if (isset($ilsDetails['pickupnum'])):?>
                           <br>
-                          <strong><?=$this->transEsc("Pickup number") ?>:</strong> <?=$this->escapeHtml($ilsDetails['pickupnum']) ?>
+                          <strong><?=$this->transEsc('Pickup number') ?>:</strong> <?=$this->escapeHtml($ilsDetails['pickupnum']) ?>
                         <?php endif;?>
                         <?php if (!empty($ilsDetails['holdShelf'])):?>
                           <br>
-                          <strong><?=$this->transEsc("Hold Shelf") ?>:</strong> <?=$this->escapeHtml($ilsDetails['holdShelf']) ?>
+                          <strong><?=$this->transEsc('Hold Shelf') ?>:</strong> <?=$this->escapeHtml($ilsDetails['holdShelf']) ?>
                         <?php endif;?>
                       </div>
                     <?php elseif (isset($ilsDetails['in_transit']) && $ilsDetails['in_transit']): ?>
                       <div class="text-success"><?=$this->transEsc('request_in_transit') . (is_string($ilsDetails['in_transit']) ? ': ' . $this->transEsc('institution_' . $ilsDetails['in_transit'], [], $ilsDetails['in_transit']) : '') ?></div>
                     <?php elseif (isset($ilsDetails['position'])): ?>
-                      <p><strong><?=$this->transEsc("hold_queue_position") ?>:</strong> <?=$this->escapeHtml($ilsDetails['position']) ?></p>
+                      <p><strong><?=$this->transEsc('hold_queue_position') ?>:</strong> <?=$this->escapeHtml($ilsDetails['position']) ?></p>
                     <?php endif; ?>
 
                     <?php if (isset($this->cancelResults['items'])): ?>
@@ -237,7 +237,7 @@
                     <?php endif; ?>
 
                     <?php if (isset($ilsDetails['cancel_link'])): ?>
-                      <p><a href="<?=$this->escapeHtmlAttr($ilsDetails['cancel_link']) ?>"><?=$this->transEsc("hold_cancel") ?></a></p>
+                      <p><a href="<?=$this->escapeHtmlAttr($ilsDetails['cancel_link']) ?>"><?=$this->transEsc('hold_cancel') ?></a></p>
                     <?php endif; ?>
                     <?php if (!empty($ilsDetails['updateDetails'])): ?>
                       <p><a class="hold-edit" href="<?=$this->escapeHtmlAttr($this->url('holds-edit', [], ['query' => ['selectedIDS[]' => $ilsDetails['updateDetails']]])) ?>" data-lightbox><?=$this->transEsc('Edit') ?></a></p>
