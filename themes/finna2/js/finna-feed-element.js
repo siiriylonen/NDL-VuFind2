@@ -179,8 +179,9 @@ class FinnaFeedElement extends HTMLElement {
           });
           holder.querySelectorAll('.carousel-hover-title').forEach(el => {
             el.style.width = '90%';
-            if (el.querySelector('p')) {
-              el.querySelector('p').style.paddingRight = '10px';
+            var element = el.querySelector('p');
+            if (element) {
+              element.style.paddingRight = '10px';
             }
           });
           holder.querySelectorAll('.carousel-text').forEach(el => {
