@@ -3,7 +3,7 @@
 /**
  * Hierarchy Tree Data Formatter (abstract base)
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2015.
  *
@@ -28,6 +28,10 @@
  */
 
 namespace VuFind\Hierarchy\TreeDataFormatter;
+
+use function count;
+use function in_array;
+use function is_array;
 
 /**
  * Hierarchy Tree Data Formatter (abstract base)

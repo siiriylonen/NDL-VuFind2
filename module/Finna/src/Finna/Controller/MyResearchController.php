@@ -3,7 +3,7 @@
 /**
  * MyResearch Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2023.
  *
@@ -37,6 +37,13 @@ namespace Finna\Controller;
 use VuFind\Exception\Forbidden as ForbiddenException;
 use VuFind\Exception\ILS as ILSException;
 use VuFind\Exception\ListPermission as ListPermissionException;
+
+use function array_key_exists;
+use function count;
+use function in_array;
+use function is_array;
+use function is_object;
+use function strlen;
 
 /**
  * Controller for the user account area.

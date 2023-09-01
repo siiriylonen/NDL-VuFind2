@@ -3,7 +3,7 @@
 /**
  * SFX Link Resolver Driver
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Royal Holloway, University of London
  * Copyright (C) The National Library of Finland 2015-2017.
@@ -62,7 +62,7 @@ class Sfx extends \VuFind\Resolver\Driver\Sfx
             return $records;
         }
 
-        $root = $xml->xpath("//ctx_obj_targets");
+        $root = $xml->xpath('//ctx_obj_targets');
         $xml = $root[0];
         foreach ($xml->children() as $target) {
             if (

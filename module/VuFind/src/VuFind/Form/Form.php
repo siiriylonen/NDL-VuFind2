@@ -3,7 +3,7 @@
 /**
  * Configurable form.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2018-2021.
  *
@@ -40,6 +40,10 @@ use Laminas\View\HelperPluginManager;
 use VuFind\Config\YamlReader;
 use VuFind\Form\Handler\HandlerInterface;
 use VuFind\Form\Handler\PluginManager as HandlerManager;
+
+use function count;
+use function in_array;
+use function is_array;
 
 /**
  * Configurable form.

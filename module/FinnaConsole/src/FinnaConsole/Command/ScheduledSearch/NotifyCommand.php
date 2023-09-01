@@ -3,7 +3,7 @@
 /**
  * Console command: notify users of scheduled searches.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2019.
  * Copyright (C) The National Library of Finland 2015-2020.
@@ -35,6 +35,8 @@ namespace FinnaConsole\Command\ScheduledSearch;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function count;
 
 /**
  * Console command: notify users of scheduled searches.
@@ -141,11 +143,11 @@ class NotifyCommand extends \VuFindConsole\Command\ScheduledSearch\NotifyCommand
             }
         } catch (\Exception $e) {
             $this->err(
-                "Exception: " . $e->getMessage(),
+                'Exception: ' . $e->getMessage(),
                 'Exception occurred'
             );
             while ($e = $e->getPrevious()) {
-                $this->err("  Previous exception: " . $e->getMessage());
+                $this->err('  Previous exception: ' . $e->getMessage());
             }
             return 1;
         }

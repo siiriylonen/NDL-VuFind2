@@ -3,7 +3,7 @@
 /**
  * Checkouts Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2023.
@@ -35,6 +35,8 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\Session\SessionManager;
 use VuFind\ILS\PaginationHelper;
 use VuFind\Validator\CsrfInterface;
+
+use function is_array;
 
 /**
  * Controller for the user checkouts area.

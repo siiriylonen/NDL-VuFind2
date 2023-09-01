@@ -89,8 +89,8 @@ finna.layout = (function finnaLayout() {
         var moreLabel = self.data('label') || VuFind.translate('show_more');
         var lessLabel = self.data('label') || VuFind.translate('show_less');
 
-        var moreLink = $('<button type="button" class="more-link" aria-hidden="true">' + moreLabel + ' <i class="fa fa-arrow-down" aria-hidden="true"></i></button>');
-        var lessLink = $('<button type="button" class="less-link" aria-hidden="true">' + lessLabel + ' <i class="fa fa-arrow-up" aria-hidden="true"></i></button>');
+        var moreLink = $('<button type="button" class="more-link" aria-hidden="true">' + moreLabel + VuFind.icon('show-more') + '</button>');
+        var lessLink = $('<button type="button" class="less-link" aria-hidden="true">' + lessLabel + VuFind.icon('show-less') + '</button>');
 
         var linkClass = self.data('button-class') || '';
         if (linkClass) {
@@ -115,13 +115,12 @@ finna.layout = (function finnaLayout() {
 
         if (self.data('button-placement') === 'top') {
           self.before([moreLink, lessLink]);
+        } else if (topLink) {
+          self.before(lessLink.addClass('top-button'));
+          self.after([moreLink]);
         } else {
-          if (topLink) {
-            self.before(lessLink.clone(true));
-          }
           self.after([moreLink, lessLink]);
         }
-        self.addClass('truncated');
       }
     });
   }
@@ -199,7 +198,7 @@ finna.layout = (function finnaLayout() {
     var feedbackBtn = $('.floating-feedback-btn');
     if (feedbackBtn.length) {
       var feedbackBtnOffset = feedbackBtn.offset().top;
-      $(window).scroll(function onScrollWindow(/*event*/) {
+      $(window).on("scroll", function onScrollWindow(/*event*/) {
         feedbackBtn.toggleClass('fixed', $(window).scrollTop() > feedbackBtnOffset);
       });
     }
@@ -247,8 +246,8 @@ finna.layout = (function finnaLayout() {
       btn.addClass('hidden');
     });
 
-    $('.searchForm_lookfor').bind('autocomplete:select', function onAutocompleteSelect() {
-      $('.navbar-form').submit();
+    $('.searchForm_lookfor').on('autocomplete:select', function onAutocompleteSelect() {
+      $('.navbar-form').trigger("submit");
     });
 
     $('.select-type').on('click', function onClickSelectType(event) {
@@ -256,7 +255,7 @@ finna.layout = (function finnaLayout() {
       var dropdownToggle = $('.type-dropdown .dropdown-toggle');
 
       $('input[name=type]:hidden').val($(this).siblings().val());
-      dropdownToggle.find('span').text($(this).text());
+      dropdownToggle.find('span:not(.icon)').text($(this).text());
       dropdownToggle.attr('aria-label', ($(this).text()));
       dropdownToggle.dropdown('toggle');
       dropdownToggle.focus();
@@ -324,12 +323,6 @@ finna.layout = (function finnaLayout() {
         }
 
         $(this).nextAll('.condensed-collapse-data').first().slideToggle(120, 'linear', onSlideComplete);
-
-        var icon = $(this).find('.condensed-body > i');
-        if (icon.length === 0) {
-          icon = $(this).find('.condensed-col-title > i');
-        }
-        icon.toggleClass('fa-arrow-right').toggleClass('fa-arrow-down');
       }
     });
   }
@@ -343,7 +336,7 @@ finna.layout = (function finnaLayout() {
   function initBuildingFilter() {
     $('#building_filter').on('keyup', function onKeyUpFilter() {
       var valThis = this.value.toLowerCase();
-      $('#facet_building>ul>li>a .text').each(function doBuildingSearch() {
+      $('#facet_building>ul>li>div>a .facet-value').each(function doBuildingSearch() {
         var text = $(this).text().toLowerCase();
         if (text.indexOf(valThis) !== -1) {
           $(this).closest('li').show();
@@ -405,7 +398,7 @@ finna.layout = (function finnaLayout() {
 
   function initJumpMenus(_holder) {
     var holder = typeof _holder === 'undefined' ? $('body') : _holder;
-    holder.find('select.jumpMenu').off('change').on('change', function onChangeJumpMenu() { $(this).closest('form').submit(); });
+    holder.find('select.jumpMenu').off('change').on('change', function onChangeJumpMenu() { $(this).closest('form').trigger("submit"); });
     holder.find('select.jumpMenuUrl').off('change').on('change', function onChangeJumpMenuUrl(e) { window.location.href = $(e.target).val(); });
   }
 
@@ -422,7 +415,7 @@ finna.layout = (function finnaLayout() {
       } else {
         $('#login_library_card_recovery').hide();
       }
-    }).change();
+    }).trigger("change");
   }
 
   function initILSSelfRegistrationLink(links, idPrefix) {
@@ -434,7 +427,7 @@ finna.layout = (function finnaLayout() {
       } else {
         $('#login_library_card_register').hide();
       }
-    }).change();
+    }).trigger("change");
   }
 
   function initSideFacets() {
@@ -623,13 +616,13 @@ finna.layout = (function finnaLayout() {
   }
 
   function initKeyboardNavigation() {
-    $(window).keyup(function onKeyUp(e) {
+    $(window).on("keyup", function onKeyUp(e) {
       var $target = $(e.target);
       // jsTree link target navigation
       if ((e.which === 13 || e.which === 32)
           && $target.hasClass('jstree-anchor') && $target.find('.main').length > 0
       ) {
-        $target.find('.main').click();
+        $target.find('.main').trigger("click");
         e.preventDefault();
         return false;
       }
@@ -668,17 +661,17 @@ finna.layout = (function finnaLayout() {
     $('.filters-toggle').on('click', function filterToggleClicked() {
       var button = $(this);
       var filters = button.closest('.finna-filters').find('.filters');
+      button.toggleClass('open');
 
-      function setState(setHidden, arrowClass, text) {
+      function setState(setHidden, text) {
         filters.toggleClass('hidden', setHidden);
-        button.find('.fa').attr('class', arrowClass);
         button.find('.toggle-text').html(VuFind.translate(text));
       }
 
       if (filters.hasClass('hidden')) {
-        setState(false, 'fa fa-arrow-up', 'hide_filters');
+        setState(false, 'hide_filters');
       } else {
-        setState(true, 'fa fa-arrow-down', 'show_filters');
+        setState(true, 'show_filters');
       }
     });
   }
@@ -765,15 +758,15 @@ finna.layout = (function finnaLayout() {
     if ($('.help-tabs')[0]) {
       $('.help-tab').each(function initHelpTab() {
         if ($(this).hasClass('active')) {
-          $(this).focus();
+          $(this).trigger("focus");
         }
         var url = $(this).data('url');
-        $(this).keydown(function onTabEnter(event) {
+        $(this).on("keydown", function onTabEnter(event) {
           if (event.which === 13) {
             window.location.href = url;
           }
         });
-        $(this).click(function onTabClick() {
+        $(this).on("click", function onTabClick() {
           window.location.href = url;
         });
       });

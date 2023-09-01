@@ -3,7 +3,7 @@
 /**
  * "Results as feed" view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2015-2019.
@@ -30,6 +30,11 @@
  */
 
 namespace Finna\View\Helper\Root;
+
+use function array_slice;
+use function count;
+use function is_array;
+use function is_string;
 
 /**
  * "Results as feed" view helper

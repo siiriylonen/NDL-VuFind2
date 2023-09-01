@@ -3,7 +3,7 @@
 /**
  * AJAX handler for getting organisation info.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2018.
  *
@@ -36,6 +36,8 @@ use Laminas\Mvc\Controller\Plugin\Params;
 use VuFind\Cookie\CookieManager;
 use VuFind\I18n\Translator\TranslatorAwareInterface;
 use VuFind\Session\Settings as SessionSettings;
+
+use function is_array;
 
 /**
  * AJAX handler for getting organisation info.

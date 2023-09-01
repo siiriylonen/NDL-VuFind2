@@ -3,7 +3,7 @@
 /**
  * Markdown view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2022.
  *
@@ -60,7 +60,7 @@ class Markdown extends \VuFind\View\Helper\Root\Markdown
             $markdown = $this->replaceDeprecatedTags($markdown);
         } else {
             // Fix for deprecated tags.
-            $markdown = str_replace("</summary>", "</summary>\n", $markdown);
+            $markdown = str_replace('</summary>', "</summary>\n", $markdown);
         }
 
         // Clean HTML while in Markdown format, since HTML from server-side rendered

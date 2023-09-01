@@ -3,7 +3,7 @@
 /**
  * Functions for reading MARC records.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2014-2020.
  *
@@ -30,6 +30,9 @@
  */
 
 namespace Finna\RecordDriver\Feature;
+
+use function in_array;
+use function is_array;
 
 /**
  * Functions for reading MARC records.

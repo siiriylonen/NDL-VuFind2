@@ -3,7 +3,7 @@
 /**
  * Blender Search Parameters
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -32,6 +32,9 @@ namespace Finna\Search\Blender;
 use Finna\Search\Solr\AuthorityHelper;
 use VuFind\Search\Solr\HierarchicalFacetHelper;
 use VuFindSearch\ParamBag;
+
+use function in_array;
+use function is_callable;
 
 /**
  * Blender Search Parameters

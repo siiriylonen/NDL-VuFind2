@@ -3,7 +3,7 @@
 /**
  * Proxy URL view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland.
  *
@@ -31,6 +31,8 @@ namespace Finna\View\Helper\Root;
 
 use Laminas\Config\Config;
 use VuFind\Net\IpAddressUtils;
+
+use function in_array;
 
 /**
  * Proxy URL view helper

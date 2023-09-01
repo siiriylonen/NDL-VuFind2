@@ -3,7 +3,7 @@
 /**
  * Piwik view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2014-2016.
  *
@@ -29,6 +29,11 @@
  */
 
 namespace Finna\View\Helper\Root;
+
+use function array_slice;
+use function count;
+use function in_array;
+use function is_array;
 
 /**
  * Piwik Web Analytics view helper

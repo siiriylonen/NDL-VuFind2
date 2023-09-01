@@ -3,7 +3,7 @@
 /**
  * Linked events service
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2020-2023.
  *
@@ -34,6 +34,9 @@ use Finna\View\Helper\Root\CleanHtml;
 use Laminas\Config\Config;
 use Laminas\Mvc\Controller\Plugin\Url;
 use VuFind\Cache\Manager as CacheManager;
+
+use function is_array;
+use function strlen;
 
 /**
  * Linked events service

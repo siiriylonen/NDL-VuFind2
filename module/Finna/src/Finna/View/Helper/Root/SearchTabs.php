@@ -3,7 +3,7 @@
 /**
  * "Search tabs" view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015.
  *
@@ -35,6 +35,9 @@ use VuFind\Db\Table\PluginManager as TableManager;
 use VuFind\Search\Results\PluginManager as ResultsManager;
 use VuFind\Search\SearchTabsHelper;
 use VuFind\Search\UrlQueryHelper;
+
+use function in_array;
+use function is_callable;
 
 /**
  * "Search tabs" view helper

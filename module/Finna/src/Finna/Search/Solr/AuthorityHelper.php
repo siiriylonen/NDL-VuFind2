@@ -3,7 +3,7 @@
 /**
  * Helper for Authority recommendations.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2019.
  *
@@ -28,6 +28,8 @@
  */
 
 namespace Finna\Search\Solr;
+
+use function in_array;
 
 /**
  * Helper for Authority recommendations.
@@ -279,7 +281,7 @@ class AuthorityHelper
         $id = $value;
         $role = null;
         $separator = self::AUTHOR_ID_ROLE_SEPARATOR;
-        if (strpos($value, $separator) !== false) {
+        if (str_contains($value, $separator)) {
             [$id, $role] = explode($separator, $value, 2);
         }
         return [$id, $role];

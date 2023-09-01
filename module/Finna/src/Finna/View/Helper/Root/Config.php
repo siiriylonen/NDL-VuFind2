@@ -3,7 +3,7 @@
 /**
  * Config view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2015-2019.
@@ -71,5 +71,15 @@ class Config extends \VuFind\View\Helper\Root\Config
     {
         $config = $this->get('facets')->CheckboxFacets ?? null;
         return $config ? $config->toArray() : [];
+    }
+
+    /**
+     * Is map selection shown
+     *
+     * @return boolean
+     */
+    public function isGeographicMapVisible()
+    {
+        return !empty($this->get('facets')->Geographical->map_selection);
     }
 }

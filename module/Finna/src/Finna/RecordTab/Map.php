@@ -3,7 +3,7 @@
 /**
  * Map tab
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2015.
@@ -30,6 +30,9 @@
  */
 
 namespace Finna\RecordTab;
+
+use function count;
+use function in_array;
 
 /**
  * Map tab

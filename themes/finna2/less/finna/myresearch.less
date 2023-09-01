@@ -470,6 +470,17 @@
     margin: 0 0 0 1em;
     padding: 6px;
   }
+  .last-transaction-information {
+    &:extend(.alert);
+
+    background: @gray-ultralight;
+    border: 1px solid @gray-lighter;
+    display: flex;
+    align-items: center;
+    div {
+      flex: 1 1;
+    }
+  }
 }
 
 #renewals .toolbar, #update_holds .toolbar {
@@ -766,7 +777,7 @@
       }
 
       &:not(.collapsed) {
-        > .caret {
+        > .icon.collapse-icon {
           transform: rotate(180deg);
           -ms-transform: rotate(180deg);
           -webkit-transform: rotate(180deg);
@@ -786,7 +797,7 @@
       float: right;
       padding: 0;
       margin: 0;
-      > i {
+      > .icon {
         color: white;
         cursor: pointer;
         margin: 0;

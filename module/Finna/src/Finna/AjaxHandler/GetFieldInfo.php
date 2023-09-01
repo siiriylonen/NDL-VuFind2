@@ -3,7 +3,7 @@
 /**
  * AJAX handler for getting information for a field popover.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -39,6 +39,10 @@ use VuFind\Session\Settings as SessionSettings;
 use VuFind\View\Helper\Root\Record;
 use VuFindHttp\HttpService;
 use VuFindSearch\ParamBag;
+
+use function in_array;
+use function is_array;
+use function strlen;
 
 /**
  * AJAX handler for getting information for a field popover.

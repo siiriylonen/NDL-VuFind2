@@ -3,7 +3,7 @@
 /**
  * Factory for record driver data formatting view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2016.
  * Copyright (C) The National Library of Finland 2017-2022.
@@ -40,6 +40,9 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface as ContainerException;
 use Psr\Container\ContainerInterface;
 use VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder;
+
+use function in_array;
+use function is_array;
 
 /**
  * Factory for record driver data formatting view helper
@@ -960,7 +963,7 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             'getAllRecordLinks',
             'data-allRecordLinks.phtml',
             [
-                'context' => ['class' => 'recordLinks', 'title' => ""],
+                'context' => ['class' => 'recordLinks', 'title' => ''],
             ]
         );
         $setTemplateLine(
@@ -1211,13 +1214,20 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
                 'context' => ['class' => 'extendedAccess'],
             ]
         );
-
         $setTemplateLine(
             'Terms of Use',
             'getTermsOfUse',
             'data-termsOfUse.phtml',
             [
                 'context' => ['class' => 'extendedTermsOfUse'],
+            ]
+        );
+        $setTemplateLine(
+            'Security Classification',
+            'getSecurityClassification',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'security-classification'],
             ]
         );
         $setTemplateLine(

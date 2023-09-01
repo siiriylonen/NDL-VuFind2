@@ -3,7 +3,7 @@
 /**
  * Model for LRMI records in Solr.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2013-2020.
  *
@@ -32,6 +32,8 @@
  */
 
 namespace Finna\RecordDriver;
+
+use function in_array;
 
 /**
  * Model for LRMI records in Solr.
@@ -257,7 +259,7 @@ class SolrLrmi extends SolrQdc
             $thing = $about->thing;
             $name = trim((string)$thing->name);
             if (
-                $name && strpos((string)$thing->identifier, $type) !== false
+                $name && str_contains((string)$thing->identifier, $type)
             ) {
                 $topics[] = $name;
             }

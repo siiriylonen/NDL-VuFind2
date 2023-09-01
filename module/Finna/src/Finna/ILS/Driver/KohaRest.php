@@ -3,9 +3,9 @@
 /**
  * VuFind Driver for Koha, using REST API
  *
- * PHP version 7
+ * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2017-2021.
+ * Copyright (C) The National Library of Finland 2017-2023.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -34,6 +34,11 @@ use VuFind\Exception\ILS as ILSException;
 use VuFind\I18n\TranslatableString;
 use VuFind\Marc\MarcReader;
 
+use function array_key_exists;
+use function count;
+use function in_array;
+use function is_array;
+
 /**
  * VuFind Driver for Koha, using REST API
  *
@@ -59,6 +64,9 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
         'Item_Check_in' => 'checkinNotice',
         'Item_Checkout' => 'checkoutNotice',
         'Item_Due' => 'dueDateNotice',
+        'Ill_ready' => 'illRequestReadyForPickUp',
+        'Ill_unavailable' => 'illRequestUnavailable',
+        'Ill_update' => 'illRequestUpdate',
     ];
 
     /**
@@ -92,6 +100,27 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
      * @var array
      */
     protected $holdingsLocationOrder;
+
+    /**
+     * Minimum payable amount
+     *
+     * @var int
+     */
+    protected $minimumPayableAmount = 0;
+
+    /**
+     * Non-payable fine types
+     *
+     * @var array
+     */
+    protected $nonPayableTypes = [];
+
+    /**
+     * Non-payable fine statuses
+     *
+     * @var array
+     */
+    protected $nonPayableStatuses = [];
 
     /**
      * Initialize the driver.
@@ -130,6 +159,14 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             ? explode(':', $this->config['Holdings']['holdings_location_order'])
             : [];
         $this->holdingsLocationOrder = array_flip($this->holdingsLocationOrder);
+
+        $paymentConfig = $this->config['OnlinePayment']
+            ?? $this->config['onlinePayment']
+            ?? [];
+
+        $this->minimumPayableAmount = $paymentConfig['minimumFee'] ?? 0;
+        $this->nonPayableTypes = (array)($paymentConfig['nonPayableTypes'] ?? []);
+        $this->nonPayableStatuses = (array)($paymentConfig['nonPayableStatuses'] ?? []);
     }
 
     /**
@@ -243,12 +280,16 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                     $bibId = $item['biblio_id'];
                 }
             }
-            $type = trim($entry['debit_type']);
-            $type = $this->translate($this->feeTypeMappings[$type] ?? $type);
+            $debitType = trim($entry['debit_type']);
+            $debitStatus = trim($entry['status'] ?? '');
+            $type = $this->translate($this->feeTypeMappings[$debitType] ?? $debitType);
             $description = trim($entry['description']);
             if ($description !== $type) {
                 $type .= " - $description";
             }
+            $payableOnline = $entry['amount_outstanding'] > 0
+                && !in_array($debitType, $this->nonPayableTypes)
+                && !in_array($debitStatus, $this->nonPayableStatuses);
             $fine = [
                 'fine_id' => $entry['account_line_id'],
                 'amount' => $entry['amount'] * 100,
@@ -256,7 +297,8 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                 'fine' => $type,
                 'createdate' => $this->convertDate($entry['date'] ?? null),
                 'checkout' => '',
-                'payableOnline' => $entry['amount_outstanding'] > 0,
+                'payableOnline' => $payableOnline,
+                'organization' => $entry['library_id'] ?? '',
             ];
             if (null !== $bibId) {
                 $fine['id'] = $bibId;
@@ -638,11 +680,8 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                 $payableFines[] = $fine;
             }
         }
-        $paymentConfig = $this->config['OnlinePayment']
-            ?? $this->config['onlinePayment']
-            ?? [];
 
-        if ($amount >= ($paymentConfig['minimumFee'] ?? 0)) {
+        if ($amount >= $this->minimumPayableAmount) {
             return [
                 'payable' => true,
                 'amount' => $amount,
@@ -819,8 +858,8 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
      * method.
      * @param array $holdDetails Optional array, only passed in when getting a list
      * in the context of placing a hold; contains most of the same values passed to
-     * placeHold, minus the patron data.  May be used to limit the pickup options
-     * or may be ignored.  The driver must not add new options to the return array
+     * placeHold, minus the patron data. May be used to limit the pickup options
+     * or may be ignored. The driver must not add new options to the return array
      * based on this data or other areas of VuFind may behave incorrectly.
      *
      * @throws ILSException

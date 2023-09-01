@@ -3,9 +3,9 @@
 /**
  * Online payment controller trait.
  *
- * PHP version 7
+ * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2015-2022.
+ * Copyright (C) The National Library of Finland 2015-2023.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -24,6 +24,7 @@
  * @package  Controller
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
@@ -32,6 +33,9 @@ namespace Finna\Controller;
 
 use Laminas\Stdlib\Parameters;
 
+use function count;
+use function is_callable;
+
 /**
  * Online payment controller trait.
  *
@@ -39,6 +43,7 @@ use Laminas\Stdlib\Parameters;
  * @package  Controller
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
@@ -192,7 +197,12 @@ trait FinnaOnlinePaymentControllerTrait
                 "Mandatory setting 'currency' missing from ILS driver for"
                 . " '{$patron['source']}'"
             );
-            return false;
+            return;
+        }
+
+        if (!($user = $this->getUser())) {
+            $this->handleError('Could not get user');
+            return;
         }
 
         $selectFees = $paymentConfig['selectFines'] ?? false;
@@ -229,6 +239,28 @@ trait FinnaOnlinePaymentControllerTrait
         $view->selectFees = $selectFees;
 
         $trTable = $this->getTable('transaction');
+        $lastTransaction = null;
+        $dataSourceConfig = $this->getConfig('datasources')->toArray();
+        $receiptEnabled = $dataSourceConfig[$patron['source']]['onlinePayment']['receipt'] ?? false;
+        if ($receiptEnabled) {
+            $lastTransaction = $trTable->getLastPaidForPatron($patron['cat_username']);
+        }
+        if (
+            $lastTransaction
+            && $this->params()->fromQuery('transactionReport') === 'true'
+        ) {
+            $receipt = $this->serviceLocator->get(\Finna\OnlinePayment\Receipt::class);
+            $data = $receipt->createReceiptPDF($lastTransaction);
+            header('Content-Type: application/pdf');
+            header(
+                'Content-disposition: inline; filename="' .
+                addcslashes($data['filename'], '"') . '"'
+            );
+            echo $data['pdf'];
+            exit(0);
+        }
+        $view->lastTransaction = $lastTransaction;
+
         $paymentInProgress = $trTable->isPaymentInProgress($patron['cat_username']);
         $transactionIdParam = 'finna_payment_id';
         if (
@@ -242,7 +274,7 @@ trait FinnaOnlinePaymentControllerTrait
             $csrf = $this->getRequest()->getPost()->get('csrf');
             if (!$csrfValidator->isValid($csrf)) {
                 $this->flashMessenger()->addErrorMessage('online_payment_failed');
-                header("Location: " . $this->getServerUrl('myresearch-fines'));
+                header('Location: ' . $this->getServerUrl('myresearch-fines'));
                 exit();
             }
             // After successful token verification, clear list to shrink session and
@@ -252,7 +284,7 @@ trait FinnaOnlinePaymentControllerTrait
             // Payment requested, do preliminary checks:
             if ($trTable->isPaymentInProgress($patron['cat_username'])) {
                 $this->flashMessenger()->addErrorMessage('online_payment_failed');
-                header("Location: " . $this->getServerUrl('myresearch-fines'));
+                header('Location: ' . $this->getServerUrl('myresearch-fines'));
                 exit();
             }
             if (
@@ -264,16 +296,12 @@ trait FinnaOnlinePaymentControllerTrait
                 // Fines updated, redirect and show updated list.
                 $this->flashMessenger()
                     ->addErrorMessage('online_payment_fines_changed');
-                header("Location: " . $this->getServerUrl('myresearch-fines'));
+                header('Location: ' . $this->getServerUrl('myresearch-fines'));
                 exit();
             }
             $returnUrl = $this->getServerUrl('myresearch-fines');
             $notifyUrl = $this->getServerUrl('home') . 'AJAX/onlinePaymentNotify';
             [$driver, ] = explode('.', $patron['cat_username'], 2);
-
-            if (!($user = $this->getUser())) {
-                return;
-            }
 
             $patronProfile = array_merge(
                 $patron,
@@ -297,7 +325,7 @@ trait FinnaOnlinePaymentControllerTrait
                 $result ? $result : 'online_payment_failed',
                 'error'
             );
-            header("Location: " . $this->getServerUrl('myresearch-fines'));
+            header('Location: ' . $this->getServerUrl('myresearch-fines'));
             exit();
         }
 
@@ -319,7 +347,7 @@ trait FinnaOnlinePaymentControllerTrait
                     ->addSuccessMessage('online_payment_successful');
             } else {
                 // Process payment response:
-                $result = $paymentHandler->processPaymentResponse(
+                [$result, $markedAsPaid] = $paymentHandler->processPaymentResponse(
                     $transaction,
                     $this->getRequest()
                 );
@@ -329,11 +357,26 @@ trait FinnaOnlinePaymentControllerTrait
                 if ($paymentHandler::PAYMENT_SUCCESS === $result) {
                     $this->flashMessenger()
                         ->addSuccessMessage('online_payment_successful');
-                    // Display page and mark fees as paid via AJAX:
-                    $view->registerPayment = true;
-                    $view->registerPaymentParams = [
-                        'transactionId' => $transaction->transaction_id,
-                    ];
+                    // Send receipt by email if enabled and the payment was just now
+                    // marked as paid (the notification handler could have done it
+                    // already):
+                    if ($markedAsPaid && $receiptEnabled) {
+                        $patronProfile = array_merge(
+                            $patron,
+                            $catalog->getMyProfile($patron)
+                        );
+                        $receipt = $this->serviceLocator->get(\Finna\OnlinePayment\Receipt::class);
+                        $receipt->sendEmail($user, $patronProfile, $transaction);
+                    }
+                    // Reload transaction and check if registration is still pending:
+                    $transaction = $trTable->getTransaction($transactionId);
+                    if ($transaction && $transaction->needsRegistration()) {
+                        // Display page and mark fees as paid via AJAX:
+                        $view->registerPayment = true;
+                        $view->registerPaymentParams = [
+                            'transactionId' => $transaction->transaction_id,
+                        ];
+                    }
                 } elseif ($paymentHandler::PAYMENT_CANCEL === $result) {
                     $this->flashMessenger()
                         ->addSuccessMessage('online_payment_canceled');
@@ -375,6 +418,12 @@ trait FinnaOnlinePaymentControllerTrait
                     $view->setTemplate(
                         'Helpers/OnlinePayment/terms-' . $view->paymentHandler
                         . '.phtml'
+                    );
+                } else {
+                    // Check for a started transaction:
+                    $view->startedTransaction = $trTable->getStartedPayment(
+                        $patron['cat_username'],
+                        (int)($paymentConfig['transactionMaxDuration'] ?? 15)
                     );
                 }
             }

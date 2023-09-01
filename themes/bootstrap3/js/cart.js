@@ -161,7 +161,7 @@ VuFind.register('cart', function Cart() {
     var $form = typeof _form === 'undefined'
       ? $('form[name="bulkActionForm"]')
       : $(_form);
-    $("#updateCart, #bottom_updateCart").unbind('click').click(function cartUpdate() {
+    $("#updateCart, #bottom_updateCart").off("click").on("click", function cartUpdate() {
       var elId = this.id;
       var selected = [];
       var addToSelected = function processCartFormValues() {
@@ -219,8 +219,9 @@ VuFind.register('cart', function Cart() {
     });
   }
 
-  function _registerToggles() {
-    var $toggleBtns = $('.btn-bookbag-toggle');
+  function registerToggles(_container) {
+    var container = typeof _container !== 'undefined' ? $(_container) : $(document);
+    var $toggleBtns = container.find('.btn-bookbag-toggle');
     if ($toggleBtns.length > 0) {
       $toggleBtns.each(function cartIdEach() {
         var $this = $(this);
@@ -254,7 +255,7 @@ VuFind.register('cart', function Cart() {
 
   function init() {
     // Record buttons
-    _registerToggles();
+    registerToggles();
     // Search results
     _registerUpdate();
     $("#updateCart, #bottom_updateCart").popover({
@@ -279,7 +280,8 @@ VuFind.register('cart', function Cart() {
     setDomain: setDomain,
     updateCount: updateCount,
     // Init
-    init: init
+    init: init,
+    registerToggles: registerToggles
   };
 });
 

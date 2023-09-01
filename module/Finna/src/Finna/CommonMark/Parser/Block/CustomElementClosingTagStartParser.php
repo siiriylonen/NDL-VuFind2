@@ -3,7 +3,7 @@
 /**
  * Custom element closing tag block start parser
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2021-2022.
  *
@@ -34,6 +34,8 @@ use League\CommonMark\Parser\Block\BlockStart;
 use League\CommonMark\Parser\Block\BlockStartParserInterface;
 use League\CommonMark\Parser\Cursor;
 use League\CommonMark\Parser\MarkdownParserStateInterface;
+
+use function strlen;
 
 /**
  * Custom element closing tag block start parser

@@ -11,7 +11,7 @@
       <?php $id = 0; ?>
       <?php foreach ($this->feedIds as $desc => $feed): ?>
         <?php
-          $tabName = preg_replace("/\W/", "-", strtolower($feed));
+          $tabName = preg_replace("/\W/", '-', strtolower($feed));
           $tabNames[] = $tabName;
           $isActive = 0 === strcasecmp($this->active, $feed);
           $tabId = $this->id . '-' . $feed;
@@ -31,7 +31,8 @@
 
   <div class="feed-accordions" role="tablist">
     <h2 class="feed-accordions-title"><?= $this->transEsc($this->title); ?></h2>
-    <?php $i = 0; foreach ($this->feedIds as $desc => $feed): ?>
+    <?php $i = 0;
+    foreach ($this->feedIds as $desc => $feed): ?>
       <?php
         $classes = ['accordion', 'accordion-' . $tabNames[$i++]];
         $isActive = 0 === strcasecmp($this->active, $feed);
@@ -52,7 +53,7 @@
   <finna-feed></finna-feed>
 </div>
 <?php
-$this->headScript()->appendFile("finna-feed-tabs.js");
+$this->headScript()->appendFile('finna-feed-tabs.js');
 $js = <<<JS
     $(document).ready(function(){
       finna.feedTabs.init("feed-tabs-{$this->id}");

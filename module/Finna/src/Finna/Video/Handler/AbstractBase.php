@@ -3,7 +3,7 @@
 /**
  * Base for video services.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -28,6 +28,8 @@
  */
 
 namespace Finna\Video\Handler;
+
+use function in_array;
 
 /**
  * Base for video services.

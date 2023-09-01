@@ -3,7 +3,7 @@
 /**
  * VuFind Record Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -34,6 +34,11 @@ use VuFind\Exception\Forbidden as ForbiddenException;
 use VuFind\Exception\Mail as MailException;
 use VuFind\RecordDriver\AbstractBase as AbstractRecordDriver;
 use VuFindSearch\ParamBag;
+
+use function in_array;
+use function intval;
+use function is_array;
+use function is_object;
 
 /**
  * VuFind Record Controller
@@ -549,7 +554,7 @@ class AbstractRecord extends AbstractBase
                 $this->flashMessenger()->addMessage('email_success', 'success');
                 return $this->redirectToRecord();
             } catch (MailException $e) {
-                $this->flashMessenger()->addMessage($e->getMessage(), 'error');
+                $this->flashMessenger()->addMessage($e->getDisplayMessage(), 'error');
             }
         }
 
@@ -615,7 +620,7 @@ class AbstractRecord extends AbstractBase
                 $this->flashMessenger()->addMessage('sms_success', 'success');
                 return $this->redirectToRecord();
             } catch (MailException $e) {
-                $this->flashMessenger()->addMessage($e->getMessage(), 'error');
+                $this->flashMessenger()->addMessage($e->getDisplayMessage(), 'error');
             }
         }
 
@@ -746,7 +751,7 @@ class AbstractRecord extends AbstractBase
      */
     protected function loadRecord(ParamBag $params = null, bool $force = false)
     {
-        // Only load the record if it has not already been loaded.  Note that
+        // Only load the record if it has not already been loaded. Note that
         // when determining record ID, we check both the route match (the most
         // common scenario) and the GET parameters (a fallback used by some
         // legacy routes).

@@ -4,7 +4,7 @@
  * Helper class for displaying a notification for unauthorized users
  * on Primo result pages.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015.
  *
@@ -31,6 +31,8 @@
 namespace Finna\View\Helper\Root;
 
 use LmcRbacMvc\Service\AuthorizationService;
+
+use function in_array;
 
 /**
  * Helper class for displaying a notification for unauthorized users

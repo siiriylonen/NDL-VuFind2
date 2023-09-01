@@ -3,7 +3,7 @@
 /**
  * Primo Central connector.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2020.
  *
@@ -29,6 +29,8 @@
  */
 
 namespace FinnaSearch\Backend\Primo;
+
+use function count;
 
 /**
  * Primo Central connector.

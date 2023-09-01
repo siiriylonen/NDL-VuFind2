@@ -3,7 +3,7 @@
 /**
  * Book Bag / Bulk Action Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2017.
@@ -32,6 +32,8 @@
 namespace Finna\Controller;
 
 use VuFind\Exception\Mail as MailException;
+
+use function is_array;
 
 /**
  * Book Bag / Bulk Action Controller
@@ -105,7 +107,10 @@ class CartController extends \VuFind\Controller\CartController
                 );
                 return $this->redirectToSource('success', 'bulk_email_success');
             } catch (MailException $e) {
-                $this->flashMessenger()->addMessage($e->getMessage(), 'error');
+                $this->flashMessenger()->addMessage(
+                    $e->getDisplayMessage(),
+                    'error'
+                );
             }
         }
         return $view;

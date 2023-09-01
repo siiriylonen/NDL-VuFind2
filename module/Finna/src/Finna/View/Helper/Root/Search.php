@@ -3,7 +3,7 @@
 /**
  * Helper class for displaying search-related HTML chunks.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015.
  *
@@ -28,6 +28,8 @@
  */
 
 namespace Finna\View\Helper\Root;
+
+use function count;
 
 /**
  * Helper class for displaying search-related HTML chunks.
@@ -115,6 +117,7 @@ class Search extends \VuFind\View\Helper\Bootstrap3\Search
     {
         return '<a href="' . $url . '" title="' . $view->transEsc('spell_expand_alt')
             . '"><span class="sr-only">' . $view->transEsc('spell_expand_alt')
-            . '</span><i class="fa fa-plus-small"></i></a>';
+            . '</span>' . $view->icon('spell-expand', 'spell-expand-icon')
+            . '</a>';
     }
 }

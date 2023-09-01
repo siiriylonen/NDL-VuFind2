@@ -3,7 +3,7 @@
 /**
  * Navibar view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2014.
  *
@@ -31,6 +31,10 @@ namespace Finna\View\Helper\Root;
 
 use Laminas\Http\Request;
 use Laminas\Router\Http\TreeRouteStack;
+
+use function count;
+use function is_string;
+use function strlen;
 
 /**
  * Navibar view helper
@@ -225,7 +229,7 @@ class Navibar extends \Laminas\View\Helper\AbstractHelper
             $url = trim($url);
 
             $data = [];
-            if (strpos($url, ',') !== false) {
+            if (str_contains($url, ',')) {
                 [$url, $target] = explode(',', $url, 2);
                 $url = trim($url);
                 $data['target'] = trim($target);

@@ -686,7 +686,7 @@ FinnaPaginator.prototype.loadImageInformation = function loadImageInformation() 
     src += "&sid=" + encodeURIComponent(searchId);
   }
 
-  _.popup.collapseArea.html('<div class="large-spinner"><i class="fa fa-spinner fa-spin"/></div>');
+  _.popup.collapseArea.html('<div class="large-spinner">' + VuFind.icon('spinner') + '</div>');
   $.ajax({
     url: src,
     dataType: 'html'
@@ -757,15 +757,15 @@ FinnaPaginator.prototype.createImagePopup = function createImagePopup(image, ind
       img.src = image.urls.small;
       img.alt = image.description;
       img.title = image.title;
-      holder.append(img, $('<i class="fa fa-spinner fa-spin"/>'));
+      holder.append(img, VuFind.icon('spinner', 'spinner-icon'));
       img.onload = function onLoad() {
-        $(this).siblings('i').remove();
+        $(this).siblings('.spinner-icon').remove();
       };
     } else if (image.type === 'model') {
       if (_.popup.track) {
         return undefined;
       }
-      holder.append($('<i class="fa-finna-3d"/>'));
+      holder.append(VuFind.icon('model-3d', 'model-3d-icon'));
     }
   }
   holder.attr({
@@ -778,9 +778,10 @@ FinnaPaginator.prototype.createImagePopup = function createImagePopup(image, ind
     'data-alt': image.description
   });
 
-  if (image.type === 'model') {
+  if (image.type === 'model' && image.models) {
+    const previewModel = image.models.find(el => el.type === 'preview');
     holder.attr({
-      'data-params': image.params,
+      'data-params': previewModel.params,
       'data-texture': image.texture,
       'data-scripts': image.scripts
     });
@@ -1059,7 +1060,7 @@ FinnaPaginator.prototype.addDocumentLoadCallback = function addDocumentLoadCallb
  */
 FinnaPaginator.prototype.onDocumentLoad = function onDocumentLoad() {
   var _ = this;
-  $(document).ready(function doDocumentLoadCallbacks() {
+  $(function doDocumentLoadCallbacks() {
     for (var i = 0; i < _.onDocumentLoadCallbacks.length; i++) {
       _.onDocumentLoadCallbacks[i]();
     }

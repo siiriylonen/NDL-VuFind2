@@ -3,7 +3,7 @@
 /**
  * OntologyDeferred Recommendations Module.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2020.
  *
@@ -30,6 +30,8 @@
 namespace Finna\Recommend;
 
 use VuFind\Recommend\RecommendInterface;
+
+use function is_object;
 
 /**
  * OntologyDeferred Recommendations Module.
@@ -107,7 +109,7 @@ class OntologyDeferred implements RecommendInterface
     }
 
     /**
-     * Called after the Search Results object has performed its main search.  This
+     * Called after the Search Results object has performed its main search. This
      * may be used to extract necessary information from the Search Results object
      * or to perform completely unrelated processing.
      *

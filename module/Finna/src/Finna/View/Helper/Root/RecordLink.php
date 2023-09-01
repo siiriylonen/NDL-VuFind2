@@ -6,7 +6,7 @@
  * Note that RecordLink has been removed from upstream and the Finna version only
  * remains for compatibility with existing production views.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2017-2023.
  *
@@ -35,6 +35,8 @@
  */
 
 namespace Finna\View\Helper\Root;
+
+use function func_get_args;
 
 /**
  * RecordLink view helper (DEPRECATED -- use RecordLinker instead)
@@ -157,14 +159,14 @@ class RecordLink extends \Laminas\View\Helper\AbstractHelper
         $embedUrl = '';
         switch ($parts['host']) {
             case 'vimeo.com':
-                $embedUrl = "https://player.vimeo.com/video" . $parts['path'];
+                $embedUrl = 'https://player.vimeo.com/video' . $parts['path'];
                 break;
             case 'youtu.be':
-                $embedUrl = "https://www.youtube.com/embed" . $parts['path'];
+                $embedUrl = 'https://www.youtube.com/embed' . $parts['path'];
                 break;
             case 'youtube.com':
                 parse_str($parts['query'], $query);
-                $embedUrl = "https://www.youtube.com/embed/" . $query['v'];
+                $embedUrl = 'https://www.youtube.com/embed/' . $query['v'];
                 break;
         }
         return $embedUrl;

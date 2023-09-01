@@ -3,7 +3,7 @@
 /**
  * File Loader.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2021.
  *
@@ -31,6 +31,8 @@ namespace Finna\File;
 
 use Laminas\Config\Config;
 use VuFind\Cache\Manager as CacheManager;
+
+use function strlen;
 
 /**
  * File loader
@@ -125,7 +127,7 @@ class Loader implements \VuFindHttp\HttpServiceAwareInterface
                 $this->debug($error);
                 $result = false;
             } else {
-                if ($fp = fopen($path, "w")) {
+                if ($fp = fopen($path, 'w')) {
                     $result = stream_copy_to_stream($result->getStream(), $fp);
                     fclose($fp);
                 } else {

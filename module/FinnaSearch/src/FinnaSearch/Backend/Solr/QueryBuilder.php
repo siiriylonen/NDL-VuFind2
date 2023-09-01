@@ -3,7 +3,7 @@
 /**
  * SOLR QueryBuilder.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2015-2016.
@@ -37,6 +37,8 @@ use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
 use VuFindSearch\Query\Query;
 use VuFindSearch\Query\QueryGroup;
+
+use function count;
 
 /**
  * SOLR QueryBuilder.
@@ -89,7 +91,7 @@ class QueryBuilder extends \VuFindSearch\Backend\Solr\QueryBuilder
         $params = parent::build($query);
 
         if ($this->createSpellingQuery && ($sq = $params->get('spellcheck.q'))) {
-            if (str_word_count(end($sq)) > $this->maxSpellcheckWords) {
+            if (count(preg_split("/[\s,]/u", trim(end($sq)))) > $this->maxSpellcheckWords) {
                 $params->set('spellcheck.q', '');
             }
         }

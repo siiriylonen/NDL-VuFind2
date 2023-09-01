@@ -3,7 +3,7 @@
 /**
  * Authentication Api Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2017-2019.
  *
@@ -30,6 +30,8 @@
 namespace FinnaApi\Controller;
 
 use VuFind\Exception\ILS as ILSException;
+
+use function in_array;
 
 /**
  * Provides an API for user authentication.

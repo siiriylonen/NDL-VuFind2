@@ -84,8 +84,8 @@ finna.myList = (function finnaMyList() {
     } else if (type === 'add-list') {
       spinner = $('.add-new-list .fa');
     } else if (type === 'visibility') {
-      var holder = $('.list-visibility > div:first');
-      holder.hide().after('<i class="fa fa-spinner fa-spin"></i>');
+      var holder = $('.list-visibility > div').first();
+      holder.hide().after(VuFind.icon('spinner'));
     }
 
     if (spinner) {
@@ -198,7 +198,7 @@ finna.myList = (function finnaMyList() {
     } else {
       if (typeof data.descHtml !== 'undefined' && data.descHtml !== '') {
         description.html(data.descHtml);
-        finna.layout.initTruncate(description);
+        VuFind.truncate.initTruncate(description.find('.finna-truncate'));
       }
       $('input[name=listDescription]').val(data.desc);
     }
@@ -277,7 +277,7 @@ finna.myList = (function finnaMyList() {
           && data.data.notesHtml !== '')
         {
           input.html(data.data.notesHtml);
-          finna.layout.initTruncate(input);
+          VuFind.truncate.initTruncate(input.find('.finna-truncate'));
         }
         toggleTitleEditable(true);
         save = false;
@@ -313,7 +313,7 @@ finna.myList = (function finnaMyList() {
       initListTagComponent();
 
       // list visibility
-      $(".list-visibility input[type='radio']").off('change').change(function onChangeVisibility() {
+      $(".list-visibility input[type='radio']").off('change').on("change", function onChangeVisibility() {
         updateList({}, refreshLists, 'visibility');
       });
 
@@ -345,7 +345,7 @@ finna.myList = (function finnaMyList() {
         prompt.find('.cancel').off('click').on('click', function onClickCancel(ev) {
           $(window).off('throttled-resize.finna', repositionPrompt);
           prompt.hide();
-          $('.remove-favorite-list').focus();
+          $('.remove-favorite-list').trigger("focus");
           ev.preventDefault();
         });
 
@@ -371,12 +371,12 @@ finna.myList = (function finnaMyList() {
     //Add new list, listen for keyup enter
     $('.new-list-input').on('keyup', function invokeCreateNewList(e) {
       if (e.keyCode === 13) {
-        $('.add-new-list .icon').click();
+        $('.add-new-list .icon').trigger("click");
       }
     });
 
     // add resource to list
-    $('.mylist-functions #add-to-list').off('change').change(function onChangeAddToList(/*e*/) {
+    $('.mylist-functions #add-to-list').off('change').on("change", function onChangeAddToList(/*e*/) {
       var val = $(this).val();
       if (val !== '') {
         addResourcesToList(val);

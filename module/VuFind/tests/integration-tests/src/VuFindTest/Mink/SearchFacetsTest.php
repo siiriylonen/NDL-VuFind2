@@ -3,7 +3,7 @@
 /**
  * Mink search facet/filter functionality test class.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2011.
  *
@@ -28,6 +28,8 @@
  */
 
 namespace VuFindTest\Mink;
+
+use function count;
 
 /**
  * Mink search facet/filter functionality test class.

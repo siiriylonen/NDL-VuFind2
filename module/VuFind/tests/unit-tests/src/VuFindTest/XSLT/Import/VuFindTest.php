@@ -3,7 +3,7 @@
 /**
  * XSLT helper tests.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2019.
  *
@@ -30,6 +30,8 @@
 namespace VuFindTest\XSLT\Import;
 
 use VuFind\XSLT\Import\VuFind;
+
+use function chr;
 
 /**
  * XSLT helper tests.

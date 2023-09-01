@@ -3,7 +3,7 @@
 /**
  * Solr deduplication (merged records) listener.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2013-2023.
  *
@@ -32,6 +32,8 @@ namespace Finna\Search\Solr;
 use Laminas\EventManager\EventInterface;
 use VuFindSearch\Query\Query;
 use VuFindSearch\Query\QueryGroup;
+
+use function in_array;
 
 /**
  * Solr merged record handling listener.

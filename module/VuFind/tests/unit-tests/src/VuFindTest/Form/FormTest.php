@@ -3,7 +3,7 @@
 /**
  * Form Test Class
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2018.
  *
@@ -33,6 +33,8 @@ namespace VuFindTest\Form;
 use Symfony\Component\Yaml\Yaml;
 use VuFind\Config\YamlReader;
 use VuFind\Form\Form;
+
+use function get_class;
 
 /**
  * Form Test Class

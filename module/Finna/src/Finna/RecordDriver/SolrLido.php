@@ -3,7 +3,7 @@
 /**
  * Model for LIDO records in Solr.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2022.
  *
@@ -32,6 +32,14 @@
  */
 
 namespace Finna\RecordDriver;
+
+use function boolval;
+use function call_user_func_array;
+use function count;
+use function in_array;
+use function is_array;
+use function is_string;
+use function strlen;
 
 /**
  * Model for LIDO records in Solr.
@@ -200,6 +208,16 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     protected $authorEvents = [
         'suunnittelu' => 1,
         'valmistus' => 2,
+    ];
+
+    /**
+     * Events excluded from subjects
+     *
+     * @var array
+     */
+    protected $nonPlaceEvents = [
+        'valmistus',
+        'näyttely',
     ];
 
     /**
@@ -554,7 +572,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 // Representation is a 3d model
                 if (in_array($type, $modelTypeKeys)) {
                     if ($model = $this->getModel($url, $format, $type)) {
-                        $modelUrls = array_merge($modelUrls, $model);
+                        $modelUrls[] = $model;
                     }
                     continue;
                 }
@@ -608,9 +626,16 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                 );
             }
+            $modelResult = [];
+            if ($modelUrls) {
+                $modelResult = [
+                    'models' => $modelUrls,
+                    'rights' => $rights,
+                ];
+            }
             $addToResults(
                 $imageResult,
-                $modelUrls,
+                $modelResult,
                 $audioUrls,
                 $videoUrls,
                 $documentUrls
@@ -619,6 +644,20 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
 
         $this->cache[$cacheKey] = $results;
         return $results;
+    }
+
+    /**
+     * Return an external URL where a displayable description text
+     * can be retrieved from, if available; false otherwise.
+     *
+     * @return mixed
+     */
+    public function getDescriptionURL()
+    {
+        if ($isbn = $this->getCleanISBN()) {
+            return 'https://kansikuvat.finna.fi/getText.php?query=' . $isbn;
+        }
+        return false;
     }
 
     /**
@@ -728,14 +767,22 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      *
      * @return array
      */
-    protected function getModel(string $url, string $format, string $type): array
-    {
+    protected function getModel(
+        string $url,
+        string $format,
+        string $type,
+    ): array {
         $type = $this->modelTypes[$type];
         $format = strtolower($format);
-        if ('preview_3D' === $type && !in_array($format, $this->displayableModelFormats)) {
-            return [];
+        if ('preview' === $type && !in_array($format, $this->displayableModelFormats)) {
+            // If we can not display the file, then tag it as a provided 3D model
+            $type = 'provided';
         }
-        return [$format => [$type => $url]];
+        return [
+            'url' => $url,
+            'format' => $format,
+            'type' => $type,
+        ];
     }
 
     /**
@@ -960,7 +1007,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      */
     public function getModelSettings(): array
     {
-        $datasource = $this->getDataSource();
         $settings = [];
         if ($iniData = $this->recordConfig->Models ?? []) {
             $settings = [
@@ -1191,6 +1237,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             $places = [];
             foreach ($node->eventPlace ?? [] as $placenode) {
                 $place = trim((string)$placenode->displayPlace ?? '');
+                $placeId = $placenode->place->placeID ?? [];
                 if (!$place) {
                     $eventPlace = [];
                     foreach ($placenode->place->namePlaceSet ?? [] as $nameSet) {
@@ -1217,6 +1264,25 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                             $places[] = implode(', ', $partOfPlaceName);
                         }
                     }
+                } elseif ($place && $placeId) {
+                    $displayPlace = [
+                        'placeName' => $place,
+                    ];
+                    $idTypeFirst = (string)($placeId->attributes()->type ?? '');
+                    $displayPlace['type'] = $idTypeFirst;
+                    $displayPlace['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
+                    foreach ($placenode->place->placeID ?? [] as $item) {
+                        $details = [];
+                        $id = (string)$item;
+                        $idType = (string)($item->attributes()->type ?? '');
+                        $displayPlace['ids'][] = $idType ? "($idType)$id" : $id;
+                        $typeDesc = $idType ? 'place_id_type_' . $idType : '';
+                        $details[] = $typeDesc;
+                        if ($typeDesc) {
+                            $displayPlace['details'] = $details;
+                        }
+                    }
+                    $places[] = $displayPlace;
                 } else {
                     $places[] = $place;
                 }
@@ -1735,7 +1801,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
 
     /**
      * Get all subject headings associated with this record apart from geographic
-     * places.  Each heading is returned as an array of chunks, increasing from least
+     * places. Each heading is returned as an array of chunks, increasing from least
      * specific to most specific.
      *
      * @param bool $extended Whether to return a keyed array with the following
@@ -1762,8 +1828,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap->eventSet ?? [] as $node) {
             $type = isset($node->event->eventType->term)
                 ? mb_strtolower((string)$node->event->eventType->term, 'UTF-8') : '';
-            if ($type !== 'valmistus') {
-                $displayDate = $node->event->eventDate->displayDate;
+            if (!in_array($type, $this->nonPlaceEvents)) {
+                $displayDate = $node->event->eventDate->displayDate ?? null;
                 if (!empty($displayDate)) {
                     $date = (string)($this->getLanguageSpecificItem(
                         $displayDate,
@@ -1939,7 +2005,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      *
      * @param mixed $data Raw data representing the record; Record Model
      * objects are normally constructed by Record Driver objects using data
-     * passed in from a Search Results object.  The exact nature of the data may
+     * passed in from a Search Results object. The exact nature of the data may
      * vary depending on the data source -- the important thing is that the
      * Record Driver + Search Results objects work together correctly.
      *
@@ -2020,6 +2086,52 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     }
 
     /**
+     * Get physical locations
+     *
+     * @return array
+     */
+    public function getPhysicalLocations(): array
+    {
+        $results = [];
+        foreach (
+            $this->getXmlRecord()->lido->descriptiveMetadata->objectIdentificationWrap
+            ->repositoryWrap->repositorySet ?? [] as $repository
+        ) {
+            $type = (string)($repository->attributes()->type ?? '');
+            if ($type !== 'Current location') {
+                continue;
+            }
+            $locations = [];
+            foreach ($repository->repositoryLocation->namePlaceSet ?? [] as $nameSet) {
+                if ($name = trim((string)$nameSet->appellationValue ?? '')) {
+                    $locations[] = $name;
+                }
+            }
+            foreach ($repository->repositoryLocation->partOfPlace ?? [] as $part) {
+                while ($part->namePlaceSet ?? false) {
+                    if ($partName = trim((string)$part->namePlaceSet->appellationValue ?? '')) {
+                        $locations[] = $partName;
+                    }
+                    $part = $part->partOfPlace;
+                }
+            }
+            if ($locations) {
+                $results[] = implode(', ', $locations);
+            }
+            $lang = $this->getLocale();
+            if (
+                $display = trim(
+                    (string)($this->getLanguageSpecificItem($repository->displayRepository, $lang))
+                    ?? ''
+                )
+            ) {
+                $results[] = $display;
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Get a language-specific item from an element array
      *
      * @param SimpleXMLElement $element  Element to use
@@ -2032,8 +2144,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         $languages = [];
         if ($language) {
             $languages[] = $language;
-            if (strlen($language) > 2) {
-                $languages[] = substr($language, 0, 2);
+            // Add region-less language if needed:
+            $parts = explode('-', $language, 2);
+            if (isset($parts[1])) {
+                $languages[] = $parts[0];
             }
         }
         foreach ($languages as $lng) {
@@ -2183,6 +2297,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 $descriptions[] = (string)$item;
             }
         }
+        $descriptions = array_unique($descriptions);
 
         //Collect all titles to be checked
         $displayTitle = $this->getTitle();

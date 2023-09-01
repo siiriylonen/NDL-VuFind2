@@ -3,7 +3,7 @@
 /**
  * Additional functionality for Finna parameters.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library 2015-2016.
  *
@@ -30,6 +30,9 @@
 namespace Finna\Search;
 
 use VuFind\Search\QueryAdapter;
+
+use function in_array;
+use function is_callable;
 
 /**
  * Additional functionality for Finna parameters.

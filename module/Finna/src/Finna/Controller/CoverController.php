@@ -3,7 +3,7 @@
 /**
  * Generates record images.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2011.
  * Copyright (C) The National Library of Finland 2015-2020.
@@ -36,6 +36,8 @@ namespace Finna\Controller;
 use VuFind\Cover\CachingProxy;
 use VuFind\Cover\Loader;
 use VuFind\Session\Settings as SessionSettings;
+
+use function in_array;
 
 /**
  * Generates record images.

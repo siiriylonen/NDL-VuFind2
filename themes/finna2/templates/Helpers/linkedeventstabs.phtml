@@ -3,7 +3,8 @@
   <div class="events-tabs feed-tabs-container feed-tabs">
     <h2><?= $this->transEsc('Events'); ?></h2>
     <ul class="nav nav-tabs" role="tablist">
-      <?php $i = 0; foreach ($this->tabs as $id => $tab): ?>
+      <?php $i = 0;
+      foreach ($this->tabs as $id => $tab): ?>
         <?php
           $tabId = $this->id . '-' . $i++;
           $isActive = $this->active === $tab['title'];
@@ -20,7 +21,8 @@
 
   <div class="feed-accordions event-accordions" role="tablist">
     <h2 class="feed-accordions-title event-accordions-title"><?= $this->transEsc('Events'); ?></h2>
-    <?php $i = 0; foreach ($this->tabs as $id => $tab): ?>
+    <?php $i = 0;
+    foreach ($this->tabs as $id => $tab): ?>
       <?php
         $tabId = $this->id . '-' . $i++;
         $isActive = 0 === strcasecmp($this->active, $tab['title']);
@@ -37,7 +39,7 @@
     <?php endforeach; ?>
   </div>
   <?php if ($this->searchTools !== 'hide'): ?>
-    <div class="events-searchtools-toggle"><?= $this->transEsc('show_filters') ?> <i class="fa fa-arrow-down"></i></div>
+    <div class="events-searchtools-toggle"><?= $this->transEsc('show_filters') ?> <?=$this->icon('show-more') ?></div>
     <div class="events-searchtools-container <?= $this->searchTools === 'show' ? '' : 'hidden'; ?>">
       <span class="event-search-container">
         <label for="event-search" class="sr-only"><?= $this->transEsc('event_name_or_place') ?></label>

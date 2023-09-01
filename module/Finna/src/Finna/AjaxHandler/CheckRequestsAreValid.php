@@ -3,7 +3,7 @@
 /**
  * AJAX handler for checking that requests are valid
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2018.
  *
@@ -30,6 +30,8 @@
 namespace Finna\AjaxHandler;
 
 use Laminas\Mvc\Controller\Plugin\Params;
+
+use function is_array;
 
 /**
  * AJAX handler for checking that requests are valid.

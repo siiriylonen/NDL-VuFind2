@@ -3,7 +3,7 @@
 /**
  * Solr Autocomplete Module
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016.
  *
@@ -30,6 +30,9 @@
 namespace Finna\Autocomplete;
 
 use VuFindCode\ISBN;
+
+use function in_array;
+use function is_bool;
 
 /**
  * Solr Autocomplete Module

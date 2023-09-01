@@ -3,7 +3,7 @@
 /**
  * Table Definition for resource
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -30,6 +30,8 @@
 namespace Finna\Db\Table;
 
 use Laminas\Db\Sql\Expression;
+
+use function in_array;
 
 /**
  * Table Definition for resource

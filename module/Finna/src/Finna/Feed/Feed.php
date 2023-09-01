@@ -3,7 +3,7 @@
 /**
  * Feed service
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2023.
  *
@@ -39,6 +39,11 @@ use Laminas\Feed\Reader\Reader;
 use Laminas\Mvc\Controller\Plugin\Url;
 use VuFind\Cache\Manager as CacheManager;
 use VuFindTheme\View\Helper\ImageLink;
+
+use function in_array;
+use function is_object;
+use function is_string;
+use function strlen;
 
 /**
  * Feed service
@@ -443,6 +448,10 @@ class Feed implements
         $fullDateFormat = $config->fullDateFormat ?? 'j.n.Y';
         $cleanContent = $config->cleanContent ?? true;
 
+        $contentNavigation = $config->feedcontentNavigation ?? true;
+        $nextArticles = $config->feedcontentNextArticles ?? false;
+        $additionalHtml = $config->feedcontentadditionalHtml ?? '';
+
         $itemsCnt = $config->items ?? null;
         $elements = $config->content ?? [];
         $allowXcal = $elements['xcal'] ?? true;
@@ -662,7 +671,10 @@ class Feed implements
             'config',
             'modal',
             'contentPage',
-            'allowedImages'
+            'allowedImages',
+            'contentNavigation',
+            'nextArticles',
+            'additionalHtml'
         );
     }
 

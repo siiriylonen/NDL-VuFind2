@@ -3,7 +3,7 @@
 /**
  * Trait with utility methods for configuring the demo driver in a test
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  *
@@ -51,7 +51,7 @@ trait DemoDriverTestTrait
      */
     protected function getFakeTransactions($bibId)
     {
-        $rawDueDate = strtotime("now +5 days");
+        $rawDueDate = strtotime('now +5 days');
         return json_encode(
             [
                 [
@@ -186,7 +186,7 @@ trait DemoDriverTestTrait
             'addLink'      => true,
             'addStorageRetrievalRequestLink' => 'check',
             'addILLRequestLink' => 'check',
-            "__electronic__" => false,
+            '__electronic__' => false,
         ];
     }
 

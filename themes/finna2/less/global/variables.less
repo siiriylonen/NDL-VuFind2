@@ -96,6 +96,7 @@
 
 //== Finna facets
 @sidebar-header-text-color: mix(@sidebar-background, contrast(@sidebar-background), 5%);
+@sidebar-header-icon-color: #fff;
 @sidebar-background: @brand-primary;
 @sidebar-border-color: mix(@body-bg, contrast(@body-bg), 80%);
 @sidebar-border: 1px solid @sidebar-border-color;
@@ -319,7 +320,7 @@
 @zindex-popover:           1010;
 @zindex-tooltip:           1020;
 @zindex-navbar-fixed:      1030;
-@zindex-cc-main:           1034;
+@zindex-cookie-consent:    1034;
 @zindex-header:            1035;
 @zindex-sidebar:           1036;
 @zindex-modal-background:  1040;
@@ -519,8 +520,10 @@
 @cookie-consent-button-border: 2px solid #fff;
 
 //== Cookie Consent Component
-@cc-cookie-category-block-bg: lighten(@gray-base, 93.5%);
-@cc-btn-border-radius: @finna-button-radius;
+:root {
+    --cc-cookie-category-block-bg: lighten(@gray-base, 93.5%);
+    --cc-btn-border-radius: @finna-button-radius;
+}
 
 //== Bazaar Browse Bar
 @bazaar-browse-bar-background-color: @gray-light;

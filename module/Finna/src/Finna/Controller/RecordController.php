@@ -3,7 +3,7 @@
 /**
  * Record Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015.
  *
@@ -31,6 +31,11 @@ namespace Finna\Controller;
 
 use Finna\Form\Form;
 use VuFindSearch\ParamBag;
+
+use function count;
+use function in_array;
+use function is_array;
+use function is_string;
 
 /**
  * Record Controller
@@ -74,6 +79,17 @@ class RecordController extends \VuFind\Controller\RecordController
             throw new \Exception('Repository library request form not configured');
         }
         return $this->getRecordForm($formId);
+    }
+
+    /**
+     * Create archive request form and send to correct recipient.
+     *
+     * @return \Laminas\View\Model\ViewModel
+     * @throws \Exception
+     */
+    public function archiveRequestAction()
+    {
+        return $this->getRecordForm(Form::ARCHIVE_MATERIAL_REQUEST);
     }
 
     /**
@@ -323,7 +339,7 @@ class RecordController extends \VuFind\Controller\RecordController
             $gatheredDetails
         ) : [];
         $extraHoldFields = isset($checkHolds['extraHoldFields'])
-            ? explode(":", $checkHolds['extraHoldFields']) : [];
+            ? explode(':', $checkHolds['extraHoldFields']) : [];
 
         $requestGroupNeeded = in_array('requestGroup', $extraHoldFields)
             && !empty($requestGroups)
@@ -578,7 +594,7 @@ class RecordController extends \VuFind\Controller\RecordController
         // Send various values to the view so we can build the form:
         $pickup = $catalog->getPickUpLocations($patron, $gatheredDetails);
         $extraFields = isset($checkRequests['extraFields'])
-            ? explode(":", $checkRequests['extraFields']) : [];
+            ? explode(':', $checkRequests['extraFields']) : [];
 
         // Process form submissions if necessary:
         if (null !== $this->params()->fromPost('placeStorageRetrievalRequest')) {
@@ -634,7 +650,7 @@ class RecordController extends \VuFind\Controller\RecordController
         $defaultRequired = $this->storageRetrievalRequests()
             ->getDefaultRequiredDate($checkRequests);
         $defaultRequired = $this->serviceLocator->get(\VuFind\Date\Converter::class)
-            ->convertToDisplayDate("U", $defaultRequired);
+            ->convertToDisplayDate('U', $defaultRequired);
         try {
             $defaultPickup
                 = $catalog->getDefaultPickUpLocation($patron, $gatheredDetails);
@@ -713,7 +729,7 @@ class RecordController extends \VuFind\Controller\RecordController
         // Send various values to the view so we can build the form:
 
         $extraFields = isset($checkRequests['extraFields'])
-            ? explode(":", $checkRequests['extraFields']) : [];
+            ? explode(':', $checkRequests['extraFields']) : [];
 
         // Process form submissions if necessary:
         if (null !== $this->params()->fromPost('placeILLRequest')) {
@@ -767,7 +783,7 @@ class RecordController extends \VuFind\Controller\RecordController
         $defaultRequired = $this->ILLRequests()
             ->getDefaultRequiredDate($checkRequests);
         $defaultRequired = $this->serviceLocator->get(\VuFind\Date\Converter::class)
-            ->convertToDisplayDate("U", $defaultRequired);
+            ->convertToDisplayDate('U', $defaultRequired);
 
         // Get pickup libraries
         $pickupLibraries = $catalog->getILLPickUpLibraries(
@@ -911,8 +927,14 @@ class RecordController extends \VuFind\Controller\RecordController
         if ($format && $index) {
             $driver = $this->loadRecord();
             $id = $driver->getUniqueID();
-            $models = $driver->tryMethod('getModels');
-            $url = $models[$index][$format]['preview'] ?? false;
+            $models = $driver->tryMethod('getModels')[$index]['models'] ?? [];
+            $found = array_search('preview', array_column($models, 'type'));
+            if (false === $found) {
+                $response->setStatusCode(404);
+                return $response;
+            }
+            // Always force preview model to be fetched
+            $url = $models[$found]['url'];
             if (!empty($url)) {
                 $fileName = urlencode($id) . '-' . $index . '.' . $format;
                 $fileLoader = $this->serviceLocator->get(\Finna\File\Loader::class);

@@ -3,7 +3,7 @@
 /**
  * User preference support service
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2023.
  *
@@ -31,6 +31,8 @@ namespace Finna\Service;
 
 use VuFind\Auth\Manager as AuthManager;
 use VuFind\Cookie\CookieManager;
+
+use function is_array;
 
 /**
  * User preference support service

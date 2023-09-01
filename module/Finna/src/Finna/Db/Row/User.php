@@ -3,7 +3,7 @@
 /**
  * Row Definition for user
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2019.
  *
@@ -33,6 +33,8 @@ namespace Finna\Db\Row;
 
 use Laminas\Db\ResultSet\ResultSetInterface;
 use Laminas\Db\Sql\Expression;
+
+use function count;
 
 /**
  * Row Definition for user

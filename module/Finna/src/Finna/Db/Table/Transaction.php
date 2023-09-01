@@ -3,7 +3,7 @@
 /**
  * Table Definition for online payment transaction
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2023.
  *
@@ -30,6 +30,7 @@
 
 namespace Finna\Db\Table;
 
+use Finna\Db\Row\Transaction as TransactionRow;
 use Laminas\Db\Adapter\Adapter;
 use VuFind\Db\Row\RowGateway;
 use VuFind\Db\Table\PluginManager;
@@ -89,7 +90,7 @@ class Transaction extends \VuFind\Db\Table\Gateway
      * @param int    $transactionFee Transaction fee
      * @param string $currency       Currency
      *
-     * @return Finna\Db\Row\Transaction
+     * @return TransactionRow
      */
     public function createTransaction(
         $id,
@@ -107,7 +108,7 @@ class Transaction extends \VuFind\Db\Table\Gateway
         $t->amount = $amount;
         $t->transaction_fee = $transactionFee;
         $t->currency = $currency;
-        $t->created = date("Y-m-d H:i:s");
+        $t->created = date('Y-m-d H:i:s');
         $t->complete = 0;
         $t->status = 'started';
         $t->cat_username = $patronId;
@@ -116,11 +117,35 @@ class Transaction extends \VuFind\Db\Table\Gateway
     }
 
     /**
+     * Check if payment is started for the patron, but not progressed further.
+     *
+     * Payment is not permitted if:
+     *   - patron has a transaction with "in progress" status and maximum duration
+     *     has not been reached
+     *
+     * @param string $patronId               Patron's Catalog username (barcode)
+     * @param int    $transactionMaxDuration Max duration for a transaction in minutes
+     *
+     * @return TransactionRow|null Current transaction or null if not started
+     */
+    public function getStartedPayment(string $patronId, int $transactionMaxDuration): ?TransactionRow
+    {
+        $callback = function ($select) use ($patronId, $transactionMaxDuration) {
+            $select->where->equalTo('cat_username', $patronId);
+            $select->where->equalTo('complete', self::STATUS_PROGRESS);
+            $select->where(
+                "NOW() < DATE_ADD(created, INTERVAL $transactionMaxDuration MINUTE)"
+            );
+        };
+
+        return $this->select($callback)->current();
+    }
+
+    /**
      * Check if payment is in progress for the patron.
      *
      * Payment is not permitted if:
-     *   - patron has a transaction in progress and translation maximum duration
-     *     has not been exceeded
+     *   - patron has a transaction in progress
      *   - patron has a paid transaction that has not been registered as paid
      *     to the ILS
      *
@@ -221,11 +246,41 @@ class Transaction extends \VuFind\Db\Table\Gateway
      *
      * @param string $transactionId Transaction ID.
      *
-     * @return \Finna\Db\Row\Transaction transaction or false on error
+     * @return TransactionRow transaction or false on error
      */
     public function getTransaction($transactionId)
     {
         $row = $this->select(['transaction_id' => $transactionId])->current();
         return empty($row) ? false : $row;
+    }
+
+    /**
+     * Get last paid transaction for a patron
+     *
+     * @param string $patronId Patron's Catalog username (barcode).
+     *
+     * @return ?TransactionRow
+     */
+    public function getLastPaidForPatron(string $patronId): ?TransactionRow
+    {
+        $statuses = [
+            self::STATUS_COMPLETE,
+            self::STATUS_PAID,
+            self::STATUS_REGISTRATION_FAILED,
+            self::STATUS_REGISTRATION_EXPIRED,
+            self::STATUS_REGISTRATION_RESOLVED,
+            self::STATUS_FINES_UPDATED,
+        ];
+
+        $callback = function (\Laminas\Db\Sql\Select $select) use (
+            $patronId,
+            $statuses
+        ) {
+            $select->where->equalTo('cat_username', $patronId);
+            $select->where('complete in (' . implode(',', $statuses) . ')');
+            $select->order('paid desc');
+        };
+
+        return $this->select($callback)->current();
     }
 }

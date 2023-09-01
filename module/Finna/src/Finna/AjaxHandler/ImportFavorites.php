@@ -3,7 +3,7 @@
 /**
  * AJAX handler for importing favorites.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2017-2018.
  *
@@ -40,6 +40,8 @@ use VuFind\Favorites\FavoritesService;
 use VuFind\I18n\Translator\TranslatorAwareInterface;
 use VuFind\Record\Loader;
 use VuFind\Search\Results\PluginManager as ResultsManager;
+
+use function count;
 
 /**
  * AJAX handler for importing favorites.

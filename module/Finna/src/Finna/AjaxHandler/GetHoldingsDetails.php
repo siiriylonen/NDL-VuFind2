@@ -3,7 +3,7 @@
 /**
  * AJAX handler for fetching holdings details
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2019-2020.
  *
@@ -36,6 +36,8 @@ use VuFind\ILS\Connection;
 use VuFind\ILS\Logic\Holds as HoldLogic;
 use VuFind\Record\Loader;
 use VuFind\Session\Settings as SessionSettings;
+
+use function in_array;
 
 /**
  * AJAX handler for fetching holdings details

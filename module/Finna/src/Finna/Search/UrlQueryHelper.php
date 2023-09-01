@@ -3,7 +3,7 @@
 /**
  * Class to help build URLs and forms in the view based on search settings.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015.
  *
@@ -31,6 +31,8 @@
 namespace Finna\Search;
 
 use Finna\Search\Solr\AuthorityHelper;
+
+use function is_array;
 
 /**
  * Class to help build URLs and forms in the view based on search settings.

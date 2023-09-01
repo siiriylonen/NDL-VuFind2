@@ -3,7 +3,7 @@
 /**
  * Table Definition for session
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016.
  *
@@ -28,6 +28,8 @@
  */
 
 namespace Finna\Db\Table;
+
+use function call_user_func_array;
 
 /**
  * Table Definition for session

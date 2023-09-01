@@ -3,7 +3,7 @@
 /**
  * Model for curated VuFind records.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -31,6 +31,8 @@ namespace Finna\RecordDriver;
 
 use Finna\RecordDriver\Feature\ContainerFormatInterface;
 use VuFind\RecordDriver\AbstractBase;
+
+use function count;
 
 /**
  * Model for curated VuFind records.

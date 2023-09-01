@@ -3,7 +3,7 @@
 /**
  * Custom element block start parser
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2021-2022.
  *
@@ -35,6 +35,9 @@ use League\CommonMark\Parser\Block\BlockStartParserInterface;
 use League\CommonMark\Parser\Cursor;
 use League\CommonMark\Parser\MarkdownParserStateInterface;
 use League\CommonMark\Util\RegexHelper;
+
+use function in_array;
+use function strlen;
 
 /**
  * Custom element block start parser

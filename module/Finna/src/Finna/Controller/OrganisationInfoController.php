@@ -3,7 +3,7 @@
 /**
  * Organisation info page controller.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2023.
  *
@@ -29,6 +29,8 @@
  */
 
 namespace Finna\Controller;
+
+use function in_array;
 
 /**
  * Organisation info page controller.

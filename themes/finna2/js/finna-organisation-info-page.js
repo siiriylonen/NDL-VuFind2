@@ -83,6 +83,21 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
   }
 
   function initMap() {
+    // If all coordinates are empty, hide map
+    var coordinatesExist = false;
+    $.each(organisationList, function checkEmptyCoordinates(i, obj) {
+      if (obj.address && obj.address.coordinates) {
+        var coordinates = obj.address.coordinates;
+        var isEmpty = Object.values(coordinates).some(value => (value === '' || value === null));
+        if (!isEmpty) {
+          coordinatesExist = true;
+        }
+      }
+    });
+    if (!coordinatesExist) {
+      holder.find('.office.map-ui').hide();
+      holder.find('.map-control-buttons').hide();
+    }
     $.each(organisationList, function handleOrganisation(ind, obj) {
       // Map data (info bubble, icon)
       var bubble = holder.find('.map-bubble-template').clone();
@@ -147,7 +162,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     var count = Object.keys(list).length;
     var translation = VuFind.translate('organisationInfoAutocomplete').replace('%%count%%', count);
 
-    $(document).ready(function initSelect() {
+    $(function initSelect() {
       var select = document.querySelector('#office-search');
       var placeholder = document.createElement('option');
       select.append(placeholder);
@@ -241,7 +256,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     contactHolder.show();
 
     holder.find('.office-quick-information .service-title').text(data.name);
-    if ('address' in data) {
+    if ('address' in data && data.address) {
       holder.find('.office-links.address').html(data.address);
       if (!data.details.museum) {
         var address = holder.find('.address-contact');
@@ -289,7 +304,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       longDesc.html('');
     }
     longDesc.removeAttr('style');
-    longDesc.removeClass('truncate-done');
+    longDesc.parent().removeClass('truncate-done');
 
     if ('links' in data.details) {
       var links = data.details.links;
@@ -306,58 +321,91 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
     var timeOpen = holder.find('.time-open');
     timeOpen.find('.times').remove();
-    var staffTimes = timeOpen.find('.staff-times');
-    staffTimes.find('.shift').remove();
+    var staffTimesElem = timeOpen.find('.staff-times');
+    staffTimesElem.find('.shift').remove();
+    var closedTimesElem = timeOpen.find('.closed-times');
+    closedTimesElem.find('.gap').remove();
     if ('schedules' in data.openTimes) {
       $.each(data.openTimes.schedules, function handleSchedule(ind, obj) {
         if ('today' in obj && 'times' in obj && obj.times.length) {
-          $.each(obj.times, function handleTimes(indt, time) {
-            var item = timeOpen.find('.times-template').clone().addClass('times').removeClass('times-template hide');
-            item.find('.opens').text(time.opens);
-            item.find('.closes').text(time.closes);
-            if (indt > 0) {
-              item.prepend(', ');
+          var firstOpenDateTime = null;
+          var firstOpenTime = null;
+          var lastCloseDateTime = null;
+          var lastCloseTime = null;
+          var selfServiceTimes = [];
+          var staffTimes = [];
+          var gaps = [];
+
+          $.each(obj.times, function checkOpenTimes(tind, time) {
+            if (null === firstOpenDateTime || time.opens_datetime < firstOpenDateTime) {
+              firstOpenDateTime = time.opens_datetime;
+              firstOpenTime = time.opens;
             }
-            item.show();
-            timeOpen.find('.times-template').before(item);
-            timeOpen.show();
-          });
-          var staffSchedule = [];
-          $.each(obj.times, function isSelfservice(index, object) {
-            if (object.selfservice === false) {
-              staffSchedule = {
-                opens: object.opens,
-                closes: object.closes
-              };
+            if (null === lastCloseDateTime || time.closes_datetime > lastCloseDateTime) {
+              lastCloseDateTime = time.closes_datetime;
+              lastCloseTime = time.closes;
             }
-            return staffSchedule;
+            if (time.closed) {
+              gaps.push(time);
+            } else if (time.selfservice) {
+              selfServiceTimes.push(time);
+            } else {
+              staffTimes.push(time);
+            }
           });
-          if (staffSchedule && obj.times.length > 1) {
-            var shift;
-            staffTimes.removeClass('hide');
-            for (var i = 0; i < obj.times.length; i++) {
-              staffSchedule = obj.times[i];
-              if (staffSchedule.selfservice === false) {
-                shift = staffTimes.find('.shift-template').clone().addClass('shift').removeClass('shift-template hide');
-                shift.find('.opens').text(staffSchedule.opens);
-                shift.find('.closes').text(staffSchedule.closes);
-                if (i > 1) {
-                  shift.prepend(', ');
-                }
-                staffTimes.find('.shift-template').before(shift);
+
+          var item = timeOpen.find('.times-template').clone().addClass('times').removeClass('times-template hide');
+          item.find('.opens').text(firstOpenTime);
+          item.find('.closes').text(lastCloseTime);
+          timeOpen.find('.times-template').before(item);
+          timeOpen.show();
+
+          if (selfServiceTimes.length > 0 && staffTimes.length > 0) {
+            staffTimesElem.removeClass('hide');
+            for (let i = 0; i < staffTimes.length; i++) {
+              let schedule = staffTimes[i];
+              let shift = staffTimesElem.find('.shift-template').clone().addClass('shift').removeClass('shift-template hide');
+              shift.find('.opens').text(schedule.opens);
+              shift.find('.closes').text(schedule.closes);
+              if (i > 1) {
+                shift.prepend(', ');
               }
+              staffTimesElem.find('.shift-template').before(shift);
             }
           } else {
-            staffTimes = timeOpen.find('.staff-times');
-            staffTimes.addClass('hide');
+            staffTimesElem.addClass('hide');
+          }
+
+          if (gaps.length > 0) {
+            closedTimesElem.removeClass('hide');
+            for (let i = 0; i < gaps.length; i++) {
+              let schedule = gaps[i];
+              let gapElem = timeOpen.find('.gap-template').clone().addClass('gap').removeClass('gap-template hide');
+              gapElem.find('.opens').text(schedule.opens);
+              gapElem.find('.closes').text(schedule.closes);
+              if (i > 1) {
+                gapElem.prepend(', ');
+              }
+              closedTimesElem.find('.gap-template').before(gapElem);
+            }
+          } else {
+            closedTimesElem.addClass('hide');
           }
         }
       });
     }
 
     var hasSchedules = 'openTimes' in data && 'schedules' in data.openTimes && data.openTimes.schedules.length > 0;
+    var schedules = data.openTimes.schedules;
+    var isClosedForWeek = schedules.every(schedule => schedule.closed === true);
+    var hasScheduleDescriptions = 'scheduleDescriptions' in data.details
+      ? data.details.scheduleDescriptions.every(description => description !== '')
+      : false;
 
-    if (hasSchedules) {
+    if (isClosedForWeek && !hasScheduleDescriptions) {
+      holder.find('.open-or-closed').hide();
+    }
+    else if (hasSchedules) {
       holder.find('.open-or-closed').toggleClass('hidden', null === data.openNow);
       holder.find('.open-or-closed > span.library-is-' + (data.openNow ? 'open' : 'closed')).show();
     }
@@ -388,23 +436,23 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       holder.find('.extra-image-2').hide();
     }
 
-    if ('buildingYear' in data.details) {
+    if ('buildingYear' in data.details && data.details.buildingYear) {
       var year = holder.find('.building-year');
       year.find('> span').text(data.details.buildingYear);
       year.show();
     }
 
-    if ('phone' in data.details) {
+    if ('phone' in data.details && data.details.phone) {
       var phones = holder.find('.phone-numbers');
       phones.find('> p').html(data.details.phone);
       phones.show();
     }
-    if ('contactInfo' in data.details) {
+    if ('contactInfo' in data.details && data.details.contactInfo) {
       var contactInfo = holder.find('.phone-numbers');
       contactInfo.find('> p').html(data.details.contactInfo);
       contactInfo.show();
     }
-    if ('accessibilityInfo' in data.details) {
+    if ('accessibilityInfo' in data.details && data.details.accessibilityInfo) {
       let template = document.getElementById('accessibility_info_template');
       let blocks = [];
       data.details.accessibilityInfo.forEach((info) => {
@@ -427,7 +475,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
     $('.office-quick-information').show();
     $('.office-information').show();
-    VuFind.truncate.initTruncate(longDesc);
+    VuFind.truncate.initTruncate(longDesc.parent());
     setOfficeInformationLoader(false);
   }
 
@@ -567,11 +615,11 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     var sector = options.sector;
     var mapTileUrl = 'https://map-api.finna.fi/v1/rendered/{z}/{x}/{y}.png';
     var attribution =
-      '<i class="fa fa-map-marker marker open"></i><span class="map-marker-text">' + VuFind.translate('organisation_info_is_open') + '</span>' +
-      '<i class="fa fa-map-marker marker closed"></i><span class="map-marker-text">' + VuFind.translate('organisation_info_is_closed') + '</span>' +
-      '<i class="fa fa-map-marker marker no-schedule"></i><span class="map-marker-text">' + VuFind.translate('organisation_info_no_schedule') + '</span>' +
-      '<span class="expand expand-map map-marker-text marker"><i class="fa fa-expand"></i>' + VuFind.translate('organisation_info_map_expand') + '</span>' +
-      '<span class="collapse contract-map map-marker-text marker" style="display: none"> <i class="fa fa-condense"></i>' + VuFind.translate('organisation_info_map_collapse') + '</span>';
+      '<span class="map-marker-text">' + VuFind.icon('map-marker', 'map-marker-icon open') + ' ' + VuFind.translate('organisation_info_is_open') + '</span>' +
+      '<span class="map-marker-text">' + VuFind.icon('map-marker', 'map-marker-icon closed') + ' ' + VuFind.translate('organisation_info_is_closed') + '</span>' +
+      '<span class="map-marker-text">' + VuFind.icon('map-marker', 'map-marker-icon no-schedule') + ' ' + VuFind.translate('organisation_info_no_schedule') + '</span>' +
+      '<span class="expand expand-map map-marker-text marker">' + VuFind.icon('map-expand') + ' ' + VuFind.translate('organisation_info_map_expand') + '</span>' +
+      '<span class="collapse contract-map map-marker-text marker" style="display: none">' + VuFind.icon('map-collapse') + ' ' + VuFind.translate('organisation_info_map_collapse') + '</span>';
 
     if (typeof parent == 'undefined') {
       return;

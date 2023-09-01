@@ -3,7 +3,7 @@
 /**
  * Record image loader
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2007.
  * Copyright (C) The National Library of Finland 2015-2020.
@@ -32,6 +32,11 @@
  */
 
 namespace Finna\Cover;
+
+use function func_get_args;
+use function is_array;
+use function is_callable;
+use function strlen;
 
 /**
  * Record image loader
@@ -316,7 +321,7 @@ class Loader extends \VuFind\Cover\Loader
                 }
             } catch (\Exception $e) {
                 $this->debug(
-                    get_class($e) . ' during cache processing of ' . $apiName
+                    $e::class . ' during cache processing of ' . $apiName
                     . ': ' . $e->getMessage()
                 );
             }
@@ -346,7 +351,7 @@ class Loader extends \VuFind\Cover\Loader
                 }
             } catch (\Exception $e) {
                 $this->debug(
-                    get_class($e) . ' during processing of ' . $apiName
+                    $e::class . ' during processing of ' . $apiName
                     . ': ' . $e->getMessage()
                 );
             }
@@ -399,7 +404,7 @@ class Loader extends \VuFind\Cover\Loader
         );
 
         // Figure out file paths -- $tempFile will be used to store the
-        // image for analysis.  $finalFile will be used for long-term storage if
+        // image for analysis. $finalFile will be used for long-term storage if
         // $cache is true or for temporary display purposes if $cache is false.
         // $statusFile is used for blocking a non-responding server for a while.
         $tempFile = str_replace('.jpg', uniqid(), $this->localFile);

@@ -3,7 +3,7 @@
 /**
  * Model for Primo Central records.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2012-2021.
@@ -31,6 +31,11 @@
  */
 
 namespace Finna\RecordDriver;
+
+use function count;
+use function in_array;
+use function is_array;
+use function strlen;
 
 /**
  * Model for Primo Central records.
@@ -134,7 +139,7 @@ class Primo extends \VuFind\RecordDriver\Primo
 
     /**
      * Get an array of strings representing citation formats supported
-     * by this record's data (empty if none).  For possible legal values,
+     * by this record's data (empty if none). For possible legal values,
      * see /application/themes/root/helpers/Citation.php, getCitation()
      * method.
      *
@@ -295,7 +300,7 @@ class Primo extends \VuFind\RecordDriver\Primo
     }
 
     /**
-     * Get the publication dates of the record.  See also getDateSpan().
+     * Get the publication dates of the record. See also getDateSpan().
      *
      * @return array
      */
@@ -523,7 +528,7 @@ class Primo extends \VuFind\RecordDriver\Primo
 
         $params = [];
         // Take params from the OpenURL returned from Primo, if available
-        if ($link && strpos($link, 'url_ver=Z39.88-2004') !== false) {
+        if ($link && str_contains($link, 'url_ver=Z39.88-2004')) {
             parse_str(substr($link, strpos($link, '?') + 1), $params);
             $params = $this->processOpenUrlParams($params);
         }
@@ -552,7 +557,7 @@ class Primo extends \VuFind\RecordDriver\Primo
     protected function processOpenUrlParams($params)
     {
         foreach ($params as $key => $val) {
-            if (strpos($key, 'rft_') === 0) {
+            if (str_starts_with($key, 'rft_')) {
                 $params['rft.' . substr($key, 4)] = $val;
             }
         }

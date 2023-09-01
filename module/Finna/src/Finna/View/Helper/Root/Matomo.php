@@ -3,7 +3,7 @@
 /**
  * Matomo web analytics view helper for Matomo versions >= 4
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2014-2021.
  *
@@ -31,6 +31,9 @@
 namespace Finna\View\Helper\Root;
 
 use VuFind\RecordDriver\AbstractBase as RecordDriverBase;
+
+use function in_array;
+use function is_array;
 
 /**
  * Matomo web analytics view helper for Matomo versions >= 4

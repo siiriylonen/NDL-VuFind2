@@ -122,14 +122,14 @@
     .expand-map, .contract-map {
         display: inline-block;
         font-size: 1em;
-        i {
+        .icon {
             margin-left: 20px;
             margin-right: 0px;
         }
         @media(max-width: @screen-xs-max) {
             margin-left: -3px;
             font-size: 1em;
-            i {
+            .icon {
                 margin-right: 2px;
             }
         }
@@ -207,7 +207,7 @@
         }
     }
 
-    .fa-map-marker {
+    .map-marker-icon {
         &.open {
             color: #339911;
         }
@@ -306,6 +306,7 @@
             }
             .consortium-info-row {
                 display: table;
+                width: 100%;
             }
         }
         .consortium-notification {
@@ -481,6 +482,11 @@
             .open-closed-info {
                 margin-top: 0.5em;
                 margin-bottom: 0.5em;
+
+                .times, .shift {
+                    display: inline-flex;
+                    gap: 2px;
+                }
             }
             @media(min-width: @screen-sm) {
                 .office-title {
@@ -528,7 +534,7 @@
                     font-weight: normal;
                     font-size: 1em;
                     margin-bottom: 1em;
-                    margin-top: 1em;
+                    margin-top: 1.1em;
                     overflow: hidden;
                 }
                 .building-year, .building-name {
@@ -592,13 +598,10 @@
                 }
             }
             .phone-numbers, .email-contact {
-                .fa-phone-square, .fa-envelope {
+                .icon {
                     margin-right: 8px;
                 }
-                .fa-envelope {
-                    float: left;
-                    margin-top: 2px;
-                }
+
             }
             .service-list div {
                 line-height: 2em;
@@ -628,7 +631,7 @@
                 table {
                     th,
                     td {
-                        width: 100%/2;
+                        width: 50%;
                     }
                     th:nth-of-type(2),
                     td:nth-of-type(2) {
@@ -639,7 +642,7 @@
                     table {
                         th,
                         td {
-                            width: 100%/3;
+                            width: (100%/3);
                         }
                         th:nth-of-type(2),
                         td:nth-of-type(2) {

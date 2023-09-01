@@ -3,7 +3,7 @@
 /**
  * CPU Payment
  *
- * PHP version 7
+ * PHP version 8
  *
  * This is free and unencumbered software released into the public domain.
  *
@@ -40,6 +40,9 @@
 // @codingStandardsIgnoreStart
 
 namespace Finna\OnlinePayment\Handler\Connector\Cpu;
+
+use function count;
+use function intval;
 
 /**
  * Payment data to be sent to CPU payment gateway.

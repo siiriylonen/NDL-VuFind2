@@ -3,7 +3,7 @@
 /**
  * Default Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2016.
  *
@@ -32,6 +32,10 @@ namespace Finna\Controller;
 
 use VuFindCode\ISBN;
 use VuFindSearch\Backend\Exception\BackendException;
+
+use function count;
+use function is_array;
+use function is_callable;
 
 /**
  * Redirects the user to the appropriate default VuFind action.

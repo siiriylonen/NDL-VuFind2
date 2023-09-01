@@ -3,7 +3,7 @@
 /**
  * Lucene query syntax helper class.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2020.
  *
@@ -175,10 +175,10 @@ class LuceneSyntaxHelper extends \VuFindSearch\Backend\Solr\LuceneSyntaxHelper
                 $inQuotes = !$inQuotes;
             }
             if (!$inQuotes && '-' === $c) {
-                if ('!' === $prev && "\\" !== $prev2) {
+                if ('!' === $prev && '\\' !== $prev2) {
                     $result = substr($result, 0, -1) . '-';
                 } elseif (' ' === $prev) {
-                    $result .= "\\-";
+                    $result .= '\\-';
                 } else {
                     $result .= '-';
                 }

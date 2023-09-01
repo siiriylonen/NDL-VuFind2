@@ -3,7 +3,7 @@
 /**
  * Trait for logs in console services.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2020.
  *
@@ -32,6 +32,12 @@ namespace FinnaConsole\Command\Util;
 
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function is_array;
+use function is_bool;
+use function is_float;
+use function is_int;
+use function is_object;
 
 /**
  * Trait for logs in console services.
@@ -64,10 +70,10 @@ trait ConsoleLoggerTrait
     {
         // We need to build a variety of pieces so we can supply
         // information at five different verbosity levels:
-        $baseError = get_class($error) . ' : ' . $error->getMessage();
+        $baseError = $error::class . ' : ' . $error->getMessage();
         $prev = $error->getPrevious();
         while ($prev) {
-            $baseError .= ' ; ' . get_class($prev) . ' : ' . $prev->getMessage();
+            $baseError .= ' ; ' . $prev::class . ' : ' . $prev->getMessage();
             $prev = $prev->getPrevious();
         }
         $backtrace = "\nBacktrace:\n";
@@ -110,7 +116,7 @@ trait ConsoleLoggerTrait
     protected function argumentToString($arg)
     {
         if (is_object($arg)) {
-            return get_class($arg) . ' Object';
+            return $arg::class . ' Object';
         }
         if (is_array($arg)) {
             $args = [];

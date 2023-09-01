@@ -3,7 +3,7 @@
 /**
  * Abstract base class for a command that updates records.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -34,6 +34,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use VuFind\Db\Row\RowGateway;
+
+use function get_class;
 
 /**
  * Abstract base class for a command that updates records.

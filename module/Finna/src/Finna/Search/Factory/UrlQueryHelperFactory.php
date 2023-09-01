@@ -3,7 +3,7 @@
 /**
  * Factory to build UrlQueryHelper.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2016.
  * Copyright (C) The National Library of Finland 2016.
@@ -33,6 +33,8 @@ namespace Finna\Search\Factory;
 
 use Finna\Search\UrlQueryHelper;
 use VuFind\Search\Base\Params;
+
+use function is_callable;
 
 /**
  * Factory to build UrlQueryHelper.

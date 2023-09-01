@@ -41,6 +41,9 @@
         <p class="format"><?=$this->transEsc($formats[0])?></p>
         <h1 property="name" class="record-title"><?=$this->escapeHtml($this->driver->getTitle())?></h1>
       </div>
+
+      <?=$this->record($this->driver)->renderTemplate('cached-record-warning.phtml', ['driver' => $this->driver])?>
+
       <?php if ($occupations = $this->driver->getOccupations()): ?>
         <div class="occupation"><?=implode(', ', $occupations)?></div>
       <?php elseif ($corporateType = $this->driver->getCorporateType()): ?>
@@ -53,7 +56,8 @@
         </div>
       <?php endif; ?>
 
-      <?php $summ = $this->driver->getSummary(); if (!empty($summ)): ?>
+      <?php $summ = $this->driver->getSummary();
+      if (!empty($summ)): ?>
       <div class="truncate-field wide recordSummary">
         <p class="summary">
         <?php foreach ($summ as $field): ?>
@@ -66,7 +70,7 @@
       <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
         <?php /* Display the lists that this record is saved to */ ?>
         <div class="savedLists" id="savedLists">
-          <strong><?=$this->transEsc("Saved in")?>:</strong>
+          <strong><?=$this->transEsc('Saved in')?>:</strong>
         </div>
       <?php endif; ?>
 
@@ -81,7 +85,7 @@
       ?>
       <?/* End Main Details */?>
 
-      <?php if ($template = $this->content()->findTemplateForLng("content/Additions/record-post-metadata")): ?>
+      <?php if ($template = $this->content()->findTemplateForLng('content/Additions/record-post-metadata')): ?>
       <div>
         <?=$this->render($template)?>
       </div>

@@ -3,7 +3,7 @@
 /**
  * Abstract factory for SOLR backends.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2013.
  * Copyright (C) The National Library of Finland 2013-2021.
@@ -37,6 +37,8 @@ use FinnaSearch\Backend\Solr\LuceneSyntaxHelper;
 use FinnaSearch\Backend\Solr\QueryBuilder;
 use FinnaSearch\Backend\Solr\Response\Json\RecordCollection;
 use VuFindSearch\Backend\Solr\Backend;
+
+use function is_array;
 
 /**
  * Abstract factory for SOLR backends.

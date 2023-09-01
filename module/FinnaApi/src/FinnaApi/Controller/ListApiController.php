@@ -3,7 +3,7 @@
 /**
  * List API Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2021-2022.
  *
@@ -40,6 +40,8 @@ use VuFind\Search\Results\PluginManager;
 use VuFindApi\Controller\ApiInterface;
 use VuFindApi\Controller\ApiTrait;
 use VuFindApi\Formatter\RecordFormatter;
+
+use function is_array;
 
 /**
  * List API Controller

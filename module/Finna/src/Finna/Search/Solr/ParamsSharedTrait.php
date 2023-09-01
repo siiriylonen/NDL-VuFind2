@@ -3,7 +3,7 @@
 /**
  * Additional functionality for Solr parameters shared with Blender.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library 2022.
  *
@@ -28,6 +28,9 @@
  */
 
 namespace Finna\Search\Solr;
+
+use function array_slice;
+use function in_array;
 
 /**
  * Additional functionality for Solr parameters shared with Blender.

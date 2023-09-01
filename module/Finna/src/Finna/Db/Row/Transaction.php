@@ -3,7 +3,7 @@
 /**
  * Row definition for online payment transaction
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2023.
  *
@@ -30,6 +30,9 @@
 namespace Finna\Db\Row;
 
 use Finna\Db\Table\Transaction as TransactionTable;
+use Laminas\Db\ResultSet\ResultSetInterface;
+
+use function in_array;
 
 /**
  * Row definition for online payment transaction
@@ -46,6 +49,7 @@ use Finna\Db\Table\Transaction as TransactionTable;
  * @property string $status
  * @property string $registered
  * @property string $reported
+ * @property string $cat_username
  */
 class Transaction extends \VuFind\Db\Row\RowGateway implements \VuFind\Db\Table\DbTableAwareInterface
 {
@@ -120,14 +124,18 @@ class Transaction extends \VuFind\Db\Row\RowGateway implements \VuFind\Db\Table\
      *
      * @param int $timestamp Optional payment unix timestamp
      *
-     * @return void
+     * @return bool
      */
-    public function setPaid(int $timestamp = null): void
+    public function setPaid(int $timestamp = null): bool
     {
+        if ($this->complete !== TransactionTable::STATUS_PROGRESS) {
+            return false;
+        }
         $this->paid = date('Y-m-d H:i:s', $timestamp ?: time());
         $this->complete = TransactionTable::STATUS_PAID;
         $this->status = 'paid';
         $this->save();
+        return true;
     }
 
     /**
@@ -196,5 +204,16 @@ class Transaction extends \VuFind\Db\Row\RowGateway implements \VuFind\Db\Table\
             }
         }
         return $fineIds;
+    }
+
+    /**
+     * Get associated fees
+     *
+     * @return ResultSetInterface
+     */
+    public function getFines(): ResultSetInterface
+    {
+        $feeTable = $this->getDbTable('Fee');
+        return $feeTable->select(['transaction_id' => $this->id]);
     }
 }

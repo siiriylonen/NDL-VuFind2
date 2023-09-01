@@ -3,7 +3,7 @@
 /**
  * Resource Entitlement Management System (REMS) service
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2020.
  *
@@ -32,6 +32,8 @@ namespace Finna\Service;
 use Laminas\Config\Config;
 use Laminas\EventManager\EventManager;
 use Laminas\Session\Container;
+
+use function in_array;
 
 /**
  * Resource Entitlement Management System (REMS) service

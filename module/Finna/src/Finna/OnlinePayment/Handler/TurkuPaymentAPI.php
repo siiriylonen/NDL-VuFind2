@@ -3,7 +3,7 @@
 /**
  * Turku Payment API handler
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -30,12 +30,12 @@
 
 namespace Finna\OnlinePayment\Handler;
 
-use Finna\OnlinePayment\Handler\Connector\Paytrail\PaytrailPaymentAPI\Customer;
 use Finna\OnlinePayment\Handler\Connector\TurkuPaymentAPI\Client;
 use Finna\OnlinePayment\Handler\Connector\TurkuPaymentAPI\Item;
 use Finna\OnlinePayment\Handler\Connector\TurkuPaymentAPI\PaymentRequest;
 use Finna\OnlinePayment\Handler\Connector\TurkuPaymentAPI\TurkuSignature;
 use Paytrail\SDK\Model\CallbackUrl;
+use Paytrail\SDK\Model\Customer;
 
 /**
  * Turku Payment API handler
@@ -111,7 +111,7 @@ class TurkuPaymentAPI extends AbstractBase
         // Use email from the ILS as default and use the one stored in Finna as a
         // fallback:
         $customer = (new Customer())
-            ->setEmail(trim(($patron['email'] ?? '') ?: $user->email));
+            ->setEmail(trim(($patron['email'] ?? '') ?: trim($user->email)));
 
         $language = $this->languageMap[$this->getCurrentLanguageCode()] ?? 'FI';
         $sapOrganization = [
@@ -223,6 +223,9 @@ class TurkuPaymentAPI extends AbstractBase
                 'exception sending payment: ' . $e->getMessage(),
                 compact('user', 'patron', 'fines', 'request')
             );
+            if (mb_strtolower($e->getMessage()) === 'email is empty') {
+                return 'Payment::email_address_missing';
+            }
             return '';
         }
 
@@ -251,37 +254,38 @@ class TurkuPaymentAPI extends AbstractBase
      * @param \Finna\Db\Row\Transaction $transaction Transaction
      * @param \Laminas\Http\Request     $request     Request
      *
-     * @return int One of the result codes defined in AbstractBase
+     * @return array One of the result codes defined in AbstractBase and bool
+     * indicating whether the transaction was just now marked as paid
      */
     public function processPaymentResponse(
         \Finna\Db\Row\Transaction $transaction,
         \Laminas\Http\Request $request
-    ): int {
+    ): array {
         if (!($params = $this->getPaymentResponseParams($request))) {
-            return self::PAYMENT_FAILURE;
+            return [self::PAYMENT_FAILURE, false];
         }
 
         // Make sure the transaction IDs match:
         if ($transaction->transaction_id !== $params['checkout-stamp']) {
-            return self::PAYMENT_FAILURE;
+            return [self::PAYMENT_FAILURE, false];
         }
 
         $status = $params['checkout-status'];
         switch ($status) {
             case 'ok':
-                $transaction->setPaid();
-                return self::PAYMENT_SUCCESS;
+                $marked = $transaction->setPaid();
+                return [self::PAYMENT_SUCCESS, $marked];
             case 'fail':
                 $transaction->setCanceled();
-                return self::PAYMENT_CANCEL;
+                return [self::PAYMENT_CANCEL, false];
             case 'new':
             case 'pending':
             case 'delayed':
-                return self::PAYMENT_PENDING;
+                return [self::PAYMENT_PENDING, false];
         }
 
         $this->logPaymentError("unknown status $status");
-        return self::PAYMENT_FAILURE;
+        return [self::PAYMENT_FAILURE, false];
     }
 
     /**
@@ -368,15 +372,15 @@ class TurkuPaymentAPI extends AbstractBase
             }
         }
 
-        $client = new Client(
-            $this->config->merchantId,
-            $this->config->oId,
+        return new Client(
+            0,
             $this->config->secret,
-            $this->config->platformName,
-            $this->config->url
+            'Finna',
+            $this->http,
+            $this->getLogger(),
+            $this->config->url,
+            $this->config->merchantId,
+            $this->config->oId
         );
-        $client->setHttpService($this->http);
-        $client->setLogger($this->logger);
-        return $client;
     }
 }

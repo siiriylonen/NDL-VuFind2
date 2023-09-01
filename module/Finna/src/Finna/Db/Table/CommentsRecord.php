@@ -3,7 +3,7 @@
 /**
  * Table Definition for CommentsRecord link table.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015.
  *
@@ -33,6 +33,8 @@ use Laminas\Db\Adapter\Adapter;
 use VuFind\Db\Row\RowGateway;
 use VuFind\Db\Table\Gateway;
 use VuFind\Db\Table\PluginManager;
+
+use function in_array;
 
 /**
  * Table Definition for CommentsRecord link table.

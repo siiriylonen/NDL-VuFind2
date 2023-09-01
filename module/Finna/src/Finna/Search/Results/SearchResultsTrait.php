@@ -3,7 +3,7 @@
 /**
  * Finna search results trait
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2017.
  *
@@ -31,6 +31,8 @@
 namespace Finna\Search\Results;
 
 use Finna\Search\Factory\UrlQueryHelperFactory;
+
+use function is_callable;
 
 /**
  * Finna search results trait

@@ -3,7 +3,7 @@
 /**
  * Favorites service
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2016.
  *
@@ -96,7 +96,7 @@ class FavoritesService implements \VuFind\I18n\Translator\TranslatorAwareInterfa
      *
      * @throws \VuFind\Exception\ListPermission
      */
-    protected function getListObject($listId, \VuFind\Db\Row\User $user)
+    public function getListObject($listId, \VuFind\Db\Row\User $user)
     {
         if (empty($listId) || $listId == 'NEW') {
             $list = $this->userListTable->getNew($user);

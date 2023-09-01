@@ -3,7 +3,7 @@
 /**
  * Model for Marc authority records in Solr.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2020.
  *
@@ -30,6 +30,8 @@
 namespace Finna\RecordDriver;
 
 use Finna\Util\MetadataUtils;
+
+use function count;
 
 /**
  * Model for Forward authority records in Solr.

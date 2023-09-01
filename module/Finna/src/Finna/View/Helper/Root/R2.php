@@ -3,7 +3,7 @@
 /**
  * Helper class for restricted Solr R2 search.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2020.
  *
@@ -32,6 +32,8 @@ namespace Finna\View\Helper\Root;
 use Finna\Db\Row\User;
 use Finna\Service\RemsService;
 use VuFind\RecordDriver\AbstractBase;
+
+use function in_array;
 
 /**
  * Helper class for restricted Solr R2 search.

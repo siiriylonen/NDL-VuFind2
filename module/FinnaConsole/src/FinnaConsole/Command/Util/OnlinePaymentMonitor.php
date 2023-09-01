@@ -3,7 +3,7 @@
 /**
  * Console service for processing unregistered online payments.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2022.
  *
@@ -36,6 +36,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function intval;
 
 /**
  * Console service for processing unregistered online payments.
@@ -414,13 +416,13 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
                         $settings['errorEmail']
                             = $this->datasourceConfig[$driver]['feedbackEmail'];
                         $this->warn(
-                            "  No error email for expired transactions defined for "
+                            '  No error email for expired transactions defined for '
                             . "driver $driver, using feedback email ($cnt expired "
-                            . "transactions)"
+                            . 'transactions)'
                         );
                     } else {
                         $this->err(
-                            "  No error email for expired transactions defined for "
+                            '  No error email for expired transactions defined for '
                             . "driver $driver ($cnt expired transactions)",
                             '='
                         );

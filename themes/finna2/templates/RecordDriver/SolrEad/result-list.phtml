@@ -48,7 +48,8 @@ if ($img):
             <?=$this->record($this->driver)->getLabelList() ?>
           </div>
           <?=$this->render('record/labels.phtml', ['driver' => $this->driver]); ?>
-          <?php $authors = $this->driver->tryMethod('getAuthorsWithRoles'); if (!empty($authors)): ?>
+          <?php $authors = $this->driver->tryMethod('getAuthorsWithRoles');
+          if (!empty($authors)): ?>
             <div class="truncate-field" data-rows="1">
               <?php foreach($authors as $index => $author): ?>
                 <?=($index > 0 ? '; ' : '')?><?=$this->record($this->driver)->getLinkedFieldElement('author', $author['name'], $author, ['date' => true, 'role' => true, 'authorityType' => $author['type'] ?? null])?>
@@ -69,9 +70,11 @@ if ($img):
             <?php if (!($fondsOrCollection = in_array('Document/ArchiveFonds', $this->driver->getFormats()) || in_array('Document/ArchiveCollection', $this->driver->getFormats()))): ?>
               <?php $parentSource = $this->driver->getSourceIdentifier(); ?>
               <?php if ($this->driver->isPartOfArchiveSeries()): ?>
-                <?php $topIds = $this->driver->getHierarchyTopId(); $topTitles = $this->driver->getHierarchyTopTitle(); ?>
+                <?php $topIds = $this->driver->getHierarchyTopId();
+                $topTitles = $this->driver->getHierarchyTopTitle(); ?>
               <?php else: ?>
-                <?php $topIds = $this->driver->getHierarchyParentId(); $topTitles = $this->driver->getHierarchyParentTitle(); ?>
+                <?php $topIds = $this->driver->getHierarchyParentId();
+                $topTitles = $this->driver->getHierarchyParentTitle(); ?>
               <?php endif; ?>
               <?php if (!$this->driver->isCollection()): ?>
                 <br><span class="archive-label"><?=$this->transEsc('Archive')?>:</span>
@@ -86,7 +89,8 @@ if ($img):
                 ['Archive File', \Finna\RecordDriver\SolrEad::FILE_LEVELS],
               ] as [$label, $levels]):
               ?>
-                <?php $parentIds = $this->driver->getHierarchyParentId($levels); $parentTitles = $this->driver->getHierarchyParentTitle($levels); ?>
+                <?php $parentIds = $this->driver->getHierarchyParentId($levels);
+                $parentTitles = $this->driver->getHierarchyParentTitle($levels); ?>
                 <?php if ($parentIds): ?>
                   <br><span class="archive-label"><?=$this->transEsc($label)?>:</span>
                   <?php foreach ($parentIds as $index => $parentId): ?>
@@ -122,13 +126,14 @@ if ($img):
         <?=$this->render('list/list-notes.phtml')?>
         <?php /* Hierarchy tree link */ ?>
         <?php $hierarchySource = $this->driver->getSourceIdentifier() ?>
-        <?php $trees = $this->driver->tryMethod('getHierarchyTrees'); if (!empty($trees)): ?>
+        <?php $trees = $this->driver->tryMethod('getHierarchyTrees');
+        if (!empty($trees)): ?>
           <?php foreach ($trees as $hierarchyID => $hierarchyTitle): ?>
             <div class="hierarchyTreeLink hidden-print">
               <input type="hidden" value="<?=$this->escapeHtmlAttr($hierarchyID)?>" class="hiddenHierarchyId">
               <input type="hidden" value="<?=$this->escapeHtmlAttr($hierarchySource)?>" class="hiddenHierarchySource">
               <a class="hierarchyTreeLinkText" data-lightbox href="<?=$this->escapeHtmlAttr($recordLinker->getTabUrl($this->driver, 'HierarchyTree', ['hierarchy' => $hierarchyID, 'source' => $hierarchySource]))?>#tabnav" title="<?=$this->transEsc('hierarchy_tree')?>" data-lightbox-href="<?=$this->escapeHtmlAttr($recordLinker->getTabUrl($this->driver, 'AjaxTab', ['hierarchy' => $hierarchyID]))?>" data-lightbox-post="tab=hierarchytree">
-                <i class="fa fa-sitemap"></i>
+                <?=$this->icon('hierarchy') ?>
                 <?=$this->transEsc('hierarchy_view_context')?><?php if (count($trees) > 1): ?>: <?=$this->escapeHtml($hierarchyTitle)?><?php endif; ?>
               </a>
             </div>
@@ -143,7 +148,7 @@ if ($img):
             <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
                 <?php /* Add to favorites */ ?>
               <div>
-                <a href="<?=$this->escapeHtmlAttr($recordLinker->getActionUrl($this->driver, 'Save'))?>" class="save-record" data-lightbox data-id="<?=$this->escapeHtmlAttr($this->driver->getUniqueId()) ?>" title="<?=$this->transEsc('Add to favorites')?>" rel="nofollow"><i class="fa fa-heart"></i><span class="hidden-sm hidden-md hidden-lg"> <?=$this->transEsc('Add to favorites')?></span><span class="sr-only hidden-xs"> <?=$this->transEsc('Add to favorites')?></span></a>
+                <a href="<?=$this->escapeHtmlAttr($recordLinker->getActionUrl($this->driver, 'Save'))?>" class="save-record" data-lightbox data-id="<?=$this->escapeHtmlAttr($this->driver->getUniqueId()) ?>" title="<?=$this->transEsc('Add to favorites')?>" rel="nofollow"><?=$this->icon('favorite') ?><span class="hidden-sm hidden-md hidden-lg"> <?=$this->transEsc('Add to favorites')?></span><span class="sr-only hidden-xs"> <?=$this->transEsc('Add to favorites')?></span></a>
               </div>
             <?php endif; ?>
 
@@ -158,7 +163,7 @@ if ($img):
         <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
             <?php /* Saved lists */ ?>
           <div class="savedLists">
-            <strong><?=$this->transEsc("Saved in")?>:</strong>
+            <strong><?=$this->transEsc('Saved in')?>:</strong>
           </div>
         <?php endif; ?>
       </div>

@@ -52,14 +52,16 @@
           <?php if ($this->driver->isCollection()): ?>
             <?=implode('<br>', $this->driver->getSummary()); ?>
           <?php else: ?>
-            <?php $authors = $this->driver->tryMethod('getAuthorsWithRoles'); if (!empty($authors)): ?>
+            <?php $authors = $this->driver->tryMethod('getAuthorsWithRoles');
+            if (!empty($authors)): ?>
               <div class="truncate-field" data-rows="1">
                 <?php foreach($authors as $index => $author): ?>
                   <?=($index > 0 ? '; ' : '')?><?=$this->record($this->driver)->getLinkedFieldElement('author', $author['name'], $author, ['date' => true, 'role' => true, 'authorityType' => $author['type'] ?? null])?>
                 <?php endforeach; ?>
               </div>
             <?php endif; ?>
-            <?php $containerTitle = $this->driver->getContainerTitle(); $summDate = $this->driver->getPublicationDates(); ?>
+            <?php $containerTitle = $this->driver->getContainerTitle();
+            $summDate = $this->driver->getPublicationDates(); ?>
             <?php if (!empty($containerTitle)): ?>
               <div class="truncate-field" data-rows="1">
                 <?=$this->transEsc('Published in')?>
@@ -147,7 +149,7 @@
         <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
           <?php /* Saved lists */ ?>
           <div class="savedLists">
-            <strong><?=$this->transEsc("Saved in")?>:</strong>
+            <strong><?=$this->transEsc('Saved in')?>:</strong>
           </div>
         <?php endif; ?>
 
@@ -160,7 +162,7 @@
             <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
                 <?php /* Add to favorites */ ?>
               <div>
-                <a href="<?=$this->escapeHtmlAttr($recordLinker->getActionUrl($this->driver, 'Save'))?>" class="save-record" data-lightbox data-id="<?=$this->escapeHtmlAttr($this->driver->getUniqueId()) ?>" title="<?=$this->transEsc('Add to favorites')?>" rel="nofollow"><i class="fa fa-heart" aria-hidden="true"></i><span class="hidden-sm hidden-md hidden-lg"> <?=$this->transEsc('Add to favorites')?></span><span class="sr-only hidden-xs"> <?=$this->transEsc('Add to favorites')?></span></a>
+                <a href="<?=$this->escapeHtmlAttr($recordLinker->getActionUrl($this->driver, 'Save'))?>" class="save-record" data-lightbox data-id="<?=$this->escapeHtmlAttr($this->driver->getUniqueId()) ?>" title="<?=$this->transEsc('Add to favorites')?>" rel="nofollow"><?=$this->icon('favorite') ?><span class="hidden-sm hidden-md hidden-lg"> <?=$this->transEsc('Add to favorites')?></span><span class="sr-only hidden-xs"> <?=$this->transEsc('Add to favorites')?></span></a>
               </div>
             <?php endif; ?>
 

@@ -3,7 +3,7 @@
 /**
  * Authentication strategy permission provider for VuFind.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2020.
  *
@@ -36,6 +36,9 @@ use Finna\ILS\Connection as ILSConnection;
 use Laminas\Session\Container as SessionContainer;
 use VuFind\Exception\ILS as ILSException;
 use VuFind\Role\PermissionProvider\PermissionProviderInterface;
+
+use function in_array;
+use function is_callable;
 
 /**
  * Authentication strategy permission provider for VuFind.

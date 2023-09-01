@@ -3,7 +3,7 @@
 /**
  * National Library of Finland cover content loader.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2014.
  *
@@ -74,7 +74,7 @@ class NatLibFi extends \VuFind\Content\AbstractCover
             $isbn = $ids['invisbn'];
         }
         if ('' !== $isbn) {
-            return 'http://s1.doria.fi/getImage.php?query=' . urlencode($isbn)
+            return 'https://kansikuvat.finna.fi/getImage.php?query=' . urlencode($isbn)
                 . '&return_error=true';
         }
         return false;

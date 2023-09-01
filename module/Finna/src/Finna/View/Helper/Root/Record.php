@@ -3,7 +3,7 @@
 /**
  * Record driver view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2015-2022.
@@ -41,6 +41,13 @@ use Finna\Service\UserPreferenceService;
 use Laminas\Config\Config;
 use VuFind\Record\Loader;
 use VuFind\View\Helper\Root\Url;
+
+use function array_key_exists;
+use function count;
+use function in_array;
+use function intval;
+use function is_array;
+use function is_string;
 
 /**
  * Record driver view helper
@@ -399,7 +406,7 @@ class Record extends \VuFind\View\Helper\Root\Record
         );
 
         if ($searchTabsFilters) {
-            $prepend = (strpos($result, '?') === false) ? '?' : '&amp;';
+            $prepend = (!str_contains($result, '?')) ? '?' : '&amp;';
             $result .= $this->getView()->plugin('searchTabs')->getCurrentHiddenFilterParams(
                 $this->driver->getSourceIdentifier(),
                 false,
@@ -1225,7 +1232,7 @@ class Record extends \VuFind\View\Helper\Root\Record
      *
      * @param string $copyright Copyright
      *
-     * @return string
+     * @return string HTML-escaped translation
      */
     public function translateCopyright(string $copyright): string
     {
@@ -1360,7 +1367,11 @@ class Record extends \VuFind\View\Helper\Root\Record
     public function getContainerJsClasses(): string
     {
         $classes = [];
-        if (!empty($this->driver) && $this->driver->supportsAjaxStatus()) {
+        if (
+            !empty($this->driver)
+            && ($this->driver->supportsAjaxStatus()
+            || $this->getView()->plugin('doi')($this->driver, 'results')->isActive())
+        ) {
             $classes[] = 'ajaxItem';
         }
         if (!$this->getPreferredSource()) {

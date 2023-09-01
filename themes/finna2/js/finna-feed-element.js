@@ -17,7 +17,7 @@ class FinnaFeedElement extends HTMLElement {
   get feedId() {
     return this.getAttribute('feed-id') || '';
   }
-  
+
   /**
    * Set feed id
    *
@@ -93,19 +93,19 @@ class FinnaFeedElement extends HTMLElement {
     const playSpan = document.createElement('span');
     playSpan.className = 'sr-only';
     playSpan.innerHTML = VuFind.translate('Carousel::Start Autoplay');
-    const playIcon = document.createElement('i');
-    playIcon.className = 'fa fa-play-circle splide__toggle__play play-icon';
-    playIcon.append(playSpan);
+    const playIcon = document.createElement('span');
+    playIcon.className = 'splide__toggle__play';
+    playIcon.innerHTML = VuFind.icon('feed-play', 'play-icon');
 
     const pauseSpan = document.createElement('span');
     pauseSpan.className = 'sr-only';
     pauseSpan.innerHTML = VuFind.translate('Carousel::Stop Autoplay');
-    const pauseIcon = document.createElement('i');
-    pauseIcon.className = 'splide__toggle__pause fa fa-pause-circle pause-icon';
-    pauseIcon.append(pauseSpan);
+    const pauseIcon = document.createElement('span');
+    pauseIcon.className = 'splide__toggle__pause';
+    pauseIcon.innerHTML = VuFind.icon('feed-pause', 'pause-icon');
 
     autoPlayButton.append(playIcon, pauseIcon);
-    this.append(autoPlayButton);
+    this.querySelector('.carousel-autoplay').append(autoPlayButton);
   }
 
   /**
@@ -311,9 +311,8 @@ class FinnaFeedElement extends HTMLElement {
     } else {
       const holder = this;
       // Prepend spinner
-      const spinner = document.createElement('i');
-      spinner.className = 'fa fa-spin fa-spinner';
-      holder.insertAdjacentElement('afterbegin', spinner);
+      const spinner = document.createElement('span');
+      spinner.innerHTML = VuFind.icon('spinner', 'spinner');
 
       const url = VuFind.path + '/AJAX/JSON?' + new URLSearchParams({
         method: 'getFeed',
@@ -346,7 +345,7 @@ class FinnaFeedElement extends HTMLElement {
   disconnectedCallback() {
     this.innerHTML = '';
   }
-  
+
   /**
    * Observed attribute value changed
    *

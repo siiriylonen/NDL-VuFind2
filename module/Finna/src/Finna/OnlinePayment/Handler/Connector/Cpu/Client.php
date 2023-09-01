@@ -3,7 +3,7 @@
 /**
  * CPU Client
  *
- * PHP version 7
+ * PHP version 8
  *
  * This is free and unencumbered software released into the public domain.
  *
@@ -41,6 +41,8 @@
 
 namespace Finna\OnlinePayment\Handler\Connector\Cpu;
 
+use function intval;
+
 /**
  * Client example of CPU Verkkomaksu API.
  * Handles validating and sending data to eCommerce service.
@@ -50,7 +52,7 @@ namespace Finna\OnlinePayment\Handler\Connector\Cpu;
  */
 class Client
 {
-    use \Finna\OnlinePayment\OnlinePaymentPostRequestTrait;
+    use \Finna\OnlinePayment\OnlinePaymentHttpRequestTrait;
 
     /**
      * Url of eCommerce service where payment data will be sent.

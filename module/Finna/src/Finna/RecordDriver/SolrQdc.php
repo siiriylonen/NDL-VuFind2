@@ -3,7 +3,7 @@
 /**
  * Model for Qualified Dublin Core records in Solr.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2013-2020.
  *
@@ -31,6 +31,10 @@
  */
 
 namespace Finna\RecordDriver;
+
+use function array_slice;
+use function count;
+use function in_array;
 
 /**
  * Model for Qualified Dublin Core records in Solr.
@@ -66,11 +70,11 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
     ];
 
     /**
-     * Image mime types
+     * Image media types
      *
      * @var array
      */
-    protected $imageMimeTypes = [
+    protected $imageMediaTypes = [
         'image/jpeg' => 'jpg',
         'image/png' => 'png',
     ];
@@ -215,17 +219,11 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
 
         $results = [];
         $rights = [];
-        $pdf = false;
         $xml = $this->getXmlRecord();
         $thumbnails = [];
         $otherSizes = [];
         $highResolution = [];
-        $rightsStmt = $this->getMappedRights((string)($xml->rights ?? ''));
-        $rights = [
-            'copyright' => $rightsStmt,
-            'link' => $this->getRightsLink($rightsStmt, $language),
-        ];
-
+        $rights = $this->getRights($language);
         $addToResults = function ($imageData) use (&$results) {
             if (!isset($imageData['urls']['small'])) {
                 $imageData['urls']['small'] = $imageData['urls']['medium']
@@ -245,17 +243,14 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
         foreach ($xml->file as $node) {
             $attributes = $node->attributes();
             $type = (string)($attributes->type ?? '');
+            $url = (string)($attributes->href ?? $node);
             if (
-                $type
-                && !in_array($type, array_keys($this->imageMimeTypes))
+                ($type && !in_array($type, array_keys($this->imageMediaTypes)))
+                || (!$type && !preg_match('/\.(jpg|png)$/i', $url))
             ) {
                 continue;
             }
-            $url = (string)($attributes->href ?? $node);
-            if (
-                !preg_match('/\.(jpg|png)$/i', $url)
-                || !$this->isUrlLoadable($url, $this->getUniqueID())
-            ) {
+            if (!$this->isUrlLoadable($url, $this->getUniqueID())) {
                 continue;
             }
 
@@ -272,7 +267,7 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
                         $currentHiRes = [
                             'data' => [],
                             'url' => $url,
-                            'format' => $this->imageMimeTypes[$type] ?? 'jpg',
+                            'format' => $this->imageMediaTypes[$type] ?? 'jpg',
                         ];
                         $highResolution[$size][] = $currentHiRes;
                     }
@@ -309,16 +304,13 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
                 if ((string)$attributes->bundle !== 'ORIGINAL') {
                     continue;
                 }
-                $mimes = ['application/pdf'];
-                if (isset($attributes->type)) {
-                    if (!in_array($attributes->type, $mimes)) {
-                        continue;
-                    }
-                }
                 $url = isset($attributes->href)
                     ? (string)$attributes->href : (string)$node;
-
-                if (!preg_match('/\.(pdf)$/i', $url)) {
+                $type = trim((string)$attributes->type);
+                if (
+                    ($type && $type !== 'application/pdf')
+                    || (!$type && !preg_match('/\.pdf$/i', $url))
+                ) {
                     continue;
                 }
                 $urls['small'] = $urls['large'] = $url;
@@ -337,6 +329,65 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
     }
 
     /**
+     * Get image rights
+     *
+     * @param string $language Language for the copyright
+     *
+     * @return array [copyright, link, description = []]
+     */
+    protected function getRights(string $language): array
+    {
+        $xml = $this->getXmlRecord();
+        $result = [
+            'copyright' => '',
+            'link' => '',
+            'description' => [],
+        ];
+        $cache = [];
+        // Get all the copyrights and save them in an array identified by language.
+        foreach ($xml->rights as $right) {
+            $strRight = trim((string)$right);
+            $type = trim((string)$right->attributes()->type);
+            $rightLanguage = trim((string)$right->attributes()->lang) ?: 'no_locale';
+            $cache[$rightLanguage][] = [
+                'txt' => $strRight,
+                'type' => $type,
+            ];
+        }
+        if (empty($cache)) {
+            return $result;
+        }
+        // Check that there is proper values to use for displaying the rights.
+        $localizedRights = [];
+        foreach ($this->getPrioritizedLanguages([$language], 'no_locale') as $lang) {
+            if (!empty($cache[$lang])) {
+                $localizedRights = $cache[$lang];
+                break;
+            }
+        }
+        if (empty($localizedRights)) {
+            return $result;
+        }
+        // Try to get the main copyright to display, normally the first in array.
+        $priorityRight = array_shift($localizedRights);
+        $mappedRight = $this->getMappedRights($priorityRight['txt']);
+        $result['copyright'] = $mappedRight;
+        $result['link'] = $this->getRightsLink($mappedRight, $language);
+        foreach ($localizedRights as $right) {
+            // Add rights as descriptions which have the same localization
+            // as the primary right.
+            if (
+                'copyright' === $right['type']
+                && $result['copyright'] !== $right['txt']
+            ) {
+                $result['description'][] = $right['txt'];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Return an external URL where a displayable description text
      * can be retrieved from, if available; false otherwise.
      *
@@ -345,7 +396,7 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
     public function getDescriptionURL()
     {
         if ($isbn = $this->getCleanISBN()) {
-            return 'http://s1.doria.fi/getText.php?query=' . $isbn;
+            return 'https://kansikuvat.finna.fi/getText.php?query=' . $isbn;
         }
         return false;
     }
@@ -556,7 +607,7 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
      *
      * @param mixed $data Raw data representing the record; Record Model
      * objects are normally constructed by Record Driver objects using data
-     * passed in from a Search Results object.  The exact nature of the data may
+     * passed in from a Search Results object. The exact nature of the data may
      * vary depending on the data source -- the important thing is that the
      * Record Driver + Search Results objects work together correctly.
      *

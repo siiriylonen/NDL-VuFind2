@@ -3,7 +3,7 @@
 /**
  * Console service for updating search hashes.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2020.
  *
@@ -31,6 +31,8 @@ namespace FinnaConsole\Command\Util;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function count;
 
 /**
  * Console service for updating search hashes.

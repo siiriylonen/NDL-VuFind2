@@ -3,7 +3,7 @@
 /**
  * Common functionality for container record formats.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -32,6 +32,9 @@ namespace Finna\RecordDriver\Feature;
 use Finna\Record\Loader;
 use Finna\RecordDriver\PluginManager;
 use VuFind\RecordDriver\AbstractBase;
+
+use function count;
+use function is_callable;
 
 /**
  * Common functionality for container record formats.

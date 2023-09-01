@@ -3,7 +3,7 @@
 /**
  * Table Definition for user
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2020.
  *
@@ -32,6 +32,8 @@
 namespace Finna\Db\Table;
 
 use Laminas\Db\Sql\Select;
+
+use function strlen;
 
 /**
  * Table Definition for user

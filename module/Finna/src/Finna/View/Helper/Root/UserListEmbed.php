@@ -3,7 +3,7 @@
 /**
  * View helper for embedding a user list.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2019.
  *
@@ -30,6 +30,8 @@
 namespace Finna\View\Helper\Root;
 
 use Laminas\Stdlib\Parameters;
+
+use function in_array;
 
 /**
  * View helper for embedding a user list.

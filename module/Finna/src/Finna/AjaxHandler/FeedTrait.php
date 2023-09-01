@@ -3,7 +3,7 @@
 /**
  * Feed support trait
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2018.
  *
@@ -33,6 +33,8 @@ namespace Finna\AjaxHandler;
 
 use Laminas\Config\Config;
 use Laminas\View\Renderer\RendererInterface;
+
+use function is_string;
 
 /**
  * Feed support trait
@@ -70,6 +72,8 @@ trait FeedTrait
         $items = $feed['items'];
         $config = $feed['config'];
         $modal = $feed['modal'];
+        $contentNavigation = $feed['contentNavigation'];
+        $nextArticles = $feed['nextArticles'];
 
         $images
             = $config->content['image'] ?? true;
@@ -118,7 +122,7 @@ trait FeedTrait
             $feed['visualItems'] = $config->visualItems;
         }
 
-        $template = strpos($type, 'carousel') !== false ? 'carousel' : $type;
+        $template = str_contains($type, 'carousel') ? 'carousel' : $type;
         $html = $viewRenderer->partial("ajax/feed-$template.phtml", $feed);
 
         $settings = [
