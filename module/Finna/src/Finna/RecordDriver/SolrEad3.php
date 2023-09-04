@@ -1493,12 +1493,18 @@ class SolrEad3 extends SolrEad
             $normal = (string)$attr->normal;
             $dates = $start = $end = '';
             $unknown = false;
+            $dateForm = ['u', 'x'];
             if ($normal) {
                 if (strstr($normal, '/')) {
                     [$start, $end] = explode('/', $normal);
                 } else {
                     $start = $normal;
-                    $unknown = strstr($start, 'u');
+                    foreach (str_split($start) as $number) {
+                        if (in_array(strtolower($number), $dateForm)) {
+                            $unknown = true;
+                            break;
+                        }
+                    }
                 }
                 $dates = $this->parseDate($start, true);
                 if (
@@ -1562,17 +1568,28 @@ class SolrEad3 extends SolrEad
         $year = 0;
         $month = 0;
         $day = 0;
-        if (isset($parts[2]) && $parts[2] !== 'uu') {
+        $addDate = true;
+        $dateForm = [
+            'date' => ['uu', 'xx'],
+            'unit' => ['u', 'x'],
+        ];
+        if (isset($parts[2]) && !in_array(strtolower($parts[2]), $dateForm['date'])) {
             $day = $parts[2];
         }
-        if (isset($parts[1]) && $parts[1] !== 'uu') {
+        if (isset($parts[1]) && !in_array(strtolower($parts[1]), $dateForm['date'])) {
             $month = $parts[1];
         }
         $defaultY = $start ? '0' : '9';
 
-        $year = str_replace('u', $defaultY, $parts[0]);
+        $year = str_ireplace($dateForm['unit'], $defaultY, $parts[0]);
+        foreach (str_split($parts[0]) as $char) {
+            if (in_array(strtolower($char), $dateForm['unit'])) {
+                $addDate = false;
+                break;
+            }
+        }
         $result = '';
-        if ($day && $month && !strstr($parts[0], 'u')) {
+        if ($day && $month && $addDate) {
             $result = "{$day}.{$month}.";
         }
 
