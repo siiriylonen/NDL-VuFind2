@@ -1498,12 +1498,7 @@ class SolrEad3 extends SolrEad
                     [$start, $end] = explode('/', $normal);
                 } else {
                     $start = $normal;
-                    foreach (str_split($start) as $number) {
-                        if (in_array(strtolower($number), ['u', 'x'])) {
-                            $unknown = true;
-                            break;
-                        }
-                    }
+                    $unknown = $this->checkForUnknownChars($start);
                 }
                 $dates = $this->parseDate($start, true);
                 if (
@@ -1567,24 +1562,16 @@ class SolrEad3 extends SolrEad
         $year = 0;
         $month = 0;
         $day = 0;
-        $addDate = true;
-        $unknownDate = ['uu', 'xx'];
-        $unknownUnit = ['u', 'x'];
-        if (isset($parts[2]) && !in_array(strtolower($parts[2]), $unknownDate)) {
+        if (isset($parts[2]) && !$this->checkForUnknownChars($parts[2])) {
             $day = $parts[2];
         }
-        if (isset($parts[1]) && !in_array(strtolower($parts[1]), $unknownDate)) {
+        if (isset($parts[1]) && !$this->checkForUnknownChars($parts[1])) {
             $month = $parts[1];
         }
         $defaultY = $start ? '0' : '9';
 
-        $year = str_ireplace($unknownUnit, $defaultY, $parts[0]);
-        foreach (str_split($parts[0]) as $char) {
-            if (in_array(strtolower($char), $unknownUnit)) {
-                $addDate = false;
-                break;
-            }
-        }
+        $year = str_ireplace(['u', 'x'], $defaultY, strtolower($parts[0]));
+        $addDate = !$this->checkForUnknownChars($parts[0]);
         $result = '';
         if ($day && $month && $addDate) {
             $result = "{$day}.{$month}.";
@@ -1592,6 +1579,26 @@ class SolrEad3 extends SolrEad
 
         $result .= $year;
         return $result;
+    }
+
+    /**
+     * Check if given string contains other than numerical characters
+     *
+     * @param string $string The string to be checked
+     *
+     * @return bool $value
+     */
+    public function checkForUnknownChars($string)
+    {
+        $value = false;
+        $string = strtolower($string);
+        foreach (['uu', 'xx', 'u', 'x'] as $char) {
+            if (str_contains($string, $char)) {
+                $value = true;
+                break;
+            }
+        }
+        return $value;
     }
 
     /**
