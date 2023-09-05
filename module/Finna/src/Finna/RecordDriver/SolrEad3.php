@@ -1493,14 +1493,13 @@ class SolrEad3 extends SolrEad
             $normal = (string)$attr->normal;
             $dates = $start = $end = '';
             $unknown = false;
-            $dateForm = ['u', 'x'];
             if ($normal) {
                 if (strstr($normal, '/')) {
                     [$start, $end] = explode('/', $normal);
                 } else {
                     $start = $normal;
                     foreach (str_split($start) as $number) {
-                        if (in_array(strtolower($number), $dateForm)) {
+                        if (in_array(strtolower($number), ['u', 'x'])) {
                             $unknown = true;
                             break;
                         }
@@ -1569,21 +1568,19 @@ class SolrEad3 extends SolrEad
         $month = 0;
         $day = 0;
         $addDate = true;
-        $dateForm = [
-            'date' => ['uu', 'xx'],
-            'unit' => ['u', 'x'],
-        ];
-        if (isset($parts[2]) && !in_array(strtolower($parts[2]), $dateForm['date'])) {
+        $unknownDate = ['uu', 'xx'];
+        $unknownUnit = ['u', 'x'];
+        if (isset($parts[2]) && !in_array(strtolower($parts[2]), $unknownDate)) {
             $day = $parts[2];
         }
-        if (isset($parts[1]) && !in_array(strtolower($parts[1]), $dateForm['date'])) {
+        if (isset($parts[1]) && !in_array(strtolower($parts[1]), $unknownDate)) {
             $month = $parts[1];
         }
         $defaultY = $start ? '0' : '9';
 
-        $year = str_ireplace($dateForm['unit'], $defaultY, $parts[0]);
+        $year = str_ireplace($unknownUnit, $defaultY, $parts[0]);
         foreach (str_split($parts[0]) as $char) {
-            if (in_array(strtolower($char), $dateForm['unit'])) {
+            if (in_array(strtolower($char), $unknownUnit)) {
                 $addDate = false;
                 break;
             }
