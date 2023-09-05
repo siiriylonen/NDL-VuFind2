@@ -1498,7 +1498,7 @@ class SolrEad3 extends SolrEad
                     [$start, $end] = explode('/', $normal);
                 } else {
                     $start = $normal;
-                    $unknown = $this->checkForUnknownChars($start);
+                    $unknown = $this->unknownCharsExist($start);
                 }
                 $dates = $this->parseDate($start, true);
                 if (
@@ -1562,16 +1562,16 @@ class SolrEad3 extends SolrEad
         $year = 0;
         $month = 0;
         $day = 0;
-        if (isset($parts[2]) && !$this->checkForUnknownChars($parts[2])) {
+        if (isset($parts[2]) && !$this->unknownCharsExist($parts[2])) {
             $day = $parts[2];
         }
-        if (isset($parts[1]) && !$this->checkForUnknownChars($parts[1])) {
+        if (isset($parts[1]) && !$this->unknownCharsExist($parts[1])) {
             $month = $parts[1];
         }
         $defaultY = $start ? '0' : '9';
 
         $year = str_ireplace(['u', 'x'], $defaultY, $parts[0]);
-        $addDate = !$this->checkForUnknownChars($parts[0]);
+        $addDate = !$this->unknownCharsExist($parts[0]);
         $result = '';
         if ($day && $month && $addDate) {
             $result = "{$day}.{$month}.";
@@ -1582,13 +1582,13 @@ class SolrEad3 extends SolrEad
     }
 
     /**
-     * Check if given string contains other than numerical characters
+     * Check if given string contains specified characters
      *
      * @param string $string The string to be checked
      *
      * @return bool $value
      */
-    public function checkForUnknownChars($string)
+    public function unknownCharsExist($string)
     {
         $value = false;
         $string = strtolower($string);
