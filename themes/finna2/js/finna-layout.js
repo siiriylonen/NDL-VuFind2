@@ -92,6 +92,10 @@ finna.layout = (function finnaLayout() {
         var moreLink = $('<button type="button" class="more-link" aria-hidden="true">' + moreLabel + VuFind.icon('show-more') + '</button>');
         var lessLink = $('<button type="button" class="less-link" aria-hidden="true">' + lessLabel + VuFind.icon('show-less') + '</button>');
 
+        if (self.attr('tabindex') === '-1') {
+          moreLink.attr('tabindex', '-1');
+          lessLink.attr('tabindex', '-1');
+        }
         var linkClass = self.data('button-class') || '';
         if (linkClass) {
           moreLink.addClass(linkClass);
