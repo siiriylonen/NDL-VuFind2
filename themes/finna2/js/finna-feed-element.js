@@ -174,17 +174,57 @@ class FinnaFeedElement extends HTMLElement {
 
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
-          holder.querySelectorAll('.carousel-text').forEach(el => {
-            el.style.paddingBottom = '30px';
+          holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
+            el.classList.remove('hidden');
           });
-          const onSlideClick = function onSlideClick () {
+          holder.querySelectorAll('.carousel-hover-title').forEach(el => {
+            el.style.width = '90%';
+            var element = el.querySelector('p');
+            if (element) {
+              element.style.paddingRight = '10px';
+            }
+          });
+          holder.querySelectorAll('.carousel-text').forEach(el => {
+            el.addEventListener('click', function doNothing(e) {
+              e.stopImmediatePropagation();
+              var slide = this.closest('.feed-item-holder');
+              if (slide && slide.classList.contains('clicked')) {
+                e.preventDefault();
+              }
+            });
+          });
+          holder.querySelectorAll('.carousel-more').forEach(el => {
+            var heightEl = el.previousElementSibling.offsetHeight;
+            if (heightEl) {
+              el.style.height = heightEl + 'px';
+            }
+            if (el.classList.contains('carousel-close')) {
+              el.classList.remove('hidden');
+              el.firstElementChild.addEventListener('click', function closeDescription(e) {
+                e.stopImmediatePropagation();
+                var slide = this.closest('.feed-item-holder');
+                if (slide && slide.classList.contains('clicked')) {
+                  slide.classList.remove('clicked');
+                }
+                e.preventDefault();
+              });
+            }
+            if (el.classList.contains('show-link')) {
+              el.classList.add('hidden');
+            }
+          });
+          const onSlideClick = function onSlideClick (e) {
+            e.stopImmediatePropagation();
             const slide = this.closest('.feed-item-holder');
             if (slide && !slide.classList.contains('clicked')) {
+              holder.querySelectorAll('.feed-item-holder.clicked').forEach(el => {
+                el.classList.remove('.clicked');
+              });
               slide.classList.add('clicked');
-              return false;
+              e.preventDefault();
             }
           };
-          holder.querySelectorAll('.feed-item-holder a, .feed-item-holder').forEach(el => {
+          holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             el.addEventListener('click', onSlideClick);
           });
         } else {
@@ -193,6 +233,12 @@ class FinnaFeedElement extends HTMLElement {
           });
         }
       }
+
+      this.querySelectorAll('.carousel-text').forEach(el => {
+        if (el.clientHeight < el.scrollHeight) {
+          el.classList.add('scrollable');
+        }
+      });
 
       // Bind lightbox if feed content is shown in modal
       if (typeof settings.modal !== 'undefined' && settings.modal) {
