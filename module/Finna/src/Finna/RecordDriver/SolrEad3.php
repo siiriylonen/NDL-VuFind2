@@ -1570,7 +1570,7 @@ class SolrEad3 extends SolrEad
         }
         $defaultY = $start ? '0' : '9';
 
-        $year = str_ireplace(['u', 'x'], $defaultY, strtolower($parts[0]));
+        $year = str_ireplace(['u', 'x'], $defaultY, $parts[0]);
         $addDate = !$this->checkForUnknownChars($parts[0]);
         $result = '';
         if ($day && $month && $addDate) {
