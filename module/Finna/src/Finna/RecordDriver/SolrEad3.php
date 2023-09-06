@@ -1562,17 +1562,17 @@ class SolrEad3 extends SolrEad
         $year = 0;
         $month = 0;
         $day = 0;
+        if ($this->unknownDateCharsExist($parts[0])) {
+            return str_ireplace(['u', 'x'], $start ? '0' : '9', $parts[0]);
+        } else {
+            $year = $parts[0];
+        }
+
         if (isset($parts[2]) && !$this->unknownDateCharsExist($parts[2])) {
             $day = $parts[2];
         }
         if (isset($parts[1]) && !$this->unknownDateCharsExist($parts[1])) {
             $month = $parts[1];
-        }
-
-        if ($this->unknownDateCharsExist($parts[0])) {
-            return str_ireplace(['u', 'x'], $start ? '0' : '9', $parts[0]);
-        } else {
-            $year = $parts[0];
         }
         $result = '';
         if ($day && $month) {
@@ -1584,7 +1584,7 @@ class SolrEad3 extends SolrEad
     }
 
     /**
-     * Check if given string contains specified characters
+     * Check if given string contains unknown characters
      *
      * @param string $string The string to be checked
      *
@@ -1593,8 +1593,7 @@ class SolrEad3 extends SolrEad
     public function unknownDateCharsExist($string)
     {
         $value = false;
-        $string = strtolower($string);
-        foreach (['uu', 'xx', 'u', 'x'] as $char) {
+        foreach (['u', 'U', 'x', 'X'] as $char) {
             if (str_contains($string, $char)) {
                 $value = true;
                 break;
