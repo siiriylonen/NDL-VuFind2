@@ -1498,7 +1498,7 @@ class SolrEad3 extends SolrEad
                     [$start, $end] = explode('/', $normal);
                 } else {
                     $start = $normal;
-                    $unknown = $this->unknownCharsExist($start);
+                    $unknown = $this->unknownDateCharsExist($start);
                 }
                 $dates = $this->parseDate($start, true);
                 if (
@@ -1562,18 +1562,20 @@ class SolrEad3 extends SolrEad
         $year = 0;
         $month = 0;
         $day = 0;
-        if (isset($parts[2]) && !$this->unknownCharsExist($parts[2])) {
+        if (isset($parts[2]) && !$this->unknownDateCharsExist($parts[2])) {
             $day = $parts[2];
         }
-        if (isset($parts[1]) && !$this->unknownCharsExist($parts[1])) {
+        if (isset($parts[1]) && !$this->unknownDateCharsExist($parts[1])) {
             $month = $parts[1];
         }
-        $defaultY = $start ? '0' : '9';
 
-        $year = str_ireplace(['u', 'x'], $defaultY, $parts[0]);
-        $addDate = !$this->unknownCharsExist($parts[0]);
+        if ($this->unknownDateCharsExist($parts[0])) {
+            return str_ireplace(['u', 'x'], $start ? '0' : '9', $parts[0]);
+        } else {
+            $year = $parts[0];
+        }
         $result = '';
-        if ($day && $month && $addDate) {
+        if ($day && $month) {
             $result = "{$day}.{$month}.";
         }
 
@@ -1588,7 +1590,7 @@ class SolrEad3 extends SolrEad
      *
      * @return bool $value
      */
-    public function unknownCharsExist($string)
+    public function unknownDateCharsExist($string)
     {
         $value = false;
         $string = strtolower($string);
