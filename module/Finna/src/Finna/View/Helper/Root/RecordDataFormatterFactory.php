@@ -656,6 +656,14 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             ]
         );
         $setTemplateLine(
+            'Country of Producing Entity',
+            'getCountry',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-country'],
+            ]
+        );
+        $setTemplateLine(
             'Classification',
             'getClassifications',
             'data-classification.phtml',
