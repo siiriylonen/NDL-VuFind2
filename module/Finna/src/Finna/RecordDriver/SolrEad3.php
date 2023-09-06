@@ -1584,7 +1584,7 @@ class SolrEad3 extends SolrEad
     }
 
     /**
-     * Check if given string contains unknown characters
+     * Check if date string contains "unknown" characters
      *
      * @param string $string The string to be checked
      *
