@@ -1564,12 +1564,13 @@ class SolrEad3 extends SolrEad
         $day = 0;
         if ($this->unknownDateCharsExist($parts[0])) {
             return str_ireplace(['u', 'x'], $start ? '0' : '9', $parts[0]);
-        } else {
-            $year = $parts[0];
         }
+        $year = $parts[0];
 
         if (isset($parts[2]) && !$this->unknownDateCharsExist($parts[2])) {
             $day = $parts[2];
+        } else {
+            return $year;
         }
         if (isset($parts[1]) && !$this->unknownDateCharsExist($parts[1])) {
             $month = $parts[1];
