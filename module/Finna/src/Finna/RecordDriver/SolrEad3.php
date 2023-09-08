@@ -1567,21 +1567,19 @@ class SolrEad3 extends SolrEad
         }
         $year = $parts[0];
 
-        if (isset($parts[2]) && !$this->unknownDateCharsExist($parts[2])) {
+        if (!empty($parts[2]) && !$this->unknownDateCharsExist($parts[2])) {
             $day = $parts[2];
         } else {
             return $year;
         }
-        if (isset($parts[1]) && !$this->unknownDateCharsExist($parts[1])) {
+
+        if (!empty($parts[1]) && !$this->unknownDateCharsExist($parts[1])) {
             $month = $parts[1];
-        }
-        $result = '';
-        if ($day && $month) {
-            $result = "{$day}.{$month}.";
+        } else {
+            return $year;
         }
 
-        $result .= $year;
-        return $result;
+        return "{$day}.{$month}.{$year}";
     }
 
     /**
@@ -1589,18 +1587,17 @@ class SolrEad3 extends SolrEad
      *
      * @param string $string The string to be checked
      *
-     * @return bool $value
+     * @return bool
      */
     public function unknownDateCharsExist($string)
     {
-        $value = false;
         foreach (['u', 'U', 'x', 'X'] as $char) {
             if (str_contains($string, $char)) {
-                $value = true;
+                return true;
                 break;
             }
         }
-        return $value;
+        return false;
     }
 
     /**
