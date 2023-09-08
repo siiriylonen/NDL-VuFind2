@@ -1594,7 +1594,6 @@ class SolrEad3 extends SolrEad
         foreach (['u', 'U', 'x', 'X'] as $char) {
             if (str_contains($string, $char)) {
                 return true;
-                break;
             }
         }
         return false;
