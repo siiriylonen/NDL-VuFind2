@@ -1526,6 +1526,14 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             ]
         );
         $setTemplateLine(
+            'Study Program Information Notes',
+            'getStudyProgramNotes',
+            'data-transEsc.phtml',
+            [
+                'context' => ['class' => 'record-study-program-notes'],
+            ]
+        );
+        $setTemplateLine(
             'Publisher or Distributor Number',
             'getPubDistNumber',
             'data-transEsc.phtml',
