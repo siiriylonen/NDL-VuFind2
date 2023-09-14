@@ -54,6 +54,7 @@
           <?php endif; ?>
 
           <?php if ($this->renewForm): ?>
+            <div class="myaccount-sticky-header"></div>
             <div class="toolbar-sticky-container">
             <form name="renewals" method="post" id="renewals" data-clear-account-cache="checkedOut" data-disable-on-submit>
               <input type="hidden" value="<?=$this->escapeHtmlAttr($this->auth()->getManager()->getCsrfHash())?>" name="csrf">
@@ -69,7 +70,6 @@
                             <span class="selected"></span> <span class="loans-renewal-available"></span>
                           </label>
                         </div>
-                        <span class="my-list-functions-label"><?=ucfirst($this->transEsc('with_selected'))?>:</span>
                       </div>
                     </td>
                     <td class="list-functions">

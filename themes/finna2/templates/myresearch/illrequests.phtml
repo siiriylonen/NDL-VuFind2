@@ -37,6 +37,7 @@
         <?php endif; ?>
         <?php if (!empty($this->recordList)): ?>
           <?php if ($this->cancelForm): ?>
+          <div class="myaccount-sticky-header"></div>
           <div class="toolbar-sticky-container">
           <form name="updateForm" class="inline" method="post" id="cancelILLRequest"  data-clear-account-cache="illRequests">
             <div class="toolbar-sticky">
@@ -50,7 +51,6 @@
                           <span class="selected"></span>
                         </label>
                       </div>
-                      <span class="my-list-functions-label"><?=ucfirst($this->transEsc('with_selected'))?>:</span>
                     </div>
                   </td>
                   <td class="list-functions">

@@ -253,17 +253,6 @@ finna.myList = (function finnaMyList() {
       buttons.removeClass('fixed');
     }
   }
-  function stickyToolbar() {
-    const stickyElement = $('.toolbar-sticky');
-    const navbar = $('header');
-    if ($(document).scrollTop() > $('.toolbar-sticky-container').offset().top) {
-      stickyElement.addClass('isSticky');
-      navbar.addClass('noShadow');
-    } else {
-      stickyElement.removeClass('isSticky');
-      navbar.removeClass('noShadow');
-    }
-  }
 
   function updateListResource(params, input /*, row*/) {
     save = true;
@@ -312,13 +301,6 @@ finna.myList = (function finnaMyList() {
         updateBulkActionsToolbar();
       });
       updateBulkActionsToolbar();
-    }
-    var stickyElement = $('.toolbar-sticky');
-    if (stickyElement.length) {
-      $(window).on('scroll', function onScrollWindow() {
-        stickyToolbar();
-      });
-      stickyToolbar();
     }
 
     //Init mobile navigation collapse after list has been reloaded
@@ -503,26 +485,6 @@ finna.myList = (function finnaMyList() {
         );
       }
     });
-
-    var checkCheckboxes = function CheckCheckboxes() {
-      var checkedRenewals = $('form[name="renewals"] .result .checkbox input[type=checkbox]:checked');
-      var checkedHistory = $('form[name="purge_history"] .result .checkbox input[type=checkbox]:checked');
-      if (checkedRenewals.length > 0) {
-        $('#renewSelected').removeAttr('disabled');
-      } else {
-        $('#renewSelected').attr('disabled', 'disabled');
-      }
-      if (checkedHistory.length > 0) {
-        $('#purgeSelected').removeAttr('disabled');
-        $('#copy_to_favourites').removeAttr('disabled');
-      } else {
-        $('#purgeSelected').attr('disabled', 'disabled');
-        $('#copy_to_favourites').attr('disabled', 'disabled');
-      }
-      $('form[name="renewals"] .result .checkbox input[type=checkbox]').on('change', checkCheckboxes);
-      $('form[name="purge_history"] .result .checkbox input[type=checkbox]').on('change', checkCheckboxes);
-    };
-    checkCheckboxes();
   }
 
   function bulkActionButtonDisplay() {

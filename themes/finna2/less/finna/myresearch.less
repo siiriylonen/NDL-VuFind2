@@ -574,20 +574,12 @@
         margin: 0px -15px;
         padding: 0px 15px;
         @media(max-width: @screen-sm) {
-          box-shadow: 0 0 3px 3px rgba(0,0,0,0.1);
+          box-shadow: 0 3px 3px rgba(0,0,0,.3);
           .toolbar {
             border-bottom: none;
           }
         }
       }
-    }
-  }
-}
-.noShadow {
-  @media(max-width: @screen-sm) {
-    .finna-navbar {
-      box-shadow: none;
-      border-bottom: 1px solid #d1d1d1;
     }
   }
 }
@@ -599,7 +591,7 @@
   .checkboxFilter.mylist-select-all {
     margin-right: 0;
     float: none;
-    span:not('.my-list-functions-label') {
+    span {
       font-size: 11px;
       top: 4px;
       left: ~"-webkit-calc(50% + 10px)";
@@ -607,9 +599,6 @@
       left: ~"calc(50% + 10px)";
       position: absolute;
       width: 70px;
-    }
-    .my-list-functions-label {
-      padding-left: 10px;
     }
   }
   .checkboxFilter .checkbox label {
