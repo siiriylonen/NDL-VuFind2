@@ -165,23 +165,25 @@ finna.layout = (function finnaLayout() {
 
   function setStickyNavObserver() {
     var toolbar = document.querySelector('.toolbar-sticky');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const intersecting = entry.isIntersecting;
-        if (intersecting) {
-          toolbar.classList.remove('isSticky');
-        } else {
-          toolbar.classList.add('isSticky');
-        }
-      });
-    },
-    { 
-      rootMargin: '-' + document.querySelector('.finna-navbar').offsetHeight + 'px'
-    }
-    );
-    const observedElement = document.querySelector('.myaccount-sticky-header');
-    if (observedElement !== null) {
-      observer.observe(observedElement);
+    if (toolbar !== null) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const intersecting = entry.isIntersecting;
+          if (intersecting) {
+            toolbar.classList.remove('isSticky');
+          } else {
+            toolbar.classList.add('isSticky');
+          }
+        });
+      },
+      { 
+        rootMargin: '-' + document.querySelector('.finna-navbar').offsetHeight + 'px'
+      }
+      );
+      const observedElement = document.querySelector('.myaccount-sticky-header');
+      if (observedElement !== null) {
+        observer.observe(observedElement);
+      }
     }
   }
 
