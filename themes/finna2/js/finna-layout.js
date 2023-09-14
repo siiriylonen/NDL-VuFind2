@@ -173,7 +173,7 @@ finna.layout = (function finnaLayout() {
         } else {
           toolbar.classList.add('isSticky');
         }
-      })
+      });
     },
     { 
       rootMargin: '-' + document.querySelector('.finna-navbar').offsetHeight + 'px'
@@ -808,21 +808,12 @@ finna.layout = (function finnaLayout() {
   function toggleButtonsForSelected(element) {
     if (element.closest('form').id === 'renewals') {
       var checkedRenewals = document.querySelector('form[name="renewals"] .result .checkbox input[type=checkbox]:checked');
-      if (checkedRenewals !== null) {
-        document.getElementById('renewSelected').removeAttribute('disabled');
-      } else {
-        document.getElementById('renewSelected').setAttribute('disabled', 'disabled');
-      }
+      document.getElementById('renewSelected').toggleAttribute('disabled', checkedRenewals === null);
     }
     else if (element.closest('form').id === 'purge_history') {
       var checkedHistory = document.querySelector('form[name="purge_history"] .result .checkbox input[type=checkbox]:checked');
-      if (checkedHistory !== null) {
-        document.getElementById('purgeSelected').removeAttribute('disabled');
-        document.getElementById('copy_to_favourites').removeAttribute('disabled');
-      } else {
-        document.getElementById('purgeSelected').setAttribute('disabled', 'disabled');
-        document.getElementById('copy_to_favourites').setAttribute('disabled', 'disabled');
-      }
+      document.getElementById('purgeSelected').toggleAttribute('disabled', checkedHistory === null);
+      document.getElementById('copy_to_favourites').toggleAttribute('disabled', checkedHistory === null);
     }
   }
   
