@@ -79,11 +79,6 @@ class FinnaFeedElement extends HTMLElement {
         el.classList.add('no-text');
       }
     });
-    // Set left and right arrows to image height
-    this.querySelectorAll('.splide__arrows').forEach(el => {
-      var arrowHeight = (settings.height - 20) / 2;
-      el.style.top = `${arrowHeight}px`;
-    });
     settings.height = +settings.height + maxH;
   }
 
