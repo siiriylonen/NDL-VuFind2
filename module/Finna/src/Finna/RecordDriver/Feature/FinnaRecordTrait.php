@@ -380,6 +380,10 @@ trait FinnaRecordTrait
         if ($plainIdRegex && preg_match($plainIdRegex, $id)) {
             return $id;
         }
+        
+        if (str_contains($id, $authSrc)) {
+            return $id;
+        }
 
         return "$authSrc.$id";
     }
