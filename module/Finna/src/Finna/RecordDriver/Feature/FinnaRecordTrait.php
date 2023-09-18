@@ -381,7 +381,7 @@ trait FinnaRecordTrait
             return $id;
         }
 
-        if (str_contains($id, $authSrc)) {
+        if (str_starts_with($id, "$authSrc.")) {
             return $id;
         }
 
