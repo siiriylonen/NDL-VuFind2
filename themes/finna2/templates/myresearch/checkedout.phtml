@@ -62,7 +62,7 @@
               <div class="toolbar-sticky">
                 <table class="myresearch-table" role="presentation" aria-label="<?=$this->transEscAttr('Actions');?>">
                   <tr class="toolbar">
-                    <td class="text-left checkbox-col">
+                    <td class="checkbox-col">
                       <div class="checkboxFilter mylist-select-all">
                         <div class="checkbox">
                           <label>
@@ -138,7 +138,7 @@
             foreach ($this->transactions as $resource): ?>
               <?php $ilsDetails = $resource->getExtraDetail('ils_details'); ?>
               <tr id="record<?=$this->escapeHtmlAttr($resource->getUniqueId())?>" class="myresearch-row<?=!empty($ilsDetails['onsite']) ? ' onsite-checkout' : ''?> result">
-                <td class="text-left checkbox-col" headers="label-select-column" aria-labelledby="label-select-column">
+                <td class="checkbox-col" headers="label-select-column" aria-labelledby="label-select-column">
                   <?php if ($this->renewForm): ?>
                     <?php if (isset($ilsDetails['renewable']) && $ilsDetails['renewable'] && isset($ilsDetails['renew_details'])): ?>
                       <?php $safeId = preg_replace('/[^a-zA-Z0-9]/', '', $ilsDetails['renew_details']); ?>

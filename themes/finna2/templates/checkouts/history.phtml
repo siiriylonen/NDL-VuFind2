@@ -59,7 +59,7 @@
             <table class="myresearch-table history-table" role="presentation" aria-label="<?=$this->transEscAttr('Actions');?>">
               <tr id="loan_history" class="toolbar">
                 <?php if ($purgeSelectedAllowed): ?>
-                  <td class="text-left checkbox-col">
+                  <td class="checkbox-col">
                     <div class="checkboxFilter mylist-select-all">
                       <div class="checkbox">
                         <label>
@@ -118,7 +118,7 @@
               <?php $ilsDetails = $resource->getExtraDetail('ils_details'); ?>
               <tr class="myresearch-row result">
                 <?php if ($this->purgeSelectedAllowed): ?>
-                  <td class="text-left checkbox-col" headers="label-select-column" aria-labelledby="label-select-column">
+                  <td class="checkbox-col" headers="label-select-column" aria-labelledby="label-select-column">
                     <div class="checkboxFilter">
                       <div class="checkbox">
                         <?php if (isset($ilsDetails['row_id'])): ?>

@@ -50,7 +50,6 @@
 
 .checkboxFilter.mylist-select-all {
   padding-left: 0;
-  padding-top: 2px;
   .checkbox {
     padding-left: 0;
     label {
@@ -92,6 +91,15 @@
     min-width: 30px;
   }
   .toolbar {
+    display: flex;
+    flex-direction: row;
+    .checkbox-col {
+      display: flex;
+      width: fit-content;
+      .mylist-select-all {
+        align-self: center;
+      }
+    }
     th {
       vertical-align: middle;
       > div {
@@ -109,7 +117,6 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin-top: 2px;
       width: 100%;
     }
   }
@@ -185,7 +192,7 @@
       float: left;
     }
   }
-  .checkbox-col{
+  .checkbox-col {
     width: 10%;
   }
   .myresearch-count {
@@ -193,18 +200,6 @@
     font-weight: bold;
     &.no-buttons {
       line-height: inherit;
-    }
-  }
-  .checkboxFilter.mylist-select-all {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    width: fit-content;
-    .checkbox {
-      margin: 5px 0;
-      @media (max-width: @screen-md) {
-        margin-top: 12px;
-      }
     }
   }
 }
@@ -441,12 +436,12 @@
   }
 }
 .loans-sort.sort-col {
-  @media(min-width: calc(@screen-xs - 49px)) {
+  @media(min-width: calc(@screen-xs - 139px)) {
     display: none;
   }
 }
 .holds-sort.sort-col {
-  @media(min-width: calc(@screen-sm - 194px)) {
+  @media(min-width: calc(@screen-xs + 9px)) {
     display: none;
   }
 }
@@ -455,12 +450,12 @@
     display: none;
   }
 }
-@media(max-width: calc(@screen-xs - 50px)) {
+@media(max-width: calc(@screen-xs - 140px)) {
   #renewals .list-functions .sort-col {
     display: none;
   }
 }
-@media(max-width: calc(@screen-sm - 195px)) {
+@media(max-width: calc(@screen-xs + 10px)) {
   #update_holds .list-functions .sort-col {
     display: none;
   }
@@ -565,6 +560,9 @@
     padding: 0px 15px;
   }
   .toolbar-sticky {
+    .toolbar {
+      padding: 3px 0;
+    }
     @media(max-width: @screen-md) {
       position: sticky;
       top: @navbar-height;
@@ -585,9 +583,6 @@
 }
 
 #renewals .toolbar, #update_holds .toolbar, #cancelStorageRetrievalRequest .toolbar, #cancelILLRequest .toolbar, #loan_history.toolbar {
-  @media (max-width:@screen-xs-max) {
-    margin-left: -15px;
-  }
   .checkboxFilter.mylist-select-all {
     margin-right: 0;
     float: none;
