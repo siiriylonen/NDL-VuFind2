@@ -93,6 +93,13 @@
   .toolbar {
     display: flex;
     flex-direction: row;
+    &.no-list-functions {
+      justify-content: space-between;
+      .myresearch-notification {
+        height: fit-content;
+        align-self: center;
+      }
+    }
     .checkbox-col {
       display: flex;
       width: fit-content;
@@ -560,13 +567,6 @@
     padding: 0px 15px;
   }
   .toolbar-sticky {
-    .toolbar {
-      padding: 3px 0;
-      @media(max-width: @screen-md) {
-        padding: 0;
-        margin-top: 0;
-      }
-    }
     @media(max-width: @screen-md) {
       position: sticky;
       top: @navbar-height;
@@ -609,7 +609,10 @@
   margin: 0;
   margin-top: 5px;
   border-bottom: 1px solid @gray-lighter;
-  padding: 15px 0px;
+  padding: 3px 0;
+  @media(max-width: @screen-md) {
+    margin-top: 0;
+  }
   .status-text {
     float: right;
     line-height: 38px;
