@@ -562,6 +562,10 @@
   .toolbar-sticky {
     .toolbar {
       padding: 3px 0;
+      @media(max-width: @screen-md) {
+        padding: 0;
+        margin-top: 0;
+      }
     }
     @media(max-width: @screen-md) {
       position: sticky;
