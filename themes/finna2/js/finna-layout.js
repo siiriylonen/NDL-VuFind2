@@ -163,27 +163,20 @@ finna.layout = (function finnaLayout() {
     }
   }
 
-  function setStickyNavObserver() {
-    var toolbar = document.querySelector('.toolbar-sticky');
-    if (toolbar !== null) {
+  function setStickyMyaccountHeader() {
+    const toolbar = document.querySelector('.toolbar-sticky');
+    const finnaNavbar = document.querySelector('.finna-navbar');
+    const observedElement = document.querySelector('.myaccount-sticky-header');
+
+    if (toolbar && finnaNavbar && observedElement) {
       const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          const intersecting = entry.isIntersecting;
-          if (intersecting) {
-            toolbar.classList.remove('isSticky');
-          } else {
-            toolbar.classList.add('isSticky');
-          }
-        });
-      },
-      { 
-        rootMargin: '-' + document.querySelector('.finna-navbar').offsetHeight + 'px'
-      }
-      );
-      const observedElement = document.querySelector('.myaccount-sticky-header');
-      if (observedElement !== null) {
-        observer.observe(observedElement);
-      }
+        const intersecting = entries[0].isIntersecting;
+        toolbar.classList.toggle('isSticky', !intersecting);
+      }, {
+        rootMargin: `-${finnaNavbar.offsetHeight}px`,
+      });
+
+      observer.observe(observedElement);
     }
   }
 
@@ -862,7 +855,7 @@ finna.layout = (function finnaLayout() {
       initTruncate();
       initContentNavigation();
       initMobileNarrowSearch();
-      setStickyNavObserver();
+      setStickyMyaccountHeader();
       initMobileCartIndicator();
       initCheckboxClicks();
       initToolTips();
