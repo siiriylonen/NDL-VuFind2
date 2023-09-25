@@ -803,32 +803,34 @@ finna.layout = (function finnaLayout() {
   function toggleButtonsForSelected(element) {
     if (element.closest('form').id === 'renewals') {
       var checkedRenewals = document.querySelector('form[name="renewals"] .result .checkbox input[type=checkbox]:checked');
-      document.getElementById('renewSelected').toggleAttribute('disabled', checkedRenewals === null);
-    }
-    else if (element.closest('form').id === 'purge_history') {
+      var renewSelected = document.getElementById('renewSelected');
+      if (renewSelected) {
+        renewSelected.toggleAttribute('disabled', checkedRenewals === null);
+      }
+    } else if (element.closest('form').id === 'purge_history') {
       var checkedHistory = document.querySelector('form[name="purge_history"] .result .checkbox input[type=checkbox]:checked');
-      document.getElementById('purgeSelected').toggleAttribute('disabled', checkedHistory === null);
-      document.getElementById('copy_to_favourites').toggleAttribute('disabled', checkedHistory === null);
+      var purgeSelected = document.getElementById('purgeSelected');
+      var copyToFavourites = document.getElementById('copy_to_favourites');
+      if (purgeSelected) {
+        purgeSelected.toggleAttribute('disabled', checkedHistory === null);
+      }
+      if (copyToFavourites) {
+        copyToFavourites.toggleAttribute('disabled', checkedHistory === null);
+      }
     }
   }
   
   function initSelectAllButtonListeners() {
-    var renewalForm = document.querySelectorAll('form[name="renewals"] .checkbox');
-    if (renewalForm) {
-      renewalForm.forEach(element => {
-        element.addEventListener('change', function disableButtons() {
-          toggleButtonsForSelected(element);
-        });
+    document.querySelectorAll('form[name="renewals"] .checkbox').forEach(element => {
+      element.addEventListener('change', function disableButtons() {
+        toggleButtonsForSelected(element);
       });
-    }
-    var historyForm = document.querySelectorAll('form[name="purge_history"] .checkbox');
-    if (historyForm) {
-      historyForm.forEach(element => {
-        element.addEventListener('change', function disableButtons() {
-          toggleButtonsForSelected(element);
-        });
+    });
+    document.querySelectorAll('form[name="purge_history"] .checkbox').forEach(element => {
+      element.addEventListener('change', function disableButtons() {
+        toggleButtonsForSelected(element);
       });
-    }
+    });
   }
 
   var my = {
