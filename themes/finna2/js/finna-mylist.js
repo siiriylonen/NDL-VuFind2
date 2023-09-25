@@ -470,19 +470,11 @@ finna.myList = (function finnaMyList() {
     });
   }
 
-  function bulkActionButtonDisplay() {
-    var buttons = $('.bulk-action-buttons-col');
-    if (buttons.find('#updateCart').length === 0) {
-      $('#add-to-list').css('border-radius', '0 4px 4px 0');
-    }
-  }
-
   var my = {
     initFavoriteOrderingFunctionality: initFavoriteOrderingFunctionality,
     init: function init() {
       initEditComponents();
       initListeners();
-      bulkActionButtonDisplay();
     }
   };
 
