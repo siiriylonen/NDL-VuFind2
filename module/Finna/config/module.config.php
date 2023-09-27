@@ -815,6 +815,7 @@ $config = [
                     'Finna\Search\Solr\Params' => 'Finna\Search\Solr\ParamsFactory',
                     'Finna\Search\SolrAuth\Params' => 'Finna\Search\Solr\ParamsFactory',
                     'Finna\Search\SolrBrowse\Params' => 'Finna\Search\Solr\ParamsFactory',
+                    'Finna\Search\SolrCollection\Params' => 'VuFind\Search\Params\ParamsFactory',
 
                     'Finna\Search\L1\Params' => 'Finna\Search\Solr\ParamsFactory',
                 ],
@@ -826,6 +827,7 @@ $config = [
                     'VuFind\Search\Favorites\Params' => 'Finna\Search\Favorites\Params',
                     'VuFind\Search\MixedList\Params' => 'Finna\Search\MixedList\Params',
                     'VuFind\Search\Solr\Params' => 'Finna\Search\Solr\Params',
+                    'VuFind\Search\SolrCollection\Params' => 'Finna\Search\SolrCollection\Params',
 
                     'VuFind\Search\SolrAuth\Params' => 'Finna\Search\SolrAuth\Params',
 
