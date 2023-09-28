@@ -1043,6 +1043,7 @@ class SolrEad3 extends SolrEad
      */
     public function getContentDescription()
     {
+        $genreforms = [];
         $xml = $this->getXmlRecord();
         if (!isset($xml->controlaccess->genreform)) {
             return [];
@@ -1056,11 +1057,10 @@ class SolrEad3 extends SolrEad
                 continue;
             }
             if ($label = $this->getDisplayLabel($genre)) {
-                return $label[0];
+                $genreforms[] = $label[0];
             }
         }
-
-        return null;
+        return $genreforms;
     }
 
     /**
