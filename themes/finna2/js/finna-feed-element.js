@@ -177,11 +177,12 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             el.classList.remove('hidden');
           });
+          var width = holder.clientWidth;
           holder.querySelectorAll('.carousel-hover-title').forEach(el => {
-            el.style.width = '90%';
-            var element = el.querySelector('p');
-            if (element) {
-              element.style.paddingRight = '10px';
+            if (width > 450) {
+              el.style.width = '90%';
+            } else {
+              el.style.width = '75%';
             }
           });
           holder.querySelectorAll('.carousel-text').forEach(el => {
