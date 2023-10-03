@@ -1039,7 +1039,7 @@ class SolrEad3 extends SolrEad
     /**
      * Get description of content.
      *
-     * @return string
+     * @return array
      */
     public function getContentDescription()
     {
