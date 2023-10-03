@@ -179,7 +179,7 @@ class FinnaFeedElement extends HTMLElement {
           });
           var width = holder.clientWidth;
           holder.querySelectorAll('.carousel-hover-title').forEach(el => {
-            if (width > 450) {
+            if (width > 200) {
               el.style.width = '90%';
             } else {
               el.style.width = '75%';
