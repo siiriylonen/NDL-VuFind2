@@ -177,9 +177,9 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             el.classList.remove('hidden');
           });
-          var width = holder.clientWidth;
+          var feedItemWidth = holder.querySelector('li.feed-item-holder');
           holder.querySelectorAll('.carousel-hover-title').forEach(el => {
-            if (width > 200) {
+            if (feedItemWidth > 200) {
               el.style.width = '90%';
             } else {
               el.style.width = '75%';
