@@ -442,34 +442,18 @@
     height: 30px;
   }
 }
-.loans-sort.sort-col {
-  @media(min-width: calc(@screen-xs - 139px)) {
-    display: none;
+.loans-sort, .holds-sort, .history-sort {
+  &.sort-col {
+    @media(min-width: @screen-sm) {
+      display: none;
+    }
   }
 }
-.holds-sort.sort-col {
-  @media(min-width: calc(@screen-xs + 9px)) {
-    display: none;
-  }
-}
-.history-sort.sort-col {
-  @media(min-width: calc(@screen-sm - 139px)) {
-    display: none;
-  }
-}
-@media(max-width: calc(@screen-xs - 140px)) {
-  #renewals .list-functions .sort-col {
-    display: none;
-  }
-}
-@media(max-width: calc(@screen-xs + 10px)) {
-  #update_holds .list-functions .sort-col {
-    display: none;
-  }
-}
-@media(max-width: calc(@screen-sm - 140px)) {
-  #loan_history .list-functions .sort-col {
-    display: none;
+#renewals, #update_holds, #loan_history {
+  .list-functions .sort-col {
+    @media(max-width: @screen-sm) {
+      display: none;
+    }
   }
 }
 .myresearch-table .renew-button-col {
