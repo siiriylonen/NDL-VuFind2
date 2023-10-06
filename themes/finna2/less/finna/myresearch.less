@@ -551,19 +551,20 @@
     padding: 0px 15px;
   }
   .toolbar-sticky {
-    @media(max-width: @screen-md) {
-      position: sticky;
-      top: @navbar-height;
-      background-color: @body-bg;
-      z-index: 2;
-      &.isSticky {
-        margin: 0px -15px;
-        padding: 0px 15px;
-        @media(max-width: @screen-sm) {
-          box-shadow: 0 3px 3px rgba(0,0,0,.3);
-          .toolbar {
-            border-bottom: none;
-          }
+    position: sticky;
+    top: 0;
+    background-color: @body-bg;
+    z-index: 2;
+    &.isSticky {
+      margin: 0px -15px;
+      padding: 0px 15px;
+      @media (max-width: @screen-md) {
+        top: @navbar-height;
+      }
+      @media (max-width: @screen-sm) {
+        box-shadow: 0 3px 3px rgba(0,0,0,.3);
+        .toolbar {
+          border-bottom: none;
         }
       }
     }
