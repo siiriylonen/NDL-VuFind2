@@ -103,8 +103,13 @@
     .checkbox-col {
       display: flex;
       width: fit-content;
+      height: fit-content;
       .mylist-select-all {
         align-self: center;
+        padding: 5px 0;
+        @media (max-width: @screen-md) {
+          margin: 6px 0;
+        }
       }
     }
     th {
@@ -182,7 +187,7 @@
     }
   }
   @media(min-width: @screen-xs-min) {
-    .renew-button-col {
+    .toolbar-button-col {
       float: left;
       text-align: left;
     }
@@ -195,7 +200,7 @@
     }
   }
   @media(max-width: @screen-xxs-max) {
-    .renew-button-col {
+    .toolbar-button-col {
       float: left;
     }
     .sort-col {
@@ -246,6 +251,13 @@
   }
   .alert {
     margin: 12px 0;
+  }
+  .sort-option-container {
+    display: flex;
+    align-items: baseline;
+    .button-label {
+      margin-right: 5px;
+    }
   }
 }
 .list-description,
@@ -456,7 +468,7 @@
     }
   }
 }
-.myresearch-table .renew-button-col {
+.myresearch-table .toolbar-button-col {
   #renewAll + .useraccount-confirm, #cancelAll + .useraccount-confirm, #cancelAll + .dropdown-backdrop + .useraccount-confirm, #purgeAll + .useraccount-confirm {
     @media (max-width: @screen-sm) {
       left: auto;
@@ -986,12 +998,14 @@
     right: 0;
   }
 }
-.myresearch-body .form .mylist-functions #button_email {
-  border-radius: 4px 0 0 4px;
-}
-.myresearch-body .form .mylist-functions #add-to-list {
-  box-shadow: none;
-  text-align: left;
+.myresearch-body .form .mylist-functions {
+  #button_email {
+    border-radius: 4px 0 0 4px;
+  }
+  #add-to-list {
+    box-shadow: none;
+    text-align: left;
+  }
 }
 
 .own-favorite-list-button-area {

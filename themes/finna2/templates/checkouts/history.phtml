@@ -44,7 +44,7 @@
         <?php if (!empty($this->transactions)): ?>
           <?php if ($paginator): ?>
             <div class="pagination-container">
-              <?=$paginator ? $this->paginationControl($paginator, 'Sliding', 'Helpers/pagination-simple.phtml', ['params' => $params]) : ''?>
+              <?=$this->paginationControl($paginator, 'Sliding', 'Helpers/pagination-simple.phtml', ['params' => $params]) ?>
             </div>
           <?php endif; ?>
           
@@ -71,7 +71,7 @@
                   </td>
                 <?php endif; ?>
                 <td class="list-functions">
-                  <div class="renew-button-col">
+                  <div class="toolbar-button-col">
                     <div class="btn-group">
                     <?php if ($purgeSelectedAllowed): ?>
                       <input type="submit" id="purgeSelected" name="purgeSelected" value="<?=$this->transEscAttr('loan_history_purge_selected')?>" class="btn btn-finna-toolbar dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore disabled="disabled">
