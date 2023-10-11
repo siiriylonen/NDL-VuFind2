@@ -8,7 +8,7 @@
         $hasLink = isset($rights['link']) && !empty($rights['link']);
     ?>
     <li class="fulltextField">
-        <div class="link-wrapper">
+        <div class="link-wrapper additional-info">
             <a href="<?=$this->escapeHtmlAttr($this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']]))?>" download rel="nofollow">
                 <?=$this->icon('download') ?>
                 <?=$this->escapeHtml($description)?>

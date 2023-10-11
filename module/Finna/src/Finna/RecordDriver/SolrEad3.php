@@ -252,6 +252,7 @@ class SolrEad3 extends SolrEad
                 $urlData = [
                     'url' => $url,
                     'desc' => (string)$desc,
+                    'format' => (string)$attr->linkrole,
                 ];
                 if ($preferredLang) {
                     $urls['localeurls'][] = $urlData;
@@ -885,6 +886,8 @@ class SolrEad3 extends SolrEad
         $images = [];
         $ocrImages = [];
         $fullResImages = [];
+        $notImages = ['audio', 'video'];
+        $isImage = true;
         foreach ([$xml->did ?? [], $xml->did->daoset ?? []] as $root) {
             foreach ($root as $set) {
                 if (!isset($set->dao)) {
@@ -920,61 +923,43 @@ class SolrEad3 extends SolrEad
                     $type = (string)($attr->localtype ?? $parentType ?: 'none');
                     $role = (string)($attr->linkrole ?? '');
                     $sort = (string)($attr->label ?? '');
-
-                    // Save image to another array if match is found
-                    if (self::IMAGE_OCR === $type && !$isExcludedFromOCR($title)) {
-                        $ocrImages['items'][] = [
-                            'label' => $title,
-                            'url' => $url,
-                            'sort' => $sort,
-                        ];
-                    } elseif (self::IMAGE_FULLRES === $type) {
-                        $fullResImages['items'][] = [
-                            'label' => $title,
-                            'url' => $url,
-                        ];
-                    }
-                    if (!$this->isUrlLoadable($url, $this->getUniqueID())) {
-                        continue;
-                    }
-                    [$fileType, $format] = strpos($role, '/') > 0
-                        ? explode('/', $role, 2)
-                        : ['image', 'jpg'];
-                    // Image might be original, can not be displayed in browser.
-                    if ($this->isUndisplayableFormat($format)) {
-                        $highResolution['original'][] = [
-                            'data' => [],
-                            'url' => $url,
-                            'format' => $format,
-                        ];
-                        continue;
-                    }
-                    if (empty($displayImage)) {
-                        $displayImage = [
-                            'urls' => [],
-                            'description' => $title,
-                            'rights' => $rights,
-                            'descId' => $descId,
-                            'sort' => $sort,
-                            'type' => $type,
-                            'pdf' => [],
-                            'highResolution' => [],
-                        ];
-                    }
-
-                    if ($size = self::IMAGE_MAP[$type] ?? false || $parentSize) {
-                        if (false === $size) {
-                            $size = $parentSize;
-                        } else {
-                            $size = ($size === self::IMAGE_FULLRES)
-                                ? self::IMAGE_LARGE
-                                : $size;
+                    foreach ($notImages as $format) {
+                        if (str_starts_with($role, $format)) {
+                            $isImage = false;
+                            break;
                         }
+                    }
 
-                        if (isset($displayImage['urls'][$size])) {
-                            // Add old stash to results.
-                            $displayImage['highResolution'] = $highResolution;
-                            $addToResults($displayImage);
+                    if ($isImage) {
+                        // Save image to another array if match is found
+                        if (self::IMAGE_OCR === $type && !$isExcludedFromOCR($title)) {
+                            $ocrImages['items'][] = [
+                                'label' => $title,
+                                'url' => $url,
+                                'sort' => $sort,
+                            ];
+                        } elseif (self::IMAGE_FULLRES === $type) {
+                            $fullResImages['items'][] = [
+                                'label' => $title,
+                                'url' => $url,
+                            ];
+                        }
+                        if (!$this->isUrlLoadable($url, $this->getUniqueID())) {
+                            continue;
+                        }
+                        [$fileType, $format] = strpos($role, '/') > 0
+                            ? explode('/', $role, 2)
+                            : ['image', 'jpg'];
+                        // Image might be original, can not be displayed in browser.
+                        if ($this->isUndisplayableFormat($format)) {
+                            $highResolution['original'][] = [
+                                'data' => [],
+                                'url' => $url,
+                                'format' => $format,
+                            ];
+                            continue;
+                        }
+                        if (empty($displayImage)) {
                             $displayImage = [
                                 'urls' => [],
                                 'description' => $title,
@@ -986,9 +971,36 @@ class SolrEad3 extends SolrEad
                                 'highResolution' => [],
                             ];
                         }
-                        $displayImage['urls'][$size] = $url;
-                        $displayImage['pdf'][$size] = $role === 'application/pdf';
+
+                        if ($size = self::IMAGE_MAP[$type] ?? false || $parentSize) {
+                            if (false === $size) {
+                                $size = $parentSize;
+                            } else {
+                                $size = ($size === self::IMAGE_FULLRES)
+                                    ? self::IMAGE_LARGE
+                                    : $size;
+                            }
+
+                            if (isset($displayImage['urls'][$size])) {
+                                // Add old stash to results.
+                                $displayImage['highResolution'] = $highResolution;
+                                $addToResults($displayImage);
+                                $displayImage = [
+                                    'urls' => [],
+                                    'description' => $title,
+                                    'rights' => $rights,
+                                    'descId' => $descId,
+                                    'sort' => $sort,
+                                    'type' => $type,
+                                    'pdf' => [],
+                                    'highResolution' => [],
+                                ];
+                            }
+                            $displayImage['urls'][$size] = $url;
+                            $displayImage['pdf'][$size] = $role === 'application/pdf';
+                        }
                     }
+                    $isImage = true;
                 }
                 if (!empty($displayImage)) {
                     $displayImage['highResolution'] = $highResolution;
