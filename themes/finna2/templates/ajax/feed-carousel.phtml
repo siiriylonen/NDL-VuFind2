@@ -25,8 +25,12 @@
               if (isset($item['link'])) {
                 $linkElement['href'] = $item['link'];
               }
+              if (isset($item['isExternal']) && $item['isExternal']) {
+                $linkElement['aria-label'] = $this->transEsc('Carousel::external_link');
+              }
               if ($this->linkTarget) {
                 $linkElement['target'] = $this->linkTarget;
+                $linkElement['aria-label'] .= $this->transEsc('Carousel::opens_new_tab');
               }
               if ($item['modal']) {
                 $linkElement['data-lightbox'] = '';
