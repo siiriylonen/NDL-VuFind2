@@ -102,7 +102,7 @@ class Feed implements
 
     /**
      * Server URL helper
-     * 
+     *
      * @var ServerUrl
      */
     protected $serverUrl;
