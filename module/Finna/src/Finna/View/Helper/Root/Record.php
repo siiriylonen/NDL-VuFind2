@@ -498,6 +498,14 @@ class Record extends \VuFind\View\Helper\Root\Record
             $fieldLinks[]
                 = compact('linkText', 'linkType', 'urlType', 'escapedUrl');
         }
+        if (!empty($data['externalLinks'])) {
+            foreach ($data['externalLinks'] as $link) {
+                $linkText = $linkType = $link['label'];
+                $escapedUrl = $link['url'];
+                $urlType = 'url';
+                $fieldLinks[] = compact('linkText', 'linkType', 'urlType', 'escapedUrl');
+            }
+        }
 
         $authorityType = $params['authorityType'] ?? 'Personal Name';
         $authorityType

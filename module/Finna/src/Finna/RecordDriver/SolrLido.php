@@ -2115,8 +2115,34 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     $part = $part->partOfPlace;
                 }
             }
+            $placeId = $repository->repositoryLocation->placeID ?? [];
             if ($locations) {
-                $results[] = implode(', ', $locations);
+                $location = implode(', ', $locations);
+                if ($placeId) {
+                    $displayPlace = [
+                        'placeName' => $location,
+                    ];
+                    $attr = $placeId->attributes();
+                    $idTypeFirst = (string)($placeId->attributes()->type ?? '');
+                    $displayPlace['type'] = $idTypeFirst;
+                    $displayPlace['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
+                    $idType = (string)($attr->type ?? '');
+                    foreach ($repository->repositoryLocation->placeID ?? [] as $placeId) {
+                        $details = [];
+                        $id = (string)$placeId;
+                        $idType = (string)($attr->type ?? '');
+                        $displayPlace['ids'][] = $idType ? "($idType)$id" : $id;
+                        $typeDesc = $idType ? 'place_id_type_' . $idType : '';
+                        $details[] = $typeDesc;
+                        if ($typeDesc) {
+                            $displayPlace['details'] = $details;
+                        }
+                    }
+                    $displayPlace['externalLinks'] = $this->getPhysicalLocationLinks();
+                    $results[] = $displayPlace;
+                } else {
+                    $results[] = $location;
+                }
             }
             $lang = $this->getLocale();
             if (
@@ -2129,6 +2155,34 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             }
         }
         return $results;
+    }
+
+    /**
+     * Return location links
+     *
+     * @return array
+     */
+    public function getPhysicalLocationLinks(): array
+    {
+        $result = [];
+        foreach (
+            $this->getXmlRecord()->lido->descriptiveMetadata->objectIdentificationWrap
+            ->repositoryWrap->repositorySet ?? [] as $repository
+        ) {
+            foreach ($repository->repositoryLocation->placeID ?? [] as $placeId) {
+                $attr = $placeId->attributes();
+                if ($attr->type == 'URI' && $attr->source != 'YSO') {
+                    $label = $attr->label;
+                    if (!empty((string)$placeId)) {
+                        $result[] = [
+                            'url' => (string)$placeId,
+                            'label' => (string)$label,
+                        ];
+                    }
+                }
+            }
+        }
+        return $result;
     }
 
     /**
