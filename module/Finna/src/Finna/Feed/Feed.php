@@ -574,10 +574,7 @@ class Feed implements
                         $value = strip_tags($value);
                         if (filter_var($value, FILTER_VALIDATE_URL)) {
                             $host = $this->serverUrl->getHost();
-                            $isExternal = true;
-                            if (str_contains($value, $host)) {
-                                $isExternal = false;
-                            }
+                            $isExternal = str_contains($value, $host);
                             $data['isExternal'] = $isExternal;
                         }
                     }

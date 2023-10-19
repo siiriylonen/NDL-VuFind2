@@ -22,15 +22,21 @@
           <?php if (isset($item['link'])): ?>
             <?php
               $linkElement = [];
+              $ariaLabel = '';
               if (isset($item['link'])) {
                 $linkElement['href'] = $item['link'];
               }
-              if (isset($item['isExternal']) && $item['isExternal']) {
-                $linkElement['aria-label'] = $this->transEsc('Carousel::external_link');
+              if (isset($item['isExternal']) ?? false) {
+                $ariaLabel = $this->transEsc('external_link') . ' ';
               }
               if ($this->linkTarget) {
                 $linkElement['target'] = $this->linkTarget;
-                $linkElement['aria-label'] .= $this->transEsc('Carousel::opens_new_tab');
+                if ($linkElement['target'] === '_blank') {
+                  $ariaLabel .= $this->transEsc('Open in a new window');
+                }
+              }
+              if ($ariaLabel) {
+                $linkElement['aria-label'] = $ariaLabel;
               }
               if ($item['modal']) {
                 $linkElement['data-lightbox'] = '';
