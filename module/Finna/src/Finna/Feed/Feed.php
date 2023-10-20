@@ -575,8 +575,8 @@ class Feed implements
                         if (filter_var($value, FILTER_VALIDATE_URL)) {
                             $hostFull = $this->serverUrl->getHost();
                             $hostPart = strtok($hostFull, '.');
-                            $link = parse_url($value, PHP_URL_HOST);
-                            $isExternal = str_contains($link, $hostPart);
+                            $linkHost = parse_url($value, PHP_URL_HOST);
+                            $isExternal = str_contains($linkHost, $hostPart);
                             $data['isExternal'] = $isExternal;
                         }
                     }
