@@ -576,7 +576,7 @@ class Feed implements
                             $hostFull = $this->serverUrl->getHost();
                             $hostPart = strtok($hostFull, '.');
                             $linkHost = parse_url($value, PHP_URL_HOST);
-                            $isExternal = str_contains($linkHost, $hostPart);
+                            $isExternal = !str_contains($linkHost, $hostPart);
                             $data['isExternal'] = $isExternal;
                         }
                     }
