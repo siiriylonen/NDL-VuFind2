@@ -5963,6 +5963,48 @@
             "time": "2022-02-11T12:18:24+00:00"
         },
         {
+            "name": "natlibfi/finna-code-sets",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NatLibFi/finna-code-sets.git",
+                "reference": "c1a0c6c5e90ae402bb72630cac347a780013b67e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NatLibFi/finna-code-sets/zipball/c1a0c6c5e90ae402bb72630cac347a780013b67e",
+                "reference": "c1a0c6c5e90ae402bb72630cac347a780013b67e",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5",
+                "php": ">=8.0",
+                "psr/cache": "^1.0.0 || ^2.0.0 || ^3.0.0",
+                "psr/http-client": "^1.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.14.4",
+                "phpstan/phpstan": "1.10.3",
+                "squizlabs/php_codesniffer": "3.7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "NatLibFi\\FinnaCodeSets\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Support library for code sets used in Finna record formats",
+            "support": {
+                "issues": "https://github.com/NatLibFi/finna-code-sets/issues",
+                "source": "https://github.com/NatLibFi/finna-code-sets/tree/v0.2.1"
+            },
+            "time": "2023-10-04T11:49:17+00:00"
+        },
+        {
             "name": "natlibfi/php-html-parser",
             "version": "v4.0.1",
             "source": {
