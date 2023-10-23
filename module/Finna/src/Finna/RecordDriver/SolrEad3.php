@@ -924,8 +924,7 @@ class SolrEad3 extends SolrEad
                         continue;
                     }
                     $show = (string)$attr->show ?? 'none';
-                    $notShown = $show === 'none';
-                    if ($notShown) {
+                    if ($show === 'none') {
                         continue;
                     }
                     $type = (string)($attr->localtype ?? $parentType ?: 'none');
