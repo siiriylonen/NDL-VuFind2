@@ -160,14 +160,6 @@
   #copy_to_favourites {
     margin-left: -1px;
   }
-  .sort-col a.dropdown-toggle {
-    margin-bottom: 0;
-    height: 30px;
-    font-size: 0.9em;
-    @media (max-width: @screen-md) {
-      margin-top: 6px;
-    }
-  }
   .sort-button ul.dropdown-menu li a {
     font-size: 1em;
   }
@@ -257,6 +249,14 @@
     align-items: baseline;
     .button-label {
       margin-right: 5px;
+    }
+  }
+  .sort-col a.dropdown-toggle {
+    margin-bottom: 0;
+    height: 30px;
+    font-size: 0.9em;
+    @media (max-width: @screen-md) {
+      margin-top: 6px;
     }
   }
 }
@@ -454,28 +454,17 @@
     height: 30px;
   }
 }
-.loans-sort, .holds-sort, .history-sort {
-  &.sort-col {
+.sort-col.sort-col-mobile {
     @media(min-width: @screen-sm) {
-      display: none;
-    }
+    display: none;
   }
 }
-#renewals, #update_holds, .myresearch-table.history-table .toolbar {
-  .list-functions .sort-col {
+
+.toolbar .list-functions .sort-col {
     @media(max-width: @screen-sm) {
       display: none;
     }
   }
-}
-.myresearch-table .toolbar-button-col {
-  #renewAll + .useraccount-confirm, #cancelAll + .useraccount-confirm, #cancelAll + .dropdown-backdrop + .useraccount-confirm, #purgeAll + .useraccount-confirm {
-    @media (max-width: @screen-sm) {
-      left: auto;
-      right: 0;
-    }
-  }
-}
 
 .online-payment-form > .payment-row {
   .online-payment-area {

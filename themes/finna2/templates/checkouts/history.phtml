@@ -10,6 +10,8 @@
     $catalog = $this->ils();
     $user = $this->auth()->isLoggedIn();
     $patron = $user ? $this->auth()->getILSPatron() : false;
+    $noSupport = isset($this->noSupport);
+    $sortList = $this->sortList;
 ?>
 
 <!-- Leftside navigationbar -->
@@ -26,19 +28,19 @@
     </div>
     <div class="useraccount-header">
       <h2><?=$this->transEsc('Loan History')?> (<?=$recordCount;?>)</h2>
-      <div class="history-sort sort-col">
-        <?php if ($this->sortList): ?>
-          <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
-        <?php endif; ?>
-      </div>
     </div>
-    <?php if (isset($this->noSupport)): ?>
+    <?php if ($noSupport): ?>
       <?php if ($user->getLibraryCards()->count() > 1): ?>
         <div class="support-notice">
           <p><?=$this->transEsc('no_ils_support_description') ?></p>
         </div>
       <?php endif; ?>
     <?php else: ?>
+      <div class="sort-col sort-col-mobile">
+        <?php if ($sortList): ?>
+          <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $sortList]); ?>
+        <?php endif; ?>
+      </div>
       <?php if ($template = $this->content()->findTemplateForLng('content/Additions/historic-loans-pre-list')): ?>
         <div class="historic-loans-pre-list"><?=$this->render($template)?></div>
       <?php endif; ?>
@@ -96,9 +98,9 @@
                         <?php endif; ?>
                       </div>
                       <div class="sort-col">
-                      <?php if ($this->sortList): ?>
-                        <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList]); ?>
-                      <?php endif; ?>
+                        <?php if ($sortList): ?>
+                          <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $sortList]); ?>
+                        <?php endif; ?>
                       </div>
                     </td>
                   </tr>

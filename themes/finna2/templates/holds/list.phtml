@@ -6,6 +6,8 @@
     $this->layout()->breadcrumbs = '<li><a href="' . $this->url('myresearch-home') . '">' . $this->transEsc('Your Account') . '</a></li> <li class="active">' . $this->transEsc('My Holds') . '</li>';
     $user = $this->auth()->isLoggedIn();
     $patron = $user ? $this->auth()->getILSPatron() : false;
+    $noSupport = isset($this->noSupport);
+    $sortList = $this->sortList;
 ?>
 
 <!-- Leftside navigationbar -->
@@ -21,19 +23,19 @@
     </div>
     <div class="useraccount-header">
       <h2><?=$this->transEsc('Your Holds and Recalls') ?> (<?=count($this->recordList ?? []);?>)</h2>
-      <?php if(!empty($this->recordList)): ?>
-        <div class="sort-col holds-sort">
-          <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList])?>
-        </div>
-      <?php endif; ?>
     </div>
-    <?php if (isset($this->noSupport)): ?>
+    <?php if ($noSupport): ?>
       <?php if ($user->getLibraryCards()->count() > 1): ?>
         <div class="support-notice">
           <p><?=$this->transEsc('no_ils_support_description') ?></p>
         </div>
       <?php endif; ?>
     <?php else: ?>
+      <?php if(!empty($this->recordList)): ?>
+        <div class="sort-col sort-col-mobile">
+          <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $sortList])?>
+        </div>
+      <?php endif; ?>
       <?php if ($template = $this->content()->findTemplateForLng('content/Additions/holds-pre-list')): ?>
         <div class="holds-pre-list"><?=$this->render($template)?></div>
       <?php endif; ?>
@@ -84,8 +86,8 @@
                       <?php endif; ?>
                     </div>
                     <div class="sort-col">
-                      <?php if ($this->sortList): ?>
-                        <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $this->sortList])?>
+                      <?php if ($sortList): ?>
+                        <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $sortList])?>
                       <?php endif; ?>
                     </div>
                   </td>
@@ -258,7 +260,6 @@
     <?php endif; ?>
   </div>
 </div>
-
 
 <?=$this->render('myresearch/notify-account-status.phtml', ['method' => 'holds', 'accountStatus' => $this->accountStatus]); ?>
 <!-- END of: finna - holds/list.phtml -->
