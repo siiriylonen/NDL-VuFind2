@@ -815,7 +815,7 @@ finna.layout = (function finnaLayout() {
         purgeSelected.toggleAttribute('disabled', checkedHistory === null);
       }
       if (copyToFavourites) {
-        copyToFavourites.toggleAttribute('disabled', checkedHistory === null);
+        copyToFavourites.classList.toggle('disabled', checkedHistory === null);
       }
     }
   }
