@@ -140,7 +140,7 @@ class Bootstrapper
                 || ($controller == 'primorecord')
                 || ($controller == 'eds' && $action == 'search')
                 || ($controller == 'edsrecord')
-                || ($controller == 'search' && $action == 'blended')
+                || ($controller == 'blender' && $action == 'results')
                 || ($controller == 'cover' && $action == 'download')
             ) {
                 $response = $event->getResponse();

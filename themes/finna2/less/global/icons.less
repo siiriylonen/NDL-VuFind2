@@ -44,6 +44,9 @@ table .iconlabel {
     letter-spacing: 0px;
     font-size: 1em;
 }
+.iconlabel.format-0aipa:before  {
+    content: "\e00d";
+}
 .iconlabel.format-unknownname:before,
 .iconlabel.format-personalname:before {
     font-family: finnaicons;
@@ -117,9 +120,13 @@ table .iconlabel {
 .iconlabel-smallpress:before, .iconlabel.format-1otherprint:before {
     content: "\e007";
 }
-.fa.fa-TOC:before, .iconlabel.format-1document:before, .iconlabel.format-1documentarchive:before, .iconlabel.format-1documentarchivematerial:before, .iconlabel.format-1documentarchiveitem:before, .iconlabel.format-1documentarchivefonds:before, .iconlabel.format-1documentarchiveseries:before, .iconlabel.format-1documentarchivecollection:before, .iconlabel.format-1documentothercollection:before, .iconlabel.format-1documentcollection:before, .iconlabel.format-1documentdigitizedarchiveitem:before, .iconlabel.format-1othertexttext:before, .iconlabel.format-1othertextdiary:before, .iconlabel.format-1othertextconferenceproceeding:before, .iconlabel.format-1othertextmanuscript:before, .iconlabel.format-1othertextresearchreport:before, .iconlabel.format-1othertextletter:before, .iconlabel.format-0manuscript:before {
+.fa.fa-TOC:before, .iconlabel.format-1document:before, .iconlabel.format-1documentother:before, .iconlabel.format-1documentdigitizedarchiveitem:before, .iconlabel.format-1othertexttext:before, .iconlabel.format-1othertextdiary:before, .iconlabel.format-1othertextconferenceproceeding:before, .iconlabel.format-1othertextmanuscript:before, .iconlabel.format-1othertextresearchreport:before, .iconlabel.format-1othertextletter:before, .iconlabel.format-0manuscript:before {
     font-family: finnaicons;
     content: "\e006";
+}
+.iconlabel[class*="format-1documentarchive"]:before, .iconlabel[class*="format-1documentdigitizedarchive"]:before, .iconlabel[class*="format-1documentseries"]:before, .iconlabel.format-1documentothercollection:before, .iconlabel.format-1documentcollection:before {
+    font-family: finnaicons;
+    content: "\e8cb";
 }
 .iconlabel.format-0note:before, .iconlabel.format-0musicalscore:before, .iconlabel[class*="format-1musicalscore"]:before {
     content: "\e005";
@@ -590,6 +597,11 @@ table .iconlabel {
   color: inherit;
 }
 
+/* Unicode Icons */
+.icon--unicode:before {
+    content: attr(data-icon);
+}
+
 /* MD Editable */
 .fa-pen:before {
     font-family: finnaicons;
@@ -652,42 +664,33 @@ table .iconlabel {
     font-family: finnaicons;
     content: "\e036";
 }
-.nav-pills > li.share-buttons {
-    float: right;
-    padding-top: 5px;
-    .share-buttons-toolbox {
-        a {
-            padding: 0;
-        }
-        .icon {
-            color: #fff;
-            margin-left: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            &.facebook-icon {
-                background: #3a5795;
-                border: 2px solid #3a5795;
-                color: #fff;
-            }
-            &.pinterest-icon {
-                background: #cb2027;
-                border: 2px solid #cb2027;
-                color: #fff;
-            }
-            &.twitter-icon {
-                background: #00aced;
-                border: 2px solid #00aced;
-                color: #fff;
-            }
-            &.fa-google-plus {
-                background: #d34836;
-                border: 2px solid #d34836;
-                color: #fff;
-            }
-        }
+.share-buttons .icon, .whatsapp .icon {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    &.facebook-icon {
+        background: #3a5795;
+        border: 2px solid #3a5795;
+        color: #fff;
+    }
+    &.pinterest-icon {
+        background: #cb2027;
+        border: 2px solid #cb2027;
+        color: #fff;
+    }
+    &.twitter-icon {
+        background: #00aced;
+        border: 2px solid #00aced;
+        color: #fff;
+    }
+    &.whatsapp-icon {
+        background: #64d448;
+        border: 2px solid #64d448;
+        color: #fff;
     }
 }
+

@@ -92,6 +92,10 @@ finna.layout = (function finnaLayout() {
         var moreLink = $('<button type="button" class="more-link" aria-hidden="true">' + moreLabel + VuFind.icon('show-more') + '</button>');
         var lessLink = $('<button type="button" class="less-link" aria-hidden="true">' + lessLabel + VuFind.icon('show-less') + '</button>');
 
+        if (self.attr('tabindex') === '-1') {
+          moreLink.attr('tabindex', '-1');
+          lessLink.attr('tabindex', '-1');
+        }
         var linkClass = self.data('button-class') || '';
         if (linkClass) {
           moreLink.addClass(linkClass);
@@ -255,12 +259,6 @@ finna.layout = (function finnaLayout() {
     $('.searchForm_lookfor').on('input', function onInputLookfor() {
       var lfor = $(this);
       lfor.closest('.searchForm').find('.clear-button').toggleClass('hidden', lfor.val() === '');
-    });
-
-    $('.clear-button').on('click', function onClickClear() {
-      var btn = $(this);
-      btn.closest('.searchForm').find('.searchForm_lookfor').val('').focus();
-      btn.addClass('hidden');
     });
 
     $('.searchForm_lookfor').on('autocomplete:select', function onAutocompleteSelect() {
@@ -547,13 +545,11 @@ finna.layout = (function finnaLayout() {
   function getOrganisationPageLink(organisation, organisationName, link, callback) {
     var params = {
       url: VuFind.path + '/AJAX/JSON?method=getOrganisationInfo',
-      dataType: 'json',
-      method: 'POST',
       data: {
         method: 'getOrganisationInfo',
-        'params[action]': 'lookup',
-        link: link ? '1' : '0',
-        parent: organisation
+        element: 'organisation-page-link',
+        id: organisation.id,
+        sector: organisation.sector || ''
       }
     };
     if (organisationName) {
@@ -579,10 +575,8 @@ finna.layout = (function finnaLayout() {
         var organisation = {'id': organisationId, 'sector': organisationSector};
         getOrganisationPageLink(organisation, organisationName, true, function organisationPageCallback(response) {
           holder.toggleClass('done', true);
-          if (response) {
-            $.each(response, function handleLinks(id, item) {
-              holder.html(item).closest('li.record-organisation').toggleClass('organisation-page-link-visible', true);
-            });
+          if (response && response.found) {
+            holder.html(response.html).closest('li.record-organisation').toggleClass('organisation-page-link-visible', true);
           }
         });
       },

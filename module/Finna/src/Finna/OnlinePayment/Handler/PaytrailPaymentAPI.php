@@ -5,7 +5,7 @@
  *
  * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2022.
+ * Copyright (C) The National Library of Finland 2022-2023.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -37,6 +37,8 @@ use Paytrail\SDK\Model\Item;
 use Paytrail\SDK\Request\PaymentRequest;
 use Paytrail\SDK\Request\ShopInShopPaymentRequest;
 use Paytrail\SDK\Util\Signature;
+
+use function array_key_exists;
 
 /**
  * Paytrail Payment API handler module.
@@ -142,6 +144,7 @@ class PaytrailPaymentAPI extends AbstractBase
             || $productCodeMappings
             || $organizationProductCodeMappings
             || $organizationMerchantIdMappings
+            || array_key_exists('__productCode', reset($fines))
         ) {
             // Map fines to items:
             $items = [];
@@ -149,16 +152,18 @@ class PaytrailPaymentAPI extends AbstractBase
                 $fineType = $fine['fine'] ?? '';
                 $fineOrg = $fine['organization'] ?? '';
 
-                if (isset($productCodeMappings[$fineType])) {
-                    $code = $productCodeMappings[$fineType];
-                } elseif ($productCode) {
-                    $code = $productCode;
-                } else {
-                    $code = $fineType;
-                }
-                if (isset($organizationProductCodeMappings[$fineOrg])) {
-                    $code = $organizationProductCodeMappings[$fineOrg]
-                        . ($productCodeMappings[$fineType] ?? '');
+                if (null === ($code = $fine['__productCode'] ?? null)) {
+                    if (isset($productCodeMappings[$fineType])) {
+                        $code = $productCodeMappings[$fineType];
+                    } elseif ($productCode) {
+                        $code = $productCode;
+                    } else {
+                        $code = $fineType;
+                    }
+                    if (isset($organizationProductCodeMappings[$fineOrg])) {
+                        $code = $organizationProductCodeMappings[$fineOrg]
+                            . ($productCodeMappings[$fineType] ?? '');
+                    }
                 }
                 $code = mb_substr($code, 0, 100, 'UTF-8');
 
@@ -224,7 +229,7 @@ class PaytrailPaymentAPI extends AbstractBase
             return '';
         }
 
-        $success = $this->createTransaction(
+        $transaction = $this->createTransaction(
             $transactionId,
             $driver,
             $user->id,
@@ -234,11 +239,11 @@ class PaytrailPaymentAPI extends AbstractBase
             $currency,
             $fines
         );
-        if (!$success) {
-            return false;
+        if (!$transaction) {
+            return 'Could not create transaction';
         }
 
-        $this->redirectToPayment($paymentResponse->getHref());
+        $this->redirectToPayment($paymentResponse->getHref(), $transaction);
 
         return '';
     }
@@ -269,17 +274,21 @@ class PaytrailPaymentAPI extends AbstractBase
         switch ($status) {
             case 'ok':
                 $marked = $transaction->setPaid();
+                $this->addTransactionEvent($transaction->id, 'Transaction marked as paid');
                 return [self::PAYMENT_SUCCESS, $marked];
             case 'fail':
                 $transaction->setCanceled();
+                $this->addTransactionEvent($transaction->id, 'Transaction marked as canceled');
                 return [self::PAYMENT_CANCEL, false];
             case 'new':
             case 'pending':
             case 'delayed':
+                $this->addTransactionEvent($transaction->id, 'Transaction pending (received status $status)');
                 return [self::PAYMENT_PENDING, false];
         }
 
         $this->logPaymentError("unknown status $status");
+        $this->addTransactionEvent($transaction->id, 'Received unknown status', ['status' => $status]);
         return [self::PAYMENT_FAILURE, false];
     }
 

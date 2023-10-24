@@ -485,6 +485,22 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
     }
 
     /**
+     * Get an array of Dewey classifications for the record.
+     *
+     * @return array
+     */
+    public function getDeweyClassifications()
+    {
+        $results = [];
+        foreach ($this->getMarcReader()->getFields('082') as $field) {
+            if ($result = $this->getSubfield($field, 'a')) {
+                $results[] = $result;
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Get dissertation note for the record.
      * Use field 502 if available. If not, use local field 509 or 920.
      *
@@ -2235,6 +2251,18 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
     }
 
     /**
+     * Get standard report numbers from field 526, subfields i and a.
+     *
+     * @return array
+     */
+    public function getStudyProgramNotes()
+    {
+        return $this->stripTrailingPunctuation(
+            $this->getFieldArray('526', ['i', 'a'])
+        );
+    }
+
+    /**
      * Get publisher or distributor number from field 028, subfields b and a.
      *
      * @return array
@@ -2448,5 +2476,15 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
     public function getSecurityClassification()
     {
         return $this->stripTrailingPunctuation($this->getFieldArray('355', ['a']));
+    }
+
+    /**
+     * Get country from field 257, subfield a.
+     *
+     * @return array
+     */
+    public function getCountry()
+    {
+        return $this->stripTrailingPunctuation($this->getFieldArray('257', ['a']));
     }
 }

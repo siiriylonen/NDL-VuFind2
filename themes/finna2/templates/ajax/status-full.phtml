@@ -5,20 +5,19 @@ $driver = $this->record($id)->getDriver();
 $source = $driver ? $driver->tryMethod('getDataSource') : '';
 $locations = false;
 $holdings = $this->statusItems;
-$summary = array_pop($holdings);
+foreach ($holdings as $i => $holding) {
+  if (($holding['location'] ?? '') === '__HOLDINGSSUMMARYLOCATION__') {
+    unset($holdings[$i]);
+    $itemsTotal = $holding['total'];
+    $availableTotal = $holding['available'];
+    $reservationsTotal = $holding['reservations'] ?? null;
+    $orderedTotal = $holding['ordered'] ?? null;
+    $locations = $holding['locations'] ?? null;
+    break;
+  }
+}
 $onlyUnknownStatuses = true;
 $holdingsConfig = $this->ils()->getConfig('Holdings', [$id]);
-if (($summary['location'] ?? '') === '__HOLDINGSSUMMARYLOCATION__') {
-  $itemsTotal = $summary['total'];
-  $availableTotal = $summary['available'];
-  $reservationsTotal
-     = $summary['reservations'] ?? null;
-  $orderedTotal
-     = $summary['ordered'] ?? null;
-  $locations = $summary['locations'] ?? null;
-} else {
-  $holdings[] = $summary;
-}
 
 foreach ($holdings as &$holding) {
   if (!empty($holding['availability']) || empty($holding['use_unknown_message'])) {
@@ -154,8 +153,11 @@ if ($groupBranches) {
       <?php if (!empty($reservationsTotal)): ?>
         <span class="reservations"><?=$this->translate('status_requests_html', ['%%count%%' => $reservationsTotal]);?></span>
       <?php endif; ?>
-      <?php if (!empty($itemsTotal) && !empty($holdingsConfig['display_total_item_count_in_results'])): ?>
+      <?php if (!empty($itemsTotal) && ($holdingsConfig['display_total_item_count_in_results'] ?? true)): ?>
         <span class="total"><?=$this->translate('status_items_total_html', ['%%count%%' => $itemsTotal]);?></span>
+      <?php endif; ?>
+      <?php if (!empty($orderedTotal) && ($holdingsConfig['display_ordered_item_count_in_results'] ?? false)): ?>
+        <span class="ordered"><?=$this->translate('status_items_ordered_html', ['%%count%%' => $orderedTotal]);?></span>
       <?php endif; ?>
     </span>
     </div>
@@ -313,12 +315,14 @@ if (!$disableTitleHold
     if ($account->loginEnabled() && $offlineMode != 'ils-offline' && $ilsLoginAvailable) {
       $logged = $account->isLoggedIn();
       $link = null;
+      $lightbox = true;
       if (!$logged) {
         if (!$this->record($driver)->repositoryLibraryRequestEnabled('results')) {
           $link = $holdingsLink . '?login=true&catalogLogin=true&target=' . urlencode($source);
         }
       } elseif ($journal) {
         $link = $holdingsLink;
+        $lightbox = false;
       } else {
         $holdingTitleHold = $driver ? $driver->tryMethod('getRealTimeTitleHold') : false;
         if (!empty($holdingTitleHold)) {
@@ -329,7 +333,7 @@ if (!$disableTitleHold
         if ($logged) {
 ?>
     <div class="title-hold">
-      <a href="<?=$this->escapeHtmlAttr($addSid($link))?>" class="placehold btn btn-primary hidden-print" data-lightbox-title="<?=$this->escapeHtmlAttr($this->translate('title_hold_place') . ': ' . $driver->getTitle()) ?>" data-lightbox><?=$this->transEsc('title_hold_place')?><span class="sr-only">: <?=$this->escapeHtml($driver->getTitle())?></span></a>
+      <a href="<?=$this->escapeHtmlAttr($addSid($link))?>" class="placehold btn btn-primary hidden-print" data-lightbox-title="<?=$this->escapeHtmlAttr($this->translate('title_hold_place') . ': ' . $driver->getTitle()) ?>" <?=$lightbox ? ' data-lightbox' : ''?>><?=$this->transEsc('title_hold_place')?><span class="sr-only">: <?=$this->escapeHtml($driver->getTitle())?></span></a>
     </div>
 <?php
         } else {

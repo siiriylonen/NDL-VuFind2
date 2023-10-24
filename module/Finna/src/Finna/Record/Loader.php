@@ -33,10 +33,12 @@ namespace Finna\Record;
 
 use Finna\RecordDriver\Feature\ContainerFormatInterface;
 use VuFind\Exception\RecordMissing as RecordMissingException;
+use VuFind\RecordDriver\DefaultRecord;
 use VuFindSearch\Command\SearchCommand;
 use VuFindSearch\ParamBag;
 
 use function count;
+use function in_array;
 
 /**
  * Record loader
@@ -120,41 +122,47 @@ class Loader extends \VuFind\Record\Loader
         }
         $result = null;
         $missingException = false;
-        try {
-            $result = parent::load($id, $source, $tolerateMissing, $params);
-        } catch (RecordMissingException $e) {
-            $missingException = $e;
+
+        // Check for an encapsulated record ID
+        $parts = explode(
+            ContainerFormatInterface::ENCAPSULATED_RECORD_ID_SEPARATOR,
+            $id,
+            2
+        );
+        if ($id !== $parts[0]) {
+            // Encapsulated record ID separator was found.
+            // Attempt to load parent record using the first part of the ID.
+            $parentRecord = $this->load($parts[0]);
+            // If the parent record implements ContainerRecordInterface
+            // get encapsulated record using the second part of the ID
+            if ($parentRecord instanceof ContainerFormatInterface) {
+                $result = $parentRecord->getEncapsulatedRecord($parts[1]);
+            }
+            if (null === $result) {
+                throw new RecordMissingException(
+                    'Encapsulated record ' . $source . ':' . $id . ' does not exist.'
+                );
+            }
+        }
+
+        if (null === $result) {
+            try {
+                $result = parent::load($id, $source, $tolerateMissing, $params);
+            } catch (RecordMissingException $e) {
+                $missingException = $e;
+            }
         }
         if (
-            $source == 'Solr'
+            null !== $id
+            && '' !== $id
+            && in_array($source, ['Solr', 'SolrAuth'])
             && ($missingException || $result instanceof \VuFind\RecordDriver\Missing
             || ($result && $result->getExtraDetail('cached_record')))
         ) {
             // Check for a redirected record without overwriting $result
-            if ($redirectedRecord = $this->handleMissingSolrRecord($id)) {
+            if ($redirectedRecord = $this->handleMissingSolrRecord($id, $source)) {
                 $missingException = false;
                 $result = $redirectedRecord;
-            }
-        }
-        if ($missingException) {
-            // Check for an encapsulated record ID
-            $parts = explode(
-                ContainerFormatInterface::ENCAPSULATED_RECORD_ID_SEPARATOR,
-                $id,
-                2
-            );
-            if ($id !== $parts[0]) {
-                // Encapsulated record ID separator was found.
-                // Attempt to load parent record using the first part of the ID.
-                $parentRecord = parent::load($parts[0]);
-                // If the parent record implements ContainerRecordInterface
-                // get encapsulated record using the second part of the ID
-                if ($parentRecord instanceof ContainerFormatInterface) {
-                    $result = $parentRecord->getEncapsulatedRecord($parts[1]);
-                    if (null !== $result) {
-                        $missingException = false;
-                    }
-                }
             }
         }
         if ($missingException) {
@@ -210,19 +218,20 @@ class Loader extends \VuFind\Record\Loader
             $tolerateBackendExceptions
         );
 
-        // Check the results for missing MetaLib IRD records and try to load them
-        // with their old MetaLib IDs
+        // Check the results for missing records and try to load them with their old IDs:
         foreach ($records as &$record) {
-            if (
-                $record instanceof \VuFind\RecordDriver\Missing
-                && $record->getSourceIdentifier() == 'Solr'
-            ) {
-                $id = $record->getUniqueID();
-                if ($newRecord = $this->handleMissingSolrRecord($id)) {
-                    $record = $newRecord;
+            if ($record instanceof \VuFind\RecordDriver\Missing) {
+                $sourceId = $record->getSourceIdentifier();
+                if (in_array($sourceId, ['Solr', 'SolrAuth'])) {
+                    // Check for a new record without overwriting the current one:
+                    if ($newRecord = $this->handleMissingSolrRecord($record->getUniqueID(), $sourceId)) {
+                        $record = $newRecord;
+                    }
                 }
             }
         }
+        // Unset reference:
+        unset($record);
 
         return $records;
     }
@@ -230,27 +239,33 @@ class Loader extends \VuFind\Record\Loader
     /**
      * Handle missing Solr record by trying to find the record using alternative ID.
      *
-     * @param string $id Record ID
+     * @param string $id       Record ID
+     * @param string $sourceId Source ID
      *
-     * @return \VuFind\RecordDriver\AbstractBase|null Record or null if not found
+     * @return DefaultRecord|null Record or null if not found
      */
-    protected function handleMissingSolrRecord($id)
+    protected function handleMissingSolrRecord(string $id, string $sourceId): ?DefaultRecord
     {
-        if (preg_match('/\.(FIN\d+)/', $id, $matches)) {
+        if ('Solr' === $sourceId && preg_match('/\.(FIN\d+)/', $id, $matches)) {
             // Probably an old MetaLib record ID. Try to find the record using
             // its old MetaLib ID
             if ($mlRecord = $this->loadMetaLibRecord($matches[1])) {
                 return $mlRecord;
             }
-        } elseif (preg_match('/^musketti\..+?:(.+)/', $id, $matches)) {
+        } elseif ('Solr' === $sourceId && preg_match('/^musketti\..+?:(.+)/', $id, $matches)) {
             // Old musketti record. Try to find the new record using the
             // inventory number.
-            $newRecord
-                = $this->loadRecordWithIdentifier($matches[1], 'museovirasto');
-            if ($newRecord) {
+            if ($newRecord = $this->loadRecordWithIdentifier($matches[1], $sourceId, 'museovirasto')) {
                 return $newRecord;
             }
-        } elseif ($this->recordRedirectionRules) {
+        }
+        if ('SolrAuth' === $sourceId) {
+            // Try to find the record with an identifier:
+            if ($newRecord = $this->loadRecordWithIdentifier($id, $sourceId, null, 'identifier_str_mv')) {
+                return $newRecord;
+            }
+        }
+        if ($this->recordRedirectionRules) {
             foreach ($this->recordRedirectionRules as $rule) {
                 $data = array_map('trim', explode('###', $rule, 4));
                 if (count($data) >= 3) {
@@ -262,6 +277,7 @@ class Loader extends \VuFind\Record\Loader
                         // ID in in ctrlnum field (possibly with prefix).
                         $newRecord = $this->loadRecordWithIdentifier(
                             $otherId,
+                            $sourceId,
                             $newDatasource,
                             $field
                         );
@@ -307,16 +323,18 @@ class Loader extends \VuFind\Record\Loader
     /**
      * Try to load a record using its identifier field
      *
-     * @param string $identifier Identifier (e.g. SUK77:2)
-     * @param string $dataSource Optional data source filter
-     * @param string $field      Index field to search from.
+     * @param string  $identifier Identifier (e.g. SUK77:2)
+     * @param string  $sourceId   Source ID
+     * @param ?string $dataSource Optional data source filter
+     * @param string  $field      Index field to search from
      *
-     * @return \VuFind\RecordDriver\AbstractBase|bool Record or false if not found
+     * @return DefaultRecord|bool Record or false if not found
      */
     protected function loadRecordWithIdentifier(
-        $identifier,
-        $dataSource = null,
-        $field = 'identifier'
+        string $identifier,
+        string $sourceId,
+        ?string $dataSource = null,
+        string $field = 'identifier'
     ) {
         $safeIdentifier = addcslashes($identifier, '"');
         $queryStr = $field . ':"' . $safeIdentifier . '"';
@@ -329,7 +347,7 @@ class Loader extends \VuFind\Record\Loader
             ['hl' => 'false', 'spellcheck' => 'false']
         );
         $command = new SearchCommand(
-            'Solr',
+            $sourceId,
             $query,
             0,
             1,

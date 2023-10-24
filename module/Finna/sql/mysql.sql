@@ -108,6 +108,7 @@ CREATE TABLE `finna_transaction` (
   `transaction_fee` int(11) NOT NULL,
   `created` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
   `paid` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
+  `registration_started` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
   `registered` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
   `complete` tinyint(1) NOT NULL DEFAULT '0',
   `status` varchar(255) DEFAULT '',
@@ -124,12 +125,29 @@ CREATE TABLE `finna_transaction` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `finna_transaction_event_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `date` datetime NOT NULL DEFAULT '2000-01-01 00:00:00',
+  `server_ip` varchar(255) DEFAULT '',
+  `server_name` varchar(255) DEFAULT '',
+  `request_uri` varchar(1024) DEFAULT '',
+  `message` varchar(255) DEFAULT '',
+  `data` mediumtext DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `finna_transaction_event_log_ibfk1` FOREIGN KEY (`transaction_id`) REFERENCES `finna_transaction` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 collate utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `finna_fee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `transaction_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL DEFAULT '',
   `type` varchar(255) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
   `amount` float NOT NULL DEFAULT '0',
   `currency` varchar(3) NOT NULL DEFAULT 'EUR',
   `fine_id` varchar(255) NOT NULL DEFAULT '',

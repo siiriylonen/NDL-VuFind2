@@ -7,7 +7,7 @@
   $recordLinker = $this->recordLinker($this->results);
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $recordLinker->getUrl($this->driver));
 
-  if ($img && $this->layout()->templateName === 'blended') {
+  if ($img && $this->layout()->templateDir === 'blender') {
     $thumbnail = $img->render('list', ['small' => ['w' => 100, 'h' => 100], 'medium' => ['w' => 250, 'h' => 250]]);
   }
 ?>

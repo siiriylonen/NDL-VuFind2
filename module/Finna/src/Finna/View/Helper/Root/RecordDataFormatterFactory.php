@@ -656,9 +656,25 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             ]
         );
         $setTemplateLine(
+            'Country of Producing Entity',
+            'getCountry',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-country'],
+            ]
+        );
+        $setTemplateLine(
             'Classification',
             'getClassifications',
             'data-classification.phtml',
+            [
+                'context' => ['class' => 'recordClassifications'],
+            ]
+        );
+        $setTemplateLine(
+            'Dewey Classification',
+            'getDeweyClassifications',
+            'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordClassifications'],
             ]
@@ -1515,6 +1531,14 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-standard-report-number'],
+            ]
+        );
+        $setTemplateLine(
+            'Study Program Information Notes',
+            'getStudyProgramNotes',
+            'data-transEsc.phtml',
+            [
+                'context' => ['class' => 'record-study-program-notes'],
             ]
         );
         $setTemplateLine(

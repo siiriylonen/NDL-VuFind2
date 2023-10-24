@@ -71,7 +71,7 @@ class SolrEad3 extends SolrEad
         'thumbnail' => self::IMAGE_MEDIUM,
     ];
 
-    // URLs that are displayed on ExternalData record tab
+    // URLs that are displayed on HoldingsArchive record tab
     // (not below record title)
     public const EXTERNAL_DATA_URLS = [
         'Bittikartta - Fullres - Jakelukappale',
@@ -507,7 +507,7 @@ class SolrEad3 extends SolrEad
         if (!isset($xml->relations->relation)) {
             return $result;
         }
-        foreach ($xml->controlaccess->name as $node) {
+        foreach ($xml->controlaccess->name ?? [] as $node) {
             $attr = $node->attributes();
             $relator = (string)$attr->relator;
             if (self::RELATOR_ARCHIVE_ORIGINATION === $relator) {
@@ -529,7 +529,7 @@ class SolrEad3 extends SolrEad
     }
 
     /**
-     * Get location info to be used in ExternalData-record page tab.
+     * Get location info to be used in HoldingsArchive-record page tab.
      *
      * @param string $id If defined, return only the item with the given id
      *
@@ -777,11 +777,11 @@ class SolrEad3 extends SolrEad
     }
 
     /**
-     * Get external data (images, physical items).
+     * Get manifestation data (images, physical items).
      *
      * @return array
      */
-    public function getExternalData()
+    public function getManifestationData()
     {
         $locale = $this->getLocale();
         $images = $this->getImagesAsAssoc($locale);
@@ -1039,10 +1039,11 @@ class SolrEad3 extends SolrEad
     /**
      * Get description of content.
      *
-     * @return string
+     * @return array
      */
     public function getContentDescription()
     {
+        $genreforms = [];
         $xml = $this->getXmlRecord();
         if (!isset($xml->controlaccess->genreform)) {
             return [];
@@ -1056,11 +1057,10 @@ class SolrEad3 extends SolrEad
                 continue;
             }
             if ($label = $this->getDisplayLabel($genre)) {
-                return $label[0];
+                $genreforms[] = $label[0];
             }
         }
-
-        return null;
+        return $genreforms;
     }
 
     /**
@@ -1498,7 +1498,7 @@ class SolrEad3 extends SolrEad
                     [$start, $end] = explode('/', $normal);
                 } else {
                     $start = $normal;
-                    $unknown = strstr($start, 'u');
+                    $unknown = $this->unknownDateCharsExist($start);
                 }
                 $dates = $this->parseDate($start, true);
                 if (
@@ -1562,22 +1562,41 @@ class SolrEad3 extends SolrEad
         $year = 0;
         $month = 0;
         $day = 0;
-        if (isset($parts[2]) && $parts[2] !== 'uu') {
+        if ($this->unknownDateCharsExist($parts[0])) {
+            return str_ireplace(['u', 'x'], $start ? '0' : '9', $parts[0]);
+        }
+        $year = $parts[0];
+
+        if (!empty($parts[2]) && !$this->unknownDateCharsExist($parts[2])) {
             $day = $parts[2];
+        } else {
+            return $year;
         }
-        if (isset($parts[1]) && $parts[1] !== 'uu') {
+
+        if (!empty($parts[1]) && !$this->unknownDateCharsExist($parts[1])) {
             $month = $parts[1];
-        }
-        $defaultY = $start ? '0' : '9';
-
-        $year = str_replace('u', $defaultY, $parts[0]);
-        $result = '';
-        if ($day && $month && !strstr($parts[0], 'u')) {
-            $result = "{$day}.{$month}.";
+        } else {
+            return $year;
         }
 
-        $result .= $year;
-        return $result;
+        return "{$day}.{$month}.{$year}";
+    }
+
+    /**
+     * Check if date string contains "unknown" characters
+     *
+     * @param string $string The string to be checked
+     *
+     * @return bool
+     */
+    public function unknownDateCharsExist($string)
+    {
+        foreach (['u', 'U', 'x', 'X'] as $char) {
+            if (str_contains($string, $char)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

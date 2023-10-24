@@ -105,6 +105,13 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
     protected $daysBeforeAccountExpirationNotification = 30;
 
     /**
+     * Product code mappings
+     *
+     * @var array
+     */
+    protected $productCodeMappings = [];
+
+    /**
      * Initialize the driver.
      *
      * Validate configuration and perform all resource-intensive tasks needed to
@@ -127,6 +134,19 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         if (isset($this->config['Catalog'][$key])) {
             $this->daysBeforeAccountExpirationNotification
                 = $this->config['Catalog'][$key];
+        }
+
+        if ($mappings = $this->config['OnlinePayment']['productCodeMappings'] ?? []) {
+            foreach ($mappings as $mapping) {
+                $parts = explode('=', $mapping, 2);
+                if (!isset($parts[1])) {
+                    continue;
+                }
+                $this->productCodeMappings[] = [
+                    'productCode' => $parts[0],
+                    'regexp' => $parts[1],
+                ];
+            }
         }
     }
 
@@ -154,6 +174,53 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         unset($hold);
 
         return $holds;
+    }
+
+    /**
+     * Get Patron Transactions
+     *
+     * This is responsible for retrieving all transactions (i.e. checked out items)
+     * by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     * @param array $params Parameters
+     *
+     * @throws DateException
+     * @throws ILSException
+     * @return array        Array of the patron's transactions on success.
+     */
+    public function getMyTransactions($patron, $params = [])
+    {
+        $result = parent::getMyTransactions($patron, $params);
+        // Sort the loans, but only if all fit in result limit:
+        if ($result['count'] === count($result['records'])) {
+            $sort = explode(' ', $params['sort'] ?? 'checkout desc', 2);
+            $sortKeys = [];
+            foreach ($result['records'] as $i => $row) {
+                switch ($sort[0]) {
+                    case 'title':
+                        $key = '';
+                        break;
+                    case 'due':
+                        $key = $this->dateConverter->convertFromDisplayDate('Y-m-d', $row['duedate']);
+                        break;
+                    default:
+                        $key = sprintf('%012d', $row['checkout_id']);
+                        break;
+                }
+                // Always append title for disambiguation:
+                $key .= '__' . ($row['title'] ?? '');
+                $sortKeys[$i] = $key;
+            }
+            array_multisort(
+                $sortKeys,
+                ($sort[1] ?? 'asc') === 'desc' ? SORT_DESC : SORT_ASC,
+                SORT_LOCALE_STRING,
+                $result['records']
+            );
+        }
+
+        return $result;
     }
 
     /**
@@ -490,25 +557,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             $amount = $entry['itemCharge'] + $entry['processingFee']
                 + $entry['billingFee'];
             $balance = $amount - $entry['paidAmount'];
-            $description = '';
-            // Display charge type if it's not manual (code=1)
-            if (
-                !empty($entry['chargeType'])
-                && $entry['chargeType']['code'] != '1'
-            ) {
-                $description = $entry['chargeType']['display'];
-            }
-            if (!empty($entry['description'])) {
-                if ($description) {
-                    $description .= ' - ';
-                }
-                $description .= $entry['description'];
-            }
-            switch ($description) {
-                case 'Overdue Renewal':
-                    $description = 'Overdue';
-                    break;
-            }
+            $type = $entry['chargeType']['display'] ?? '';
             $bibId = null;
             $title = null;
             if (!empty($entry['item'])) {
@@ -530,7 +579,8 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
 
             $fines[] = [
                 'amount' => $amount * 100,
-                'fine' => $description,
+                'fine' => $this->fineTypeMappings[$type] ?? $type,
+                'description' => $entry['description'] ?? '',
                 'balance' => $balance * 100,
                 'createdate' => $this->dateConverter->convertToDisplayDate(
                     'Y-m-d',
@@ -540,9 +590,10 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 'id' => $this->formatBibId($bibId),
                 'title' => $title,
                 'fine_id' => $this->extractId($entry['id']),
-                'organization' => $entry['location']['code'] ?? '',
+                'organization' => substr($entry['location']['code'] ?? '', 0, 1),
                 'payableOnline' => $balance > 0 && $this->finePayableOnline($entry),
                 '__invoiceNumber' => $entry['invoiceNumber'],
+                '__productCode' => $this->getFineProductCode($entry),
             ];
         }
         return $fines;
@@ -615,7 +666,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
      * @param ?array $fineIds           Fine IDs to mark paid or null for bulk
      *
      * @throws ILSException
-     * @return bool success
+     * @return true|string True on success, error description on error
      */
     public function markFeesAsPaid(
         $patron,
@@ -632,7 +683,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         $fines = $this->getMyFines($patron);
         if (!$fines) {
             $this->logError('No fines to pay found');
-            return false;
+            return 'fines_updated';
         }
 
         $amountRemaining = $amount;
@@ -653,7 +704,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         }
         if (!$payments) {
             $this->logError('Fine IDs do not match any of the payable fines');
-            return false;
+            return 'fines_updated';
         }
 
         $request = [
@@ -674,7 +725,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 "Payment request failed with status code {$result['statusCode']}: "
                 . (var_export($result['response'] ?? '', true))
             );
-            return false;
+            return 'payment request failed';
         }
         // Sierra doesn't support storing any remaining amount, so we'll just have to
         // live with the assumption that any fine amount didn't somehow get smaller
@@ -831,6 +882,19 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
      */
     public function getConfig($function, $params = [])
     {
+        if ('getMyTransactions' === $function) {
+            return [
+                'max_results' => 200,
+                'sort' => [
+                    'checkout desc' => 'sort_checkout_date_desc',
+                    'checkout asc' => 'sort_checkout_date_asc',
+                    'due desc' => 'sort_due_date_desc',
+                    'due asc' => 'sort_due_date_asc',
+                    'title asc' => 'sort_title',
+                ],
+                'default_sort' => 'due asc',
+            ];
+        }
         if ('onlinePayment' === $function) {
             $result = $this->config['OnlinePayment'] ?? [];
             $result['exactBalanceRequired'] = false;
@@ -888,43 +952,6 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         }
 
         return parent::getConfig($function, $params);
-    }
-
-    /**
-     * Return summary of holdings items.
-     *
-     * @param array $holdings Parsed holdings items
-     * @param array $bib      Bibliographic data
-     *
-     * @return array summary
-     */
-    protected function getHoldingsSummary($holdings, $bib)
-    {
-        $availableTotal = 0;
-        $locations = [];
-
-        foreach ($holdings as $item) {
-            if (!empty($item['availability'])) {
-                $availableTotal++;
-            }
-            $locations[$item['location']] = true;
-        }
-
-        // Since summary data is appended to the holdings array as a fake item,
-        // we need to add a few dummy-fields that VuFind expects to be
-        // defined for all elements.
-        $result = [
-           'available' => $availableTotal,
-           'total' => count($holdings),
-           'locations' => count($locations),
-           'availability' => null,
-           'callnumber' => null,
-           'location' => '__HOLDINGSSUMMARYLOCATION__',
-        ];
-        if ($this->config['Holdings']['display_total_hold_count'] ?? true) {
-            $result['reservations'] = $bib['holdCount'] ?? null;
-        }
-        return $result;
     }
 
     /**
@@ -1013,6 +1040,9 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             array_unique([...$this->defaultItemFields, ...$fields]),
             $patron
         );
+        $itemsTotal = count($items);
+        $itemsAvailable = 0;
+        $itemsOrdered = 0;
         foreach ($items as $item) {
             $location = $this->translateLocation($item['location']);
             [$status, $duedate, $notes] = $this->getItemStatus($item);
@@ -1028,11 +1058,17 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 }
             }
             $callnumber = isset($item['callNumber'])
-                ? preg_replace('/^\|a/', '', $item['callNumber'])
+                ? $this->extractCallNumber($item['callNumber'])
                 : $bibCallNumber;
 
-            $volume = isset($item['varFields']) ? $this->extractVolume($item)
-                : '';
+            $number = isset($item['varFields']) ? $this->extractVolume($item) : '';
+            if (!$number) {
+                $number = $this->getItemSpecificLocation($item);
+            }
+
+            if ($available) {
+                ++$itemsAvailable;
+            }
 
             $entry = [
                 'id' => $id,
@@ -1041,10 +1077,10 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 'availability' => $available,
                 'status' => $status,
                 'reserve' => 'N',
-                'callnumber' => $callnumber,
+                'callnumber' => trim($callnumber),
                 'duedate' => $duedate,
-                'number' => $volume,
-                'barcode' => $item['barcode'],
+                'number' => trim($number),
+                'barcode' => $item['barcode'] ?? '',
                 'sort' => $sort--,
                 'requests_placed' => $displayItemHoldCount ? ($item['holdCount'] ?? null) : null,
             ];
@@ -1117,15 +1153,68 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 'barcode' => '',
                 'sort' => $sort--,
             ];
+            foreach ($orderSet as $order) {
+                $itemsOrdered += $order['copies'];
+            }
         }
 
         usort($statuses, [$this, 'statusSortFunction']);
 
         if ($statuses) {
-            $statuses[] = $this->getHoldingsSummary($statuses, $bib);
+            // Since summary data is appended to the holdings array as a fake item,
+            // we need to add a few dummy-fields that VuFind expects to be
+            // defined for all elements.
+            $summary = [
+                'available' => $itemsAvailable,
+                'total' => $itemsTotal,
+                'ordered' => $itemsOrdered,
+                'locations' => count(array_unique(array_column($statuses, 'location'))),
+                'availability' => null,
+                'callnumber' => null,
+                'location' => '__HOLDINGSSUMMARYLOCATION__',
+            ];
+            if ($this->config['Holdings']['display_total_hold_count'] ?? true) {
+                $summary['reservations'] = $bib['holdCount'] ?? null;
+            }
+
+            $statuses[] = $summary;
         }
 
         return $statuses;
+    }
+
+    /**
+     * Return item-specific location information as configured
+     *
+     * @param array $item Koha item
+     *
+     * @return string
+     */
+    protected function getItemSpecificLocation($item)
+    {
+        if (empty($this->config['Holdings']['display_location_per_item'])) {
+            return '';
+        }
+
+        $result = [];
+        foreach (explode(',', $this->config['Holdings']['display_location_per_item']) as $field) {
+            switch ($field) {
+                case 'location':
+                    if ($location = $this->translateLocation($item['location'])) {
+                        $result[] = $location;
+                    }
+                    break;
+                case 'callnumber':
+                    if ($callNo = $item['callNumber'] ?? false) {
+                        if ($callNo = $this->extractCallNumber($callNo)) {
+                            $result[] = $callNo;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        return implode(', ', $result);
     }
 
     /**
@@ -1148,6 +1237,28 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             }
         }
         return false;
+    }
+
+    /**
+     * Get a product code for a fine
+     *
+     * @param array $fine Fine
+     *
+     * @return ?string
+     */
+    protected function getFineProductCode(array $fine): ?string
+    {
+        $location = $fine['location']['code'] ?? '';
+        $type = $fine['chargeType']['code'] ?? 0;
+        $desc = $fine['description'] ?? '';
+
+        $key = "$location--$type--$desc";
+        foreach ($this->productCodeMappings as $mapping) {
+            if (preg_match($mapping['regexp'], $key)) {
+                return $mapping['productCode'];
+            }
+        }
+        return null;
     }
 
     /**

@@ -1317,7 +1317,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
         return [
            'available' => $availableTotal,
            'ordered' => $orderedTotal,
-           'total' => $itemsTotal,
+           'total' => $itemsTotal - $orderedTotal,
            'reservations' => $reservationsTotal,
            'locations' => count($locations),
            'holdable' => $holdable,
@@ -2445,7 +2445,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
      * @param ?array $fineIds           Fine IDs to mark paid or null for bulk
      *
      * @throws ILSException
-     * @return bool success
+     * @return true|string True on success, error description on error
      */
     public function markFeesAsPaid(
         $patron,
@@ -2458,13 +2458,30 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
         $functionResult = 'addPaymentResponse';
         $functionParam = 'addPaymentRequest';
 
-        $debtIds = [];
         $fines = $this->getMyFines($patron);
-        foreach ($fines as $fine) {
-            if ($fine['payableOnline']) {
-                $debtIds[] = $fine['debt_id'];
+        $payableFines = array_filter(
+            $fines,
+            function ($fine) {
+                return $fine['payableOnline'];
             }
+        );
+        $total = array_reduce(
+            $payableFines,
+            function ($carry, $fine) {
+                $carry += $fine['balance'];
+                return $carry;
+            }
+        );
+
+        $paymentConfig = $this->getConfig('onlinePayment');
+        if (
+            $total < $amount
+            || (!empty($paymentConfig['exactBalanceRequired']) && $total != $amount)
+        ) {
+            return 'fines_updated';
         }
+
+        $debtIds = array_column($payableFines, 'debt_id');
         $request = [
             'arenaMember'       => $this->arenaMember,
             'orderId'           => (string)$transactionNumber,

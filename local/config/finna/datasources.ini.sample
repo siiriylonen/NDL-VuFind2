@@ -8,7 +8,8 @@
 ; disablePatronFunctions  Set true if datasource does not have patron functionality, can be left out
 ; authority[<type>]       Map to authority index sources where <type> is authority record type
 ;                         (corporateBody, person) or * for any;
-; authority_id_regex[<type>] = Regex for whitelisting allowed authority ids.
+; authority_id_regex[<type>] = Regex for allowed authority ids (to be prefixed with the source from authority setting).
+; authority_plain_id_regex[<type>] = Regex for allowed authority ids (to be used as is).
 ; authority_external_link_label_regex = Regex for parsing external link label into title and subtitle,
 ;                                       parts, for example: /^(Verkkosivut|Kotisivut|Wikipedia),\s*(.*)$/
 ;
@@ -86,13 +87,14 @@ onlinePayment['paymentDescription'] = 'Finna: verkkomaksuja'
 onlinePayment['productCode'] = ''
 ; Product code for transaction fees (cannot be used with shop-in-shop functionality)
 onlinePayment['transactionFeeProductCode'] = 'Transaction'
-; Product code mappings from the fine types to product codes
+; Product code mappings from the fine types to product codes. Used unless product
+; code is provided by the ILS driver.
 onlinePayment['productCodeMappings'] = 'Overdue=demo_003:Long Overdue=demo_004'
 ; Mappings to languages supported by the service
 ;onlinePayment['supportedLanguages'] = 'fi=fi:en=en'
 ; Product code mappings from organization names or codes to product codes. If there's
 ; already a product code from other mappings above, this value is prepended to it
-; without any delimiter.
+; without any delimiter. Used unless product code is provided by the ILS driver.
 ;onlinePayment['organizationProductCodeMappings'] = 'Helsinki=demo_003:Tampere=demo_004'
 ; Mappings from organization names or codes to merchant id's for shop-in-shop
 ; functionality.
@@ -124,3 +126,8 @@ video_sources[] = "application/dash+xml|https://link.to.video/{videoname}.mpd"
 allowArchiveRequest = true
 archiveRequestAllowedRecordLevels = 'file:item'
 archiveRequestRequireFilingUnit = true
+
+; Hide record fields from record view
+; Each value is a field label defined in RecordDataFormatterFactory
+;hidden_record_fields[] = 'Archive'
+;hidden_record_fields[] = 'Subject'
