@@ -2097,7 +2097,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     }
 
     /**
-     * Return physical locations
+     * Return physical locations and additional information
      *
      * @return array
      */
