@@ -72,11 +72,11 @@
 
       <?php if (!empty($otherUrls)): ?>
         <div class="record-links">
-        <div class="recordURLs local-available-online-record">
-          <div class="truncate-field outer" data-rows="4">
-            <?=$this->record($this->driver)->renderTemplate('document-links.phtml', ['documents' => $otherUrls, 'externalLink' => true])?>
+          <div class="recordURLs local-available-online-record">
+            <div class="truncate-field outer" data-rows="4">
+              <?=$this->record($this->driver)->renderTemplate('document-links.phtml', ['documents' => $otherUrls, 'externalLink' => true])?>
+            </div>
           </div>
-        </div>
         </div>
       <?php endif; ?>
 
