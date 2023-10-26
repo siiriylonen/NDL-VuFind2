@@ -22,21 +22,21 @@
           <?php if (isset($item['link'])): ?>
             <?php
               $linkElement = [];
-              $ariaLabel = '';
+              $ariaLabelParts = [];
               if (isset($item['link'])) {
                 $linkElement['href'] = $item['link'];
               }
               if ($item['isExternal']) {
-                $ariaLabel = $this->transEsc('external_link') . ' ';
+                $ariaLabelParts[] = $this->transEsc('external_link');
               }
               if ($this->linkTarget) {
                 $linkElement['target'] = $this->linkTarget;
                 if ($linkElement['target'] === '_blank') {
-                  $ariaLabel .= $this->transEsc('Open in a new window');
+                  $ariaLabelParts[] = $this->transEsc('Open in a new window');
                 }
               }
-              if ($ariaLabel) {
-                $linkElement['aria-label'] = $ariaLabel;
+              if ($ariaLabelParts) {
+                $linkElement['aria-label'] = implode(' ', $ariaLabelParts);
               }
               if ($item['modal']) {
                 $linkElement['data-lightbox'] = '';
