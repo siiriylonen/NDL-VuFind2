@@ -2144,7 +2144,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                             if (!empty(($idItem))) {
                                 $result['externalLinks'] = [
                                     'url' => (string)$idItem,
-                                    'label' => (string)$idAttr->label ?? null,
+                                    'label' => (string)$idAttr->label,
                                 ];
                             }
                         }
