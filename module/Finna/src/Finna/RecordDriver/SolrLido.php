@@ -2092,6 +2092,17 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      */
     public function getPhysicalLocations(): array
     {
+        $result = $this->getPhysicalLocationsExtended();
+        return array_column($result, 'location');
+    }
+
+    /**
+     * Return physical locations
+     *
+     * @return array
+     */
+    public function getPhysicalLocationsExtended(): array
+    {
         $results = [];
         foreach (
             $this->getXmlRecord()->lido->descriptiveMetadata->objectIdentificationWrap
@@ -2119,29 +2130,34 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             if ($locations) {
                 $location = implode(', ', $locations);
                 if ($placeId) {
-                    $displayPlace = [
-                        'placeName' => $location,
-                    ];
                     $attr = $placeId->attributes();
                     $idTypeFirst = (string)($placeId->attributes()->type ?? '');
-                    $displayPlace['type'] = $idTypeFirst;
-                    $displayPlace['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
+                    $result['type'] = $idTypeFirst;
+                    $result['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
                     $idType = (string)($attr->type ?? '');
-                    foreach ($repository->repositoryLocation->placeID ?? [] as $placeId) {
-                        $details = [];
-                        $id = (string)$placeId;
-                        $idType = (string)($attr->type ?? '');
-                        $displayPlace['ids'][] = $idType ? "($idType)$id" : $id;
-                        $typeDesc = $idType ? 'place_id_type_' . $idType : '';
-                        $details[] = $typeDesc;
-                        if ($typeDesc) {
-                            $displayPlace['details'] = $details;
+                    foreach ($placeId as $idItem) {
+                        $idAttr = $idItem->attributes();
+                        $id = (string)$idItem;
+                        $idType = (string)($idAttr->type ?? '');
+                        $result['ids'][] = $idType ? "($idType)$id" : $id;
+                        if ($idType == 'URI' && $idAttr->source != 'YSO') {
+                            if (!empty(($idItem))) {
+                                $result['externalLinks'] = [
+                                    'url' => (string)$idItem,
+                                    'label' => (string)$idAttr->label ?? null,
+                                ];
+                            }
                         }
                     }
-                    $displayPlace['externalLinks'] = $this->getPhysicalLocationLinks();
-                    $results[] = $displayPlace;
+                    $results[] = [
+                        'location' => $location,
+                        'locationInfo' => $result,
+
+                    ];
                 } else {
-                    $results[] = $location;
+                    $results[] = [
+                        'location' => $location,
+                    ];
                 }
             }
             $lang = $this->getLocale();
@@ -2151,38 +2167,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     ?? ''
                 )
             ) {
-                $results[] = $display;
+                $results[] = [
+                    'location' => $display,
+                ];
             }
         }
         return $results;
-    }
-
-    /**
-     * Return location links
-     *
-     * @return array
-     */
-    public function getPhysicalLocationLinks(): array
-    {
-        $result = [];
-        foreach (
-            $this->getXmlRecord()->lido->descriptiveMetadata->objectIdentificationWrap
-            ->repositoryWrap->repositorySet ?? [] as $repository
-        ) {
-            foreach ($repository->repositoryLocation->placeID ?? [] as $placeId) {
-                $attr = $placeId->attributes();
-                if ($attr->type == 'URI' && $attr->source != 'YSO') {
-                    $label = $attr->label;
-                    if (!empty((string)$placeId)) {
-                        $result[] = [
-                            'url' => (string)$placeId,
-                            'label' => (string)$label,
-                        ];
-                    }
-                }
-            }
-        }
-        return $result;
     }
 
     /**

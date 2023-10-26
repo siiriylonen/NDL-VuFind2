@@ -1291,10 +1291,13 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
         );
         $setTemplateLine(
             'Location LIDO',
-            'getPhysicalLocations',
-            'data-lidoLocations.phtml',
+            'getPhysicalLocationsExtended',
+            'data-locations.phtml',
             [
-                'context' => ['class' => 'recordPhysicalLocation'],
+                'context' => [
+                    'class' => 'recordPhysicalLocation',
+                    'title' => 'Location',
+                ],
             ]
         );
         $setTemplateLine(

@@ -1,0 +1,23 @@
+<?php //Don't add START and END comments ?>
+<?php if (!empty($data)): ?>
+  <?php if (is_array($data)): ?>
+    <div class="truncate-field" data-rows="5">
+      <?php foreach ($data as $field): ?>
+        <?php
+          $info = $field['locationInfo'];
+          $id = $info['id'] ?? null;
+          $ids = $info['ids'] ?? null;
+          $links = $info['externalLinks'] ?? null;
+        ?>
+        <?=$this->record($this->driver)->getLinkedFieldElement(
+            $this->headingType ?? 'place',
+            $field['location'],
+            ['name' => $field['location'], 'id' => $id, 'ids' => $ids, 'externalLinks' => $links],
+            ['class' => ['backlink'], 'description' => true]
+        )?><br>
+      <?php endforeach; ?>
+    </div>
+  <?php else: ?>
+    <?=$this->escapeHtml($data) ?><br>
+  <?php endif; ?>
+<?php endif; ?>
