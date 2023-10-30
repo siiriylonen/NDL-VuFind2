@@ -2097,7 +2097,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     }
 
     /**
-     * Return physical locations and additional information
+     * Get physical locations and additional information
+     *
+     * Returns an array with the keys:
+     *  - 'location'        string  Physical location
+     *  - 'locationInfo'    array   Additional information
      *
      * @return array
      */
@@ -2152,11 +2156,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     $results[] = [
                         'location' => $location,
                         'locationInfo' => $result,
-
                     ];
                 } else {
                     $results[] = [
                         'location' => $location,
+                        'locationInfo' => [],
                     ];
                 }
             }
@@ -2169,6 +2173,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             ) {
                 $results[] = [
                     'location' => $display,
+                    'locationInfo' => [],
                 ];
             }
         }
