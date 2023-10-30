@@ -2099,7 +2099,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     /**
      * Get physical locations and additional information
      *
-     * Returns an array with the keys:
+     * Returns a multidimensional array containing arrays with keys:
      *  - 'location'        string  Physical location
      *  - 'locationInfo'    array   Additional information
      *
@@ -2135,22 +2135,22 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 $location = implode(', ', $locations);
                 if ($placeId) {
                     $attr = $placeId->attributes();
-                    $idTypeFirst = (string)($placeId->attributes()->type ?? '');
+                    $idTypeFirst = trim((string)($attr->type));
                     $result['type'] = $idTypeFirst;
                     $result['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
-                    $idType = (string)($attr->type ?? '');
                     foreach ($placeId as $idItem) {
                         $idAttr = $idItem->attributes();
-                        $id = (string)$idItem;
-                        $idType = (string)($idAttr->type ?? '');
+                        if (!($idItem = trim((string)$idItem))) {
+                            continue;
+                        }
+                        $id = $idItem;
+                        $idType = trim((string)($idAttr->type ?? ''));
                         $result['ids'][] = $idType ? "($idType)$id" : $id;
-                        if ($idType == 'URI' && $idAttr->source != 'YSO') {
-                            if (!empty(($idItem))) {
-                                $result['externalLinks'] = [
-                                    'url' => (string)$idItem,
-                                    'label' => (string)$idAttr->label,
-                                ];
-                            }
+                        if ($idType === 'URI' && trim((string)($idAttr->source)) !== 'YSO') {
+                            $result['externalLinks'] = [
+                                'url' => $idItem,
+                                'label' => trim((string)$idAttr->label),
+                            ];
                         }
                     }
                     $results[] = [
