@@ -235,7 +235,7 @@ class SolrEad3 extends SolrEad
         };
         $processURL = function ($node) use ($preferredLangCodes, $isExternalUrl, &$urls) {
             $attr = $node->attributes();
-            $role = (string)($attr->linkrole) ?? '';
+            $role = (string)($attr->linkrole ?? '');
             if (
                 $role === 'image/jpeg'
                 || !$attr->href
@@ -244,11 +244,8 @@ class SolrEad3 extends SolrEad
                 return;
             }
             $downloadOnly = false;
-            $checkedTypes = ['audio', 'video'];
-            foreach ($checkedTypes as $checkType) {
-                if (str_starts_with($role, $checkType)) {
-                    $downloadOnly = ((string)$attr->actuate === 'onrequest' && (string)$attr->show === 'none');
-                }
+            if (str_starts_with($role, 'audio') || str_starts_with($role, 'video')) {
+                $downloadOnly = ((string)$attr->actuate === 'onrequest' && (string)$attr->show === 'none');
             }
             $lang = (string)$attr->lang;
             $preferredLang = $lang && in_array($lang, $preferredLangCodes);
