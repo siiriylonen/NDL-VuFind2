@@ -2133,35 +2133,28 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             $placeId = $repository->repositoryLocation->placeID ?? [];
             if ($locations) {
                 $location = implode(', ', $locations);
-                if ($placeId) {
-                    $result = [];
-                    foreach ($placeId as $idItem) {
-                        if (!($idItemStr = trim((string)$idItem))) {
-                            continue;
-                        }
-                        $attr = $idItem->attributes();
-                        if (($idType = trim((string)$attr->type)) === 'prt') {
-                            $result['type'] = $idType;
-                            $result['id'] = $idType ? "($idType)$placeId" : $placeId;
-                        }
-                        $result['ids'][] = $idType ? "($idType)$idItemStr" : $idItemStr;
-                        if ($idType === 'URI' && trim((string)($attr->source)) !== 'YSO') {
-                            $result['externalLinks'] = [
-                                'url' => $idItemStr,
-                                'label' => trim((string)$attr->label),
-                            ];
-                        }
+                $result = [];
+                foreach ($placeId as $idItem) {
+                    if (!($idItemStr = trim((string)$idItem))) {
+                        continue;
                     }
-                    $results[] = [
-                        'location' => $location,
-                        'locationInfo' => $result,
-                    ];
-                } else {
-                    $results[] = [
-                        'location' => $location,
-                        'locationInfo' => [],
-                    ];
+                    $attr = $idItem->attributes();
+                    if (($idType = trim((string)$attr->type)) === 'prt') {
+                        $result['type'] = $idType;
+                        $result['id'] = $idType ? "($idType)$placeId" : $placeId;
+                    }
+                    $result['ids'][] = $idType ? "($idType)$idItemStr" : $idItemStr;
+                    if ($idType === 'URI' && trim((string)($attr->source)) !== 'YSO') {
+                        $result['externalLinks'] = [
+                            'url' => $idItemStr,
+                            'label' => trim((string)$attr->label),
+                        ];
+                    }
                 }
+                $results[] = [
+                    'location' => $location,
+                    'locationInfo' => $result,
+                ];
             }
             $lang = $this->getLocale();
             if (
