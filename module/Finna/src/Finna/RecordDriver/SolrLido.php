@@ -2139,15 +2139,15 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     $result['type'] = $idTypeFirst;
                     $result['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
                     foreach ($placeId as $idItem) {
-                        $idAttr = $idItem->attributes();
-                        if (!($idItem = trim((string)$idItem))) {
+                        if (!($idItemStr = trim((string)$idItem))) {
                             continue;
                         }
+                        $idAttr = $idItem->attributes();
                         $idType = trim((string)($idAttr->type ?? ''));
-                        $result['ids'][] = $idType ? "($idType)$idItem" : $idItem;
+                        $result['ids'][] = $idType ? "($idType)$idItemStr" : $idItemStr;
                         if ($idType === 'URI' && trim((string)($idAttr->source)) !== 'YSO') {
                             $result['externalLinks'] = [
-                                'url' => $idItem,
+                                'url' => $idItemStr,
                                 'label' => trim((string)$idAttr->label),
                             ];
                         }
