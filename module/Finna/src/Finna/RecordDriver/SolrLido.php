@@ -2146,7 +2146,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                     $result['ids'][] = $id;
                     if ($idType === 'URI' && trim((string)($attr->source)) !== 'YSO') {
-                        $result['externalLinks'] = [
+                        $result['externalLinks'][] = [
                             'url' => $placeIdStr,
                             'label' => trim((string)$attr->label),
                         ];

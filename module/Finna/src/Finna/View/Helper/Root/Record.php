@@ -498,23 +498,23 @@ class Record extends \VuFind\View\Helper\Root\Record
             $fieldLinks[]
                 = compact('linkText', 'linkType', 'urlType', 'escapedUrl');
         }
-
-        $escaper = $this->getView()->plugin('escapeHtml');
-        if (!empty($data['externalLinks'])) {
-            $link = $data['externalLinks'];
-            $fieldLinks[] = [
-                'linkText' => $link['label'],
-                'linkType' => $link['label'],
-                'escapedUrl' => $escaper($link['url']),
-                'urlType' => 'url',
-            ];
-        }
-
         $authorityType = $params['authorityType'] ?? 'Personal Name';
         $authorityType
             = $this->config->Authority->typeMap->{$authorityType} ?? $authorityType;
 
         $externalLinks = [];
+        $escaper = $this->getView()->plugin('escapeHtml');
+        if (!empty($data['externalLinks'])) {
+            $links = $data['externalLinks'];
+            foreach ($links as $link) {
+                $externalLinks[] = [
+                    'text' => $link['label'],
+                    'title' => $link['label'],
+                    'url' => $escaper($link['url']),
+                    'displayId' => '',
+                ];
+            }
+        }
         $language = $this->getView()->layout()->userLang;
         foreach ($this->config->LinkPopovers->external_links ?? [] as $link) {
             $linkConfig = explode('||', $link);
