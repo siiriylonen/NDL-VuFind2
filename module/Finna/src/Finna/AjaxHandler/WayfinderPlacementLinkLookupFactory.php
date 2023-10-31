@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Call number helper factory.
+ * Factory for AJAX handler to lookup Wayfinder placement link.
  *
  * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2018.
+ * Copyright (C) The National Library of Finland 2022.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,14 +20,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category VuFind
- * @package  View_Helpers
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @category Wayfinder
+ * @package  AJAX
+ * @author   Inlead <support@inlead.dk>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org/wiki/development Wiki
+ * @link     https://inlead.dk
  */
 
-namespace Finna\View\Helper\Root;
+namespace Finna\AjaxHandler;
 
 use Finna\Wayfinder\WayfinderService;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
@@ -37,15 +37,17 @@ use Psr\Container\ContainerExceptionInterface as ContainerException;
 use Psr\Container\ContainerInterface;
 
 /**
- * Call number helper factory.
+ * Factory for AJAX handler to lookup Wayfinder placement link.
  *
- * @category VuFind
- * @package  View_Helpers
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * PHP version 8
+ *
+ * @category Wayfinder
+ * @package  AJAX
+ * @author   Inlead <support@inlead.dk>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org/wiki/development Wiki
+ * @link     https://inlead.dk
  */
-class CallNumberFactory implements FactoryInterface
+class WayfinderPlacementLinkLookupFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -59,7 +61,9 @@ class CallNumberFactory implements FactoryInterface
      * @throws ServiceNotFoundException if unable to resolve the service.
      * @throws ServiceNotCreatedException if an exception is raised when
      * creating a service.
-     * @throws ContainerException if any other error occurs
+     * @throws ContainerException&\Throwable if any other error occurs
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __invoke(
         ContainerInterface $container,
@@ -67,10 +71,9 @@ class CallNumberFactory implements FactoryInterface
         array $options = null
     ) {
         if (!empty($options)) {
-            throw new \Exception('Unexpected options sent to factory.');
+            throw new \Exception('Unexpected options passed to factory.');
         }
         return new $requestedName(
-            $container->get(\Finna\LocationService\LocationService::class),
             $container->get(WayfinderService::class)
         );
     }

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Call number helper factory.
+ * Wayfinder service factory.
  *
  * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2018.
+ * Copyright (C) The National Library of Finland 2022.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,16 +20,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category VuFind
- * @package  View_Helpers
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @category Wayfinder
+ * @package  Wayfinder
+ * @author   Inlead <support@inlead.dk>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org/wiki/development Wiki
+ * @link     https://inlead.dk
  */
 
-namespace Finna\View\Helper\Root;
+namespace Finna\Wayfinder;
 
-use Finna\Wayfinder\WayfinderService;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -37,15 +36,15 @@ use Psr\Container\ContainerExceptionInterface as ContainerException;
 use Psr\Container\ContainerInterface;
 
 /**
- * Call number helper factory.
+ * Wayfinder service factory.
  *
- * @category VuFind
- * @package  View_Helpers
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @category Wayfinder
+ * @package  Wayfinder
+ * @author   Inlead <support@inlead.dk>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org/wiki/development Wiki
+ * @link     https://inlead.dk
  */
-class CallNumberFactory implements FactoryInterface
+class WayfinderServiceFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -66,12 +65,14 @@ class CallNumberFactory implements FactoryInterface
         $requestedName,
         array $options = null
     ) {
-        if (!empty($options)) {
-            throw new \Exception('Unexpected options sent to factory.');
-        }
         return new $requestedName(
-            $container->get(\Finna\LocationService\LocationService::class),
-            $container->get(WayfinderService::class)
+            $container,
+            $container
+                ->get(\VuFind\Config\PluginManager::class)
+                ->get('WayfinderService')
+                ->toArray(),
+            $container->get(\VuFindHttp\HttpService::class),
+            $container->get(\VuFind\Log\Logger::class)
         );
     }
 }
