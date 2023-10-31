@@ -2130,18 +2130,17 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     $part = $part->partOfPlace;
                 }
             }
-            $placeId = $repository->repositoryLocation->placeID ?? [];
             if ($locations) {
                 $location = implode(', ', $locations);
                 $result = [];
-                foreach ($placeId as $idItem) {
+                foreach ($repository->repositoryLocation->placeID ?? [] as $idItem) {
                     if (!($idItemStr = trim((string)$idItem))) {
                         continue;
                     }
                     $attr = $idItem->attributes();
                     if (($idType = trim((string)$attr->type)) === 'prt') {
                         $result['type'] = $idType;
-                        $result['id'] = $idType ? "($idType)$placeId" : $placeId;
+                        $result['id'] = $idType ? "($idType)$idItem" : $idItem;
                     }
                     $result['ids'][] = $idType ? "($idType)$idItemStr" : $idItemStr;
                     if ($idType === 'URI' && trim((string)($attr->source)) !== 'YSO') {
