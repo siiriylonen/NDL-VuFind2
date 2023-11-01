@@ -499,6 +499,7 @@ class Record extends \VuFind\View\Helper\Root\Record
             $fieldLinks[]
                 = compact('linkText', 'linkType', 'urlType', 'escapedUrl');
         }
+        
         $authorityType = $params['authorityType'] ?? 'Personal Name';
         $authorityType
             = $this->config->Authority->typeMap->{$authorityType} ?? $authorityType;
