@@ -82,6 +82,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Country of Producing Entity',
             'Creator Characteristics',
             'DOI',
+            'Dewey Classification',
             'Dissertation Note',
             'Education Programs',
             'Event Notice',
@@ -382,13 +383,14 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Additional Information Extended',
             'Appraisal',
             'Archive',
+            'archive_authors',
             'Archive File',
             'Archive Origination',
+            'archive_other_authors',
             'Archive Relations',
             'Archive Series',
             'Audience',
             'Author Notes',
-            'Authors',
             'Awards',
             'Bibliography', 'Container Information',
             'Content Description',
@@ -572,6 +574,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             $type = strtolower($backend);
         }
         switch ($type) {
+            case 'aipa':
             case 'dc':
             case 'qdc':
                 return $this->filterQDCFields($defaults);
@@ -695,8 +698,8 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
     {
         $intersected = array_intersect_key($coreFields, array_flip($include));
         $config = $this->getView()->plugin('config')->get('datasources');
-        $source = $this->driver->tryMethod('getSource');
-        if ($source && $hide = $config->$source->hidden_record_fields ?? []) {
+        $source = $this->driver?->tryMethod('getSource');
+        if ($source && $hide = $config->$source?->hidden_record_fields) {
             $intersected = array_diff_key($intersected, array_flip($hide->toArray()));
         }
         return $intersected;
