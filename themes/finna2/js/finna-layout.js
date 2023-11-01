@@ -244,12 +244,6 @@ finna.layout = (function finnaLayout() {
       lfor.closest('.searchForm').find('.clear-button').toggleClass('hidden', lfor.val() === '');
     });
 
-    $('.clear-button').on('click', function onClickClear() {
-      var btn = $(this);
-      btn.closest('.searchForm').find('.searchForm_lookfor').val('').focus();
-      btn.addClass('hidden');
-    });
-
     $('.searchForm_lookfor').on('autocomplete:select', function onAutocompleteSelect() {
       $('.navbar-form').trigger("submit");
     });
@@ -287,6 +281,9 @@ finna.layout = (function finnaLayout() {
         $(e.target).data('bs.tooltip').inState.click = false;
       })
       .tooltip({trigger: 'click', viewport: '.container'});
+
+    holder.find('[data-toggle="tooltip-hover')
+      .tooltip({trigger: 'hover', delay: {show: 1000, hide: 200}});
     // prevent link opening if tooltip is placed inside link element
     holder.find('[data-toggle="tooltip"] > i').on('click', function onClickTooltip(event) {
       event.preventDefault();

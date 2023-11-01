@@ -24,6 +24,10 @@ finna.carouselManager = (() => {
       return {autoplay: false};
     },
     height: (value) => { return {height: parseInt(value)}; },
+    width: (value) => { return {fixedWidth: parseInt(value)}; },
+    omitEnd: 'omitEnd',
+    pagination: 'pagination',
+    gap: 'gap',
     slidesToShow: (itemsPerPage) => {
       const breakpoints = {};
       let perPage = 0;
@@ -157,7 +161,13 @@ finna.carouselManager = (() => {
       settings.i18n = {};
     }
     const splideSettings = toSplideSettings(settings);
-    return new Splide(element, splideSettings).mount();
+    var splide = new Splide(element, splideSettings);
+    splide.on('pagination:updated', function onPaginationUpdate(data) {
+      data.items.forEach(function setTabIndex(item) {
+        item.button.setAttribute('tabindex', 0);
+      });
+    });
+    return splide.mount();
   }
 
   return {
