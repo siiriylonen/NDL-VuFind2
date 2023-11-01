@@ -503,18 +503,6 @@ class Record extends \VuFind\View\Helper\Root\Record
             = $this->config->Authority->typeMap->{$authorityType} ?? $authorityType;
 
         $externalLinks = [];
-        $escaper = $this->getView()->plugin('escapeHtml');
-        if (!empty($data['externalLinks'])) {
-            $links = $data['externalLinks'];
-            foreach ($links as $link) {
-                $externalLinks[] = [
-                    'text' => $link['label'],
-                    'title' => $link['label'],
-                    'url' => $escaper($link['url']),
-                    'displayId' => '',
-                ];
-            }
-        }
         $language = $this->getView()->layout()->userLang;
         foreach ($this->config->LinkPopovers->external_links ?? [] as $link) {
             $linkConfig = explode('||', $link);

@@ -2139,18 +2139,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                     $attr = $placeId->attributes();
                     $idType = trim((string)$attr->type);
-                    $id = $idType ? "($idType)$placeId" : $placeId;
+                    $id = $idType ? "($idType)$placeIdStr" : $placeIdStr;
                     if ($idType === 'prt') {
                         $result['type'] = $idType;
                         $result['id'] = $id;
                     }
                     $result['ids'][] = $id;
-                    if ($idType === 'URI' && trim((string)($attr->source)) !== 'YSO') {
-                        $result['externalLinks'][] = [
-                            'url' => $placeIdStr,
-                            'label' => trim((string)$attr->label),
-                        ];
-                    }
                 }
                 $results[] = [
                     'location' => $location,
