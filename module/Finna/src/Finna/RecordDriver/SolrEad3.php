@@ -257,7 +257,7 @@ class SolrEad3 extends SolrEad
             if (!$this->urlBlocked($url, $desc)) {
                 $urlData = [
                     'url' => $url,
-                    'description' => (string)$desc,
+                    'desc' => (string)$desc,
                     'downloadOnly' => $downloadOnly,
                 ];
                 if ($preferredLang) {
