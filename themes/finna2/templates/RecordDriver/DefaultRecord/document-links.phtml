@@ -25,7 +25,7 @@
             'aria-label' => $this->translate('external_online_link'),
         ];
         isset($document['posterUrl']) ? $aAttrs['data-poster-url'] = $url['posterUrl'] : null;
-        isset($document['downloadOnly']) ? $aAttrs['download'] = '' : null; ?>
+        $document['downloadOnly'] ? $aAttrs['download'] = '' : null; ?>
         <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($document['url']))?>" <?=$this->htmlAttributes($aAttrs)?>>
             <?=$this->icon('external-link')?>
             <?=$this->escapeHtml($this->translate('link_' . $description, null, $description))?>
