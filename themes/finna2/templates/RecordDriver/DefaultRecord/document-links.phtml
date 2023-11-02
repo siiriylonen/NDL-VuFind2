@@ -11,7 +11,7 @@
     ?>
     <?php ob_start(); ?>
     <?php if (!$externalLink): ?>
-    <?php $aAttrs = [
+        <?php $aAttrs = [
             'download' => '',
             'rel' => 'nofollow',
         ]; ?>
@@ -20,7 +20,7 @@
             <?=$this->escapeHtml($description)?>
         </a>
     <?php else: ?>
-    <?php $aAttrs = [
+        <?php $aAttrs = [
             'target' => '_blank',
             'aria-label' => $this->translate('external_online_link'),
         ];
