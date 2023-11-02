@@ -112,6 +112,13 @@ class LinkedEvents implements
     protected $mainConfig;
 
     /**
+     * Include super events in response?
+     *
+     * @var bool
+     */
+    protected $includeSuperEvents;
+
+    /**
      * How many related events (if available) are displayed on
      * the events content page
      *
@@ -140,6 +147,9 @@ class LinkedEvents implements
         $this->apiUrl = $config->LinkedEvents->api_url ?? '';
         $this->publisherId = $config->LinkedEvents->publisher_id ?? '';
         $this->language = $config->General->language ?? '';
+        // Exclude super events from results by default
+        $this->includeSuperEvents
+            = $config->LinkedEvents->include_super_events ?? false;
         $this->dateConverter = $dateConverter;
         $this->url = $url;
         $this->cleanHtml = $cleanHtml;
@@ -198,10 +208,13 @@ class LinkedEvents implements
                  'sub_events,super_event';
             } else {
                 $url .= '?'
-                . 'publisher=' . $this->publisherId . '&'
+                . 'publisher=' . urlencode($this->publisherId) . '&'
                 . http_build_query($paramArray)
                 . '&sort=start_time'
                 . '&include=location';
+            }
+            if (!$this->includeSuperEvents) {
+                $url .= '&super_event_type=none';
             }
         }
 
@@ -236,6 +249,22 @@ class LinkedEvents implements
                 ? [$response]
                 : $response['data'];
             foreach ($responseData ?: [] as $eventData) {
+                $locationInfo = [];
+                if ($name = $this->getField($eventData['location'] ?? [], 'name')) {
+                    $locationInfo[] = $name;
+                }
+                if ($extra = $this->getField($eventData, 'location_extra_info')) {
+                    $locationInfo[] = $extra;
+                }
+
+                $address = [];
+                if ($street = $this->getField($eventData['location'] ?? [], 'street_address')) {
+                    $address[] = $street;
+                }
+                if ($locality = $this->getField($eventData['location'] ?? [], 'address_locality')) {
+                    $address[] = $locality;
+                }
+
                 $link = $this->url->fromRoute('linked-events-content')
                     . '?id=' . $eventData['id'];
 
@@ -269,20 +298,14 @@ class LinkedEvents implements
                         'startDate' => $startDate,
                         'endDate' => $endDate,
                         'singleDay' => $startDate === $endDate,
-                        'location' =>
-                            $this->getField($eventData, 'location_extra_info'),
+                        'location' => $this->getField($eventData['location'] ?? [], 'name'),
                     ],
                     'info_url' => $this->getField($eventData, 'info_url'),
-                    'location-info' =>
-                        $this->getField($eventData, 'location_extra_info'),
                     'location' => $this->getField($eventData, 'location'),
+                    'location-info' => implode(', ', $locationInfo),
                     'phone' => $this->getField($eventData, 'provider_phone'),
                     'email' => $this->getField($eventData, 'provider_email'),
-                    'address' =>
-                        $this->getField(
-                            $eventData['location'],
-                            'street_address'
-                        ),
+                    'address' => implode(', ', $address),
                     'price' => $this->getField($eventData, 'offers'),
                     'audience' => $this->getField($eventData, 'audience'),
                     'provider' => $this->getField($eventData, 'provider_name'),

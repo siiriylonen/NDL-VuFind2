@@ -175,7 +175,9 @@ class FinnaFeedElement extends HTMLElement {
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
-            el.classList.remove('hidden');
+            if (holder.querySelector('.carousel-text:not(.no-text)') !== null) {
+              el.classList.remove('hidden');
+            }
           });
           var feedItemWidth = holder.querySelector('li.feed-item-holder').offsetWidth;
           holder.querySelectorAll('.carousel-hover-title').forEach(el => {
@@ -185,15 +187,24 @@ class FinnaFeedElement extends HTMLElement {
               el.style.width = '75%';
             }
           });
-          holder.querySelectorAll('.carousel-text').forEach(el => {
-            el.addEventListener('click', function doNothing(e) {
-              e.stopImmediatePropagation();
-              var slide = this.closest('.feed-item-holder');
-              if (slide && slide.classList.contains('clicked')) {
-                e.preventDefault();
-              }
+          if (!settings.modal) {
+            holder.querySelectorAll('.carousel-text').forEach(el => {
+              el.addEventListener('click', function doNothing(e) {
+                e.stopImmediatePropagation();
+                var slide = this.closest('.feed-item-holder');
+                if (slide && slide.classList.contains('clicked')) {
+                  e.preventDefault();
+                }
+              });
             });
-          });
+          } else {
+            holder.querySelectorAll('.carousel-slide-header p').forEach(el => {
+              el.addEventListener('click', function doNothing(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+              });
+            });
+          }
           holder.querySelectorAll('.carousel-more').forEach(el => {
             if (el.classList.contains('carousel-close')) {
               el.classList.remove('hidden');
@@ -335,13 +346,6 @@ class FinnaFeedElement extends HTMLElement {
         });
     }
 
-  }
-
-  /**
-   * When the element is removed from the dom
-   */
-  disconnectedCallback() {
-    this.innerHTML = '';
   }
 
   /**
