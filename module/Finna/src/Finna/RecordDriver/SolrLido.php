@@ -2131,8 +2131,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 }
             }
             if ($locations) {
-                $location = implode(', ', $locations);
-                $result = [];
+                $locationInfo = [];
                 foreach ($repository->repositoryLocation->placeID ?? [] as $placeId) {
                     if (!($placeIdStr = trim((string)$placeId))) {
                         continue;
@@ -2141,14 +2140,14 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     $idType = trim((string)$attr->type);
                     $id = $idType ? "($idType)$placeIdStr" : $placeIdStr;
                     if ($idType === 'prt') {
-                        $result['type'] = $idType;
-                        $result['id'] = $id;
+                        $locationInfo['type'] = $idType;
+                        $locationInfo['id'] = $id;
                     }
-                    $result['ids'][] = $id;
+                    $locationInfo['ids'][] = $id;
                 }
                 $results[] = [
-                    'location' => $location,
-                    'locationInfo' => $result,
+                    'location' => implode(', ', $locations),
+                    'locationInfo' => $locationInfo,
                 ];
             }
             $lang = $this->getLocale();

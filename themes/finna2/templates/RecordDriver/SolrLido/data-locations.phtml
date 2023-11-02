@@ -1,23 +1,17 @@
 <?php //Don't add START and END comments ?>
-<?php if (empty($data)) {
-  return;
-}?>
-<?php if (is_array($data)): ?>
-  <div class="truncate-field" data-rows="5">
-    <?php foreach ($data as $field): ?>
-      <?php
-        $info = $field['locationInfo'];
-        $id = $info['id'] ?? null;
-        $ids = $info['ids'] ?? null;
-      ?>
-      <?=$this->record($this->driver)->getLinkedFieldElement(
-          $this->headingType ?? 'place',
-          $field['location'],
-          ['name' => $field['location'], 'id' => $id, 'ids' => $ids],
-          ['class' => ['backlink'], 'description' => true]
-      )?><br>
-    <?php endforeach; ?>
-  </div>
-<?php else: ?>
-  <?=$this->escapeHtml($data) ?><br>
-<?php endif; ?>
+<div class="truncate-field" data-rows="5">
+  <?php foreach ($data as $field): ?>
+    <?php
+      $info = $field['locationInfo'];
+      $id = $info['id'] ?? null;
+      $ids = $info['ids'] ?? null;
+    ?>
+    <?=$this->record($this->driver)->getLinkedFieldElement(
+        $this->headingType ?? 'place',
+        $field['location'],
+        ['name' => $field['location'], 'id' => $id, 'ids' => $ids],
+        ['class' => ['backlink'], 'description' => true]
+    )?><br>
+  <?php endforeach; ?>
+</div>
+
