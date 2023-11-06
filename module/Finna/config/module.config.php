@@ -393,6 +393,8 @@ $config = [
             'Finna\Video\Handler\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Video\Video' => 'Finna\Video\VideoFactory',
             'Finna\View\Resolver\AggregateResolver' => 'Finna\View\Resolver\AggregateResolverFactory',
+            'Finna\Wayfinder\WayfinderService' => 'Finna\Wayfinder\WayfinderServiceFactory',
+            'Finna\Wayfinder\Adapter\SampleAdapter' => 'Finna\Wayfinder\Adapter\WayfinderAdapterServiceFactory',
             'NatLibFi\FinnaCodeSets\FinnaCodeSets' => 'Finna\RecordDriver\CodeSetsFactory',
 
             // Factory overrides for non-Finna classes:
@@ -420,6 +422,8 @@ $config = [
             'VuFind\Search\Solr\HierarchicalFacetHelper' => 'Finna\Search\Solr\HierarchicalFacetHelper',
 
             'ViewResolver' => 'Finna\View\Resolver\AggregateResolver',
+            'Wayfinder' => 'Finna\Wayfinder\WayfinderService',
+            'WayfinderSampleAdapter' => 'Finna\Wayfinder\Adapter\SampleAdapter',
         ],
     ],
     'view_manager' => [
@@ -512,6 +516,8 @@ $config = [
                         'Finna\AjaxHandler\AbstractOnlinePaymentActionFactory',
                     'Finna\AjaxHandler\SystemStatus' =>
                         'VuFind\AjaxHandler\SystemStatusFactory',
+                    'Finna\AjaxHandler\WayfinderPlacementLinkLookup' =>
+                        'Finna\AjaxHandler\WayfinderPlacementLinkLookupFactory',
                 ],
                 'aliases' => [
                     'addToList' => 'Finna\AjaxHandler\AddToList',
@@ -545,6 +551,7 @@ $config = [
                     'importFavorites' => 'Finna\AjaxHandler\ImportFavorites',
                     'onlinePaymentNotify' => 'Finna\AjaxHandler\OnlinePaymentNotify',
                     'registerOnlinePayment' => 'Finna\AjaxHandler\RegisterOnlinePayment',
+                    'wayfinderPlacementLinkLookup' => 'Finna\AjaxHandler\WayfinderPlacementLinkLookup',
 
                     // Overrides:
                     'VuFind\AjaxHandler\CommentRecord' => 'Finna\AjaxHandler\CommentRecord',
