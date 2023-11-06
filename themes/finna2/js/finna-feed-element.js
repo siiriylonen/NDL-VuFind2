@@ -231,12 +231,9 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel').forEach(el => {
             el.classList.add('carousel-non-touch-device');
           });
-          var carouselClose = holder.querySelector('.carousel-close');
-          if (carouselClose && carouselClose.classList.contains('hidden')) {
-            holder.querySelectorAll('.carousel-hover-title').forEach(el => {
-              el.style.width = '100%';
-            });
-          }
+          holder.querySelectorAll('.carousel-hover-title').forEach(el => {
+            el.style.width = '100%';
+          });
         }
       }
 
