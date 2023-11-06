@@ -149,7 +149,7 @@
                   </a>
                 </li>
               <?php endif; ?>
-              <?php if($this->ils()->checkFunction('ILLRequests', $capabilityParams)): ?>
+              <?php if ($this->ils()->checkFunction('ILLRequests', $capabilityParams)): ?>
                 <li role="none">
                   <a <?=$this->url('myresearch-illrequests') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-illrequests')?>">
                   <?=$this->transEsc('Interlibrary Loan Requests')?>

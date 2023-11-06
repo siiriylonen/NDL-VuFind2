@@ -799,7 +799,7 @@ finna.layout = (function finnaLayout() {
 
   function toggleButtonsForSelected(element) {
     if (element.closest('form').id === 'renewals') {
-      var checkedRenewals = document.querySelector('form[name="renewals"] .result .checkbox input[type=checkbox]:checked');
+      var checkedRenewals = document.querySelector('form[name="renewals"] .checkbox input[type=checkbox]:checked');
       var renewSelected = document.getElementById('renewSelected');
       if (renewSelected) {
         renewSelected.toggleAttribute('disabled', checkedRenewals === null);

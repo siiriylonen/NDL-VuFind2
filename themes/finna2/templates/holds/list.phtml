@@ -30,7 +30,7 @@
         </div>
       <?php endif; ?>
     <?php else: ?>
-      <?php if(!empty($this->recordList)): ?>
+      <?php if (!empty($this->recordList)): ?>
         <div class="sort-col sort-col-mobile">
           <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $sortList])?>
         </div>
@@ -95,11 +95,11 @@
               </table>
             </div>
         <?php else: ?>
-          <table class="myresearch-table" role="presentation">
-            <tr class="toolbar no-list-functions">
-              <th colspan="4" class="myresearch-notification"><?=$this->transEsc('Cannot update any of the holds')?></th>
-            </tr>
-          </table>
+          <div class="myresearch-table" aria-label="<?=$this->transEscAttr('Your Holds and Recalls')?>">
+            <div class="toolbar no-list-functions">
+              <div class="myresearch-notification"><?=$this->transEsc('Cannot update any of the holds')?></div>
+            </div>
+          </div>
         <?php endif; ?>
         <table class="myresearch-table" aria-label="<?=$this->transEscAttr('Your Holds and Recalls');?>" tabindex="0">
           <tr class="sr-only myresearch-row" aria-hidden="true">

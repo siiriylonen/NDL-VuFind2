@@ -281,13 +281,13 @@
             <div class="checkedout-post-list"><?=$this->render($template)?></div>
           <?php endif; ?>
           <?=$paginator ? $this->paginationControl($paginator, 'Sliding', 'Helpers/pagination.phtml', ['params' => $params]) : ''?>
-        <?php else: ?>
-          <div class="useraccount-header">
-            <h3><?=$this->transEsc('You do not have any items checked out')?>.</h3>
-          </div>
-        <?php endif; ?>
+        </div>
+      <?php else: ?>
+        <div class="useraccount-header">
+          <h3><?=$this->transEsc('You do not have any items checked out')?>.</h3>
+        </div>
       <?php endif; ?>
-    </div>
+    <?php endif; ?>
   </div>
 </div>
 
