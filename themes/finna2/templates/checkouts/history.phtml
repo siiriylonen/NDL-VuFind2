@@ -103,14 +103,12 @@
                   </tr>
                 </table>
               <?php if ($purgeAllAllowed || $purgeSelectedAllowed): ?>
-              </div>
+                </div>
               <?php endif; ?>
 
               <table class="myresearch-table" aria-label="<?=$this->transEscAttr('Loan History')?>" tabindex="0">
                 <tr class="sr-only myresearch-row" aria-hidden="true">
-                  <?php if ($purgeSelectedAllowed): ?>
-                    <th id="label-select-column"><?=$this->transEsc('Select');?></th>
-                  <?php endif; ?>
+                  <th id="label-select-column"><?=$this->transEsc('Select');?></th>
                   <th class="hidden-xs"></th>
                   <th id="label-title-column"><?=$this->transEsc('Loan Details');?></th>
                   <th id="label-status-column"><?=$this->transEsc('Additional data');?></th>
