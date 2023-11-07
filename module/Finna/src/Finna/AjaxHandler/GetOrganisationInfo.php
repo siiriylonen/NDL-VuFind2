@@ -151,7 +151,8 @@ class GetOrganisationInfo extends \VuFind\AjaxHandler\AbstractBase implements
         $element = $params->fromQuery('element');
         $sectors = array_filter((array)$params->fromQuery('sectors', []));
         $buildings = array_filter(explode(',', $params->fromQuery('buildings', '')));
-        if (!($id = $params->fromQuery('id'))) {
+        $id = $params->fromQuery('id');
+        if (!$id && 'organisation-page-link' !== $element) {
             return $this->handleError('getOrganisationInfo: missing id');
         }
 
@@ -239,11 +240,31 @@ class GetOrganisationInfo extends \VuFind\AjaxHandler\AbstractBase implements
                 );
                 break;
             case 'organisation-page-link':
-                $result = $this->getOrganisationPageLink(
-                    $id,
-                    $sectors,
-                    $params->fromQuery('parentName', null)
-                );
+                $parentName = $params->fromQuery('parentName', '');
+                $renderLinks = (bool)$params->fromQuery('renderLinks', false);
+                if (null === $id) {
+                    // Multiple organisations
+                    if (!($organisations = $params->fromQuery('organisations'))) {
+                        return $this->handleError('getOrganisationInfo: missing organisation id or organisations');
+                    }
+                    try {
+                        $organisationList = json_decode($organisations, true, 512, JSON_THROW_ON_ERROR);
+                    } catch (\Exception $e) {
+                        return $this->handleError('getOrganisationInfo: invalid organisations parameter');
+                    }
+                    $result = [];
+                    foreach ($organisationList as $organisation) {
+                        if (!($id = $organisation['id'] ?? null)) {
+                            return $this->handleError('getOrganisationInfo: invalid organisations parameter');
+                        }
+                        $sectors = array_filter((array)$organisation['sector']);
+                        $linkData = $this->getOrganisationPageLink($id, $sectors, $parentName, $renderLinks);
+                        $result[$id] = $renderLinks ? $linkData : $linkData['url'];
+                    }
+                } else {
+                    // Single location
+                    $result = $this->getOrganisationPageLink($id, $sectors, $parentName, $renderLinks);
+                }
                 break;
             default:
                 return $this->handleError('getOrganisationInfo: invalid element (' . ($element ?? '(none)') . ')');
@@ -347,10 +368,6 @@ class GetOrganisationInfo extends \VuFind\AjaxHandler\AbstractBase implements
             'organisationinfo/elements/consortium-info.phtml',
             compact('id', 'orgInfo', 'buildingFacetOperator', 'buildings')
         ) : '';
-        $locationSelection = $this->renderer->render(
-            'organisationinfo/elements/location-selection.phtml',
-            compact('id', 'orgInfo')
-        );
         $locationCount = count($orgInfo['list'] ?? []);
         $locationIdValid = false;
         $locationData = [];
@@ -401,8 +418,8 @@ class GetOrganisationInfo extends \VuFind\AjaxHandler\AbstractBase implements
         $this->sorter->sort($cityList);
         $serviceList = array_unique($serviceList);
         $this->sorter->sort($serviceList);
-        $searchFields = $this->renderer->render(
-            'organisationinfo/elements/location-search-fields.phtml',
+        $locationSelection = $this->renderer->render(
+            'organisationinfo/elements/location-selection.phtml',
             compact('id', 'orgInfo', 'locationData', 'serviceList', 'cityList')
         );
 
@@ -412,8 +429,7 @@ class GetOrganisationInfo extends \VuFind\AjaxHandler\AbstractBase implements
             'locationCount',
             'defaultLocationId',
             'defaultLocationName',
-            'locationData',
-            'searchFields',
+            'locationData'
         );
     }
 
@@ -642,21 +658,32 @@ class GetOrganisationInfo extends \VuFind\AjaxHandler\AbstractBase implements
      * @param string $id         Organisation id
      * @param array  $sectors    Sectors
      * @param string $parentName Parent organisation name
+     * @param bool   $renderLink Whether to return rendered link as well
      *
      * @return array
      */
-    protected function getOrganisationPageLink(string $id, array $sectors, string $parentName): array
+    protected function getOrganisationPageLink(string $id, array $sectors, string $parentName, bool $renderLink): array
     {
         $orgInfo = $this->organisationInfo->lookup($sectors, $id);
         $found = !empty($orgInfo);
         $html = '';
+        $url = null;
         if ($found) {
-            $html = $this->renderer->render(
-                'organisationinfo/elements/organisation-page-link.phtml',
-                compact('orgInfo', 'parentName', 'sectors')
+            $urlPlugin = $this->renderer->plugin('url');
+            $url = $urlPlugin(
+                'organisationinfo-home',
+                [],
+                [
+                    'query' => ['id' => $orgInfo['id'], 'sector' => implode(',', $sectors) ?: null],
+                ]
             );
+
+            $html = $renderLink ? $this->renderer->render(
+                'organisationinfo/elements/organisation-page-link.phtml',
+                compact('orgInfo', 'url', 'parentName', 'sectors')
+            ) : '';
         }
-        return compact('found', 'html');
+        return compact('found', 'html', 'url');
     }
 
     /**
