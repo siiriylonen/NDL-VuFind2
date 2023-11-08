@@ -1,3 +1,4 @@
+<?php $showDownloadLinks ??= true; ?>
 <?php foreach (array_values($documents) as $i => $document): ?>
     <?php
         $language = $this->layout()->userLang;
@@ -7,30 +8,32 @@
         $format = $document['format'] ?? null;
         $hasLink = isset($rights['link']) && !empty($rights['link']);
         $showRights = $document['downloadOnly'] ?? true;
-        $externalLink ??= false;
     ?>
     <?php ob_start(); ?>
-    <?php if (!$externalLink): ?>
+    <?php if ($showDownloadLinks): ?>
         <?php $aAttrs = [
             'download' => '',
             'rel' => 'nofollow',
         ]; ?>
-        <a href="<?=$this->escapeHtmlAttr($this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']]))?>" <?=$this->htmlAttributes($aAttrs)?>>
+        <a href="<?=$this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $document['format'], 'type' => 'document']])?>" <?=$this->htmlAttributes($aAttrs)?>>
             <?=$this->icon('download')?>
             <?=$this->escapeHtml($description)?>
         </a>
     <?php else: ?>
         <?php $aAttrs = [
+            'href' => $this->proxyUrl($document['url']),
             'target' => '_blank',
             'aria-label' => $this->translate('external_online_link'),
         ];
         if ($posterUrl = $document['posterUrl'] ?? null) {
             $aAttrs['data-poster-url'] = $posterUrl;
         }
-        $document['downloadOnly'] ? $aAttrs['download'] = '' : null; ?>
-        <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($document['url']))?>" <?=$this->htmlAttributes($aAttrs)?>>
+        if ($downloadOnly = $document['downloadOnly'] ?? null) {
+            $aAttrs['download'] = $downloadOnly;
+        } ?>
+        <a <?=$this->htmlAttributes($aAttrs)?>>
             <?=$this->icon('external-link')?>
-            <?=$this->escapeHtml($this->translate('link_' . $description, null, $description))?>
+            <?=$this->transEscWithPrefix('link_', $description)?>
         </a>
     <?php endif; ?>
     <?php $linkToResource = trim(ob_get_clean()); ?>
@@ -43,7 +46,7 @@
                         (<?php if ($format):?><?=$this->escapeHtml($format) ?>:<?php endif; ?>
                     </span>
                     <span class="copyright-icons">
-                    <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
+                        <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
                     </span>
                     <?php if ($hasLink): ?>
                         <a class="copyright-description" href="<?=$this->escapeHtml($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright'])?></a>

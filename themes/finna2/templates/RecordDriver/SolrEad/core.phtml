@@ -74,7 +74,7 @@
         <div class="record-links">
           <div class="recordURLs local-available-online-record">
             <div class="truncate-field outer" data-rows="4">
-              <?=$this->record($this->driver)->renderTemplate('document-links.phtml', ['documents' => $otherUrls, 'externalLink' => true])?>
+              <?=$this->record($this->driver)->renderTemplate('document-links.phtml', ['documents' => $otherUrls, 'showDownloadLinks' => false])?>
             </div>
           </div>
         </div>
