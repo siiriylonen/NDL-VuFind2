@@ -137,7 +137,7 @@ class FinnaFeedElement extends HTMLElement {
       var settings = jsonResponse.data.settings;
       settings.height = settings.height || 300;
       const type = settings.type;
-      const carousel = ['carousel', 'carousel-vertical'].includes(type);
+      const carousel = ['carousel', 'carousel-vertical', 'carousel-featured'].includes(type);
       if (carousel) {
         const hasContent = holder.querySelector('.carousel-feed > li, .carousel-feed > div');
         if (!hasContent) {
@@ -152,11 +152,12 @@ class FinnaFeedElement extends HTMLElement {
         }
 
         const vertical = 'carousel-vertical' === settings.type;
+        const featured = 'carousel-featured' === settings.type;
         this.adjustArrowButtons(vertical);
         settings.vertical = vertical;
         this.splide = finna.carouselManager.createCarousel(this, settings);
         var titleBottom = typeof settings.titlePosition !== 'undefined' && settings.titlePosition === 'bottom';
-        if (!vertical) {
+        if (!vertical && !featured) {
           if (titleBottom) {
             holder.setTitleBottom(settings);
             holder.querySelectorAll('.carousel-hover-title').forEach(el => {
@@ -171,9 +172,17 @@ class FinnaFeedElement extends HTMLElement {
             };
           }
         }
+        if (featured) {
+          holder.classList.add('carousel-featured');
+          if (settings.fullWidth) {
+            holder.classList.add('carousel-full-width');
+          }
+          holder.style.setProperty('--background-color', settings.backgroundColor);
+          holder.querySelector('.feed-content-container').style.padding = '10px 30px 0 10px';
+        }
 
         // Text hover for touch devices
-        if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
+        if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined' && !featured) {
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             if (holder.querySelector('.carousel-text:not(.no-text)') !== null) {
               el.classList.remove('hidden');

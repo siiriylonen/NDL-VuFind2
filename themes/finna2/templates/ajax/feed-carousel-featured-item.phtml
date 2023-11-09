@@ -1,0 +1,31 @@
+<!-- START of: finna - ajax/feed-carousel-featured-item.phtml -->
+<?php
+  $clickableElement = !$this->touchDevice && !isset($this->linkText);
+  $clickableLink = !$clickableElement;
+  $hasIcon = !empty($item['icon']['name']);
+  $hasImg = !empty($item['image']['url']);
+?>
+<?php if ($hasImg): ?>
+  <div class="carousel-featured-image" aria-hidden="true">
+    <img data-src="<?=$this->escapeHtmlAttr($item['image']['url']) ?>" alt="<?=$this->transEsc('Image');?><?php if (isset($item['title'])): ?>: <?=$this->escapeHtml($item['title']) ?><?php endif; ?>">
+  </div>
+<?php endif; ?>
+<div class="carousel-featured-text-part">
+  <div class="carousel-text" aria-hidden="true">
+    <?php if (!empty($feedTitle)): ?>
+      <h2 class="carousel-header"><?=$feedTitle;?></h2>
+    <?php endif; ?>
+    <?php if (!empty($item['title'])): ?>
+      <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
+    <?php endif; ?>
+    <div class="text">
+      <p class="hidden-sm hidden-xs"><?=$this->escapeHtml($this->truncate($item['text'], 500 ?? ''))?></p>
+      <p class="visible-sm hidden-xs"><?=$this->escapeHtml($this->truncate($item['text'], 350 ?? ''))?></p>
+      <p class="hidden-sm visible-xs"><?=$this->escapeHtml($this->truncate($item['text'], 200 ?? ''))?></p>
+    </div>
+    <?php if ($clickableLink): ?>
+      <span class="carousel-description"><?= $linkTextEsc ?></span>
+    <?php endif; ?>
+  </div>
+</div>
+<!-- END of: finna - ajax/feed-carousel-featured-item.phtml -->

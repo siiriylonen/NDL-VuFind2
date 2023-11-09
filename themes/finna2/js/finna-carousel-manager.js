@@ -24,6 +24,16 @@ finna.carouselManager = (() => {
       return {autoplay: false};
     },
     height: (value) => { return {height: parseInt(value)}; },
+    fullWidth: (value) => {
+      let valueToInt = parseInt(value);
+      if (!isNaN(valueToInt) && valueToInt > 0) {
+        return {
+          fullWidth: true
+        };
+      }
+      return {fullWidth: false};
+    },
+    backgroundColor: (value) => { return {backgroundColor: value}; },
     slidesToShow: (itemsPerPage) => {
       const breakpoints = {};
       let perPage = 0;
@@ -62,6 +72,12 @@ finna.carouselManager = (() => {
         direction = 'ttb';
         break;
       case 'carousel':
+        direction = 'ltr';
+        classes.prev += 'left';
+        classes.next += 'right';
+        classes.arrows += 'horizontal';
+        break;
+      case 'carousel-featured':
         direction = 'ltr';
         classes.prev += 'left';
         classes.next += 'right';

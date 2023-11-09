@@ -132,8 +132,14 @@ trait FeedTrait
         if (isset($config->height)) {
             $settings['height'] = $config->height;
         }
+        if (isset($config->fullWidth)) {
+            $settings['fullWidth'] = $config->fullWidth;
+        }
+        if (isset($config->backgroundColor)) {
+            $settings['backgroundColor'] = $config->backgroundColor;
+        }
 
-        if ('carousel' === $type || 'carousel-vertical' === $type) {
+        if (str_starts_with($type, 'carousel')) {
             $settings['images'] = $images;
             $settings['autoplay']
                 = $config->autoplay ?? false;
@@ -144,16 +150,19 @@ trait FeedTrait
             $breakPoints = [
                 'desktop' => 4, 'desktop-small' => 3, 'tablet' => 2, 'mobile' => 1,
             ];
+            if ($type === 'carousel-featured') {
+                $settings['slidesToShow']['desktop'] = $settings['scrolledItems']['desktop'] = 1;
+            } else {
+                foreach ($breakPoints as $breakPoint => $default) {
+                    $settings['slidesToShow'][$breakPoint]
+                        = isset($config->itemsPerPage[$breakPoint])
+                        ? (int)$config->itemsPerPage[$breakPoint] : $default;
 
-            foreach ($breakPoints as $breakPoint => $default) {
-                $settings['slidesToShow'][$breakPoint]
-                    = isset($config->itemsPerPage[$breakPoint])
-                    ? (int)$config->itemsPerPage[$breakPoint] : $default;
-
-                $settings['scrolledItems'][$breakPoint]
-                    = isset($config->scrolledItems[$breakPoint])
-                    ? (int)$config->scrolledItems[$breakPoint]
-                    : $settings['slidesToShow'][$breakPoint];
+                    $settings['scrolledItems'][$breakPoint]
+                        = isset($config->scrolledItems[$breakPoint])
+                        ? (int)$config->scrolledItems[$breakPoint]
+                        : $settings['slidesToShow'][$breakPoint];
+                }
             }
 
             if ('carousel' === $type) {

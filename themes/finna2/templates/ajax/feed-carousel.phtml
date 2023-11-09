@@ -1,6 +1,7 @@
 <!-- START of: finna - ajax/feed-carousel.phtml -->
 <?php if ($this->title || $this->translateTitle): ?>
-  <h2 class="carousel-header"><?=$this->translateTitle ? $this->transEsc($this->translateTitle) : $this->escapeHtml($this->title); ?></h2>
+  <?php $feedTitle = $this->translateTitle ? $this->transEsc($this->translateTitle) : $this->escapeHtml($this->title); ?>
+  <h2 class="carousel-header"><?=$feedTitle?></h2>
 <?php endif; ?>
 <?php if (isset($this->description)): ?>
   <p class="additional-description"><?=$this->translate($this->description) // HTML, intentionally left unescaped ?></p>
@@ -35,7 +36,7 @@
               $linkTextEsc = $this->transEsc($this->linkText ? $this->linkText : 'To the record');
             ?>
             <a class="feed-link" <?=$this->htmlElement()->getAttributes($linkElement)?>>
-              <?=$this->partial("ajax/feed-$this->type-item.phtml", compact('item', 'linkTextEsc'))?>
+              <?=$this->partial("ajax/feed-$this->type-item.phtml", compact('item', 'linkTextEsc', 'feedTitle'))?>
             </a>
           <?php else: ?>
             <?=$this->partial("ajax/feed-$this->type-item.phtml", compact('item', 'linkTextEsc'))?>
