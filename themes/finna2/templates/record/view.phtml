@@ -241,7 +241,7 @@
 
     <div class="tab-content">
       <?php if (!$this->loadInitialTabWithAjax || !isset($activeTabObj) || !$activeTabObj->supportsAjax()): ?>
-        <div class="tab-pane active <?=$this->escapeHtmlAttr($this->activeTab) ?>-tab" aria-labelledby="record-tab-<?=$this->escapeHtmlAttr($activeTabName)?>">
+        <div class="tab-pane active <?=$this->escapeHtmlAttr($this->activeTab) ?>-tab" aria-labelledby="record-tab-<?=$this->escapeHtmlAttr($activeTabName ?? '')?>">
             <?=isset($activeTabObj) ? $this->record($this->driver)->getTab($activeTabObj) : '' ?>
         </div>
       <?php endif; ?>
@@ -255,6 +255,11 @@
           // layout, but never in full width layout ?>
     <div class="sidebar left large-image-sidebar<?=$largeImageLayout ? '' : ' visible-xs visible-sm'?>">
       <?=$sidebar ?>
+    </div>
+  <?php endif; ?>
+  <?php if ($this->config()->getSimilarRecordsCarouselLocation() === 'after_tabs'): ?>
+    <div class="similar-bottom container">
+      <?=$this->render('RecordTab/similaritemscarousel.phtml', ['tab' => $this->record($this->driver)->getSimilarItemsCarousel()])?>
     </div>
   <?php endif; ?>
 

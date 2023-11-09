@@ -55,7 +55,7 @@ class Kirkanta extends AbstractProvider
      * @param string $language Language
      * @param string $id       Parent organisation ID
      *
-     * @return array Associative array with 'id', 'logo' and 'name'
+     * @return array Associative array with 'id', 'logo' and 'name', or empty array if not found
      */
     protected function doLookup(string $language, string $id): array
     {
@@ -137,7 +137,7 @@ class Kirkanta extends AbstractProvider
         // Organisation list for a consortium with schedules for today
         $params = [
             'consortium' => $response['id'],
-            'with' => 'schedules,primaryContactInfo,mailAddress',
+            'with' => 'schedules,primaryContactInfo,mailAddress,services',
             'period.start' => date('Y-m-d'),
             'period.end' => date('Y-m-d'),
             'status' => '',
@@ -186,8 +186,14 @@ class Kirkanta extends AbstractProvider
             return [];
         }
 
-        $periodStart = $startDate ?? date('Y-m-d', strtotime('last monday'));
-        $periodEnd = $endDate ?? date('Y-m-d', strtotime('next sunday', strtotime($periodStart)));
+        if (null !== $startDate) {
+            $periodStart = $startDate;
+        } else {
+            // Start from today if today is Monday, otherwise start from last Monday:
+            $periodStart = date('Y-m-d', date('N') === '1' ? null : strtotime('last monday'));
+        }
+        // If end date is not specified, use next Sunday relative to start date:
+        $periodEnd = $endDate ?: date('Y-m-d', strtotime('next sunday', strtotime($periodStart)));
 
         $params = [
             'id' => $locationId,
@@ -286,10 +292,11 @@ class Kirkanta extends AbstractProvider
 
             if (!empty($item['mailAddress'])) {
                 $mailAddress = [
-                    'area' => $item['mailAddress']['area'],
                     'boxNumber' => $item['mailAddress']['boxNumber'],
                     'street' => $item['mailAddress']['street'],
                     'zipcode' => $item['mailAddress']['zipcode'],
+                    'area' => $item['mailAddress']['area'],
+                    'city' => $item['mailAddress']['city'] ?? '',
                 ];
             }
             if (!empty($mailAddress)) {
@@ -298,25 +305,15 @@ class Kirkanta extends AbstractProvider
 
             $address = [];
             if (!empty($item['address'])) {
-                $address = [
-                    'street' => $item['address']['street'],
-                    'zipcode' => $item['address']['zipcode'],
-                ];
-
-                $city = $item['address']['city'];
-                $area = $item['address']['area'] ?? '';
-                if ($area && $area !== $city) {
-                    $address['city'] = "$area ($city)";
-                } else {
-                    $address['city'] = $city;
-                }
+                $address = $item['address'];
+                $address['area'] ??= '';
+                $address['coordinates']['lat'] ??= null;
+                $address['coordinates']['lon'] ??= null;
             }
 
             if (!empty($item['coordinates'])) {
-                $address['coordinates']['lat'] = $item['coordinates']['lat']
-                    ?? null;
-                $address['coordinates']['lon'] = $item['coordinates']['lon']
-                    ?? null;
+                $address['coordinates']['lat'] = $item['coordinates']['lat'] ?? null;
+                $address['coordinates']['lon'] = $item['coordinates']['lon'] ?? null;
             }
             $data['address'] = $address;
 
@@ -326,6 +323,8 @@ class Kirkanta extends AbstractProvider
             ];
             $data['openTimes'] = $this->parseSchedules($schedules);
             $data['openNow'] = $data['openTimes']['openNow'];
+
+            $data += $this->parseServices($item);
 
             $result[] = $data;
         }
@@ -442,34 +441,31 @@ class Kirkanta extends AbstractProvider
             'mobile' => $response['type'] == 'mobile' ? 1 : 0,
             'email' => $response['primaryContactInfo']['email']['email'] ?? null,
             'homepage' => $response['primaryContactInfo']['homepage']['url'] ?? null,
-            'mailAddress' => $response['mailAddress'] ?? [],
             'slogan' => $response['slogan'] ?? '',
             'description' => $response['description'] ?? '',
         ];
 
         $address = [];
         if (!empty($response['address'])) {
-            $address = [
-                'street' => $response['address']['street'],
-                'zipcode' => $response['address']['zipcode'],
-            ];
-
-            $city = $response['address']['city'];
-            $area = $response['address']['area'] ?? '';
-            if ($area && $area !== $city) {
-                $address['city'] = "$area ($city)";
-            } else {
-                $address['city'] = $city;
-            }
-
-            if (!empty($response['address']['coordinates'])) {
-                $address['coordinates']['lat'] = $response['address']['coordinates']['lat']
-                    ?? null;
-                $address['coordinates']['lon'] = $response['address']['coordinates']['lon']
-                    ?? null;
-            }
+            $address = $response['address'];
+            $address['area'] ??= '';
+            $address['coordinates']['lat'] ??= null;
+            $address['coordinates']['lon'] ??= null;
         }
         $result['address'] = $address;
+
+        if (!empty($response['mailAddress'])) {
+            $mailAddress = [
+                'boxNumber' => $response['mailAddress']['boxNumber'],
+                'street' => $response['mailAddress']['street'],
+                'zipcode' => $response['mailAddress']['zipcode'],
+                'area' => $response['mailAddress']['area'],
+                'city' => $response['mailAddress']['city'] ?? '',
+            ];
+        }
+        if (!empty($mailAddress)) {
+            $result['mailAddress'] = $mailAddress;
+        }
 
         $mapUrls = ['routeUrl', 'mapUrl'];
         if (!empty($response['address'])) {
@@ -556,39 +552,7 @@ class Kirkanta extends AbstractProvider
         }
         $result['links'] = $links;
 
-        $result['services'] = [];
-        $result['allServices'] = [];
-        if (!empty($response['services'])) {
-            $servicesMap = [];
-            foreach ($this->config->OpeningTimesWidget?->services?->toArray() ?? [] as $key => $ids) {
-                $servicesMap[$key] = explode(',', $ids);
-            }
-            $services = $allServices = [];
-            foreach ($response['services'] as $service) {
-                foreach ($servicesMap as $key => $ids) {
-                    if (in_array($service['id'], $ids)) {
-                        $services[] = $key;
-                    }
-                }
-                $data = [
-                    'name' => ($service['name'] ?? null) ?: ($service['standardName'] ?? ''),
-                    'shortDescription' => $service['shortDescription'] ?? '',
-                    'description' => $service['description'] ?? '',
-                ];
-                $allServices[$service['type'] ?? 'other'][] = $data;
-            }
-            $result['services'] = $services;
-            foreach ($allServices as &$serviceType) {
-                usort(
-                    $serviceType,
-                    function ($service1, $service2) {
-                        return $this->sorter->compare($service1['name'], $service2['name']);
-                    }
-                );
-            }
-            unset($serviceType);
-            $result['allServices'] = $allServices;
-        }
+        $result += $this->parseServices($response);
 
         $personnel = [];
         foreach ($response['persons'] ?? [] as $person) {
@@ -637,5 +601,53 @@ class Kirkanta extends AbstractProvider
         }
 
         return $result;
+    }
+
+    /**
+     * Parse the services from response
+     *
+     * @param array $response JSON array for a single location
+     *
+     * @return array Associative array with the following keys:
+     *               - services             List of services mapped for the widget
+     *               - allServices          Full service information
+     *               - serviceStandardNames List of available service standard names
+     */
+    protected function parseServices(array $response): array
+    {
+        $services = $allServices = $serviceStandardNames = [];
+        if (!empty($response['services'])) {
+            $servicesMap = [];
+            foreach ($this->config->OpeningTimesWidget?->services?->toArray() ?? [] as $key => $ids) {
+                $servicesMap[$key] = explode(',', $ids);
+            }
+            foreach ($response['services'] as $service) {
+                foreach ($servicesMap as $key => $ids) {
+                    if (in_array($service['id'], $ids)) {
+                        $services[] = $key;
+                    }
+                }
+                $data = [
+                    'name' => ($service['name'] ?? null) ?: ($service['standardName'] ?? ''),
+                    'standardName' => ($service['standardName'] ?? null) ?: ($service['name'] ?? ''),
+                    'shortDescription' => $service['shortDescription'] ?? '',
+                    'description' => $service['description'] ?? '',
+                ];
+                $allServices[$service['type'] ?? 'other'][] = $data;
+                $serviceStandardNames[] = $data['standardName'];
+            }
+            foreach ($allServices as &$serviceType) {
+                usort(
+                    $serviceType,
+                    function ($service1, $service2) {
+                        return $this->sorter->compare($service1['name'], $service2['name']);
+                    }
+                );
+            }
+            unset($serviceType);
+        }
+        $services = array_values(array_unique($services));
+        $serviceStandardNames = array_values(array_unique($serviceStandardNames));
+        return compact('services', 'allServices', 'serviceStandardNames');
     }
 }

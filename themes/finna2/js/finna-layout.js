@@ -281,6 +281,9 @@ finna.layout = (function finnaLayout() {
         $(e.target).data('bs.tooltip').inState.click = false;
       })
       .tooltip({trigger: 'click', viewport: '.container'});
+
+    holder.find('[data-toggle="tooltip-hover')
+      .tooltip({trigger: 'hover', delay: {show: 1000, hide: 200}});
     // prevent link opening if tooltip is placed inside link element
     holder.find('[data-toggle="tooltip"] > i').on('click', function onClickTooltip(event) {
       event.preventDefault();
@@ -525,16 +528,34 @@ finna.layout = (function finnaLayout() {
     VuFind.lightbox.ajax({url: url});
   }
 
-  function getOrganisationPageLink(organisation, organisationName, link, callback) {
+  /**
+   * Get organisation info page link for a single organisation, or links for a list of organisations
+   *
+   * @param {object}       organisation     Single organisation or a list of organisations
+   *                                        with keys 'id' and optional 'sector'
+   * @param {String|false} organisationName Organisation name, if any (single organisation only)
+   * @param {Boolean}      renderLinks      Whether to return rendered links in the response
+   * @param {function}     callback         Callback to call when done
+   *
+   * Note that the return format varies depending on whether a single organsation or multiple organisations
+   * were requested. For the single one, the result is just the content for it, but for multiple one it's
+   * keyed by organisation id.
+   */
+  function getOrganisationPageLink(organisation, organisationName, renderLinks, callback) {
     var params = {
       url: VuFind.path + '/AJAX/JSON?method=getOrganisationInfo',
       data: {
         method: 'getOrganisationInfo',
         element: 'organisation-page-link',
-        id: organisation.id,
-        sector: organisation.sector || ''
+        renderLinks: renderLinks ? '1' : '0'
       }
     };
+    if (typeof organisation.id === 'undefined') {
+      params.data.organisations = JSON.stringify(organisation);
+    } else {
+      params.data.id = organisation.id;
+      params.data.sector = organisation.sector || '';
+    }
     if (organisationName) {
       params.data.parentName = String(organisationName);
     }

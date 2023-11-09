@@ -18,8 +18,12 @@
             <?php foreach ($orgInfo['list'] as $item): ?>
               <?php
                 $name = $item['name'];
-                if ($city = $item['address']['city'] ?? null) {
-                  $name .= ", $city";
+                $area = $item['address']['area'];
+                $city = $item['address']['city'];
+                if ('' !== $area && '' !== $city) {
+                  $name .= ", $area ($city)";
+                } elseif ('' !== $area || '' !== $city) {
+                  $name .= ", $area$city";
                 }
               ?>
               <option value="<?=$this->escapeHtmlAttr($item['id'])?>"><?=$this->escapeHtml($name)?></option>
@@ -28,6 +32,21 @@
           <div class="alert alert-danger js-location-unavailable hidden"><?=$this->transEsc('organisation_info_location_not_available')?></div>
         </form>
       </div>
+
+      <?php if ($serviceList && count($locationData) >= 2): ?>
+        <div class="js-location-search-container">
+          <button class="btn btn-default js-location-search-toggle" aria-expanded="false" data-toggle-aria-expanded>
+            <?=$this->transEsc('Search for a Service')?> <?=$this->icon('filter-expand', 'search-expand')?><?=$this->icon('filter-collapse', 'search-collapse')?>
+          </button>
+          <div class="js-location-search">
+            <div class="js-location-search-fields">
+              <?=$this->render('organisationinfo/elements/location-search-fields.phtml')?>
+            </div>
+            <div class="js-results-loader hidden" role="status"><?=$this->icon('spinner')?> <?=$this->transEsc('loading_ellipsis')?></div>
+            <div class="js-location-search-results"></div>
+          </div>
+        </div>
+      <?php endif; ?>
     <?php endif; ?>
   </div>
   <?php if ($notification = $orgInfo['consortium']['finna']['notification'] ?? ''): ?>

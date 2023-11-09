@@ -1290,6 +1290,17 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             ]
         );
         $setTemplateLine(
+            'Location LIDO',
+            'getPhysicalLocationsExtended',
+            'data-locations.phtml',
+            [
+                'context' => [
+                    'class' => 'recordPhysicalLocation',
+                    'title' => 'Location',
+                ],
+            ]
+        );
+        $setTemplateLine(
             'Date',
             'getUnitDate',
             'data-escapeHtml.phtml',
@@ -1582,6 +1593,27 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
             ]
         );
 
+        $setTemplateLine(
+            'archive_authors',
+            'getAuthorsWithoutRoleHeadings',
+            'data-authors.phtml',
+            [
+                'context' => [
+                    'title' => '',
+                    'class' => 'recordAuthors'],
+            ]
+        );
+
+        $setTemplateLine(
+            'archive_other_authors',
+            'getOtherAuthors',
+            'data-authors.phtml',
+            [
+                'context' => [
+                    'class' => 'recordAuthors'],
+            ]
+        );
+
         // Add arcrole-relations as multiple fields with role as field header
         $getRelations = function ($data, $options) {
             // Group relations by role
@@ -1620,7 +1652,7 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
 
         $setMultiTemplateLine(
             'Archive Relations',
-            'getRelations',
+            'getAuthorsWithRoleHeadings',
             $getRelations
         );
 

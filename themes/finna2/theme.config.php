@@ -198,7 +198,7 @@ $config = [
         'doi.js',
         'embedded_record.js',
         'facets.js',
-        'hierarchyTree.js',
+        // 'hierarchyTree.js', hierarchyTree only works inline
         'hold.js',
         'ill.js',
         'keep_alive.js',
@@ -280,6 +280,8 @@ $config = [
             ],
         ],
         'aliases' => [
+            'accordion-collapse' => 'Alias:collapse-close',
+            'accordion-expand' => 'Alias:collapse-open',
             'adv-search-group-add' => 'FontAwesome:plus-circle',
             'adv-search-group-remove' => 'FinnaIcons:remove',
             'audio-play' => 'FontAwesome:play-circle',
@@ -365,6 +367,7 @@ $config = [
             'library-card-password' => 'FontAwesome:lock',
             'library-card-selected' => 'FontAwesome:check',
             'linkedin' => 'FinnaIcons:linkedin',
+            'linked-event-address' => 'FinnaIcons:map',
             'linked-event-audience' => 'FontAwesome:users',
             'linked-event-date' => 'FontAwesome:calendar',
             'linked-event-email' => 'FontAwesome:envelope',

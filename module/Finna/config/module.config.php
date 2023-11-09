@@ -393,6 +393,8 @@ $config = [
             'Finna\Video\Handler\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Video\Video' => 'Finna\Video\VideoFactory',
             'Finna\View\Resolver\AggregateResolver' => 'Finna\View\Resolver\AggregateResolverFactory',
+            'Finna\Wayfinder\WayfinderService' => 'Finna\Wayfinder\WayfinderServiceFactory',
+            'Finna\Wayfinder\Adapter\SampleAdapter' => 'Finna\Wayfinder\Adapter\WayfinderAdapterServiceFactory',
             'NatLibFi\FinnaCodeSets\FinnaCodeSets' => 'Finna\RecordDriver\CodeSetsFactory',
 
             // Factory overrides for non-Finna classes:
@@ -420,6 +422,8 @@ $config = [
             'VuFind\Search\Solr\HierarchicalFacetHelper' => 'Finna\Search\Solr\HierarchicalFacetHelper',
 
             'ViewResolver' => 'Finna\View\Resolver\AggregateResolver',
+            'Wayfinder' => 'Finna\Wayfinder\WayfinderService',
+            'WayfinderSampleAdapter' => 'Finna\Wayfinder\Adapter\SampleAdapter',
         ],
     ],
     'view_manager' => [
@@ -512,6 +516,8 @@ $config = [
                         'Finna\AjaxHandler\AbstractOnlinePaymentActionFactory',
                     'Finna\AjaxHandler\SystemStatus' =>
                         'VuFind\AjaxHandler\SystemStatusFactory',
+                    'Finna\AjaxHandler\WayfinderPlacementLinkLookup' =>
+                        'Finna\AjaxHandler\WayfinderPlacementLinkLookupFactory',
                 ],
                 'aliases' => [
                     'addToList' => 'Finna\AjaxHandler\AddToList',
@@ -545,6 +551,7 @@ $config = [
                     'importFavorites' => 'Finna\AjaxHandler\ImportFavorites',
                     'onlinePaymentNotify' => 'Finna\AjaxHandler\OnlinePaymentNotify',
                     'registerOnlinePayment' => 'Finna\AjaxHandler\RegisterOnlinePayment',
+                    'wayfinderPlacementLinkLookup' => 'Finna\AjaxHandler\WayfinderPlacementLinkLookup',
 
                     // Overrides:
                     'VuFind\AjaxHandler\CommentRecord' => 'Finna\AjaxHandler\CommentRecord',
@@ -648,7 +655,6 @@ $config = [
                     'Finna\Db\Table\FinnaSessionStats' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\Resource' => 'VuFind\Db\Table\ResourceFactory',
                     'Finna\Db\Table\Search' => 'VuFind\Db\Table\GatewayFactory',
-                    'Finna\Db\Table\Session' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\Transaction' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\TransactionEventLog' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\User' => 'VuFind\Db\Table\UserFactory',
@@ -659,7 +665,6 @@ $config = [
                     'VuFind\Db\Table\Comments' => 'Finna\Db\Table\Comments',
                     'VuFind\Db\Table\Resource' => 'Finna\Db\Table\Resource',
                     'VuFind\Db\Table\Search' => 'Finna\Db\Table\Search',
-                    'VuFind\Db\Table\Session' => 'Finna\Db\Table\Session',
                     'VuFind\Db\Table\User' => 'Finna\Db\Table\User',
                     'VuFind\Db\Table\UserList' => 'Finna\Db\Table\UserList',
                     'VuFind\Db\Table\UserResource' => 'Finna\Db\Table\UserResource',

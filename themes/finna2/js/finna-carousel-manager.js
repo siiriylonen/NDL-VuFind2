@@ -34,6 +34,10 @@ finna.carouselManager = (() => {
       return {fullWidth: false};
     },
     backgroundColor: (value) => { return {backgroundColor: value}; },
+    width: (value) => { return {fixedWidth: parseInt(value)}; },
+    omitEnd: 'omitEnd',
+    pagination: 'pagination',
+    gap: 'gap',
     slidesToShow: (itemsPerPage) => {
       const breakpoints = {};
       let perPage = 0;

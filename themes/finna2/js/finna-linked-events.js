@@ -26,6 +26,7 @@ finna.linkedEvents = (function finnaLinkedEvents() {
             'LazyImages',
             container[0].querySelectorAll('img[data-src]')
           );
+          finna.layout.initToolTips(container);
         } else {
           var err = $('<div></div>').attr('class', 'linked-events-noresults infobox').attr('aria-live', 'polite').text(VuFind.translate('nohit_heading'));
           container.find($('.linked-events-content')).html(err);
@@ -187,7 +188,6 @@ finna.linkedEvents = (function finnaLinkedEvents() {
     searchTools.insertAfter(accordion);
     toggleSearch.insertAfter(accordion);
     accordion.removeClass('initial-active');
-
     return loadContent;
   }
 
@@ -205,7 +205,12 @@ finna.linkedEvents = (function finnaLinkedEvents() {
     }).keyup(function onKeyUp(e) {
       return keyHandler(e);
     });
-    container.find('.accordion.active').click();
+    // Setup accordion but avoid reloading the content (initEventTabs loads the initial content):
+    let $activeEl = container.find('.accordion.active');
+    if ($activeEl.length) {
+      toggleAccordion(container, $activeEl);
+    }
+
   }
 
   function initEventsTabs(id) {
