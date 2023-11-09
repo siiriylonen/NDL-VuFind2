@@ -177,8 +177,10 @@ class FinnaFeedElement extends HTMLElement {
           if (settings.fullWidth) {
             holder.classList.add('carousel-full-width');
           }
-          holder.style.setProperty('--background-color', settings.backgroundColor);
-          holder.querySelector('.feed-content-container').style.padding = '10px 30px 0 10px';
+          if (settings.backgroundColor) {
+            holder.classList.add('carousel-with-background');
+            holder.style.setProperty('--background-color', settings.backgroundColor);
+          }
         }
 
         // Text hover for touch devices
