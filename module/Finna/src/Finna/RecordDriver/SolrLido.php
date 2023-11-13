@@ -2102,6 +2102,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      * Returns a multidimensional array containing arrays with keys:
      *  - 'location'        string  Physical location
      *  - 'locationInfo'    array   Additional information
+     *  - 'locationAsLink'  bool    If location should be a link
      *
      * @return array
      */
@@ -2148,6 +2149,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 $results[] = [
                     'location' => implode(', ', $locations),
                     'locationInfo' => $locationInfo,
+                    'locationAsLink' => true,
                 ];
             }
             $lang = $this->getLocale();
@@ -2160,6 +2162,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 $results[] = [
                     'location' => $display,
                     'locationInfo' => [],
+                    'locationAsLink' => false,
                 ];
             }
         }
