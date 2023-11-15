@@ -18,7 +18,7 @@
           ['class' => ['backlink'], 'description' => true]
       )?><br>
     <?php else: ?>
-      <?=$location; ?><br>
+      <?=$this->escapeHtml($location); ?><br>
     <?php endif; ?>
   <?php endforeach; ?>
 </div>
