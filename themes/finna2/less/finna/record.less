@@ -510,10 +510,17 @@ a.authority {
       .copyright-description {
         margin-right: 5px;
       }
+      .iconlabel:first-child {
+        margin-left: 2px;
+      }
     }
     &:not(.additional-info) {
-      .iconlabel::before {
-        vertical-align: top;
+      .copyright-wrapper {
+        font-size: 0;
+        .copyright-icons {
+          margin-left: -3px;
+          line-height: 1.3em;
+        }
       }
     }
   }
@@ -542,9 +549,6 @@ a.authority {
   .iconlabel {
       margin-right: -3px;
       vertical-align: bottom;
-  }
-  .iconlabel:first-child {
-      margin-left: 2px;
   }
   span {
       font-size: @font-size-small;
