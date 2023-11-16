@@ -1575,8 +1575,7 @@ class SolrEad3 extends SolrEad
                     $start = $normal;
                     $unknown = $this->unknownDateCharsExist($start);
                     $dateParts = explode('-', $start);
-                    $year = $dateParts[0];
-                    $yearUncertain = $this->unknownDateCharsExist($year);
+                    $yearUncertain = $this->unknownDateCharsExist($dateParts[0]);
                 }
                 $dates = $this->parseDate($start, true);
                 if (
