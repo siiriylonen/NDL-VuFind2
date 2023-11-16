@@ -1573,6 +1573,9 @@ class SolrEad3 extends SolrEad
                 } else {
                     $start = $normal;
                     $unknown = $this->unknownDateCharsExist($start);
+                    $dateParts = explode('-', $start);
+                    $year = $dateParts[0];
+                    $yearUncertain = $this->unknownDateCharsExist($year);
                 }
                 $dates = $this->parseDate($start, true);
                 if (
@@ -1583,7 +1586,7 @@ class SolrEad3 extends SolrEad
                     $ndash
                         = html_entity_decode('&#x2013;', ENT_NOQUOTES, 'UTF-8');
                     $dates .= "{$ndash}{$parsedEnd}";
-                } elseif ($dates && $unknown) {
+                } elseif ($dates && $unknown && $yearUncertain) {
                     $dates = $this->translate(
                         'year_decade_or_century',
                         ['%%year%%' => $dates]
