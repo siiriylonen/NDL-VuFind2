@@ -158,6 +158,7 @@ class FinnaFeedElement extends HTMLElement {
         this.splide = finna.carouselManager.createCarousel(this, settings);
         var titleBottom = typeof settings.titlePosition !== 'undefined' && settings.titlePosition === 'bottom';
         if (!vertical && !featured) {
+          holder.classList.add('carousel');
           if (titleBottom) {
             holder.setTitleBottom(settings);
             holder.querySelectorAll('.carousel-hover-title').forEach(el => {
