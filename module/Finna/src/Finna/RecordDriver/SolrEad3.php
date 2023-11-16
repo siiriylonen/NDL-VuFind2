@@ -1567,6 +1567,7 @@ class SolrEad3 extends SolrEad
             $normal = (string)$attr->normal;
             $dates = $start = $end = '';
             $unknown = false;
+            $yearUncertain = false;
             if ($normal) {
                 if (strstr($normal, '/')) {
                     [$start, $end] = explode('/', $normal);
