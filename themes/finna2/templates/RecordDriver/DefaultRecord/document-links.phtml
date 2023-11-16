@@ -40,9 +40,7 @@
         <div class="link-wrapper<?php if ($rightsDescription):?> additional-info<?php endif; ?>">
             <?=$linkToResource ?>
             <div class="copyright-wrapper">
-                <span>
-                    (<?php if ($format):?><?=$this->escapeHtml($format) ?>:<?php endif; ?>
-                </span>
+                <span>(<?php if ($format):?><?=$this->escapeHtml($format) ?>:<?php endif; ?></span>
                 <span class="copyright-icons">
                     <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
                 </span>
