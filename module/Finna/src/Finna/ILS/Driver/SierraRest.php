@@ -710,6 +710,10 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
         $request = [
             'payments' => $payments,
         ];
+        if ($this->statGroup) {
+            $request['statgroup'] = $this->statGroup;
+        }
+
         $result = $this->makeRequest(
             [
                 'v6', 'patrons', $patron['id'], 'fines', 'payment',
