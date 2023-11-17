@@ -236,12 +236,17 @@ class SolrEad3 extends SolrEad
         };
         $processURL = function ($node) use ($preferredLangCodes, $isExternalUrl, &$urls) {
             $attr = $node->attributes();
+            $role = (string)($attr->linkrole ?? '');
             if (
-                (string)$attr->linkrole === 'image/jpeg'
+                $role === 'image/jpeg'
                 || !$attr->href
                 || $isExternalUrl($node)
             ) {
                 return;
+            }
+            $downloadOnly = false;
+            if (str_starts_with($role, 'audio') || str_starts_with($role, 'video')) {
+                $downloadOnly = ((string)$attr->actuate === 'onrequest' && (string)$attr->show === 'none');
             }
             $lang = (string)$attr->lang;
             $preferredLang = $lang && in_array($lang, $preferredLangCodes);
@@ -253,6 +258,7 @@ class SolrEad3 extends SolrEad
                 $urlData = [
                     'url' => $url,
                     'desc' => (string)$desc,
+                    'downloadOnly' => $downloadOnly,
                 ];
                 if ($preferredLang) {
                     $urls['localeurls'][] = $urlData;
@@ -991,6 +997,10 @@ class SolrEad3 extends SolrEad
                     ) {
                         continue;
                     }
+                    $show = (string)($attr->show ?? '');
+                    if ($show === 'none') {
+                        continue;
+                    }
                     $type = (string)($attr->localtype ?? $parentType ?: 'none');
                     $role = (string)($attr->linkrole ?? '');
                     $sort = (string)($attr->label ?? '');
@@ -1011,9 +1021,7 @@ class SolrEad3 extends SolrEad
                     if (!$this->isUrlLoadable($url, $this->getUniqueID())) {
                         continue;
                     }
-                    [$fileType, $format] = strpos($role, '/') > 0
-                        ? explode('/', $role, 2)
-                        : ['image', 'jpg'];
+                    [,$format] = explode('/', $role . '/jpg');
                     // Image might be original, can not be displayed in browser.
                     if ($this->isUndisplayableFormat($format)) {
                         $highResolution['original'][] = [
