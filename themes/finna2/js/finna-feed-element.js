@@ -172,6 +172,15 @@ class FinnaFeedElement extends HTMLElement {
           }
         }
 
+        if (!vertical && !titleBottom) {
+          this.querySelectorAll('.carousel-feed .carousel-text').forEach(el => {
+            const textElement = el.querySelector('div.text p');
+            if (textElement.innerHTML.trim() === '') {
+              el.classList.add('no-text', 'show-hover');
+            }
+          });
+        }
+
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
@@ -183,17 +192,6 @@ class FinnaFeedElement extends HTMLElement {
             holder.querySelectorAll('.carousel-text').forEach(el => {
               el.addEventListener('click', function doNothing(e) {
                 e.stopImmediatePropagation();
-                var slide = this.closest('.feed-item-holder');
-                if (slide && slide.classList.contains('clicked')) {
-                  e.preventDefault();
-                }
-              });
-            });
-          } else {
-            holder.querySelectorAll('.carousel-slide-header p').forEach(el => {
-              el.addEventListener('click', function doNothing(e) {
-                e.stopImmediatePropagation();
-                e.preventDefault();
               });
             });
           }
