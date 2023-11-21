@@ -39,26 +39,28 @@
     <li class="fulltextField">
         <div class="link-wrapper<?php if ($rightsDescription):?> additional-info<?php endif; ?>">
             <?=$linkToResource ?>
-            <div class="copyright-wrapper">
-                <span>(<?php if ($format):?><?=$this->escapeHtml($format) ?>:<?php endif; ?></span>
-                <span class="copyright-icons">
-                    <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
-                </span>
-                <?php if ($hasLink): ?>
-                    <a class="copyright-description" href="<?=$this->escapeHtml($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright'])?></a>
-                <?php else: ?>
-                    <span>
-                        <?=$this->escapeHtml($rights['copyright']);?>
+            <?php if ($rights): ?>
+                <div class="copyright-wrapper">
+                    <span>(<?php if ($format):?><?=$this->escapeHtml($format) ?>:<?php endif; ?></span>
+                    <span class="copyright-icons">
+                        <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyright']])?>
                     </span>
-                <?php endif; ?>
-                <?php if ($rightsDescription): ?>
-                    <button class="show-hide-button show-info more-link collapsed" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
-                        <?=$this->transEsc('copyright_info_show')?> <?=$this->icon('truncate-more')?>
-                    </button><span>)</span>
-                <?php else: ?>
-                    <span>)</span>
-                <?php endif; ?>
-            </div>
+                    <?php if ($hasLink): ?>
+                        <a class="copyright-description" href="<?=$this->escapeHtml($rights['link'])?>" target="_blank"><?=$this->escapeHtmlAttr($rights['copyright'])?></a>
+                    <?php else: ?>
+                        <span>
+                            <?=$this->escapeHtml($rights['copyright']);?>
+                        </span>
+                    <?php endif; ?>
+                    <?php if ($rightsDescription): ?>
+                        <button class="show-hide-button show-info more-link collapsed" data-toggle="collapse" data-target="#cc_info_<?= $i ?>" aria-expanded="false">
+                            <?=$this->transEsc('copyright_info_show')?> <?=$this->icon('truncate-more')?>
+                        </button><span>)</span>
+                    <?php else: ?>
+                        <span>)</span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </div>
         <?php if ($rightsDescription): ?>
             <div id="cc_info_<?= $i ?>" class="cc-info collapse">
