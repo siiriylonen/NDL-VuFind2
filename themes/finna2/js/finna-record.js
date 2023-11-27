@@ -567,13 +567,22 @@ finna.record = (function finnaRecord() {
       width: 200,
       omitEnd: true,
       pagination: false,
-      gap: '2px'
+      gap: '2px',
+      focus: 0
     };
     finna.carouselManager.createCarousel(container, settings);
     VuFind.observerManager.observe(
       'LazyImages',
       container.querySelectorAll('img[data-src]')
     );
+    container.querySelectorAll('img').forEach(el => {
+      el.onload = function onCarouselImageLoad() {
+        if (this.naturalWidth === 10 && this.naturalHeight === 10) {
+          el.nextElementSibling.classList.remove('hidden');
+          el.classList.add('hidden');
+        }
+      };
+    });
   }
 
   function init() {
