@@ -198,7 +198,7 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-more').forEach(el => {
             if (el.classList.contains('carousel-close')) {
               el.classList.remove('hidden');
-              el.firstElementChild.addEventListener('click', function closeDescription(e) {
+              el.addEventListener('click', function closeDescription(e) {
                 e.stopImmediatePropagation();
                 var slide = this.closest('.feed-item-holder');
                 if (slide && slide.classList.contains('clicked')) {
