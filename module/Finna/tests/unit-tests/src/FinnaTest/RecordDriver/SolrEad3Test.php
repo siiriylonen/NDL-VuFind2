@@ -75,6 +75,10 @@ class SolrEad3Test extends \PHPUnit\Framework\TestCase
                 'data' => '1923',
                 'detail' => '',
             ],
+            [
+                'data' => "1925{$ndash}",
+                'detail' => '',
+            ],
         ];
         $this->assertEquals($dates, $driver->getUnitDates());
     }
