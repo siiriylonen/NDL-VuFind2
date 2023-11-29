@@ -1593,8 +1593,8 @@ class SolrEad3 extends SolrEad
                     [$start, $end] = explode('/', $normal);
                 } else {
                     $start = $normal;
-                    $startDateParts = explode('-', $start);
-                    $yearUncertain = $this->unknownDateCharsExist($startDateParts[0]);
+                    [$startYear] = explode('-', $start);
+                    $yearUncertain = $this->unknownDateCharsExist($startYear);
                 }
                 $dates = $this->parseDate($start, true);
                 if (
@@ -1602,9 +1602,9 @@ class SolrEad3 extends SolrEad
                     && ($parsedEnd = $this->parseDate($end, false)) !== $dates
                     && $parsedEnd
                 ) {
-                    $endDateParts = explode('-', $end);
+                    [$endYear] = explode('-', $end);
                     $ndash = html_entity_decode('&#x2013;', ENT_NOQUOTES, 'UTF-8');
-                    if (in_array(strtolower($endDateParts[0]), ['uuuu', 'xxxx'])) {
+                    if (in_array(strtolower($endYear), ['uuuu', 'xxxx'])) {
                         $dates .= "{$ndash}";
                     } else {
                         $dates .= "{$ndash}{$parsedEnd}";
