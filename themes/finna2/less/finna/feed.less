@@ -754,8 +754,13 @@ finna-feed.splide--ltr {
     }
     @media (hover:hover) {
         .feed-item-holder:hover {
-            .carousel-text:not(.no-text) {
-                opacity: 1;
+            .carousel-text {
+                &:not(.no-text) {
+                    opacity: 1;
+                }
+                &.no-text.show-hover {
+                    opacity: 1;
+                }
             }
             .carousel-slide-header:not(.title-bottom) {
                 opacity: 0;
