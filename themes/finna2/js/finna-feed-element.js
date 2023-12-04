@@ -182,6 +182,14 @@ class FinnaFeedElement extends HTMLElement {
             holder.classList.add('carousel-with-background');
             holder.style.setProperty('--background-color', settings.backgroundColor);
           }
+          if (settings.imagePlacement && !finna.layout.isTouchDevice()) {
+            if (settings.imagePlacement === 'right') {
+              holder.querySelectorAll('.feed-link').forEach(el => {
+                el.style.display = 'flex';
+                el.style.flexDirection = 'row-reverse';
+              });
+            }
+          }
         }
 
         // Text hover for touch devices

@@ -19,10 +19,9 @@
       <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
     <?php endif; ?>
     <div class="text">
-      <p class="hidden-sm hidden-xs"><?=$this->escapeHtml($this->truncate($item['text'], 500 ?? ''))?></p>
-      <p class="visible-sm hidden-xs"><?=$this->escapeHtml($this->truncate($item['text'], 350 ?? ''))?></p>
-      <p class="hidden-sm visible-xs"><?=$this->escapeHtml($this->truncate($item['text'], 200 ?? ''))?></p>
+      <?=$item['text']?>
     </div>
+    <div class="carousel-text-shadow"></div>
     <?php if ($clickableLink): ?>
       <span class="carousel-description"><?= $linkTextEsc ?></span>
     <?php endif; ?>

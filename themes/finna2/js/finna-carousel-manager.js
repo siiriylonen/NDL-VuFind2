@@ -34,6 +34,7 @@ finna.carouselManager = (() => {
       return {fullWidth: false};
     },
     backgroundColor: (value) => { return {backgroundColor: value}; },
+    imagePlacement: (value) => { return {imagePlacement: value}; },
     width: (value) => { return {fixedWidth: parseInt(value)}; },
     omitEnd: 'omitEnd',
     pagination: 'pagination',

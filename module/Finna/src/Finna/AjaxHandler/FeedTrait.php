@@ -138,6 +138,9 @@ trait FeedTrait
         if (isset($config->backgroundColor)) {
             $settings['backgroundColor'] = $config->backgroundColor;
         }
+        if (isset($config->imagePlacement)) {
+            $settings['imagePlacement'] = $config->imagePlacement;
+        }
 
         if (str_starts_with($type, 'carousel')) {
             $settings['images'] = $images;

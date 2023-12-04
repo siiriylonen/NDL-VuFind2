@@ -869,7 +869,11 @@ finna-feed.carousel-featured.splide--ltr {
         right: 0;
         button {
             &.left {
+                left: -24px;
                 transform: rotate(180deg);
+            }
+            &.right {
+                right: -24px;
             }
         }
     }
@@ -897,29 +901,32 @@ finna-feed.carousel-featured.splide--ltr {
     .carousel-header {
         display: none;
     }
-    .feed-link {
-        display: flex;
-        flex-direction: row-reverse;
-    }
     .carousel-featured-image, .carousel-featured-text-part {
-        width: 50%;
         height: 100%;
+        padding: 10px 15px;
     }
     .carousel-featured-image {
         display: flex;
         justify-content: center;
-        padding: 20px 40px 20px 10px;
+        width: 50%;
         img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            flex: left;
         }
     }
     .carousel-featured-text-part {
         display: flex;
-        align-items: center;
         color: @text-color;
-        padding: 20px 10px 20px 40px;
+        justify-content: right;
+        max-width: 50%;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        height: 100%;
+        .carousel-text {
+            width: 100%;
+        }
         .carousel-header {
             display: block;
             font-size: @font-size-h4;
@@ -938,8 +945,8 @@ finna-feed.carousel-featured.splide--ltr {
             flex-direction: column;
         }
         .carousel-featured-image, .carousel-featured-text-part {
-            height: 50%;
             width: auto;
+            max-width: 100%;
             padding: 5px 10%;
             .carousel-header {
                 font-size: @font-size-base;
@@ -954,10 +961,14 @@ finna-feed.carousel-featured.splide--ltr {
             }
         }
         .carousel-featured-image {
-            padding-top: 20px;
+            height: 60%;
+            padding-top: 5px;
+            img {
+                height: 100%;
+            }
         }
-        .splide__arrows {
-            bottom: -40px;
+        .carousel-featured-text-part {
+            height: 40%;
         }
         .carousel-pagination-wrapper {
             height: 40px;
