@@ -326,7 +326,7 @@
   }
 }
 // Custom styles for user account functions
-.template-dir-myresearch, .template-dir-holds, .template-dir-search.template-name-history, .template-dir-librarycards {
+.template-dir-myresearch, .template-dir-holds, .template-dir-checkouts.template-name-history, .template-dir-search.template-name-history, .template-dir-librarycards {
   padding-bottom: 30px;
   h1 {
     font-weight: 500;
@@ -334,6 +334,11 @@
   .my-research-content {
     width: 100%;
     border-radius: @border-radius-base;
+    @media (max-width: @screen-sm) {
+      .select-card-wrapper .select-card .library_card li > a {
+        white-space: normal;
+      }
+    }
   }
   h1 {
     display: inline-block;
