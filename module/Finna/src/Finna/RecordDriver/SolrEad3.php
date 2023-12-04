@@ -1604,7 +1604,7 @@ class SolrEad3 extends SolrEad
                 ) {
                     [$endYear] = explode('-', $end);
                     $ndash = html_entity_decode('&#x2013;', ENT_NOQUOTES, 'UTF-8');
-                    if (in_array(strtolower($endYear), ['uuuu', 'xxxx'])) {
+                    if ($this->unknownDateCharsExist($endYear)) {
                         $dates .= "{$ndash}";
                     } else {
                         $dates .= "{$ndash}{$parsedEnd}";
