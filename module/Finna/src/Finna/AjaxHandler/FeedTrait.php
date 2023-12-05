@@ -132,6 +132,9 @@ trait FeedTrait
         if (isset($config->height)) {
             $settings['height'] = $config->height;
         }
+        if (isset($config->mobileHeight)) {
+            $settings['mobileHeight'] = $config->mobileHeight;
+        }
         if (isset($config->fullWidth)) {
             $settings['fullWidth'] = $config->fullWidth;
         }

@@ -919,13 +919,20 @@ finna-feed.carousel-featured.splide--ltr {
     .carousel-featured-text-part {
         display: flex;
         color: @text-color;
-        justify-content: right;
         max-width: 50%;
-        overflow-y: auto;
-        overscroll-behavior-y: contain;
         height: 100%;
+        .carousel-text-container {
+            overflow-y: auto;
+            overscroll-behavior-y: contain;
+            &.scrollable {
+                padding-right: 10px;
+            }
+        }
         .carousel-text {
             width: 100%;
+        }
+        .text {
+            overflow-wrap: anywhere;
         }
         .carousel-header {
             display: block;
@@ -947,7 +954,6 @@ finna-feed.carousel-featured.splide--ltr {
         .carousel-featured-image, .carousel-featured-text-part {
             width: auto;
             max-width: 100%;
-            padding: 5px 10%;
             .carousel-header {
                 font-size: @font-size-base;
                 margin-top: 0;
@@ -962,7 +968,7 @@ finna-feed.carousel-featured.splide--ltr {
         }
         .carousel-featured-image {
             height: 60%;
-            padding-top: 5px;
+            padding: 5px;
             img {
                 height: 100%;
             }

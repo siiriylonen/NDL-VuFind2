@@ -11,20 +11,21 @@
   </div>
 <?php endif; ?>
 <div class="carousel-featured-text-part">
-  <div class="carousel-text" aria-hidden="true">
-    <?php if (!empty($feedTitle)): ?>
-      <h2 class="carousel-header"><?=$feedTitle;?></h2>
-    <?php endif; ?>
-    <?php if (!empty($item['title'])): ?>
-      <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
-    <?php endif; ?>
-    <div class="text">
-      <?=$item['text']?>
+  <div class="carousel-text-container">
+    <div class="carousel-text" aria-hidden="true">
+      <?php if (!empty($feedTitle)): ?>
+        <h2 class="carousel-header"><?=$feedTitle;?></h2>
+      <?php endif; ?>
+      <?php if (!empty($item['title'])): ?>
+        <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
+      <?php endif; ?>
+      <div class="text">
+        <?=$item['text']?>
+      </div>
+      <?php if ($clickableLink): ?>
+        <span class="carousel-description"><?= $linkTextEsc ?></span>
+      <?php endif; ?>
     </div>
-    <div class="carousel-text-shadow"></div>
-    <?php if ($clickableLink): ?>
-      <span class="carousel-description"><?= $linkTextEsc ?></span>
-    <?php endif; ?>
   </div>
 </div>
 <!-- END of: finna - ajax/feed-carousel-featured-item.phtml -->

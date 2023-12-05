@@ -24,6 +24,7 @@ finna.carouselManager = (() => {
       return {autoplay: false};
     },
     height: (value) => { return {height: parseInt(value)}; },
+    mobileHeight: (value) => { return {mobileHeight: parseInt(value)}; },
     fullWidth: (value) => {
       let valueToInt = parseInt(value);
       if (!isNaN(valueToInt) && valueToInt > 0) {
