@@ -585,6 +585,7 @@ finna-feed {
         p {
             margin: 0;
             width: 100%;
+            overflow-wrap: anywhere;
         }
         .carousel-more {
             font-size: 1.5em;
@@ -612,6 +613,8 @@ finna-feed {
     .carousel-hover-date {
         font-weight: 300;
         color: @gray-lighter;
+        width: 100%;
+        display: inline-block;
     }
     .splide__arrows {
         position: absolute;
@@ -737,8 +740,13 @@ finna-feed.splide--ltr {
     }
     @media (hover:hover) {
         .feed-item-holder:hover {
-            .carousel-text:not(.no-text) {
-                opacity: 1;
+            .carousel-text {
+                &:not(.no-text) {
+                    opacity: 1;
+                }
+                &.no-text.show-hover {
+                    opacity: 1;
+                }
             }
             .carousel-slide-header:not(.title-bottom) {
                 opacity: 0;
@@ -755,6 +763,11 @@ finna-feed.splide--ltr {
                 }
             }
         }
+    }
+    .carousel-non-touch-device {
+            .carousel-text.show-hover:hover {
+                opacity: 1;
+            }
     }
     .feed-item-holder {
         &.clicked {

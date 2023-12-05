@@ -183,24 +183,13 @@ class FinnaFeedElement extends HTMLElement {
             holder.querySelectorAll('.carousel-text').forEach(el => {
               el.addEventListener('click', function doNothing(e) {
                 e.stopImmediatePropagation();
-                var slide = this.closest('.feed-item-holder');
-                if (slide && slide.classList.contains('clicked')) {
-                  e.preventDefault();
-                }
-              });
-            });
-          } else {
-            holder.querySelectorAll('.carousel-slide-header p').forEach(el => {
-              el.addEventListener('click', function doNothing(e) {
-                e.stopImmediatePropagation();
-                e.preventDefault();
               });
             });
           }
           holder.querySelectorAll('.carousel-more').forEach(el => {
             if (el.classList.contains('carousel-close')) {
               el.classList.remove('hidden');
-              el.firstElementChild.addEventListener('click', function closeDescription(e) {
+              el.addEventListener('click', function closeDescription(e) {
                 e.stopImmediatePropagation();
                 var slide = this.closest('.feed-item-holder');
                 if (slide && slide.classList.contains('clicked')) {
