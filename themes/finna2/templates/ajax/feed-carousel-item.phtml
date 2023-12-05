@@ -14,11 +14,11 @@
   </div>
 <?php endif; ?>
 <div class="carousel-text" aria-hidden="true" tabindex="-1">
-  <span class="carousel-more carousel-close hidden"><?=$this->icon('carousel-close')?></span>
+  <div class="carousel-more carousel-close hidden"><?=$this->icon('carousel-close')?></div>
+  <div class="carousel-more show-link"><?=$this->icon('carousel-follow-link')?></div>
   <?php if (isset($item['title'])): ?>
     <div class="carousel-hover-title">
       <p><?=$this->escapeHtml($this->truncate($item['title'], 70))?></p>
-      <p class="carousel-more show-link"><?=$this->icon('carousel-follow-link')?></p>
     </div>
   <?php endif; ?>
   <?php if (isset($item['dateFull'])): ?>

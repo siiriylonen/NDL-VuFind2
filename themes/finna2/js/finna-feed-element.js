@@ -162,6 +162,9 @@ class FinnaFeedElement extends HTMLElement {
             holder.querySelectorAll('.carousel-hover-title').forEach(el => {
               el.style.display = 'none';
             });
+            holder.querySelectorAll('.carousel-more.show-link').forEach(el => {
+              el.style.display = 'none';
+            });
             holder.querySelectorAll('.carousel-hover-date').forEach(el => {
               el.style.display = 'none';
             });
@@ -174,6 +177,14 @@ class FinnaFeedElement extends HTMLElement {
 
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
+          if (!vertical && !titleBottom) {
+            this.querySelectorAll('.carousel-feed .carousel-text').forEach(el => {
+              const textElement = el.querySelector('div.text p');
+              if (textElement.innerHTML.trim() === '') {
+                el.classList.add('no-text');
+              }
+            });
+          }
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             if (holder.querySelector('.carousel-text:not(.no-text)') !== null) {
               el.classList.remove('hidden');
