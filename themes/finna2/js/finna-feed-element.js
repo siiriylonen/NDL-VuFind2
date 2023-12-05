@@ -193,7 +193,7 @@ class FinnaFeedElement extends HTMLElement {
           if (settings.mobileHeight && finna.layout.isTouchDevice()) {
             holder.querySelectorAll('.feed-item-holder').forEach(el => {
               el.style.height = `${settings.mobileHeight}px`;
-            })
+            });
           }
           holder.querySelectorAll('.carousel-text-container').forEach(el => {
             if (el.clientHeight < el.scrollHeight) {
