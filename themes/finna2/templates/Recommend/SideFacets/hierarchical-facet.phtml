@@ -11,7 +11,7 @@
   // of the suppressed query:
   $extraUrlFields = $this->results->getUrlQuery()->getParamsWithConfiguredDefaults();
 
-  $clusterList = $this->cluster['list'];
+  $clusterList = $this->cluster['list'] ?? [];
   // Auto-expand top level facets when there are only one or two items by cheating a
   // bit by claiming they have applied children:
   if (count($clusterList) <= 2) {
