@@ -100,7 +100,7 @@ $rangeFacets = $this->recommend->getAllRangeFacets(); ?>
       $dataTarget = 'side-collapse-' . $escAttrField;
     ?>
     <div class="list-group facet<?= $daterangeFacet ? ' daterange-facet' : '' ?> facet-group" id="side-panel-<?=$escAttrField?>">
-      <button class="list-group-item title<?php if ($isCollapsed): ?> collapsed<?php endif ?>" data-toggle="collapse" data-target="#<?=$dataTarget?>" aria-controls="<?=$dataTarget?>" aria-expanded="<?= !$isCollapsed ? 'true' : 'false';?>">
+      <button class="list-group-item title<?php if ($isCollapsed): ?> collapsed<?php endif; ?>" data-toggle="collapse" data-target="#<?=$dataTarget?>" aria-controls="<?=$dataTarget?>" aria-expanded="<?= !$isCollapsed ? 'true' : 'false';?>" <?=$this->matomoTracking('Facets', $escAttrField) ?>>
         <span class="facet-title"><?=$this->transEsc($facetName)?></span>
         <?=$this->icon('collapse', 'facet-title-icon') ?>
       </button>
