@@ -411,16 +411,18 @@ finna.layout = (function finnaLayout() {
     });
     // Track side facets when opened
     var facetContainer = document.querySelector('.side-facets-container-ajax');
-    finna.common.trackContentImpressions(facetContainer);
-    facetContainer.querySelectorAll('button').forEach(el => {
-      var collapsed = el.classList.contains('collapsed');
-      if (!collapsed) {
-        el.setAttribute('data-content-ignoreinteraction', '');
-      }
-      el.addEventListener('click', function toggleIgnore() {
-        el.toggleAttribute('data-content-ignoreinteraction');
+    if (facetContainer) {
+      finna.common.trackContentImpressions(facetContainer);
+      facetContainer.querySelectorAll('button').forEach(el => {
+        var collapsed = el.classList.contains('collapsed');
+        if (!collapsed) {
+          el.setAttribute('data-content-ignoreinteraction', '');
+        }
+        el.addEventListener('click', function toggleIgnore() {
+          el.toggleAttribute('data-content-ignoreinteraction');
+        });
       });
-    });
+    }
   }
 
   function initPiwikPopularSearches() {
