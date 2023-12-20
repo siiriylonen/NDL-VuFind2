@@ -182,6 +182,7 @@ class FinnaFeedElement extends HTMLElement {
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             if (holder.querySelector('.carousel-text:not(.no-text)') !== null) {
               el.classList.remove('hidden');
+              el.parentNode.style.paddingRight = '30px';
             }
           });
           if (!settings.modal) {
