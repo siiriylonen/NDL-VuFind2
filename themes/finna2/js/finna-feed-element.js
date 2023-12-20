@@ -75,8 +75,6 @@ class FinnaFeedElement extends HTMLElement {
       if (textElement.innerHTML.trim() !== '') {
         el.classList.add('text-bottom');
         el.style.maxHeight = `${settings.height}px`;
-      } else {
-        el.classList.add('no-text');
       }
     });
     settings.height = +settings.height + maxH;
@@ -172,19 +170,15 @@ class FinnaFeedElement extends HTMLElement {
             this.splide.options = {
               height: settings.height
             };
+          } else if (!this.isTouchDevice) {
+            this.querySelectorAll('.carousel-feed .carousel-text').forEach(el => {
+              el.classList.remove('no-text');
+            });
           }
         }
 
         // Text hover for touch devices
         if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
-          if (!vertical && !titleBottom) {
-            this.querySelectorAll('.carousel-feed .carousel-text').forEach(el => {
-              const textElement = el.querySelector('div.text p');
-              if (textElement.innerHTML.trim() === '') {
-                el.classList.add('no-text');
-              }
-            });
-          }
           holder.querySelectorAll('.carousel-slide-more.carousel-show').forEach(el => {
             if (holder.querySelector('.carousel-text:not(.no-text)') !== null) {
               el.classList.remove('hidden');
