@@ -59,6 +59,9 @@
     </name>
     <name relator="Tuntematon rooli">
       <part lang="fin">Tuovi Tuntematon</part>
-    </name> 
+    </name>
+    <name relator="Aihe">
+      <part localtype="Ensisijainen nimi" lang="fin">Anssi Aihe</part>
+    </name>
   </controlaccess>
 </c02>

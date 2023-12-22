@@ -258,6 +258,18 @@ class SolrEad3Test extends \PHPUnit\Framework\TestCase
                     'ead3_test2.xml' => [],
                 ],
             ],
+            [
+                'getSubjectActors',
+                [
+                    'ead3_test.xml' => [
+                        'Anssi Aihe',
+                        'Aino Aihe',
+                    ],
+                    'ead3_test2.xml' => [
+                        'Aino Aihe',
+                    ],
+                ],
+            ],
         ];
     }
 
