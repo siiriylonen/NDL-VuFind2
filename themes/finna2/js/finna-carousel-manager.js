@@ -41,6 +41,7 @@ finna.carouselManager = (() => {
     omitEnd: 'omitEnd',
     pagination: 'pagination',
     focus: 'focus',
+    gap: 'gap',
     slidesToShow: (itemsPerPage) => {
       const breakpoints = {};
       let perPage = 0;
