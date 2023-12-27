@@ -8,6 +8,7 @@ finna.carouselManager = (() => {
   };
 
   /**
+   * Count the gap value from amount of items per page
    * 
    * @param {int} perPage The value to count gap value from
    * @returns {int} Gap value 
