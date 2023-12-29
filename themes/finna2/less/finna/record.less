@@ -502,8 +502,29 @@ a.authority {
   margin-bottom: 6px;
 }
 
-.record-links {
+.record-information {
   vertical-align: baseline;
+  button.less-link.top-button {
+    top: 0;
+    position: sticky;
+    background-color: @body-bg;
+    width: 100%;
+    padding: 10px 0;
+    text-align: left;
+    @media(max-width: @screen-md) {
+      top: @navbar-height;
+    }
+  }
+  ul.truncate-field {
+    margin-bottom: 0;
+  }
+  button.less-link {
+    display: flex;
+    align-items: baseline;
+    i {
+      padding-left: 2px;
+    }
+  }
   .link-wrapper {
     vertical-align: baseline;
     display: inline-flex;
