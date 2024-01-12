@@ -33,6 +33,7 @@ namespace FinnaSearch\Backend\Solr;
 
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
+use VuFindSearch\Query\WorkKeysQuery;
 use VuFindSearch\Response\RecordCollectionInterface;
 
 /**
@@ -115,14 +116,19 @@ class Backend extends \VuFindSearch\Backend\Solr\Backend
     /**
      * Return work expressions.
      *
-     * @param string   $id            Id of record to compare with
-     * @param array    $workKeys      Work identification keys
-     * @param ParamBag $defaultParams Search backend parameters
+     * @param WorkKeysQuery $query         Search query
+     * @param int           $offset        Search offset
+     * @param int           $limit         Search limit
+     * @param ParamBag      $defaultParams Search backend parameters
      *
      * @return RecordCollectionInterface
      */
-    public function workExpressions($id, $workKeys, ParamBag $defaultParams = null)
-    {
+    protected function workKeysSearch(
+        WorkKeysQuery $query,
+        int $offset,
+        int $limit,
+        ParamBag $defaultParams = null
+    ): RecordCollectionInterface {
         $params = $defaultParams ? clone $defaultParams
             : new \VuFindSearch\ParamBag();
 
@@ -130,6 +136,6 @@ class Backend extends \VuFindSearch\Backend\Solr\Backend
             $params->add('sort', 'main_date_str desc, title_sort asc');
         }
 
-        return parent::workExpressions($id, $workKeys, $params);
+        return parent::workKeysSearch($query, $offset, $limit, $params);
     }
 }
