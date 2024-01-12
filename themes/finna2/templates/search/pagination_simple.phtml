@@ -11,7 +11,7 @@
       <li><a href="<?=$this->currentPath() . $this->results->getUrlQuery()->setPage($this->previous)?>"><span class="sr-only"><?=$this->transEsc('page_prev')?></span><?=$this->icon('pagination-prev') ?></a></li>
     <?php endif; ?>
     <?php // Note: search-stats class is the scroll target for loading results with JS: ?>
-    <li class="pagination-text search-stats js-search-stats" data-key="showing_results_html">
+    <li class="pagination-text search-stats js-search-stats" data-key="showing_results_of_html">
       <?=
         $this->label ?: $this->translate(
             'showing_results_of_html',
