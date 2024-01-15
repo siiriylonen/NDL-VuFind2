@@ -8,12 +8,12 @@ finna.carouselManager = (() => {
   };
 
   /**
-   * Count the gap value from amount of items per page
+   * Calculate the gap value from amount of items per page
    * 
-   * @param {int} perPage The value to count gap value from
+   * @param {int} perPage The value to calculate gap value from
    * @returns {int} Gap value 
    */
-  function countGapValue(perPage) {
+  function calculateGapValue(perPage) {
     if (perPage % 2 === 0 || perPage === 1) {
       return 10;
     } else {
@@ -52,12 +52,12 @@ finna.carouselManager = (() => {
         switch (bp) {
         case 'perPage':
           perPage = value;
-          gap = countGapValue(value);
+          gap = calculateGapValue(value);
           break;
         case '':
           break;
         default:
-          gap = countGapValue(value);
+          gap = calculateGapValue(value);
           breakpoints[bp] = {
             perPage: value,
             gap,
