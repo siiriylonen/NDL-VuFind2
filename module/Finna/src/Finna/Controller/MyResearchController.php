@@ -1382,7 +1382,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
      * Create sort list.
      * If no sort option selected, set first one from the list to default.
      *
-     * @param \VuFind\Db\Row\UserList $list List object
+     * @param ?\VuFind\Db\Row\UserList $list List object
      *
      * @return array
      */
