@@ -5,7 +5,7 @@
  *
  * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2014-2021.
+ * Copyright (C) The National Library of Finland 2014-2023.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -356,6 +356,7 @@ $config = [
             'Finna\Config\SearchSpecsReader' => 'VuFind\Config\YamlReaderFactory',
             'Finna\Config\YamlReader' => 'VuFind\Config\YamlReaderFactory',
             'Finna\Connection\Finto' => 'Finna\Connection\FintoFactory',
+            'Finna\Content\Description\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Cookie\RecommendationMemory' => 'Finna\Cookie\RecommendationMemoryFactory',
             'Finna\Cover\Loader' => 'VuFind\Cover\LoaderFactory',
             'Finna\Export' => 'VuFind\ExportFactory',
@@ -395,6 +396,7 @@ $config = [
             'Finna\View\Resolver\AggregateResolver' => 'Finna\View\Resolver\AggregateResolverFactory',
             'Finna\Wayfinder\WayfinderService' => 'Finna\Wayfinder\WayfinderServiceFactory',
             'Finna\Wayfinder\Adapter\SampleAdapter' => 'Finna\Wayfinder\Adapter\WayfinderAdapterServiceFactory',
+            'Finna\Wayfinder\Adapter\VanamoAdapter' => 'Finna\Wayfinder\Adapter\WayfinderAdapterServiceFactory',
             'NatLibFi\FinnaCodeSets\FinnaCodeSets' => 'Finna\RecordDriver\CodeSetsFactory',
 
             // Factory overrides for non-Finna classes:
@@ -424,6 +426,7 @@ $config = [
             'ViewResolver' => 'Finna\View\Resolver\AggregateResolver',
             'Wayfinder' => 'Finna\Wayfinder\WayfinderService',
             'WayfinderSampleAdapter' => 'Finna\Wayfinder\Adapter\SampleAdapter',
+            'WayfinderVanamoAdapter' => 'Finna\Wayfinder\Adapter\VanamoAdapter',
         ],
     ],
     'view_manager' => [
@@ -470,8 +473,6 @@ $config = [
                         'Finna\AjaxHandler\GetModelFactory',
                     'Finna\AjaxHandler\GetEncapsulatedRecords' =>
                         'Finna\AjaxHandler\GetEncapsulatedRecordsFactory',
-                    'Finna\AjaxHandler\GetFacetData' =>
-                        'Finna\AjaxHandler\GetFacetDataFactory',
                     'Finna\AjaxHandler\GetFeed' =>
                         'Finna\AjaxHandler\GetFeedFactory',
                     'Finna\AjaxHandler\GetFieldInfo' =>
@@ -556,7 +557,6 @@ $config = [
                     // Overrides:
                     'VuFind\AjaxHandler\CommentRecord' => 'Finna\AjaxHandler\CommentRecord',
                     'VuFind\AjaxHandler\GetACSuggestions' => 'Finna\AjaxHandler\GetACSuggestions',
-                    'VuFind\AjaxHandler\GetFacetData' => 'Finna\AjaxHandler\GetFacetData',
                     'VuFind\AjaxHandler\GetItemStatuses' => 'Finna\AjaxHandler\GetItemStatuses',
                     'VuFind\AjaxHandler\GetRequestGroupPickupLocations' => 'Finna\AjaxHandler\GetRequestGroupPickupLocations',
                     'VuFind\AjaxHandler\GetSideFacets' => 'Finna\AjaxHandler\GetSideFacets',
@@ -588,6 +588,7 @@ $config = [
                     'r2' => 'Finna\Autocomplete\R2',
                 ],
             ],
+            'content_description' => [],
             'db_row' => [
                 'factories' => [
                     'Finna\Db\Row\CommentsInappropriate' => 'VuFind\Db\Row\RowGatewayFactory',
@@ -638,7 +639,7 @@ $config = [
             'db_table' => [
                 'factories' => [
                     'Finna\Db\Table\Comments' => 'VuFind\Db\Table\GatewayFactory',
-                    'Finna\Db\Table\CommentsInappropriate' => 'VuFind\Db\Table\GatewayFactory',
+                    'Finna\Db\Table\CommentsInappropriate' => 'Finna\Db\Table\CommentsInappropriateFactory',
                     'Finna\Db\Table\CommentsRecord' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\DueDateReminder' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\Fee' => 'VuFind\Db\Table\GatewayFactory',
@@ -780,7 +781,7 @@ $config = [
             'search_options' => [
                 'factories' => [
                     'Finna\Search\Blender\Options' => 'VuFind\Search\Options\OptionsFactory',
-                    'Finna\Search\Combined\Options' => 'VuFind\Search\Options\OptionsFactory',
+                    'Finna\Search\Combined\Options' => 'VuFind\Search\Combined\OptionsFactory',
                     'Finna\Search\EDS\Options' => 'VuFind\Search\EDS\OptionsFactory',
                     'Finna\Search\R2\Options' => 'VuFind\Search\Options\OptionsFactory',
                     'Finna\Search\Primo\Options' => 'VuFind\Search\Options\OptionsFactory',
@@ -894,6 +895,7 @@ $config = [
                 'factories' => [
                     'Finna\Content\Covers\BTJ' => 'Finna\Content\Covers\BTJFactory',
                     'Finna\Content\Covers\CoverArtArchive' => 'Finna\Content\Covers\CoverArtArchiveFactory',
+                    'Finna\Content\Covers\Kirjavalitys' => 'Finna\Content\Covers\KirjavalitysFactory',
                 ],
                 'invokables' => [
                     'bookyfi' => 'Finna\Content\Covers\BookyFi',
@@ -902,6 +904,7 @@ $config = [
                 'aliases' => [
                     'btj' => 'Finna\Content\Covers\BTJ',
                     'coverartarchive' => 'Finna\Content\Covers\CoverArtArchive',
+                    'kirjavalitys' => 'Finna\Content\Covers\Kirjavalitys',
                 ],
             ],
             'recorddriver' => [

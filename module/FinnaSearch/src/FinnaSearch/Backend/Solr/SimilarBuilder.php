@@ -189,7 +189,7 @@ class SimilarBuilder extends \VuFindSearch\Backend\Solr\SimilarBuilder
                     $escaped = addcslashes($values, $this->escapedChars);
                     $fullBoost = $this->fullMatchBoostMultiplier * $boostValue;
                     $query[] = "$field:($escaped)^$fullBoost";
-                    foreach (explode(' ', $values) as $value) {
+                    foreach (str_contains($values, ' ') ? explode(' ', $values) : [] as $value) {
                         if (strlen($value) < 3) {
                             continue;
                         }
