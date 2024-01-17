@@ -4,8 +4,7 @@
   $clickableLink = !$clickableElement;
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
-  $content = $item['description'] ?? $item['text'];
-  $noText = empty($content);
+  $noText = empty($item['text']);
 ?>
 <?php if ($hasIcon && $hasImg): ?>
   <?=$this->partial('Helpers/feed-icon.phtml', ['icon' => $item['icon'], 'wrapper' => true]);?>
@@ -42,7 +41,7 @@
         <p class="xcal"><?=$this->icon('feed-xcal-location') ?><span class="sr-only"><?=$this->transEscAttr('Location') ?></span> <?=$this->escapeHtml($xcal['location']) ?></p>
       <?php endif; ?>
     <?php endif; ?>
-    <p><?=$this->escapeHtml($content) ?></p>
+    <p><?=$this->escapeHtml($item['text']) ?></p>
   </div>
   <div class="carousel-text-shadow"></div>
   <?php if ($clickableLink): ?>

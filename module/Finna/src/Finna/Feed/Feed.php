@@ -471,8 +471,7 @@ class Feed implements
         ];
 
         if (!empty($config->content->description)) {
-            $content['description'] = 'getDescription';
-            unset($content['text']);
+            $content['text'] = 'getDescription';
         }
 
         $xpathContent = [

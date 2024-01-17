@@ -4,7 +4,6 @@
   $clickableLink = !$clickableElement;
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
-  $content = $item['description'] ?? $item['text'];
 ?>
 <?php if ($hasImg): ?>
   <div class="slider-image" aria-hidden="true">
@@ -21,7 +20,7 @@
         <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
       <?php endif; ?>
       <div class="text">
-        <p><?=$this->escapeHtml($content) ?></p>
+        <p><?=$this->escapeHtml($item['text']) ?></p>
       </div>
       <?php if ($clickableLink): ?>
         <span class="carousel-description"><?= $linkTextEsc ?></span>

@@ -2,7 +2,6 @@
 <?php
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
-  $content = $item['description'] ?? $item['text'];
 ?>
 <?php if ($hasImg): ?>
   <img src="<?=$this->escapeHtmlAttr($item['image']['url']) ?>" alt="">
@@ -28,5 +27,5 @@
     <?php endif; ?>
   </div>
 <?php endif; ?>
-<?php if (!empty($content)): ?><span class="text"><?=$this->escapeHtml($content) ?></span><?php endif; ?>
+<?php if (isset($item['text'])): ?><span class="text"><?=$this->escapeHtml($item['text']) ?></span><?php endif; ?>
 <!-- END of: finna - ajax/feed-list-item.phtml -->

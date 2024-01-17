@@ -4,8 +4,7 @@
   $clickableLink = !$clickableElement;
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
-  $content = $item['description'] ?? $item['text'];
-  $noText = empty($content);
+  $noText = empty($item['text']);
 ?>
 <?php if ($hasIcon && $hasImg): ?>
   <?=$this->partial('Helpers/feed-icon.phtml', ['icon' => $item['icon'], 'wrapper' => true]);?>
@@ -31,7 +30,7 @@
   <?php endif; ?>
   <?php if (!$noText): ?>
     <div class="sr-only">
-      <p><?=$this->escapeHtml($content)?></p>
+      <p><?=$this->escapeHtml($item['text'])?></p>
       <?php if ($clickableLink): ?>
         <span class="carousel-description"><?= $this->linkTextEsc ?></span>
       <?php endif; ?>
@@ -60,7 +59,7 @@
           <p class="xcal"><?=$this->icon('feed-xcal-location') ?><span class="sr-only"><?=$this->transEscAttr('Location') ?></span> <?=$this->escapeHtml($xcal['location']) ?></p>
         <?php endif; ?>
       <?php endif; ?>
-      <p><?=$this->escapeHtml($content ?? '') ?></p>
+      <p><?=$this->escapeHtml($item['text'] ?? '') ?></p>
     </div>
     <?php if ($clickableLink): ?>
       <span class="carousel-description"><?= $linkTextEsc ?></span>
