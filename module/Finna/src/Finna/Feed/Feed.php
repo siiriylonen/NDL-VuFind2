@@ -470,7 +470,7 @@ class Feed implements
             'contentDate' => 'getDateCreated',
         ];
 
-        if (!empty($config->content->description)) {
+        if (!empty($config->descriptionAsText)) {
             $content['text'] = 'getDescription';
         }
 
