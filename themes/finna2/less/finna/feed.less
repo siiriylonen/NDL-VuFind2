@@ -846,7 +846,7 @@ finna-feed.carousel.splide--ltr {
     }
 }
 
-finna-feed.carousel-featured.splide--ltr {
+finna-feed.carousel-slider.splide--ltr {
     .splide__arrows {
         width: 100%;
         left: 0;
@@ -862,7 +862,7 @@ finna-feed.carousel-featured.splide--ltr {
         }
     }
     --background-color: transparent;
-    &.carousel-with-background {
+    &.slider-with-background {
         &::before {
             content: '';
             background-color: var(--background-color);
@@ -870,7 +870,7 @@ finna-feed.carousel-featured.splide--ltr {
             height: 100%;
             width: 100%;
         }
-        &.carousel-full-width {
+        &.slider-full-width {
             &::before {
                 width: 100vw;
                 max-width: 100vw;
@@ -885,11 +885,11 @@ finna-feed.carousel-featured.splide--ltr {
     .carousel-header {
         display: none;
     }
-    .carousel-featured-image, .carousel-featured-text-part {
+    .slider-image, .slider-text-part {
         height: 100%;
         padding: 10px 15px;
     }
-    .carousel-featured-image {
+    .slider-image {
         display: flex;
         justify-content: center;
         width: 50%;
@@ -900,7 +900,7 @@ finna-feed.carousel-featured.splide--ltr {
             flex: left;
         }
     }
-    .carousel-featured-text-part {
+    .slider-text-part {
         display: flex;
         color: @text-color;
         max-width: 50%;
@@ -925,7 +925,7 @@ finna-feed.carousel-featured.splide--ltr {
         }
     }
     @media (min-width: @screen-sm) {
-        .carousel-featured-text-part {
+        .slider-text-part {
             .carousel-title {
                 font-size: @font-size-h2;                
             }
@@ -935,7 +935,7 @@ finna-feed.carousel-featured.splide--ltr {
         .feed-link {
             flex-direction: column;
         }
-        .carousel-featured-image, .carousel-featured-text-part {
+        .slider-image, .slider-text-part {
             width: auto;
             max-width: 100%;
             height: 50%;
@@ -951,7 +951,7 @@ finna-feed.carousel-featured.splide--ltr {
                 font-size: @font-size-small;
             }
         }
-        .carousel-featured-image {
+        .slider-image {
             padding: 5px;
             img {
                 height: 100%;

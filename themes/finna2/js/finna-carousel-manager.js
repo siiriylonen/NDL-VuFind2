@@ -98,7 +98,7 @@ finna.carouselManager = (() => {
         direction = 'ttb';
         break;
       case 'carousel':
-      case 'carousel-featured':
+      case 'slider':
         direction = 'ltr';
         classes.prev += 'left';
         classes.next += 'right';

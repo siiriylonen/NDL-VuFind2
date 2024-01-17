@@ -469,6 +469,11 @@ class Feed implements
             'date' => 'getDateCreated',
             'contentDate' => 'getDateCreated',
         ];
+        
+        if (!empty($config->content->description)) {
+            $content['description'] = 'getDescription';
+            unset($content['text']);
+        }
 
         $xpathContent = [
             'html' => '//item/content:encoded',

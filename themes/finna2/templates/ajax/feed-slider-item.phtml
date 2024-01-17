@@ -1,17 +1,18 @@
-<!-- START of: finna - ajax/feed-carousel-featured-item.phtml -->
+<!-- START of: finna - ajax/feed-slider-item.phtml -->
 <?php
   $clickableElement = !$this->touchDevice && !isset($this->linkText);
   $clickableLink = !$clickableElement;
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
+  $content = isset($item['description']) ? $item['description'] : $item['text'];
 ?>
 <?php if ($hasImg): ?>
-  <div class="carousel-featured-image" aria-hidden="true">
+  <div class="slider-image" aria-hidden="true">
     <img data-src="<?=$this->escapeHtmlAttr($item['image']['url']) ?>" alt="<?=$this->transEsc('Image');?><?php if (isset($item['title'])): ?>: <?=$this->escapeHtml($item['title']) ?><?php endif; ?>">
   </div>
 <?php endif; ?>
-<div class="carousel-featured-text-part">
-  <div class="carousel-text-container">
+<div class="slider-text-part">
+  <div class="slider-text-container">
     <div class="carousel-text" aria-hidden="true">
       <?php if (!empty($feedTitle)): ?>
         <h2 class="carousel-header"><?=$feedTitle;?></h2>
@@ -20,7 +21,7 @@
         <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
       <?php endif; ?>
       <div class="text">
-        <?=$item['text']?>
+        <p><?=$this->escapeHtml($content) ?></p>
       </div>
       <?php if ($clickableLink): ?>
         <span class="carousel-description"><?= $linkTextEsc ?></span>
@@ -28,4 +29,4 @@
     </div>
   </div>
 </div>
-<!-- END of: finna - ajax/feed-carousel-featured-item.phtml -->
+<!-- END of: finna - ajax/feed-slider-item.phtml -->
