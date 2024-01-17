@@ -4,7 +4,7 @@
   $clickableLink = !$clickableElement;
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
-  $content = isset($item['description']) ? $item['description'] : $item['text'];
+  $content = $item['description'] ?? $item['text'];
 ?>
 <?php if ($hasImg): ?>
   <div class="slider-image" aria-hidden="true">

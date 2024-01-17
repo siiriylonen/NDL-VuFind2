@@ -2,7 +2,7 @@
 <?php
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
-  $content = isset($item['description']) ? $item['description'] : $item['text'];
+  $content = $item['description'] ?? $item['text'];
 ?>
 <?php if ($hasImg): ?>
   <img src="<?=$this->escapeHtmlAttr($item['image']['url']) ?>" alt="">

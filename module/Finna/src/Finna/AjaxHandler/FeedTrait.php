@@ -121,7 +121,7 @@ trait FeedTrait
         if (isset($config->visualItems)) {
             $feed['visualItems'] = $config->visualItems;
         }
-        
+
         if (str_contains($type, 'carousel') || $type === 'slider') {
             $template = 'carousel';
         } else {
