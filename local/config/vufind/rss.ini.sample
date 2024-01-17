@@ -126,7 +126,7 @@
 
 ; Elements to show, by default all elements are hidden
 
-; content[description] = 1
+; content[description] = 1 (overrides content[text])
 
 [carousel]
 type = "carousel"
