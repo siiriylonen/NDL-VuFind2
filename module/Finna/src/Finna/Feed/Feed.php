@@ -464,15 +464,12 @@ class Feed implements
             'id' => 'getId',
             'title' => 'getTitle',
             'text' => 'getContent',
+            'description' => 'getDescription',
             'image' => 'getEnclosure',
             'link' => 'getLink',
             'date' => 'getDateCreated',
             'contentDate' => 'getDateCreated',
         ];
-
-        if (!empty($config->descriptionAsText)) {
-            $content['text'] = 'getDescription';
-        }
 
         $xpathContent = [
             'html' => '//item/content:encoded',
