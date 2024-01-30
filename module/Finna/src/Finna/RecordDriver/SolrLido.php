@@ -1803,7 +1803,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      * places. Each heading is returned as an array of chunks, increasing from least
      * specific to most specific.
      *
-     * Returns a keyed array with the following
+     * @param bool $extended Whether to returns a keyed array with the following
      * keys:
      * - heading: the actual subject heading chunks
      * - type: heading type
@@ -1814,12 +1814,23 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      *
      * @return array
      */
-    public function getAllSubjectHeadingsWithoutPlaces(): array
+    public function getAllSubjectHeadingsWithoutPlaces($extended = false): array
     {
         $headings = [];
-        $results = [];
+        $dates = [];
         $headings = $this->getTopics();
         $language = $this->getLocale();
+        foreach (['genre'] as $field) {
+            $headings = array_merge(
+                $headings,
+                array_map(
+                    function ($term) {
+                        return ['data' => $term];
+                    },
+                    $this->fields[$field] ?? []
+                )
+            );
+        }
         // Include all display dates from events except creation date
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap->eventSet ?? [] as $node) {
             $type = isset($node->event->eventType->term)
@@ -1831,33 +1842,48 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         $displayDate,
                         $language
                     ));
-                    $headings[] = [
+                    $dates[] = [
                         'data' => $date,
                     ];
                 }
             }
         }
+        $headings = array_merge($headings, $dates);
 
         // The default index schema doesn't currently store subject headings in a
         // broken-down format, so we'll just send each value as a single chunk.
         // Other record drivers (i.e. SolrMarc) can offer this data in a more
         // granular format.
-        foreach ($headings as $key) {
-            $data = [
-                'heading' => [$key['data'] ?? 'bam'],
-                'type' => 'topic',
-                'source' => $key['source'] ?? '',
-            ];
-            if ($id = $key['id'] ?? '') {
-                $data['id'] = $id;
-                // Categorize non-URI ID's as Unknown Names, since the
-                // actual authority format can not be determined from metadata.
-                $data['authType'] = preg_match('/^https?:/', $id)
-                    ? null : 'Unknown Name';
+        $callback = function ($i) use ($extended) {
+            if ($extended) {
+                $data = [
+                    'heading' => [$i['data']],
+                    'type' => 'topic',
+                    'source' => $i['source'] ?? '',
+                ];
+                if ($id = $i['id'] ?? '') {
+                    $data['id'] = $id;
+                    // Categorize non-URI ID's as Unknown Names, since the
+                    // actual authority format can not be determined from metadata.
+                    $data['authType'] = preg_match('/^https?:/', $id)
+                        ? null : 'Unknown Name';
+                }
+            } else {
+                return [$i['data']];
             }
-            $results[] = $data;
-        }
-        return $results;
+            return $data;
+        };
+        return array_map($callback, $headings);
+    }
+
+    /**
+     * Get extended subject information
+     *
+     * @return array
+     */
+    public function getAllSubjectHeadingsWithoutPlacesExtended(): array
+    {
+        return $this->getAllSubjectHeadingsWithoutPlaces(true);
     }
 
     /**

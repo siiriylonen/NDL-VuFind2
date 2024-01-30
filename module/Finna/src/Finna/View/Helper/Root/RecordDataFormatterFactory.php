@@ -740,7 +740,7 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
         );
         $setTemplateLine(
             'SubjectsWithoutPlaces',
-            'getAllSubjectHeadingsWithoutPlaces',
+            'getAllSubjectHeadingsWithoutPlacesExtended',
             'data-allSubjectHeadingsExtended.phtml',
             [
                 'context' => ['class' => 'recordSubjects', 'title' => 'Subjects'],
