@@ -1803,7 +1803,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      * places. Each heading is returned as an array of chunks, increasing from least
      * specific to most specific.
      *
-     * @param bool $extended Whether to returns a keyed array with the following
+     * @param bool $extended Whether to return a keyed array with the following
      * keys:
      * - heading: the actual subject heading chunks
      * - type: heading type
