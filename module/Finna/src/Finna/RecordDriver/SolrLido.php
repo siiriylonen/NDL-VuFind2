@@ -1814,7 +1814,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      *
      * @return array
      */
-    public function getAllSubjectHeadingsWithoutPlaces($extended = false): array
+    public function getAllSubjectHeadingsWithoutPlaces(bool $extended = false): array
     {
         $headings = [];
         $dates = [];
@@ -1891,7 +1891,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      *
      * @return array
      */
-    public function getTopics()
+    public function getTopics(): array
     {
         $results = [];
         $langResults = [];
