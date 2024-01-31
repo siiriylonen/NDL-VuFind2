@@ -29,8 +29,6 @@
 
 namespace Finna\Search;
 
-use VuFind\Search\QueryAdapter;
-
 use function in_array;
 use function is_callable;
 

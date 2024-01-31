@@ -33,6 +33,7 @@ namespace Finna\Controller;
 
 use VuFind\Exception\Mail as MailException;
 
+use function count;
 use function is_array;
 
 /**
