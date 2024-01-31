@@ -61,7 +61,7 @@ trait FinnaParams
         $showField = [$this->getOptions(), 'getHumanReadableFieldName'];
 
         // Build display query:
-        $result = QueryAdapter::display($this->getQuery(), $translate, $showField);
+        $result = $this->getQueryAdapter()->display($this->getQuery(), $translate, $showField);
 
         // Hack to display WorkKeys search nicer
         $str = preg_quote($showField('WorkKeys'));
