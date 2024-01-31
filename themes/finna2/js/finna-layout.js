@@ -596,21 +596,6 @@ finna.layout = (function finnaLayout() {
     });
   }
 
-  function initKeyboardNavigation() {
-    $(window).on("keyup", function onKeyUp(e) {
-      var $target = $(e.target);
-      // jsTree link target navigation
-      if ((e.which === 13 || e.which === 32)
-          && $target.hasClass('jstree-anchor') && $target.find('.main').length > 0
-      ) {
-        $target.find('.main').trigger("click");
-        e.preventDefault();
-        return false;
-      }
-      return true;
-    });
-  }
-
   function initPriorityNav() {
     priorityNav.init({
       mainNavWrapper: ".nav-wrapper",
@@ -838,7 +823,6 @@ finna.layout = (function finnaLayout() {
       initOrganisationInfoWidgets();
       initOrganisationPageLinks();
       initAudioButtons();
-      initKeyboardNavigation();
       initPriorityNav();
       initFiltersToggle();
       initCookieConsent();
