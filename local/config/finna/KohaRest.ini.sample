@@ -208,3 +208,7 @@ enabled = true
 ; Link the SMS number to the following Koha fields. Default for Finna is
 ; "sms_number,phone".
 ;fields = "sms_number,phone"
+
+[FeeTypeMappings]
+ODUE = "Overdue Return Request"
+ODUE2 = "Overdue Return Request"
