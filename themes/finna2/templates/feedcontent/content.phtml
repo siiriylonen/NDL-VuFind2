@@ -21,6 +21,9 @@
         JS;
     echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $setupJS, 'SET');
   }
+  if (!$this->modal) {
+    echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, "VuFind.addTranslations($translations);", 'SET');
+  }
 ?>
 <?php if ($this->modal): ?><h2></h2><?php endif; ?>
 <?php if (!$this->modal): ?>
