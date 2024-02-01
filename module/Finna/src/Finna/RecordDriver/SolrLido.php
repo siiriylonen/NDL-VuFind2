@@ -1907,7 +1907,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         if ($str === '') {
                             continue;
                         }
-                        $hasLocale = $hasId = false;
+                        $hasLocale = false;
                         $id = $source = '';
                         if (trim((string)$term->attributes()->lang ?? '') === $language) {
                             $hasLocale = true;
@@ -1921,32 +1921,20 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                                 if (in_array($type, $this->subjectConceptIDTypes)) {
                                     $id = $item;
                                     $source = trim($conceptID->attributes()->source ?? '');
-                                    $hasId = true;
                                 }
                             }
                         }
-                        if ($hasId) {
-                            $results[] = [
+                        $results[] = [
+                            'data' => $str,
+                            'id' => $id,
+                            'source' => $source,
+                        ];
+                        if ($hasLocale) {
+                            $langResults[] = [
                                 'data' => $str,
                                 'id' => $id,
                                 'source' => $source,
                             ];
-                            if ($hasLocale) {
-                                $langResults[] = [
-                                    'data' => $str,
-                                    'id' => $id,
-                                    'source' => $source,
-                                ];
-                            }
-                        } else {
-                            $results[] = [
-                                'data' => $str,
-                            ];
-                            if ($hasLocale) {
-                                $langResults[] = [
-                                    'data' => $str,
-                                ];
-                            }
                         }
                     }
                 }
