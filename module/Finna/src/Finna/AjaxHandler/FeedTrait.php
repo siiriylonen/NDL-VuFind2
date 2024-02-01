@@ -139,9 +139,6 @@ trait FeedTrait
         if (isset($config->mobileHeight)) {
             $settings['mobileHeight'] = $config->mobileHeight;
         }
-        if (isset($config->fullWidth)) {
-            $settings['fullWidth'] = $config->fullWidth;
-        }
         if (isset($config->backgroundColor)) {
             $settings['backgroundColor'] = $config->backgroundColor;
         }
