@@ -1903,50 +1903,49 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             foreach ($subjectSet->subject as $subject) {
                 foreach ($subject->subjectConcept as $concept) {
                     foreach ($concept->term as $term) {
-                        $hasLocale = false;
-                        $hasId = false;
                         $str = trim((string)$term);
-                        if ($str !== '') {
-                            if (trim((string)$term->attributes()->lang ?? '') === $language) {
-                                $hasLocale = true;
-                            }
-                            $id = '';
-                            $source = '';
-                            foreach ($concept->conceptID as $conceptID) {
-                                if ($item = trim((string)$conceptID)) {
-                                    $type = mb_strtolower(
-                                        (string)($conceptID['type'] ?? ''),
-                                        'UTF-8'
-                                    );
-                                    if (in_array($type, $this->subjectConceptIDTypes)) {
-                                        $id = $item;
-                                        $source = trim($conceptID->attributes()->source ?? '');
-                                        $hasId = true;
-                                    }
+                        if ($str === '') {
+                            continue;
+                        }
+                        $hasLocale = $hasId = false;
+                        $id = $source = '';
+                        if (trim((string)$term->attributes()->lang ?? '') === $language) {
+                            $hasLocale = true;
+                        }
+                        foreach ($concept->conceptID as $conceptID) {
+                            if ($item = trim((string)$conceptID)) {
+                                $type = mb_strtolower(
+                                    (string)($conceptID['type'] ?? ''),
+                                    'UTF-8'
+                                );
+                                if (in_array($type, $this->subjectConceptIDTypes)) {
+                                    $id = $item;
+                                    $source = trim($conceptID->attributes()->source ?? '');
+                                    $hasId = true;
                                 }
                             }
-                            if ($hasId) {
-                                $results[] = [
+                        }
+                        if ($hasId) {
+                            $results[] = [
+                                'data' => $str,
+                                'id' => $id,
+                                'source' => $source,
+                            ];
+                            if ($hasLocale) {
+                                $langResults[] = [
                                     'data' => $str,
                                     'id' => $id,
                                     'source' => $source,
                                 ];
-                                if ($hasLocale) {
-                                    $langResults[] = [
-                                        'data' => $str,
-                                        'id' => $id,
-                                        'source' => $source,
-                                    ];
-                                }
-                            } else {
-                                $results[] = [
+                            }
+                        } else {
+                            $results[] = [
+                                'data' => $str,
+                            ];
+                            if ($hasLocale) {
+                                $langResults[] = [
                                     'data' => $str,
                                 ];
-                                if ($hasLocale) {
-                                    $langResults[] = [
-                                        'data' => $str,
-                                    ];
-                                }
                             }
                         }
                     }
