@@ -7,22 +7,21 @@
       'content/header.phtml',
       ['heading' => $this->content()->getHeading()]
   );
-  $translations = $this->jsTranslations()->getJSONFromArray([
+  $translations = [
     'rss_article_not_found' => 'rss_article_not_found',
     'rss_article_channel_link' => 'rss_article_channel_link',
-  ]);
+  ];
+  $this->jsTranslations()->addStrings($translations);
 
   if ($this->modal) {
+    $jsonTranslations = $this->jsTranslations()->getJSONFromArray($translations);
     $setupJS = <<<JS
-        VuFind.addTranslations($translations);
+        VuFind.addTranslations($jsonTranslations);
         $(document).ready(function() {
           finna.contentFeed.loadFeed($('#modal .feed-content'), true);
         });
         JS;
     echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $setupJS, 'SET');
-  }
-  if (!$this->modal) {
-    echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, "VuFind.addTranslations($translations);", 'SET');
   }
 ?>
 <?php if ($this->modal): ?><h2></h2><?php endif; ?>
