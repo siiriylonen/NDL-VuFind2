@@ -180,9 +180,6 @@ class FinnaFeedElement extends HTMLElement {
         }
         if (slider) {
           holder.classList.add('carousel-slider');
-          if (settings.fullWidth) {
-            holder.classList.add('slider-full-width');
-          }
           if (settings.backgroundColor) {
             holder.classList.add('slider-with-background');
             holder.style.setProperty('--background-color', settings.backgroundColor);

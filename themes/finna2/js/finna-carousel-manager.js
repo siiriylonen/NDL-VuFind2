@@ -39,15 +39,6 @@ finna.carouselManager = (() => {
     },
     height: (value) => { return {height: parseInt(value)}; },
     mobileHeight: (value) => { return {mobileHeight: parseInt(value)}; },
-    fullWidth: (value) => {
-      let valueToInt = parseInt(value);
-      if (!isNaN(valueToInt) && valueToInt > 0) {
-        return {
-          fullWidth: true
-        };
-      }
-      return {fullWidth: false};
-    },
     backgroundColor: (value) => { return {backgroundColor: value}; },
     imagePlacement: (value) => { return {imagePlacement: value}; },
     width: (value) => { return {fixedWidth: parseInt(value)}; },
