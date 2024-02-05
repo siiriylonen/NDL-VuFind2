@@ -123,16 +123,35 @@ finna.myList = (function finnaMyList() {
       });
   }
 
+  function copyExistingNotes(ids, listId, notes) {
+    $.each(ids, function copyNotes(index, value) {
+      if (notes[index].trim() !== '') {
+        var dataArray = value.toString().split(',');
+        var noteParams = {'id': dataArray[1], 'source': dataArray[0], 'listId': listId, 'notes': notes[index]};
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: VuFind.path + '/AJAX/JSON?method=editListResource',
+          data: {'params': noteParams}
+        });
+      }
+    });
+  }
+
   function addResourcesToList(listId) {
     toggleErrorMessage(false);
 
     var ids = [];
+    var notes = [];
     $('input.checkbox-select-item[name="ids[]"]:checked').each(function processRecordId() {
       var recId = $(this).val();
       var pos = recId.indexOf('|');
       var source = recId.substring(0, pos);
       var id = recId.substring(pos + 1);
+      var container = $(this).closest('.record-container');
+      var note = container.find('.myresearch-notes .finna-editable-container').attr('data-markdown');
       ids.push([source, id]);
+      notes.push(note);
     });
     if (!ids.length) {
       return;
@@ -150,6 +169,7 @@ finna.myList = (function finnaMyList() {
       .done(function onAddToListDone(/*data*/) {
         // Don't reload to avoid trouble with POST requests
         location.href = String(location.href);
+        copyExistingNotes(ids, listId, notes);
       })
       .fail(function onAddToListFail() {
         toggleErrorMessage(true);
