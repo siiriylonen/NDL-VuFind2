@@ -847,6 +847,7 @@ finna-feed.carousel.splide--ltr {
 }
 
 finna-feed.carousel-slider.splide--ltr {
+    container-type: inline-size;
     .splide__arrows {
         width: 100%;
         left: 0;
@@ -897,12 +898,15 @@ finna-feed.carousel-slider.splide--ltr {
         color: @text-color;
         max-width: 50%;
         height: 100%;
-        .carousel-text-container {
+        .slider-text-container {
             overflow-y: auto;
             overscroll-behavior-y: contain;
             &.scrollable {
                 padding-right: 10px;
             }
+        }
+        .carousel-title {
+            color: @carousel-header-color;
         }
         .carousel-text {
             width: 100%;
@@ -916,14 +920,25 @@ finna-feed.carousel-slider.splide--ltr {
             font-weight: 500;
         }
     }
-    @media (min-width: @screen-sm) {
+}
+@container (min-width: @screen-sm) {
+    finna-feed.carousel-slider.splide--ltr {
         .slider-text-part {
             .carousel-title {
                 font-size: @font-size-h2;                
             }
         }
+        &.image-right .feed-link {
+            display: flex;
+            flex-direction: row-reverse;
+        }
     }
-    @media (max-width: @screen-sm) {
+}
+@container (max-width: @screen-sm) {
+    finna-feed.carousel-slider.splide--ltr {
+        .feed-item-holder[style] {
+            height: var(--height) !important;
+        }
         .feed-link {
             flex-direction: column;
         }
@@ -937,7 +952,8 @@ finna-feed.carousel-slider.splide--ltr {
                 margin-bottom: 5px;
             }
             .carousel-title {
-                margin: 10px 0;
+                padding: 0;
+                word-break: break-all;
             }
             .text {
                 font-size: @font-size-small;

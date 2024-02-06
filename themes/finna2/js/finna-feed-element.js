@@ -184,18 +184,11 @@ class FinnaFeedElement extends HTMLElement {
             holder.classList.add('slider-with-background');
             holder.style.setProperty('--background-color', settings.backgroundColor);
           }
-          if (settings.imagePlacement && !finna.layout.isTouchDevice()) {
-            if (settings.imagePlacement === 'right') {
-              holder.querySelectorAll('.feed-link').forEach(el => {
-                el.style.display = 'flex';
-                el.style.flexDirection = 'row-reverse';
-              });
-            }
+          if (settings.imagePlacement && settings.imagePlacement === 'right') {
+            holder.classList.add('image-right');
           }
-          if (settings.mobileHeight && finna.layout.isTouchDevice()) {
-            holder.querySelectorAll('.feed-item-holder').forEach(el => {
-              el.style.height = `${settings.mobileHeight}px`;
-            });
+          if (settings.mobileHeight) {
+            holder.style.setProperty('--height', `${settings.mobileHeight}px`);
           }
           holder.querySelectorAll('.slider-text-container').forEach(el => {
             if (el.clientHeight < el.scrollHeight) {
