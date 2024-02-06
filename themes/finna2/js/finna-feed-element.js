@@ -189,6 +189,8 @@ class FinnaFeedElement extends HTMLElement {
           }
           if (settings.mobileHeight) {
             holder.style.setProperty('--height', `${settings.mobileHeight}px`);
+          } else {
+            holder.style.setProperty('--height', `${settings.height}px`);
           }
           holder.querySelectorAll('.slider-text-container').forEach(el => {
             if (el.clientHeight < el.scrollHeight) {
