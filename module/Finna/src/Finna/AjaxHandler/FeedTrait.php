@@ -136,8 +136,8 @@ trait FeedTrait
         if (isset($config->height)) {
             $settings['height'] = $config->height;
         }
-        if (isset($config->mobileHeight)) {
-            $settings['mobileHeight'] = $config->mobileHeight;
+        if (isset($config->narrowHeight)) {
+            $settings['narrowHeight'] = $config->narrowHeight;
         }
         if (isset($config->backgroundColor)) {
             $settings['backgroundColor'] = $config->backgroundColor;

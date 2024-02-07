@@ -38,7 +38,7 @@ finna.carouselManager = (() => {
       return {autoplay: false};
     },
     height: (value) => { return {height: parseInt(value)}; },
-    mobileHeight: (value) => { return {mobileHeight: parseInt(value)}; },
+    narrowHeight: (value) => { return {narrowHeight: parseInt(value)}; },
     backgroundColor: (value) => { return {backgroundColor: value}; },
     imagePlacement: (value) => { return {imagePlacement: value}; },
     width: (value) => { return {fixedWidth: parseInt(value)}; },
