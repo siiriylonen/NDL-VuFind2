@@ -1817,20 +1817,18 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     public function getAllSubjectHeadingsWithoutPlaces(bool $extended = false): array
     {
         $headings = [];
-        $dates = [];
         $headings = $this->getTopics();
         $language = $this->getLocale();
-        foreach (['genre'] as $field) {
-            $headings = array_merge(
-                $headings,
-                array_map(
-                    function ($term) {
-                        return ['data' => $term];
-                    },
-                    $this->fields[$field] ?? []
-                )
-            );
-        }
+
+        $headings = array_merge(
+            $headings,
+            array_map(
+                function ($term) {
+                    return ['data' => $term];
+                },
+                $this->fields['genre'] ?? []
+            )
+        );
         // Include all display dates from events except creation date
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap->eventSet ?? [] as $node) {
             $type = isset($node->event->eventType->term)
@@ -1842,13 +1840,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         $displayDate,
                         $language
                     ));
-                    $dates[] = [
+                    $headings[] = [
                         'data' => $date,
                     ];
                 }
             }
         }
-        $headings = array_merge($headings, $dates);
 
         // The default index schema doesn't currently store subject headings in a
         // broken-down format, so we'll just send each value as a single chunk.
@@ -1893,54 +1890,76 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      */
     public function getTopics(): array
     {
-        $results = [];
-        $langResults = [];
+        $topics = [];
+        $langTopics = [];
+        $subjectActors = [];
+        $exclude = ['aihe', 'iconclass'];
         $language = $this->getLocale();
         foreach (
             $this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap
             ->subjectWrap->subjectSet ?? [] as $subjectSet
         ) {
             foreach ($subjectSet->subject as $subject) {
+                if (
+                    !empty($subject['type'])
+                    && in_array(
+                        mb_strtolower($subject['type'], 'UTF-8'),
+                        $exclude
+                    )
+                ) {
+                    continue;
+                }
+                $id = $source = '';
                 foreach ($subject->subjectConcept as $concept) {
                     foreach ($concept->term as $term) {
-                        $str = trim((string)$term);
-                        if ($str === '') {
-                            continue;
-                        }
-                        $hasLocale = false;
-                        $id = $source = '';
-                        if (trim((string)$term->attributes()->lang ?? '') === $language) {
-                            $hasLocale = true;
-                        }
-                        foreach ($concept->conceptID as $conceptID) {
-                            if ($item = trim((string)$conceptID)) {
-                                $type = mb_strtolower(
-                                    (string)($conceptID['type'] ?? ''),
-                                    'UTF-8'
-                                );
-                                if (in_array($type, $this->subjectConceptIDTypes)) {
-                                    $id = $item;
-                                    $source = trim($conceptID->attributes()->source ?? '');
+                        foreach (explode(',', (string)$term) as $explodedTerm) {
+                            $str = trim($explodedTerm);
+                            if ($str === '') {
+                                continue;
+                            }
+                            foreach ($concept->conceptID as $conceptID) {
+                                if ($item = trim((string)$conceptID)) {
+                                    $type = mb_strtolower(
+                                        (string)($conceptID['type'] ?? ''),
+                                        'UTF-8'
+                                    );
+                                    if (in_array($type, $this->subjectConceptIDTypes)) {
+                                        $id = $item;
+                                        $source = trim($conceptID->attributes()->source ?? '');
+                                    }
                                 }
                             }
-                        }
-                        $results[] = [
-                            'data' => $str,
-                            'id' => $id,
-                            'source' => $source,
-                        ];
-                        if ($hasLocale) {
-                            $langResults[] = [
+                            $topics[] = [
                                 'data' => $str,
                                 'id' => $id,
                                 'source' => $source,
                             ];
+                            if (trim((string)$term->attributes()->lang ?? '') === $language) {
+                                $langTopics[] = [
+                                    'data' => $str,
+                                    'id' => $id,
+                                    'source' => $source,
+                                ];
+                            }
+                        }
+                    }
+                }
+                // Add subject actors
+                foreach ($subject->subjectActor as $actor) {
+                    foreach ($actor->actor->nameActorSet ?? [] as $name) {
+                        foreach ($name->appellationValue as $value) {
+                            if ($str = trim((string)$value)) {
+                                $subjectActors[] = ['data' => $str];
+                            }
                         }
                     }
                 }
             }
         }
-        return $langResults ?: $results ?: [];
+        $resultArray = $langTopics ? $langTopics : $topics;
+        $results = array_merge(array_unique($resultArray, SORT_REGULAR), $subjectActors);
+
+        return $results ?: [];
     }
 
     /**
