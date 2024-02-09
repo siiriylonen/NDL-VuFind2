@@ -1840,9 +1840,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         $displayDate,
                         $language
                     ));
-                    $headings[] = [
-                        'data' => $date,
-                    ];
+                    $headings[] = ['data' => $date];
                 }
             }
         }
@@ -1890,6 +1888,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      */
     public function getTopics(): array
     {
+        $results = [];
         $topics = [];
         $langTopics = [];
         $subjectActors = [];
@@ -1949,17 +1948,25 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     foreach ($actor->actor->nameActorSet ?? [] as $name) {
                         foreach ($name->appellationValue as $value) {
                             if ($str = trim((string)$value)) {
-                                $subjectActors[] = ['data' => $str];
+                                $subjectActors[] = $str;
                             }
                         }
                     }
                 }
             }
         }
-        $resultArray = $langTopics ? $langTopics : $topics;
-        $results = array_merge(array_unique($resultArray, SORT_REGULAR), $subjectActors);
+        $results = $langTopics ? $langTopics : $topics;
+        $results = array_merge(
+            $results,
+            array_map(
+                function ($term) {
+                    return ['data' => $term];
+                },
+                $subjectActors
+            )
+        );
 
-        return $results ?: [];
+        return $results;
     }
 
     /**
