@@ -206,6 +206,13 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     protected $subjectConceptIDTypes = ['uri', 'url'];
 
     /**
+     * Array of excluded subject types
+     *
+     * @var array
+     */
+    protected $excludedSubjectTypes = ['aihe', 'iconclass'];
+
+    /**
      * Events used for author information.
      *
      * Key is event type, value is priority (lower is more important),
@@ -1892,7 +1899,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         $topics = [];
         $langTopics = [];
         $subjectActors = [];
-        $exclude = ['aihe', 'iconclass'];
         $language = $this->getLocale();
         foreach (
             $this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap
@@ -1903,7 +1909,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     !empty($subject['type'])
                     && in_array(
                         mb_strtolower($subject['type'], 'UTF-8'),
-                        $exclude
+                        $this->excludedSubjectTypes
                     )
                 ) {
                     continue;
