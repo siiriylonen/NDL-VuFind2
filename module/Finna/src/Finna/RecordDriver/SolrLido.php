@@ -1954,7 +1954,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     foreach ($actor->actor->nameActorSet ?? [] as $name) {
                         foreach ($name->appellationValue as $value) {
                             if ($str = trim((string)$value)) {
-                                $subjectActors[] = $str;
+                                $subjectActors[] = ['data' => $str];
                             }
                         }
                     }
@@ -1962,15 +1962,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             }
         }
         $results = $langTopics ? $langTopics : $topics;
-        $results = array_merge(
-            $results,
-            array_map(
-                function ($term) {
-                    return ['data' => $term];
-                },
-                $subjectActors
-            )
-        );
+        $results = array_merge($results, $subjectActors);
 
         return $results;
     }
