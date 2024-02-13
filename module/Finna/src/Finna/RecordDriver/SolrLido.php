@@ -1916,12 +1916,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 }
                 foreach ($subject->subjectConcept as $concept) {
                     foreach ($concept->term as $term) {
-                        $id = $source = '';
                         $str = trim((string)$term);
-                        $langAttr = trim((string)$term->attributes()->lang ?? '');
                         if ($str === '') {
                             continue;
                         }
+                        $id = $source = '';
+                        $langAttr = trim((string)$term->attributes()->lang ?? '');
                         foreach ($concept->conceptID as $conceptID) {
                             if ($item = trim((string)$conceptID)) {
                                 $type = mb_strtolower(
