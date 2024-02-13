@@ -1917,34 +1917,44 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 $id = $source = '';
                 foreach ($subject->subjectConcept as $concept) {
                     foreach ($concept->term as $term) {
-                        foreach (explode(',', (string)$term) as $explodedTerm) {
-                            $str = trim($explodedTerm);
-                            if ($str === '') {
-                                continue;
-                            }
-                            foreach ($concept->conceptID as $conceptID) {
-                                if ($item = trim((string)$conceptID)) {
-                                    $type = mb_strtolower(
-                                        (string)($conceptID['type'] ?? ''),
-                                        'UTF-8'
-                                    );
-                                    if (in_array($type, $this->subjectConceptIDTypes)) {
-                                        $id = $item;
-                                        $source = trim($conceptID->attributes()->source ?? '');
-                                    }
+                        $str = trim((string)$term);
+                        $langAttr = trim((string)$term->attributes()->lang ?? '');
+                        if ($str === '') {
+                            continue;
+                        }
+                        foreach ($concept->conceptID as $conceptID) {
+                            if ($item = trim((string)$conceptID)) {
+                                $type = mb_strtolower(
+                                    (string)($conceptID['type'] ?? ''),
+                                    'UTF-8'
+                                );
+                                if (in_array($type, $this->subjectConceptIDTypes)) {
+                                    $id = $item;
+                                    $source = trim($conceptID->attributes()->source ?? '');
                                 }
                             }
+                        }
+                        if ($id !== '') {
                             $topics[] = [
                                 'data' => $str,
                                 'id' => $id,
                                 'source' => $source,
                             ];
-                            if (trim((string)$term->attributes()->lang ?? '') === $language) {
+                            if ($langAttr === $language) {
                                 $langTopics[] = [
                                     'data' => $str,
                                     'id' => $id,
                                     'source' => $source,
                                 ];
+                            }
+                        } else {
+                            foreach (explode(',', (string)$term) as $explodedTerm) {
+                                if ($str = trim($explodedTerm)) {
+                                    $topics[] = ['data' => $str];
+                                }
+                                if ($langAttr === $language) {
+                                    $langTopics[] = ['data' => $str];
+                                }
                             }
                         }
                     }
