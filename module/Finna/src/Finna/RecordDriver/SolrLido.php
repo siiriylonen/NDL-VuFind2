@@ -1914,9 +1914,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 ) {
                     continue;
                 }
-                $id = $source = '';
                 foreach ($subject->subjectConcept as $concept) {
                     foreach ($concept->term as $term) {
+                        $id = $source = '';
                         $str = trim((string)$term);
                         $langAttr = trim((string)$term->attributes()->lang ?? '');
                         if ($str === '') {
@@ -1931,6 +1931,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                                 if (in_array($type, $this->subjectConceptIDTypes)) {
                                     $id = $item;
                                     $source = trim($conceptID->attributes()->source ?? '');
+                                    break;
                                 }
                             }
                         }
