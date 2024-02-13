@@ -1951,9 +1951,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                             foreach (explode(',', (string)$term) as $explodedTerm) {
                                 if ($str = trim($explodedTerm)) {
                                     $topics[] = ['data' => $str];
-                                }
-                                if ($langAttr === $language) {
-                                    $langTopics[] = ['data' => $str];
+                                    if ($langAttr === $language) {
+                                        $langTopics[] = ['data' => $str];
+                                    }
                                 }
                             }
                         }
