@@ -424,6 +424,133 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Function to get data for subject field
+     *
+     * @return array
+     */
+    public static function getAllSubjectHeadingsWithoutPlacesExtendedData(): array
+    {
+        return [
+            [
+                'fi',
+                [
+                    'lido_test.xml' => [
+                        [
+                            'heading' => ['sohvat'],
+                            'type' => 'topic',
+                            'source' => '',
+                        ],
+                        [
+                            'heading' => ['maalaukset'],
+                            'type' => 'topic',
+                            'source' => '',
+                            'id' => 'http://www.yso.fi/onto/koko/p31096',
+                            'authType' => null,
+                        ],
+                        [
+                            'heading' => ['maalaukset, ei pilkottu'],
+                            'type' => 'topic',
+                            'source' => '',
+                            'id' => 'http://www.yso.fi/onto/koko/p31096',
+                            'authType' => null,
+                        ],
+                        [
+                            'heading' => ['maalaukset'],
+                            'type' => 'topic',
+                            'source' => '',
+                        ],
+                        [
+                            'heading' => ['pilkottuna'],
+                            'type' => 'topic',
+                            'source' => '',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'sv',
+                [
+                    'lido_test2.xml' => [
+                        [
+                            'heading' => ['morot'],
+                            'type' => 'topic',
+                            'source' => 'yso',
+                            'id' => 'http://www.yso.fi/onto/yso/p5066',
+                            'authType' => null,
+                        ],
+                        [
+                            'heading' => ['Jussi, Jänö'],
+                            'type' => 'topic',
+                            'source' => '',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'xy',
+                [
+                    'lido_test2.xml' => [
+                        [
+                            'heading' => ['porkkana'],
+                            'type' => 'topic',
+                            'source' => 'yso',
+                            'id' => 'http://www.yso.fi/onto/yso/p5066',
+                            'authType' => null,
+                        ],
+                        [
+                            'heading' => ['morot'],
+                            'type' => 'topic',
+                            'source' => 'yso',
+                            'id' => 'http://www.yso.fi/onto/yso/p5066',
+                            'authType' => null,
+                        ],
+                        [
+                            'heading' => ['juures'],
+                            'type' => 'topic',
+                            'source' => '',
+                        ],
+                        [
+                            'heading' => ['Jussi, Jänö'],
+                            'type' => 'topic',
+                            'source' => '',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Test getAllSubjectHeadingsWithoutPlacesExtended
+     *
+     * @param string $language Language
+     * @param array  $expected Result to be expected
+     *
+     * @dataProvider getAllSubjectHeadingsWithoutPlacesExtendedData
+     *
+     * @return void
+     */
+    public function testGetAllSubjectHeadingsWithoutPlacesExtended(
+        string $language,
+        array $expected
+    ): void {
+        foreach ($expected as $file => $result) {
+            $translator = $this
+                ->getMockBuilder(\Laminas\I18n\Translator\Translator::class)
+                ->disableOriginalConstructor()
+                ->onlyMethods([])
+                ->getMock();
+            $translator->setLocale($language);
+            $driver = $this->getDriver($file);
+            $driver->setTranslator($translator);
+            $this->assertEquals(
+                $result,
+                $driver->getAllSubjectHeadingsWithoutPlacesExtended()
+            );
+        }
+    }
+
+    /**
      * Function to get expected physical locations data
      *
      * @return array
