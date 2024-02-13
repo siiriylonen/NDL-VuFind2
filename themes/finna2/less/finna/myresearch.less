@@ -129,12 +129,6 @@
       justify-content: space-between;
     }
   }
-  #update_selected, #purgeSelected {
-    border-radius: 4px 0 0 4px;
-  }
-  #cancel_selected, #copy_to_favourites {
-    border-radius: 0 4px 4px 0;
-  }
   .sort-button ul.dropdown-menu li a {
     font-size: 1em;
   }
@@ -591,7 +585,9 @@
 
 .useraccount-table {
   border: 1px solid @gray-lighter;
-  border-top: none;
+  &:not(.fines-table) {
+    border-top: none;
+  }
   box-shadow: 0 15px 30px -35px @gray;
   border-collapse: separate;
   margin-top: 10px;
@@ -643,8 +639,10 @@
       font-weight: bold;
     }
   }
-  .balance {
-    text-align: right;
+  @media screen and (min-width: 769px) {
+    .balance {
+      text-align: right;
+    }
   }
   .online-payment-remark {
     font-weight: bold;
@@ -1016,4 +1014,19 @@
 
 .message-body {
   margin: 5px;
+}
+
+.delete-all-tokens {
+  margin: 10px;
+}
+
+.login-tokens-section.library-profile {
+  padding: 10px;
+}
+
+.login-tokens-table {
+  margin-bottom: 0px;
+  tbody > tr > td {
+    vertical-align: middle;
+  }
 }

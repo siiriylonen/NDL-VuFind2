@@ -5,7 +5,7 @@
  *
  * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2017.
+ * Copyright (C) The National Library of Finland 2017-2024.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -23,6 +23,7 @@
  * @category VuFind
  * @package  Controller
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Pasi Tiisanoja <pasi.tiisanoja@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Page
  */
@@ -35,13 +36,14 @@ namespace Finna\Controller;
  * @category VuFind
  * @package  Controller
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Pasi Tiisanoja <pasi.tiisanoja@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Page
  */
 class BarcodeController extends \VuFind\Controller\AbstractBase
 {
     /**
-     * Send barcode data for display in the view
+     * Display a barcode
      *
      * @return \Laminas\Http\Response
      */
@@ -49,16 +51,7 @@ class BarcodeController extends \VuFind\Controller\AbstractBase
     {
         $this->disableSessionWrites();  // avoid session write timing bug
 
-        $htmlGenerator = new \Picqer\Barcode\BarcodeGeneratorHTML();
         $code = $this->getRequest()->getQuery('code', '');
-        $type = $this->getRequest()->getQuery('type', $htmlGenerator::TYPE_CODE_39);
-
-        return $this->createViewModel(
-            [
-                'code' => $code,
-                'type' => $type,
-                'html' => $htmlGenerator->getBarcode($code, $type, 3, 60),
-            ]
-        );
+        return $this->createViewModel(compact('code'));
     }
 }

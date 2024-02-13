@@ -557,6 +557,7 @@ class Feed implements
                                     'element' => $itemId,
                                     'lng' => $this->getTranslatorLocale(),
                                 ],
+                                'normalize_path' => false,
                             ]
                         );
                     } elseif ($setting == 'id') {
