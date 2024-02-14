@@ -145,7 +145,7 @@ finna.myList = (function finnaMyList() {
       type: 'POST',
       dataType: 'json',
       url: VuFind.path + '/AJAX/JSON?method=addToList',
-      data: {params: {'listId': listId, 'currentListId': currentListId, 'source': 'Solr', 'ids': ids,}}
+      data: {params: {'listId': listId, 'currentListId': currentListId, 'source': 'Solr', 'ids': ids}}
     })
       .done(function onAddToListDone(/*data*/) {
         // Don't reload to avoid trouble with POST requests
