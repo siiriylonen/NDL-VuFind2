@@ -98,8 +98,8 @@
 
 ; This type only displays one item per page, but otherwise uses carousel settings.
 ; backgroundColor = "#f7f7f7" Background colour of the slider (default none).
-; stackedHeight = [pixels] The height of the slider when it uses the stacked (vertical) layout , e.g. on mobile device (sets regular height value by default).
-; imagePlacement = [left|right] The side of which the image is on the slider on wider screens (default left).
+; stackedHeight = [pixels] The height of the slider when it uses the stacked (vertical) layout, e.g. on mobile device (sets regular height value by default).
+; imagePlacement = [left|right] The side of which the image is on the slider when it uses the horizontal layout (default left).
 
 ; Number of visible items in the carousel
 
