@@ -43,7 +43,6 @@ use function intval;
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Page
- * @retry    4
  */
 class SearchLimitTest extends \VuFindTest\Integration\MinkTestCase
 {
@@ -85,7 +84,7 @@ class SearchLimitTest extends \VuFindTest\Integration\MinkTestCase
      */
     protected function assertResultSize(Element $page, int $size)
     {
-        $text = $this->findCss($page, '.search-stats strong')->getText();
+        $text = $this->findCssAndGetText($page, '.search-stats strong');
         [, $actualSize] = explode(' - ', $text);
         $this->assertEquals($size, intval($actualSize));
     }

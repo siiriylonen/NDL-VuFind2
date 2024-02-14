@@ -1,5 +1,8 @@
 <!-- START of: finna - search/pagination.phtml -->
 <?php if ($this->pageCount && (isset($this->previous) || isset($this->next))): ?>
+<?php
+  $showFirstLast = $this->results->getOptions()->firstLastNavigationSupported();
+?>
 <nav aria-label="<?=$this->transEsc('pagination_label')?>">
   <?php
     $ulAttrs = $this->htmlAttributes(['class' => 'pagination hidden-print']);
@@ -12,9 +15,11 @@
   ?>
   <ul<?=$ulAttrs?>>
     <?php if (isset($this->previous)): ?>
-      <li class="pagination-button">
-        <a href="<?=$this->currentPath() . $this->results->getUrlQuery()->setPage(1)?>"><?=$this->icon('pagination-first') ?><span class="sr-only"><?=$this->transEsc('First')?></span></a>
-      </li>
+      <?php if ($showFirstLast): ?>
+        <li class="pagination-button page-first">
+          <a href="<?=$this->currentPath() . $this->results->getUrlQuery()->setPage(1)?>"><?=$this->icon('pagination-first') ?><span class="sr-only"><?=$this->transEsc('First')?></span></a>
+        </li>
+      <?php endif; ?>
       <li class="pagination-button">
         <a href="<?=$this->currentPath() . $this->results->getUrlQuery()->setPage($this->previous)?>"><?=$this->icon('pagination-prev') ?><span class="sr-only"><?=$this->transEsc('Prev')?></span></a>
       </li>
@@ -32,9 +37,11 @@
       <li class="pagination-button">
         <a href="<?=$this->currentPath() . $this->results->getUrlQuery()->setPage($this->next)?>"><?=$this->icon('pagination-next') ?><span class="sr-only"><?=$this->transEsc('Next');?></span></a>
       </li>
-      <li class="pagination-button">
-        <a href="<?=$this->currentPath() . $this->results->getUrlQuery()->setPage($this->pageCount)?>"><?=$this->icon('pagination-last') ?><span class="sr-only"><?=$this->transEsc('Last')?></span></a>
-      </li>
+      <?php if ($showFirstLast): ?>
+        <li class="pagination-button page-last">
+          <a href="<?=$this->currentPath() . $this->results->getUrlQuery()->setPage($this->pageCount)?>"><?=$this->icon('pagination-last') ?><span class="sr-only"><?=$this->transEsc('Last')?></span></a>
+        </li>
+      <?php endif; ?>
     <?php endif; ?>
   </ul>
 </nav>
