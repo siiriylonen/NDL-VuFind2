@@ -187,8 +187,8 @@ class FinnaFeedElement extends HTMLElement {
           if (settings.imagePlacement && settings.imagePlacement === 'right') {
             holder.classList.add('image-right');
           }
-          if (settings.narrowHeight) {
-            holder.style.setProperty('--height', `${settings.narrowHeight}px`);
+          if (settings.stackedHeight) {
+            holder.style.setProperty('--height', `${settings.stackedHeight}px`);
           } else {
             holder.style.setProperty('--height', `${settings.height}px`);
           }

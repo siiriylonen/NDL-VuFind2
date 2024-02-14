@@ -98,7 +98,7 @@
 
 ; This type only displays one item per page, but otherwise uses carousel settings.
 ; backgroundColor = "#f7f7f7" Background colour of the slider (default none).
-; narrowHeight = [pixels] The height of the slider when placed in a container that has narrower width, e.g. on mobile device (sets regular height value by default).
+; stackedHeight = [pixels] The height of the slider when it uses the stacked (vertical) layout , e.g. on mobile device (sets regular height value by default).
 ; imagePlacement = [left|right] The side of which the image is on the slider on wider screens (default left).
 
 ; Number of visible items in the carousel
@@ -187,7 +187,7 @@ active = 1
 url[fi] = "https://musasto.wordpress.com/feed/"
 title = "rss"
 height = 450
-narrowHeight = 600
+stackedHeight = 600
 backgroundColor = "#f7f7f7"
 imagePlacement = "left"
 

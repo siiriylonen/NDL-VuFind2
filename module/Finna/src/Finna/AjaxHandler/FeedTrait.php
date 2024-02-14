@@ -136,8 +136,8 @@ trait FeedTrait
         if (isset($config->height)) {
             $settings['height'] = $config->height;
         }
-        if (isset($config->narrowHeight)) {
-            $settings['narrowHeight'] = $config->narrowHeight;
+        if (isset($config->stackedHeight)) {
+            $settings['stackedHeight'] = $config->stackedHeight;
         }
         if (isset($config->backgroundColor)) {
             $settings['backgroundColor'] = $config->backgroundColor;
