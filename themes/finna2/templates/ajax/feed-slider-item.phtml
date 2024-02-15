@@ -20,7 +20,7 @@
         <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
       <?php endif; ?>
       <div class="text">
-        <p><?=$this->escapeHtml($item['description']) ?></p>
+        <p><?=$this->escapeHtml($item['description'] ?? '') ?></p>
       </div>
       <?php if ($clickableLink): ?>
         <span class="carousel-description"><?= $linkTextEsc ?></span>
