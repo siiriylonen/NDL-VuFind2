@@ -1,7 +1,5 @@
 <!-- START of: finna - ajax/feed-slider-item.phtml -->
 <?php
-  $clickableElement = !$this->touchDevice && !isset($this->linkText);
-  $clickableLink = !$clickableElement;
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
 ?>
@@ -22,8 +20,8 @@
       <div class="text">
         <p><?=$this->escapeHtml($item['description'] ?? '') ?></p>
       </div>
-      <?php if ($clickableLink): ?>
-        <span class="carousel-description"><?= $linkTextEsc ?></span>
+      <?php if ($hasLinkText): ?>
+        <span class="slider-link-text"><?= $linkTextEsc ?></span>
       <?php endif; ?>
     </div>
   </div>
