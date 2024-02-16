@@ -12,13 +12,13 @@
   <div class="slider-text-container">
     <div class="carousel-text">
       <?php if (!empty($feedTitle)): ?>
-        <h2 class="carousel-header"><?=$feedTitle;?></h2>
+        <h2 class="slider-header"><?=$feedTitle;?></h2>
       <?php endif; ?>
       <?php if (!empty($item['title'])): ?>
-        <h3 class="carousel-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
+        <h3 class="slider-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
       <?php endif; ?>
       <div class="text">
-        <p><?=$this->escapeHtml($item['description'] ?? '') ?></p>
+        <p><?=$this->cleanHtml($item['description'] ?? '') ?></p>
       </div>
       <?php if ($hasLinkText): ?>
         <span class="slider-link-text"><?= $linkTextEsc ?></span>
