@@ -287,6 +287,7 @@ finna.layout = (function finnaLayout() {
     holder.find('[data-toggle="tooltip"]')
       .on('show.bs.tooltip', function onShowTooltip() {
         var self = $(this);
+        $(this).attr('aria-pressed', 'true');
         $(currentOpenTooltips).each(function hideOtherTooltips() {
           if ($(this)[0] !== self[0]) {
             $(this).tooltip('hide');
@@ -295,6 +296,7 @@ finna.layout = (function finnaLayout() {
         currentOpenTooltips = [self];
       })
       .on('hidden.bs.tooltip', function onHideTooltip(e) {
+        $(e.target).attr('aria-pressed', 'false');
         $(e.target).data('bs.tooltip').inState.click = false;
       })
       .tooltip({trigger: 'click', viewport: '.container'});
@@ -308,6 +310,13 @@ finna.layout = (function finnaLayout() {
     // close tooltip if user clicks anything else than tooltip button
     $('html').on('click', function onClickHtml(e) {
       if (typeof $(e.target).parent().data('original-title') == 'undefined' && typeof $(e.target).data('original-title') == 'undefined') {
+        $('[data-toggle="tooltip"]').tooltip('hide');
+        currentOpenTooltips = [];
+      }
+    });
+    // close tooltip if esc-key pressed
+    $('html').on('keydown', function onClickHtml(e) {
+      if (e.which === 27) {
         $('[data-toggle="tooltip"]').tooltip('hide');
         currentOpenTooltips = [];
       }

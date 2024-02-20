@@ -274,12 +274,23 @@
     <div class="search-tooltip"><?php
         $searchTypes = ['search' => 'local', 'primo' => 'pci', 'eds' => 'eds', 'r2search' => 'R2', 'summon' => 'summon'];
         if (isset($searchTypes[$module]) && !$this->translationEmpty('tooltip_' . $searchTypes[$module] . '_search_html')) {
-          $tooltipClass = 'tooltip-search-' . $searchTypes[$module];
+          $tooltipClass = 'tooltip-button tooltip-search-' . $searchTypes[$module] . ' hidden-xs';
           $tooltipText = $this->translate('tooltip_' . $searchTypes[$module] . '_search_html');
         }
         if (isset($tooltipClass) && isset($tooltipText)):
       ?>
-        <button aria-label="<?= $this->transEsc('Search Tips') ?>" class="tooltip-button <?=$tooltipClass?> hidden-xs" data-toggle="tooltip" data-placement="auto" data-html="true" data-original-title="<?=$this->escapeHtmlAttr($tooltipText)?>">
+      <?php
+        $tooltipBtnAttrs = $this->htmlAttributes([
+          'class' => $tooltipClass,
+          'data-toggle' => 'tooltip',
+          'aria-label' => $this->translate('Search Tips'),
+          'aria-pressed' => 'false',
+          'data-placement' => 'auto',
+          'data-html' => 'true',
+          'data-original-title' => $tooltipText,
+        ]);
+      ?>
+        <button <?=$tooltipBtnAttrs?>>
           <?=$this->icon('help', 'search-help-icon') ?>
         </button>
     <?php endif; ?></div>
