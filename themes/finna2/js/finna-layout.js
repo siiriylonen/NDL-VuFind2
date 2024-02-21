@@ -299,7 +299,8 @@ finna.layout = (function finnaLayout() {
         $(e.target).attr('aria-pressed', 'false');
         $(e.target).data('bs.tooltip').inState.click = false;
       })
-      .tooltip({trigger: 'click', viewport: '.container'});
+      .tooltip({trigger: 'click', viewport: '.container'})
+      .attr('aria-pressed', 'false');
 
     holder.find('[data-toggle="tooltip-hover')
       .tooltip({trigger: 'hover', delay: {show: 1000, hide: 200}});
