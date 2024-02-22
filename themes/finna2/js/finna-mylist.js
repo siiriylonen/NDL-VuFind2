@@ -123,7 +123,7 @@ finna.myList = (function finnaMyList() {
       });
   }
 
-  function addResourcesToList(listId, currentListId = null) {
+  function addResourcesToList(listId, currentListId = '') {
     toggleErrorMessage(false);
 
     var ids = [];
@@ -361,9 +361,8 @@ finna.myList = (function finnaMyList() {
     // add resource to list
     $('.mylist-functions #add-to-list').off('change').on("change", function onChangeAddToList(/*e*/) {
       var val = $(this).val();
-      var currentListId = getActiveListId();
       if (val !== '') {
-        addResourcesToList(val, currentListId);
+        addResourcesToList(val, getActiveListId());
       }
     });
 
