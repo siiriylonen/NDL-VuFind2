@@ -153,7 +153,6 @@ class AddToList extends \VuFind\AjaxHandler\AbstractBase implements TranslatorAw
         foreach ($ids as $id) {
             $source = $id[0];
             $recId = $id[1];
-            $notes = '';
             try {
                 $driver = $this->recordLoader->load($recId, $source, true);
                 $notes = $driver->getListNotes($currentListId ?: null, $this->user->id);
