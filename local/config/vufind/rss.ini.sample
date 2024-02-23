@@ -1,7 +1,7 @@
 ;; Mandatory settings:
 
 ; active = [0|1]
-; type = "[list|carousel|carousel-vertical|grid]"
+; type = "[list|carousel|carousel-vertical|grid|slider]"
 
 ; url[language code|*] = "<url>" Feed URL, for example:
 ;    Absolute URL: http://blogs.helsinki.fi/scriptaselecta/feed/
@@ -184,7 +184,7 @@ linkTarget  = "_blank"
 [slider]
 type = "slider"
 active = 1
-url[fi] = "https://musasto.wordpress.com/feed/"
+url[*] = "https://musasto.wordpress.com/feed/"
 title = "rss"
 height = 450
 stackedHeight = 600

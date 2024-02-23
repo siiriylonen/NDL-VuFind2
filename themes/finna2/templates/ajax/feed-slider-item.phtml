@@ -11,8 +11,8 @@
 <div class="slider-text-part">
   <div class="slider-text-container">
     <div class="carousel-text">
-      <?php if (!empty($feedTitle)): ?>
-        <h2 class="slider-header"><?=$feedTitle;?></h2>
+      <?php if (!empty($feedTitleEsc)): ?>
+        <h2 class="slider-header"><?=$feedTitleEsc;?></h2>
       <?php endif; ?>
       <?php if (!empty($item['title'])): ?>
         <h3 class="slider-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>

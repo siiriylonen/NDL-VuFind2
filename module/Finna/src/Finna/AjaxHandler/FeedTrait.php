@@ -122,7 +122,8 @@ trait FeedTrait
             $feed['visualItems'] = $config->visualItems;
         }
 
-        if (str_contains($type, 'carousel') || $type === 'slider') {
+        $isCarouselStyle = str_contains($type, 'carousel') || $type === 'slider';
+        if ($isCarouselStyle) {
             $template = 'carousel';
         } else {
             $template = $type;
@@ -146,7 +147,7 @@ trait FeedTrait
             $settings['imagePlacement'] = $config->imagePlacement;
         }
 
-        if (str_starts_with($type, 'carousel') || 'slider' === $type) {
+        if ($isCarouselStyle) {
             $settings['images'] = $images;
             $settings['autoplay']
                 = $config->autoplay ?? false;
@@ -157,7 +158,7 @@ trait FeedTrait
             $breakPoints = [
                 'desktop' => 4, 'desktop-small' => 3, 'tablet' => 2, 'mobile' => 1,
             ];
-            if ($type === 'slider') {
+            if ('slider' === $type) {
                 $settings['slidesToShow']['desktop'] = $settings['scrolledItems']['desktop'] = 1;
             } else {
                 foreach ($breakPoints as $breakPoint => $default) {
