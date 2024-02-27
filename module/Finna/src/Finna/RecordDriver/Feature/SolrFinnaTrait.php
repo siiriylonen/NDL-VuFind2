@@ -1175,7 +1175,11 @@ trait SolrFinnaTrait
      */
     protected function getSupportedCitationFormats()
     {
-        return ['APA', 'Chicago', 'MLA', 'Harvard'];
+        $supportedFormats = ['APA', 'Chicago', 'MLA', 'Harvard'];
+        if (isset($this->fields['hierarchy_top_id'])) {
+            $supportedFormats[] = 'Archive';
+        }
+        return $supportedFormats;
     }
 
     /**

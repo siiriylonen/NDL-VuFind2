@@ -1,0 +1,6 @@
+<?php if (!empty($this->location)): ?><?=$this->transEsc($this->location)?>. <?php endif; ?>
+<?php if (!empty($this->origination)): ?><?=$this->escapeHtml($this->origination)?>. <?php endif; ?>
+<?php if (!empty($this->collection)): ?><?=$this->escapeHtml($this->collection)?>. <?php endif; ?>
+ <span style="font-style:italic;"><?=$this->escapeHtml($this->title)?>,</span>
+<?php if (!empty($this->url)): ?><?=$this->cleanHtml($this->url)?>, <?php endif; ?>
+(<?=$this->escapeHtml($this->date)?>)

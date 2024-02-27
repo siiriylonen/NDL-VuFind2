@@ -82,6 +82,33 @@ class Citation extends \VuFind\View\Helper\Root\Citation
     }
 
     /**
+     * Get Archive citation.
+     *
+     * This function returns a citation for archive items.
+     *
+     * @return string
+     */
+    public function getCitationArchive(): string
+    {
+        $serverUrl = $this->getView()->plugin('serverUrl');
+        $recordLinker = $this->getView()->plugin('recordLinker');
+        $url = $serverUrl($recordLinker->getUrl($this->driver));
+
+        $id = $this->driver->tryMethod('getUniqueID');
+        $topId = $this->driver->tryMethod('getHierarchyTopId')[0];
+        $origination = $id !== $topId ? $this->driver->tryMethod('getOrigination') : '';
+        $archive = [
+            'title' => $this->getAPATitle(),
+            'origination' => $origination,
+            'location' => $this->driver->tryMethod('getBuildings'),
+            'url' => $url,
+            'date' => date("Y-m-d"),
+        ];
+        $partial = $this->getView()->plugin('partial');
+        return $partial('Citation/archive-article.phtml', $archive);
+    }
+
+    /**
      * Get an array of authors for an APA and Harvard citation.
      *
      * @return array
