@@ -102,7 +102,7 @@ class Citation extends \VuFind\View\Helper\Root\Citation
             'origination' => $origination,
             'location' => $this->driver->tryMethod('getBuildings'),
             'url' => $url,
-            'date' => date("Y-m-d"),
+            'date' => date('Y-m-d'),
         ];
         $partial = $this->getView()->plugin('partial');
         return $partial('Citation/archive-article.phtml', $archive);
