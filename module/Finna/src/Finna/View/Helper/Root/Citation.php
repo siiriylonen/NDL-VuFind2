@@ -30,6 +30,8 @@
 
 namespace Finna\View\Helper\Root;
 
+use VuFind\Record\Loader;
+
 use function count;
 use function is_array;
 
@@ -44,6 +46,27 @@ use function is_array;
  */
 class Citation extends \VuFind\View\Helper\Root\Citation
 {
+    /**
+     * Record loader
+     *
+     * @var Loader
+     */
+    protected $recordLoader;
+
+    /**
+     * Constructor
+     *
+     * @param \VuFind\Date\Converter $converter Date converter
+     * @param Loader                 $loader    Record loader
+     */
+    public function __construct(
+        \VuFind\Date\Converter $converter,
+        Loader $loader,
+    ) {
+        parent::__construct($converter);
+        $this->recordLoader = $loader;
+    }
+
     /**
      * Get Harvard citation.
      *
@@ -93,16 +116,20 @@ class Citation extends \VuFind\View\Helper\Root\Citation
         $serverUrl = $this->getView()->plugin('serverUrl');
         $recordLinker = $this->getView()->plugin('recordLinker');
         $url = $serverUrl($recordLinker->getUrl($this->driver));
-
         $id = $this->driver->tryMethod('getUniqueID');
         $topId = $this->driver->tryMethod('getHierarchyTopId')[0];
-        $origination = $id !== $topId ? $this->driver->tryMethod('getOrigination') : '';
+        $origination = '';
+        if ($id !== $topId) {
+            $originationDriver = $this->recordLoader->load($topId);
+            $origination = $this->stripPunctuation($originationDriver->tryMethod('getTitle'));
+        }
         $archive = [
-            'title' => $this->getAPATitle(),
+            'title' => $this->stripPunctuation($this->details['title']),
+            'signum' => $this->details['subtitle'],
             'origination' => $origination,
-            'location' => $this->driver->tryMethod('getBuildings'),
+            'location' => $this->driver->tryMethod('getBuildings')[0],
             'url' => $url,
-            'date' => date('Y-m-d'),
+            'currentDate' => date('d-m-Y'),
         ];
         $partial = $this->getView()->plugin('partial');
         return $partial('Citation/archive-article.phtml', $archive);
