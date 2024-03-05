@@ -140,10 +140,10 @@ if ($isCollection) {
     $archive = $this->driver->tryMethod('getOrigination');
     $archiveLocation = $this->driver->tryMethod('getBuildings')[0];
     if ($archiveLocation) {
-        echo "note = {" . $this->translate('Location') . ": " . $this->translate($archiveLocation) . "},\n";
+        echo 'note = {' . $this->translate('Location') . ': ' . $this->translate($archiveLocation) . "},\n";
     }
     if ($archive) {
-        echo "note = {" . $this->translate('Archive') . ": {$archive}},\n";
+        echo 'note = {' . $this->translate('Archive') . ": {$archive}},\n";
     }
 }
 $notes = $this->driver->tryMethod('getGeneralNotes');
@@ -157,9 +157,9 @@ if ($urls = $this->record($this->driver)->getUrlList()) {
     foreach ($urls as $url) {
         echo "url = {{$url}},\n";
     }
-    echo "url = {" . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "},\n";
+    echo 'url = {' . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "},\n";
 } else {
-    echo "url = {" . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "}\n";
+    echo 'url = {' . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "}\n";
 }
 
 // Record separator:
