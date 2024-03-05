@@ -26,6 +26,14 @@ if (is_array($series)) {
         }
     }
 }
+$isCollection = !empty($this->driver->tryMethod('getHierarchyTopId'));
+if ($isCollection) {
+    $location = $this->translate($this->driver->tryMethod('getBuildings')[0]);
+    $archive = (string)$this->driver->tryMethod('getOrigination');
+    if (!empty($location || $archive)) {
+        echo "SF $location $archive\n";
+    }
+}
 
 $containerTitle = $this->driver->tryMethod('getContainerTitle');
 if (!empty($containerTitle)) {
@@ -192,6 +200,10 @@ if (is_array($subjects)) {
 
 if ($doi = $this->driver->tryMethod('getCleanDOI')) {
     echo "DO $doi\n";
+}
+
+if ($dateAccessed = date('d-m-Y')) {
+    echo "RD $dateAccessed\n";
 }
 
 // Record separator:
