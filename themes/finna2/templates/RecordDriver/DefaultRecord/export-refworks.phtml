@@ -29,7 +29,7 @@ if (is_array($series)) {
 $isCollection = !empty($this->driver->tryMethod('getHierarchyTopId'));
 if ($isCollection) {
     $location = $this->translate($this->driver->tryMethod('getBuildings')[0]);
-    $archive = (string)$this->driver->tryMethod('getOrigination');
+    $archive = $this->driver->tryMethod('getOrigination');
     if (!empty($location || $archive)) {
         echo "SF $location $archive\n";
     }
