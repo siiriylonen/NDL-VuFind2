@@ -43,26 +43,42 @@ if (is_array($languages)) {
     }
 }
 
-$series = $this->driver->tryMethod('getSeries');
-if (is_array($series)) {
-    foreach ($series as $current) {
-        if (is_array($current)) {
-            echo '%B ' . $current['name'];
-            if (!empty($current['issn']) || !empty($current['number'])) {
-                echo ', ';
+$topId = $this->driver->tryMethod('getHierarchyTopId')[0];
+$isCollection = !empty($topId);
+if ($isCollection) {
+    $series = $this->driver->tryMethod('getParentSeries');
+    if (is_array($series)) {
+        foreach ($series as $current) {
+            if (is_array($current)) {
+                echo '%B ' . $current['title'];
+                echo "\n";
+            } else {
+                echo "%B $current\n";
             }
-            if (!empty($current['issn'])) {
-                echo 'ISSN ' . $current['issn'];
-                if (!empty($current['number'])) {
-                    echo '; ';
+        }
+    }
+} else {
+    $series = $this->driver->tryMethod('getSeries');
+    if (is_array($series)) {
+        foreach ($series as $current) {
+            if (is_array($current)) {
+                echo '%B ' . $current['name'];
+                if (!empty($current['issn']) || !empty($current['number'])) {
+                    echo ', ';
                 }
+                if (!empty($current['issn'])) {
+                    echo 'ISSN ' . $current['issn'];
+                    if (!empty($current['number'])) {
+                        echo '; ';
+                    }
+                }
+                if (!empty($current['number'])) {
+                    echo $current['number'];
+                }
+                echo "\n";
+            } else {
+                echo "%B $current\n";
             }
-            if (!empty($current['number'])) {
-                echo $current['number'];
-            }
-            echo "\n";
-        } else {
-            echo "%B $current\n";
         }
     }
 }
@@ -84,24 +100,32 @@ if (is_array($issns)) {
 $title = rtrim($this->driver->getTitle(), ' /');
 echo "%T $title\n";
 
-$journalTitle = $this->driver->tryMethod('getContainerTitle');
-if (!empty($journalTitle)) {
-    echo "%J $journalTitle\n";
-    $volume = $this->driver->tryMethod('getContainerVolume');
-    if (!empty($volume)) {
-        echo "%V $volume\n";
+$id = $this->driver->getUniqueId();
+if ($isCollection && $topId !== $id) {
+    $archiveTitle = $this->driver->tryMethod('getOrigination');
+    if (!empty($archiveTitle)) {
+        echo "%J $archiveTitle\n";
     }
-    $number = $this->driver->tryMethod('getContainerIssue');
-    if (!empty($number)) {
-        echo "%N $number\n";
-    }
-    $page = $this->driver->tryMethod('getContainerStartPage');
-    if (!empty($page)) {
-        $end = $this->driver->tryMethod('getContainerEndPage');
-        if (!empty($end) && $end != $page) {
-            $page .= '-' . $end;
+} else {
+    $journalTitle = $this->driver->tryMethod('getContainerTitle');
+    if (!empty($journalTitle)) {
+        echo "%J $journalTitle\n";
+        $volume = $this->driver->tryMethod('getContainerVolume');
+        if (!empty($volume)) {
+            echo "%V $volume\n";
         }
-        echo "%P $page\n";
+        $number = $this->driver->tryMethod('getContainerIssue');
+        if (!empty($number)) {
+            echo "%N $number\n";
+        }
+        $page = $this->driver->tryMethod('getContainerStartPage');
+        if (!empty($page)) {
+            $end = $this->driver->tryMethod('getContainerEndPage');
+            if (!empty($end) && $end != $page) {
+                $page .= '-' . $end;
+            }
+            echo "%P $page\n";
+        }
     }
 }
 
