@@ -20,6 +20,8 @@ if ($marcProceedingsField) {
     $format = 'article';
 } elseif (is_array($formats) && in_array('Journal', $formats)) {
     $format = 'misc';
+} elseif ($isCollection) {
+    $format = 'inproceedings';
 } else {
     $format = 'book';
 }
@@ -56,11 +58,10 @@ if (!empty($journalTitle)) {
     }
 }
 
-$series = $isCollection ? $this->driver->tryMethod('getParentSeries') : $this->driver->tryMethod('getSeries');
-$seriesField = $isCollection ? 'title' : 'name';
+$series = $this->driver->tryMethod('getSeries');
 if (is_array($series)) {
     foreach ($series as $current) {
-        echo 'series = {' . (is_array($current) ? $current[$seriesField] : $current) . "},\n";
+        echo 'series = {' . (is_array($current) ? $current['name'] : $current) . "},\n";
     }
 }
 
@@ -76,8 +77,49 @@ $mergeAuthors = function (array $a): string {
     );
 };
 
-if ($authors = $mergeAuthors($this->driver->tryMethod('getPrimaryAuthors', [], []))) {
-    echo "author = {{$authors}},\n";
+if ($isCollection) {
+    $archives = $this->driver->tryMethod('getHierarchyTopTitle');
+    if ($archives) {
+        foreach ($archives as $archive) {
+            echo "booktitle = {{$archive}},\n";
+        }
+    }
+    $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
+    if ($archiveAuthors) {
+        foreach ($archiveAuthors as $archiveAuthor) {
+            if ($archiveAuthor) {
+                echo "author = {{$archiveAuthor}},\n";
+            }
+        }
+    } else {
+        if ($archives) {
+            foreach ($archives as $archive) {
+                echo "author = {{$archive}},\n";
+            }
+        }
+    }
+    $archiveLocation = $this->driver->tryMethod('getBuildings')[0];
+    if ($archiveLocation) {
+        echo 'address = {' . $this->translate($archiveLocation) . "},\n";
+    }
+    $locations = $this->driver->tryMethod('getPhysicalLocations');
+    if ($locations) {
+        if (is_array($locations)) {
+            foreach ($locations as $organization) {
+                echo "organization = {{$organization}},\n";
+            }
+        } else {
+            echo "organization = {{$organization}},\n";
+        }
+    }
+    $year = $this->driver->tryMethod('getYear');
+    if ($year) {
+        echo "year = {{$year}},\n";
+    }
+} else {
+    if ($authors = $mergeAuthors($this->driver->tryMethod('getPrimaryAuthors', [], []))) {
+        echo "author = {{$authors}},\n";
+    }
 }
 
 if ($editors = $mergeAuthors($this->driver->tryMethod('getSecondaryAuthors', [], []))) {
@@ -109,12 +151,6 @@ if (is_array($pubPlaces) && is_array($pubDates) && is_array($pubNames)) {
         }
     }
 }
-if ($isCollection) {
-    $date = $this->driver->tryMethod('getYear');
-    if ($date) {
-        echo "year = {{$date}},\n";
-    }
-}
 
 $edition = $this->driver->tryMethod('getEdition');
 if (!empty($edition)) {
@@ -136,16 +172,6 @@ if (is_array($physical)) {
     }
 }
 
-if ($isCollection) {
-    $archive = $this->driver->tryMethod('getOrigination');
-    $archiveLocation = $this->driver->tryMethod('getBuildings')[0];
-    if ($archiveLocation) {
-        echo 'note = {' . $this->translate('Location') . ': ' . $this->translate($archiveLocation) . "},\n";
-    }
-    if ($archive) {
-        echo 'note = {' . $this->translate('Archive') . ": {$archive}},\n";
-    }
-}
 $notes = $this->driver->tryMethod('getGeneralNotes');
 if (is_array($notes)) {
     foreach ($notes as $note) {

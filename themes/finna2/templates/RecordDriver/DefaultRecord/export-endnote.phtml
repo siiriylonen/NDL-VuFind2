@@ -1,6 +1,22 @@
 <?php
 echo $this->record($this->driver)->getExportFormat('endnote');
 
+if (!empty($this->driver->tryMethod('getHierarchyTopId'))) {
+    $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
+    if ($archiveAuthors) {
+        foreach ($archiveAuthors as $archiveAuthor) {
+            if ($archiveAuthor) {
+                echo "%A {$archiveAuthor},\n";
+            }
+        }
+    } else {
+        if ($archives = $this->driver->tryMethod('getHierarchyTopTitle')) {
+            foreach ($archives as $archive) {
+                echo "%A {$archive}\n";
+            }
+        }
+    }
+}
 foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {
     echo "%A {$author['name']}\n";
 }
@@ -43,42 +59,26 @@ if (is_array($languages)) {
     }
 }
 
-$topId = $this->driver->tryMethod('getHierarchyTopId')[0];
-$isCollection = !empty($topId);
-if ($isCollection) {
-    $series = $this->driver->tryMethod('getParentSeries');
-    if (is_array($series)) {
-        foreach ($series as $current) {
-            if (is_array($current)) {
-                echo '%B ' . $current['title'];
-                echo "\n";
-            } else {
-                echo "%B $current\n";
+$series = $this->driver->tryMethod('getSeries');
+if (is_array($series)) {
+    foreach ($series as $current) {
+        if (is_array($current)) {
+            echo '%B ' . $current['name'];
+            if (!empty($current['issn']) || !empty($current['number'])) {
+                echo ', ';
             }
-        }
-    }
-} else {
-    $series = $this->driver->tryMethod('getSeries');
-    if (is_array($series)) {
-        foreach ($series as $current) {
-            if (is_array($current)) {
-                echo '%B ' . $current['name'];
-                if (!empty($current['issn']) || !empty($current['number'])) {
-                    echo ', ';
-                }
-                if (!empty($current['issn'])) {
-                    echo 'ISSN ' . $current['issn'];
-                    if (!empty($current['number'])) {
-                        echo '; ';
-                    }
-                }
+            if (!empty($current['issn'])) {
+                echo 'ISSN ' . $current['issn'];
                 if (!empty($current['number'])) {
-                    echo $current['number'];
+                    echo '; ';
                 }
-                echo "\n";
-            } else {
-                echo "%B $current\n";
             }
+            if (!empty($current['number'])) {
+                echo $current['number'];
+            }
+            echo "\n";
+        } else {
+            echo "%B $current\n";
         }
     }
 }
@@ -100,32 +100,24 @@ if (is_array($issns)) {
 $title = rtrim($this->driver->getTitle(), ' /');
 echo "%T $title\n";
 
-$id = $this->driver->getUniqueId();
-if ($isCollection && $topId !== $id) {
-    $archiveTitle = $this->driver->tryMethod('getOrigination');
-    if (!empty($archiveTitle)) {
-        echo "%J $archiveTitle\n";
+$journalTitle = $this->driver->tryMethod('getContainerTitle');
+if (!empty($journalTitle)) {
+    echo "%J $journalTitle\n";
+    $volume = $this->driver->tryMethod('getContainerVolume');
+    if (!empty($volume)) {
+        echo "%V $volume\n";
     }
-} else {
-    $journalTitle = $this->driver->tryMethod('getContainerTitle');
-    if (!empty($journalTitle)) {
-        echo "%J $journalTitle\n";
-        $volume = $this->driver->tryMethod('getContainerVolume');
-        if (!empty($volume)) {
-            echo "%V $volume\n";
+    $number = $this->driver->tryMethod('getContainerIssue');
+    if (!empty($number)) {
+        echo "%N $number\n";
+    }
+    $page = $this->driver->tryMethod('getContainerStartPage');
+    if (!empty($page)) {
+        $end = $this->driver->tryMethod('getContainerEndPage');
+        if (!empty($end) && $end != $page) {
+            $page .= '-' . $end;
         }
-        $number = $this->driver->tryMethod('getContainerIssue');
-        if (!empty($number)) {
-            echo "%N $number\n";
-        }
-        $page = $this->driver->tryMethod('getContainerStartPage');
-        if (!empty($page)) {
-            $end = $this->driver->tryMethod('getContainerEndPage');
-            if (!empty($end) && $end != $page) {
-                $page .= '-' . $end;
-            }
-            echo "%P $page\n";
-        }
+        echo "%P $page\n";
     }
 }
 
