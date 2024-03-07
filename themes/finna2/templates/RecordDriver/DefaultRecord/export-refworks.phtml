@@ -26,14 +26,6 @@ if (is_array($series)) {
         }
     }
 }
-$isCollection = !empty($this->driver->tryMethod('getHierarchyTopId'));
-if ($isCollection) {
-    $location = $this->translate($this->driver->tryMethod('getBuildings')[0]);
-    $archive = $this->driver->tryMethod('getOrigination');
-    if (!empty($location || $archive)) {
-        echo "SF $location $archive\n";
-    }
-}
 
 $containerTitle = $this->driver->tryMethod('getContainerTitle');
 if (!empty($containerTitle)) {
@@ -69,8 +61,25 @@ if (!empty($containerTitle)) {
     }
 }
 
-foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {
-    echo "A1 {$author['name']}\n";
+if (!empty($this->driver->tryMethod('getHierarchyTopId'))) {
+    $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
+    if ($archiveAuthors) {
+        foreach ($archiveAuthors as $archiveAuthor) {
+            if ($archiveAuthor) {
+                echo "A1 {$archiveAuthor},\n";
+            }
+        }
+    } else {
+        if ($archives = $this->driver->tryMethod('getHierarchyTopTitle')) {
+            foreach ($archives as $archive) {
+                echo "A1 {$archive}\n";
+            }
+        }
+    }
+} else {
+    foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {
+        echo "A1 {$author['name']}\n";
+    }
 }
 
 $presenters = $this->driver->tryMethod('getPresenters', [], []);
