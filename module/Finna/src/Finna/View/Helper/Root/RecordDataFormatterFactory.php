@@ -1722,6 +1722,14 @@ class RecordDataFormatterFactory extends \VuFind\View\Helper\Root\RecordDataForm
                 'context' => ['class' => 'creator-characteristics'],
             ]
         );
+        $setTemplateLine(
+            'Citations',
+            'getCitations',
+            'data-citations.phtml',
+            [
+                'context' => ['class' => 'record-citations'],
+            ]
+        );
 
         return $lines;
     }

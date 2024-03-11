@@ -475,6 +475,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Source Collection',
             'Subjects',
             'System Format',
+            'Citations',
         ];
         return $this->filterFields($coreFields, $include);
     }
