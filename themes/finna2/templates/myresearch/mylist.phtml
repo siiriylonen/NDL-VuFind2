@@ -23,7 +23,7 @@
 
   // Convenience variable:
   $account = $this->auth()->getManager();
-  $user = $this->auth()->isLoggedIn();
+  $user = $this->auth()->getUserObject();
 
   $lists = $user ? $user->getLists() : null;
 
