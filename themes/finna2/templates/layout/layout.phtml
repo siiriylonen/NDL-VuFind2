@@ -312,7 +312,7 @@
     <?php
       // Show post-login followup in lightbox
       $url = $this->followup()->retrieveAndClear('postLoginLightbox', null);
-      if ($url && $this->layout()->getTemplate() !== 'layout/lightbox') {
+      if ($url && !$this->inLightbox) {
         $script = <<<EOT
             $(document).ready(function handlePostLoginLightbox() {
               finna.layout.showPostLoginLightbox('{$url}');
