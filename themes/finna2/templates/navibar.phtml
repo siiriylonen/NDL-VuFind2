@@ -190,7 +190,7 @@
             <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
               <li role="none">
                 <a <?=$this->url('myresearch-favorites') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role ="menuitem" href="<?=$this->url('myresearch-favorites')?>">
-                  <?=$this->transEsc('Favorites')?>
+                  <?=$this->transEsc('saved_items')?>
                 </a>
               </li>
             <?php endif; ?>
