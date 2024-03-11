@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Row Definition for external_session
+ * Interface for representing a user account record.
  *
  * PHP version 8
  *
- * Copyright (C) Villanova University 2010.
- * Copyright (C) The National Library of Finland 2016.
+ * Copyright (C) Villanova University 2024.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -22,34 +21,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Db_Row
+ * @package  Db_Interface
  * @author   Demian Katz <demian.katz@villanova.edu>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
 
-namespace VuFind\Db\Row;
+namespace VuFind\Db\Interface;
 
 /**
- * Row Definition for external_session
+ * Interface for representing a user account record.
  *
  * @category VuFind
- * @package  Db_Row
+ * @package  Db_Interface
  * @author   Demian Katz <demian.katz@villanova.edu>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
-class ExternalSession extends RowGateway
+interface UserAccountInterface
 {
-    /**
-     * Constructor
-     *
-     * @param \Laminas\Db\Adapter\Adapter $adapter Database adapter
-     */
-    public function __construct($adapter)
-    {
-        parent::__construct('id', 'external_session', $adapter);
-    }
 }
