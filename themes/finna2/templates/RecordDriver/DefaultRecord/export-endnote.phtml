@@ -6,13 +6,13 @@ if ($this->driver->getHierarchyType()) {
     if ($archiveAuthors) {
         foreach ($archiveAuthors as $archiveAuthor) {
             if ($archiveAuthor) {
-                echo "%A {$archiveAuthor},\n";
+                echo "%A {$archiveAuthor}\n";
             }
         }
     }
     $archiveOrganization = $this->driver->tryMethod('getBuildings')[0];
     if ($archiveOrganization) {
-        echo '%A = {' . $this->translate($archiveOrganization) . "},\n";
+        echo '%A = {' . $this->translate($archiveOrganization) . "}\n";
     }
 } else {
     foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {
