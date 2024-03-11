@@ -7,9 +7,7 @@ if (is_object($marc)) {
 } else {
     $marcPhdField = $marcProceedingsField = false;
 }
-$id = $this->driver->getUniqueId();
-$topId = $this->driver->tryMethod('getHierarchyTopId');
-$isCollection = !empty($topId);
+$isCollection = $this->driver->getHierarchyType();
 $journalTitle = $this->driver->tryMethod('getContainerTitle');
 $formats = $this->driver->tryMethod('getFormats');
 if ($marcProceedingsField) {
@@ -88,13 +86,7 @@ if ($isCollection) {
     if ($archiveAuthors) {
         foreach ($archiveAuthors as $archiveAuthor) {
             if ($archiveAuthor) {
-                echo "author = {{$archiveAuthor}},\n";
-            }
-        }
-    } else {
-        if ($archives) {
-            foreach ($archives as $archive) {
-                echo "author = {{$archive}},\n";
+                echo "author = {{$archiveAuthor}}\n";
             }
         }
     }
@@ -183,10 +175,8 @@ if ($urls = $this->record($this->driver)->getUrlList()) {
     foreach ($urls as $url) {
         echo "url = {{$url}},\n";
     }
-    echo 'url = {' . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "},\n";
-} else {
-    echo 'url = {' . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "}\n";
 }
+echo 'url = {' . $this->serverUrl($this->recordLinker()->getUrl($this->driver)) . "}\n";
 
 // Record separator:
 echo "}\n\n";

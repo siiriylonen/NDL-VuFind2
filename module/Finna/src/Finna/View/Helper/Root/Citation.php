@@ -116,21 +116,23 @@ class Citation extends \VuFind\View\Helper\Root\Citation
         $serverUrl = $this->getView()->plugin('serverUrl');
         $recordLinker = $this->getView()->plugin('recordLinker');
         $url = $serverUrl($recordLinker->getUrl($this->driver));
-        $id = $this->driver->tryMethod('getUniqueID');
-        $topId = $this->driver->tryMethod('getHierarchyTopId')[0];
+        $id = $this->driver->getUniqueID();
         $origination = '';
-        if ($id !== $topId) {
-            $originationDriver = $this->recordLoader->load($topId);
-            $origination = $this->stripPunctuation($originationDriver->tryMethod('getTitle'));
+        if ($topId = $this->driver->tryMethod('getHierarchyTopId')[0]) {
+            if ($id !== $topId) {
+                $originationDriver = $this->recordLoader->load($topId);
+                $origination = $this->stripPunctuation($originationDriver->tryMethod('getTitle'));
+            }
         }
         $archive = [
             'title' => $this->stripPunctuation($this->details['title']),
             'signum' => $this->details['subtitle'],
             'origination' => $origination,
-            'location' => $this->driver->tryMethod('getBuildings')[0],
             'url' => $url,
-            'currentDate' => date('d-m-Y'),
         ];
+        if ($location = $this->driver->tryMethod('getBuildings')[0]) {
+            $archive = array_merge($archive, ['location' => $location]);
+        }
         $partial = $this->getView()->plugin('partial');
         return $partial('Citation/archive-article.phtml', $archive);
     }

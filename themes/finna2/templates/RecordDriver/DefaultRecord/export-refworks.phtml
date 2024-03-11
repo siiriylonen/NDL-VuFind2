@@ -61,20 +61,17 @@ if (!empty($containerTitle)) {
     }
 }
 
-if (!empty($this->driver->tryMethod('getHierarchyTopId'))) {
+if ($this->driver->getHierarchyType()) {
     $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
     if ($archiveAuthors) {
         foreach ($archiveAuthors as $archiveAuthor) {
             if ($archiveAuthor) {
-                echo "A1 {$archiveAuthor},\n";
+                echo "A1 {$archiveAuthor}\n";
             }
         }
-    } else {
-        if ($archives = $this->driver->tryMethod('getHierarchyTopTitle')) {
-            foreach ($archives as $archive) {
-                echo "A1 {$archive}\n";
-            }
-        }
+    }
+    if ($archiveOrganization = $this->driver->tryMethod('getBuildings')[0]) {
+        echo 'address = {' . $this->translate($archiveOrganization) . "},\n";
     }
 } else {
     foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {
@@ -211,9 +208,8 @@ if ($doi = $this->driver->tryMethod('getCleanDOI')) {
     echo "DO $doi\n";
 }
 
-if ($dateAccessed = date('d-m-Y')) {
-    echo "RD $dateAccessed\n";
-}
+$dateAccessed = date('d-m-Y');
+echo "RD $dateAccessed\n";
 
 // Record separator:
 echo "\n";
