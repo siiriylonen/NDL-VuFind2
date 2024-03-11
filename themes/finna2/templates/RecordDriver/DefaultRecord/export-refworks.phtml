@@ -71,7 +71,7 @@ if ($this->driver->getHierarchyType()) {
         }
     }
     if ($archiveOrganization = $this->driver->tryMethod('getBuildings')[0]) {
-        echo 'address = {' . $this->translate($archiveOrganization) . "},\n";
+        echo 'A1 ' . $this->translate($archiveOrganization) . "\n";
     }
 } else {
     foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {

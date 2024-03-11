@@ -28,7 +28,7 @@ if ($marcProceedingsField) {
 echo '@' . $format . "{\n";
 
 // Citation key:
-echo $this->driver->getSourceIdentifier() . '-' . $id . ",\n";
+echo $this->driver->getSourceIdentifier() . '-' . $this->driver->getUniqueID() . ",\n";
 
 $title = rtrim($this->driver->getTitle(), ' /');
 echo "title = {{$title}},\n";
@@ -112,10 +112,9 @@ if ($isCollection) {
     if ($authors = $mergeAuthors($this->driver->tryMethod('getPrimaryAuthors', [], []))) {
         echo "author = {{$authors}},\n";
     }
-}
-
-if ($editors = $mergeAuthors($this->driver->tryMethod('getSecondaryAuthors', [], []))) {
-    echo "editor = {{$editors}},\n";
+    if ($editors = $mergeAuthors($this->driver->tryMethod('getSecondaryAuthors', [], []))) {
+        echo "editor = {{$editors}},\n";
+    }
 }
 
 $pubPlaces = $this->driver->tryMethod('getPlacesOfPublication');
