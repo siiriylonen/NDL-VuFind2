@@ -116,21 +116,20 @@ class Citation extends \VuFind\View\Helper\Root\Citation
         $serverUrl = $this->getView()->plugin('serverUrl');
         $recordLinker = $this->getView()->plugin('recordLinker');
         $url = $serverUrl($recordLinker->getUrl($this->driver));
-        $origination = '';
+        $archive = [
+            'title' => $this->stripPunctuation($this->details['title']),
+            'signum' => $this->details['subtitle'],
+            'url' => $url,
+        ];
         if ($topId = $this->driver->tryMethod('getHierarchyTopId')[0]) {
             if ($topId !== $this->driver->getUniqueID()) {
                 $originationDriver = $this->recordLoader->load($topId);
                 $origination = $this->stripPunctuation($originationDriver->tryMethod('getTitle'));
+                $archive['origination'] = $origination;
             }
         }
-        $archive = [
-            'title' => $this->stripPunctuation($this->details['title']),
-            'signum' => $this->details['subtitle'],
-            'origination' => $origination,
-            'url' => $url,
-        ];
         if ($location = $this->driver->tryMethod('getBuildings')[0]) {
-            $archive = array_merge($archive, ['location' => $location]);
+            $archive['location'] = $location;
         }
         $partial = $this->getView()->plugin('partial');
         return $partial('Citation/archive-article.phtml', $archive);
