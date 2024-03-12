@@ -12,7 +12,7 @@ if ($this->driver->getHierarchyType()) {
     }
     $archiveOrganization = $this->driver->tryMethod('getBuildings')[0];
     if ($archiveOrganization) {
-        echo '%A = {' . $this->translate($archiveOrganization) . "}\n";
+        echo '%A ' . $this->translate($archiveOrganization) . "\n";
     }
 } else {
     foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {
