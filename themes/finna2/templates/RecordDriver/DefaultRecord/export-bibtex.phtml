@@ -76,15 +76,13 @@ $mergeAuthors = function (array $a): string {
 };
 
 if ($isCollection) {
-    $archives = $this->driver->tryMethod('getHierarchyTopTitle');
-    if ($archives) {
+    if ($archives = $this->driver->tryMethod('getHierarchyTopTitle')) {
         foreach ($archives as $archive) {
             echo "booktitle = {{$archive}},\n";
         }
     }
     if ($this->driver->getRecordFormat() === 'ead3') {
-        $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
-        if ($archiveAuthors) {
+        if ($archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings')) {
             foreach ($archiveAuthors as $archiveAuthor) {
                 if ($archiveAuthor['name']) {
                     echo "author = {{$archiveAuthor['name']}}\n";
@@ -108,8 +106,7 @@ if ($isCollection) {
             echo "address = {{$address}},\n";
         }
     }
-    $year = $this->driver->tryMethod('getYear');
-    if ($year) {
+    if ($year = $this->driver->tryMethod('getYear')) {
         echo "year = {{$year}},\n";
     }
 } else {
