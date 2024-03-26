@@ -2,17 +2,22 @@
 echo $this->record($this->driver)->getExportFormat('endnote');
 
 if ($this->driver->getHierarchyType()) {
-    $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
-    if ($archiveAuthors) {
-        foreach ($archiveAuthors as $archiveAuthor) {
-            if ($archiveAuthor) {
-                echo "%A {$archiveAuthor}\n";
+    if ($this->driver->getRecordFormat() === 'ead3') {
+        $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
+        if ($archiveAuthors) {
+            foreach ($archiveAuthors as $archiveAuthor) {
+                if ($archiveAuthor['name']) {
+                    echo "%A {$archiveAuthor['name']}\n";
+                }
             }
         }
     }
-    $archiveOrganization = $this->driver->tryMethod('getBuildings')[0];
-    if ($archiveOrganization) {
-        echo '%A ' . $this->translate($archiveOrganization) . "\n";
+    if ($locations = $this->driver->tryMethod('getBuildings')) {
+        $archiveLocation = [];
+        foreach ($locations as $location) {
+            $archiveLocation[] = $this->translate($location);
+        }
+        echo '%A ' . implode(', ', $archiveLocation) . "\n";
     }
 } else {
     foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {

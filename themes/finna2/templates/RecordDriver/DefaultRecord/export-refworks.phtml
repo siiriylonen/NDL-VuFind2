@@ -62,16 +62,22 @@ if (!empty($containerTitle)) {
 }
 
 if ($this->driver->getHierarchyType()) {
-    $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
-    if ($archiveAuthors) {
-        foreach ($archiveAuthors as $archiveAuthor) {
-            if ($archiveAuthor) {
-                echo "A1 {$archiveAuthor}\n";
+    if ($this->driver->getRecordFormat() === 'ead3') {
+        $archiveAuthors = $this->driver->tryMethod('getAuthorsWithoutRoleHeadings');
+        if ($archiveAuthors) {
+            foreach ($archiveAuthors as $archiveAuthor) {
+                if ($archiveAuthor['name']) {
+                    echo "A1 {$archiveAuthor['name']}\n";
+                }
             }
         }
     }
-    if ($archiveOrganization = $this->driver->tryMethod('getBuildings')[0]) {
-        echo 'A1 ' . $this->translate($archiveOrganization) . "\n";
+    if ($locations = $this->driver->tryMethod('getBuildings')) {
+        $archiveLocation = [];
+        foreach ($locations as $location) {
+            $archiveLocation[] = $this->translate($location);
+        }
+        echo 'A1 ' . implode(', ', $archiveLocation) . "\n";
     }
 } else {
     foreach ($this->driver->tryMethod('getNonPresenterAuthors', [], []) as $author) {
@@ -207,9 +213,6 @@ if (is_array($subjects)) {
 if ($doi = $this->driver->tryMethod('getCleanDOI')) {
     echo "DO $doi\n";
 }
-
-$dateAccessed = date('d-m-Y');
-echo "RD $dateAccessed\n";
 
 // Record separator:
 echo "\n";

@@ -128,8 +128,12 @@ class Citation extends \VuFind\View\Helper\Root\Citation
                 $archive['origination'] = $origination;
             }
         }
-        if ($location = $this->driver->tryMethod('getBuildings')[0]) {
-            $archive['location'] = $location;
+        if ($locations = $this->driver->tryMethod('getBuildings')) {
+            $archiveLocation = [];
+            foreach ($locations as $location) {
+                $archiveLocation[] = $this->translate($location);
+            }
+            $archive['location'] = implode(', ', $archiveLocation);
         }
         $partial = $this->getView()->plugin('partial');
         return $partial('Citation/archive-article.phtml', $archive);
