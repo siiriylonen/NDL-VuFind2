@@ -115,11 +115,10 @@ class Citation extends \VuFind\View\Helper\Root\Citation
     {
         $serverUrl = $this->getView()->plugin('serverUrl');
         $recordLinker = $this->getView()->plugin('recordLinker');
-        $url = $serverUrl($recordLinker->getUrl($this->driver));
         $archive = [
             'title' => $this->stripPunctuation($this->details['title']),
             'signum' => $this->details['subtitle'],
-            'url' => $url,
+            'url' => $serverUrl($recordLinker->getUrl($this->driver, ['excludeSearchId' => true])),
         ];
         if ($topId = $this->driver->tryMethod('getHierarchyTopId')[0]) {
             if ($topId !== $this->driver->getUniqueID()) {
