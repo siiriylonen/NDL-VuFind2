@@ -1176,7 +1176,7 @@ trait SolrFinnaTrait
     protected function getSupportedCitationFormats()
     {
         $supportedFormats = ['APA', 'Chicago', 'MLA', 'Harvard'];
-        if (isset($this->fields['hierarchy_top_id']) && $this->getSector() === '0/arc/') {
+        if (isset($this->fields['hierarchy_top_id']) && str_starts_with($this->getRecordFormat(), 'ead')) {
             $supportedFormats[] = 'Archive';
         }
         return $supportedFormats;
