@@ -1301,7 +1301,15 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         ?? ''
                     );
                     if ($appellationValue !== '') {
-                        $role = (string)($actor->actorInRole->roleActor->term ?? '');
+                        $langRoles = [];
+                        $role = '';
+                        foreach ($actor->actorInRole->roleActor->term ?? [] as $roleTerm) {
+                            $langRoles[] = $roleTerm;
+                        }
+                        if ($langRoles) {
+                            $roles = $this->getAllLanguageSpecificItems($langRoles, $language);
+                            $role = (string)(reset($roles));
+                        }
                         $earliestDate = (string)($actor->actorInRole->actor
                             ->vitalDatesActor->earliestDate ?? '');
                         $latestDate = (string)($actor->actorInRole->actor
