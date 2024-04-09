@@ -1639,6 +1639,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     {
         $authors = [];
         $index = 0;
+        $language = $this->getLocale();
         foreach ($this->getXmlRecord()->lido->descriptiveMetadata->eventWrap->eventSet ?? [] as $set) {
             if (!($event = $set->event ?? '')) {
                 continue;
@@ -1656,7 +1657,15 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         ?? '')
                     );
                 if ($name) {
-                    $role = (string)($actor->actorInRole->roleActor->term ?? '');
+                    $langRoles = [];
+                    $role = '';
+                    foreach ($actor->actorInRole->roleActor->term ?? [] as $roleTerm) {
+                        $langRoles[] = $roleTerm;
+                    }
+                    if ($langRoles) {
+                        $roles = $this->getAllLanguageSpecificItems($langRoles, $language);
+                        $role = (string)(reset($roles));
+                    }
                     $key = $priority * 1000 + $index++;
                     $authors[$key] = compact(
                         'name',
