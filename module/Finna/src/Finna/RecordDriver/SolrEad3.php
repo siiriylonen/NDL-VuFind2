@@ -2148,6 +2148,23 @@ class SolrEad3 extends SolrEad
     }
 
     /**
+     * Get an array of strings representing citation formats supported
+     * by this record's data (empty if none).  For possible legal values,
+     * see /application/themes/root/helpers/Citation.php, getCitation()
+     * method.
+     *
+     * @return array Strings representing citation formats.
+     */
+    protected function getSupportedCitationFormats()
+    {
+        $supportedFormats = ['APA', 'Chicago', 'MLA', 'Harvard'];
+        if (isset($this->fields['hierarchy_top_id'])) {
+            $supportedFormats[] = 'Archive';
+        }
+        return $supportedFormats;
+    }
+
+    /**
      * Return translated repository display name from metadata.
      *
      * @return string
