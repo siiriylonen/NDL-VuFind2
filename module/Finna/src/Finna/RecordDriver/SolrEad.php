@@ -760,6 +760,8 @@ class SolrEad extends SolrDefault implements \Laminas\Log\LoggerAwareInterface
             $unitId = (string)$id . ' ';
             if (str_starts_with($mainTitle, \Normalizer::normalize($unitId, \Normalizer::FORM_KC))) {
                 break;
+            } else {
+                $unitId = '';
             }
         }
 
