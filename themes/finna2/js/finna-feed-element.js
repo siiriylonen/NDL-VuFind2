@@ -139,7 +139,8 @@ class FinnaFeedElement extends HTMLElement {
       const carousel = ['carousel', 'carousel-vertical', 'slider'].includes(type);
       const hasContent = holder.querySelector('.list-feed > ul > li, .carousel-feed > li, .feed-grid > div');
       if (!hasContent) {
-        holder.innerHTML = `<div class="feed-no-content"><!-- No content received --></div>`;
+        holder.classList.add('hidden');
+        holder.innerHTML = `<!-- No content received -->`;
         return;
       }
       if (carousel) {
@@ -373,6 +374,7 @@ class FinnaFeedElement extends HTMLElement {
    */
   attributeChangedCallback(name) {
     if ('feed-id' === name) {
+      this.classList.remove('hidden');
       this.addToObserver();
     }
   }
