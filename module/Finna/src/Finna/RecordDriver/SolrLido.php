@@ -1308,7 +1308,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         }
                         if ($langRoles) {
                             $roles = $this->getAllLanguageSpecificItems($langRoles, $language);
-                            $role = (string)(reset($roles));
+                            $role = implode(', ', $roles);
                         }
                         $earliestDate = (string)($actor->actorInRole->actor
                             ->vitalDatesActor->earliestDate ?? '');
