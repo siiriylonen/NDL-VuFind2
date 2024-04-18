@@ -1664,7 +1664,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                     if ($langRoles) {
                         $roles = $this->getAllLanguageSpecificItems($langRoles, $language);
-                        $role = (string)(reset($roles));
+                        $role = implode(', ', $roles);
                     }
                     $key = $priority * 1000 + $index++;
                     $authors[$key] = compact(
