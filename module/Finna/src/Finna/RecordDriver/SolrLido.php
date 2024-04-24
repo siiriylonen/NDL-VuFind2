@@ -1303,8 +1303,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     if ($appellationValue !== '') {
                         $langRoles = [];
                         $role = '';
-                        foreach ($actor->actorInRole->roleActor->term ?? [] as $roleTerm) {
-                            $langRoles[] = $roleTerm;
+                        if (is_iterable($term = $actor->actorInRole->roleActor->term)) {
+                            $langRoles = iterator_to_array($term, false);
                         }
                         if ($langRoles) {
                             $roles = $this->getAllLanguageSpecificItems($langRoles, $language);
@@ -1659,8 +1659,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 if ($name) {
                     $langRoles = [];
                     $role = '';
-                    foreach ($actor->actorInRole->roleActor->term ?? [] as $roleTerm) {
-                        $langRoles[] = $roleTerm;
+                    if (is_iterable($term = $actor->actorInRole->roleActor->term)) {
+                        $langRoles = iterator_to_array($term, false);
                     }
                     if ($langRoles) {
                         $roles = $this->getAllLanguageSpecificItems($langRoles, $language);
