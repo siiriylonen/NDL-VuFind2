@@ -1303,7 +1303,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     if ($appellationValue !== '') {
                         $langRoles = [];
                         $role = '';
-                        if (is_iterable($term = $actor->actorInRole->roleActor->term)) {
+                        if ($term = $actor->actorInRole->roleActor->term) {
                             $langRoles = iterator_to_array($term, false);
                         }
                         if ($langRoles) {
@@ -1659,7 +1659,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 if ($name) {
                     $langRoles = [];
                     $role = '';
-                    if (is_iterable($term = $actor->actorInRole->roleActor->term)) {
+                    if ($term = $actor->actorInRole->roleActor->term) {
                         $langRoles = iterator_to_array($term, false);
                     }
                     if ($langRoles) {
