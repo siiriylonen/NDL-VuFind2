@@ -1203,14 +1203,44 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 }
             }
             $methods = [];
+            $langMethods = [];
             foreach ($node->eventMethod ?? [] as $eventMethod) {
                 foreach ($eventMethod->term ?? [] as $term) {
-                    if ($method = trim((string)$term)) {
-                        $methods[] = $method;
+                    $str = trim((string)$term);
+                    if ($str === '') {
+                        continue;
+                    }
+                    $id = $source = '';
+                    $lang = trim((string)$term->attributes()->lang ?? '');
+                    foreach ($node->eventMethod->conceptID ?? [] as $conceptID) {
+                        if ($item = trim((string)$conceptID)) {
+                            $type = mb_strtolower(
+                                (string)($conceptID['type'] ?? ''),
+                                'UTF-8'
+                            );
+                            if (in_array($type, $this->subjectConceptIDTypes)) {
+                                $id = $item;
+                                $source = trim($conceptID->attributes()->source ?? '');
+                                break;
+                            }
+                        }
+                    }
+                    $methods[] = [
+                        'data' => $str,
+                        'id' => $id,
+                        'source' => $source,
+                    ];
+                    if ($lang === $language) {
+                        $langMethods[] = [
+                            'data' => $str,
+                            'id' => $id,
+                            'source' => $source,
+                        ];
                     }
                 }
             }
             $materials = [];
+            $langMaterials = [];
 
             if (isset($node->eventMaterialsTech->displayMaterialsTech)) {
                 // Use displayMaterialTech (default)
@@ -1218,12 +1248,17 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     ->displayMaterialsTech;
             } elseif (isset($node->eventMaterialsTech->materialsTech)) {
                 // display label not defined, build from materialsTech
-                $materials = [];
-                foreach ($node->xpath('eventMaterialsTech/materialsTech') as $materialsTech) {
-                    if ($terms = $materialsTech->xpath('termMaterialsTech/term')) {
+                foreach ($node->eventMaterialsTech->materialsTech as $materialsTech) {
+                    if ($terms = $materialsTech->termMaterialsTech->term) {
                         foreach ($terms as $term) {
+                            $str = trim((string)$term);
+                            if ($str === '') {
+                                continue;
+                            }
                             $label = null;
                             $attributes = $term->attributes();
+                            $id = $source = '';
+                            $lang = trim((string)$attributes->lang ?? '');
                             if (isset($attributes->label)) {
                                 // Musketti
                                 $label = $attributes->label;
@@ -1232,9 +1267,33 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                                 $label = $materialsTech->extentMaterialsTech;
                             }
                             if ($label) {
-                                $term = "$term ($label)";
+                                $str = "$str ($label)";
                             }
-                            $materials[] = $term;
+                            foreach ($materialsTech->termMaterialsTech->conceptID ?? [] as $conceptID) {
+                                if ($item = trim((string)$conceptID)) {
+                                    $type = mb_strtolower(
+                                        (string)($conceptID['type'] ?? ''),
+                                        'UTF-8'
+                                    );
+                                    if (in_array($type, $this->subjectConceptIDTypes)) {
+                                        $id = $item;
+                                        $source = trim($conceptID->attributes()->source ?? '');
+                                        break;
+                                    }
+                                }
+                            }
+                            $materials[] = [
+                                'data' => $str,
+                                'id' => $id,
+                                'source' => $source,
+                            ];
+                            if ($lang === $language) {
+                                $langMaterials[] = [
+                                    'data' => $str,
+                                    'id' => $id,
+                                    'source' => $source,
+                                ];
+                            }
                         }
                     }
                 }
@@ -1327,8 +1386,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 'type' => $type,
                 'name' => $name,
                 'date' => $date,
-                'methods' => $methods,
-                'materials' => $materials,
+                'methods' => $langMethods ?: $methods,
+                'materials' => $langMaterials ?: $materials,
                 'places' => $places,
                 'actors' => $actors,
                 'culture' => $culture,
