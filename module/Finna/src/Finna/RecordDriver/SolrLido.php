@@ -1122,15 +1122,21 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         $results = [];
         $allowedTypes = ['Kokoelma', 'kuuluu kokoelmaan', 'kokoelma', 'Alakokoelma',
             'Erityiskokoelma'];
-        $xpath = 'lido/descriptiveMetadata/objectRelationWrap/relatedWorksWrap/'
-            . 'relatedWorkSet';
-        foreach ($this->getXmlRecord()->xpath($xpath) as $node) {
-            $term = $node->relatedWorkRelType->term ?? '';
-            $collection = trim((string)$node->relatedWork->displayObject ?? '');
-            if ($collection && in_array($term, $allowedTypes)) {
-                $results[] = $collection;
+        $language = $this->getLocale();
+        foreach (
+            $this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap->relatedWorksWrap
+            ->relatedWorkSet ?? [] as $set
+        ) {
+            $term = $set->relatedWorkRelType->term ?? '';
+            if (in_array($term, $allowedTypes)) {
+                foreach ($set->relatedWork->displayObject ?? [] as $object) {
+                    if ($object) {
+                        $results[] = $object;
+                    }
+                }
             }
         }
+        $results = $this->getAllLanguageSpecificItems($results, $language);
         return $results;
     }
 
