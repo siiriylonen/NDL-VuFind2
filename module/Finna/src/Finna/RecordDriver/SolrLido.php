@@ -206,11 +206,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     protected $subjectConceptIDTypes = ['uri', 'url'];
 
     /**
-     * placeID types included but not prepended to identifier (all lowercase).
+     * PlaceID types included but not prepended to identifier (all lowercase).
      *
      * @var array
      */
-    protected $placeIDTypes = ['uri', 'url', 'prt'];
+    protected $placeIDTypes = ['uri', 'url'];
 
     /**
      * Array of excluded subject types
@@ -1837,7 +1837,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     public function getAllSubjectHeadings($extended = false)
     {
         $headings = $this->getAllSubjectHeadingsWithoutPlaces($extended);
-        if ($places = $this->getSubjectPlaces($extended, false)) {
+        if ($places = $this->getSubjectPlaces($extended)) {
             $headings = [...$headings, ...$places];
         }
         // Ensure that all the values are an array
@@ -2028,7 +2028,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     /**
      * Get subject places
      *
-     * @param bool $extended    Whether to return a keyed array with the following
+     * @param bool $extended Whether to return a keyed array with the following
      * keys:
      * - heading: the actual subject heading chunks
      * - type: heading type
@@ -2321,10 +2321,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     );
                     $prependType = !in_array($idType, $this->placeIDTypes);
                     $id = $prependType ? "($idType)$placeIdStr" : $placeIdStr;
-                    if ($idType === 'prt') {
-                        $locationInfo['type'] = $idType;
-                        $locationInfo['id'] = $id;
-                    }
                     $locationInfo['ids'][] = $id;
                 }
                 $results[] = [

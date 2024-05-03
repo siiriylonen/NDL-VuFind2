@@ -582,7 +582,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 'heading' => ['Etelä-Suomi'],
-                'type' => 'URI',
+                'type' => 'uri',
                 'id' => 'http://www.yso.fi/onto/yso/p105917',
                 'ids' => [
                     'http://www.yso.fi/onto/yso/p105917',
@@ -591,9 +591,9 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
             [
                 'heading' => ['Lohja'],
                 'type' => 'mjr',
-                'id' => '123456',
+                'id' => '(mjr)123456',
                 'ids' => [
-                    '123456',
+                    '(mjr)123456',
                     'extraid',
                 ],
             ],
