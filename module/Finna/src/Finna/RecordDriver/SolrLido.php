@@ -206,6 +206,13 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     protected $subjectConceptIDTypes = ['uri', 'url'];
 
     /**
+     * placeID types included but not prepended to identifier (all lowercase).
+     *
+     * @var array
+     */
+    protected $placeIDTypes = ['uri', 'url', 'prt'];
+
+    /**
      * Array of excluded subject types
      *
      * @var array
@@ -1270,18 +1277,26 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                             $places[] = implode(', ', $partOfPlaceName);
                         }
                     }
-                } elseif ($place && $placeId) {
+                } elseif ($place && $placeIdStr = (string)$placeId) {
                     $displayPlace = [
                         'placeName' => $place,
                     ];
-                    $idTypeFirst = (string)($placeId->attributes()->type ?? '');
+                    $idTypeFirst = mb_strtolower(
+                        trim((string)($placeId->attributes()->type ?? '')),
+                        'UTF-8'
+                    );
+                    $prependType = !in_array($idTypeFirst, $this->placeIDTypes);
                     $displayPlace['type'] = $idTypeFirst;
-                    $displayPlace['id'] = $idTypeFirst ? "($idTypeFirst)$placeId" : $placeId;
+                    $displayPlace['id'] = $prependType ? "($idTypeFirst)$placeIdStr" : $placeIdStr;
                     foreach ($placenode->place->placeID ?? [] as $item) {
                         $details = [];
                         $id = (string)$item;
-                        $idType = (string)($item->attributes()->type ?? '');
-                        $displayPlace['ids'][] = $idType ? "($idType)$id" : $id;
+                        $idType = mb_strtolower(
+                            trim((string)($item->attributes()->type ?? '')),
+                            'UTF-8'
+                        );
+                        $prependType = !in_array($idType, $this->placeIDTypes);
+                        $displayPlace['ids'][] = $prependType ? "($idType)$id" : $id;
                         $typeDesc = $idType ? 'place_id_type_' . $idType : '';
                         $details[] = $typeDesc;
                         if ($typeDesc) {
@@ -2022,11 +2037,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      * - id: authority id (if defined)
      * - ids: multiple authority ids (if defined)
      * - authType: authority type (if id is defined)
-     * @param bool $prependType Should type be prepended in front of an id. Default is true.
      *
      * @return array
      */
-    public function getSubjectPlaces(bool $extended = false, bool $prependType = true)
+    public function getSubjectPlaces(bool $extended = false)
     {
         $results = [];
         $xpath = 'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/'
@@ -2043,7 +2057,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 $details = [];
                 foreach ($subjectPlace->place->placeID ?? [] as $placeId) {
                     $id = (string)$placeId;
-                    $type = (string)($placeId->attributes()->type ?? '');
+                    $type = mb_strtolower(
+                        trim((string)($placeId->attributes()->type ?? '')),
+                        'UTF-8'
+                    );
+                    $prependType = !in_array($type, $this->placeIDTypes);
                     if ($type && $prependType) {
                         $id = "($type)$id";
                     }
@@ -2297,8 +2315,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         continue;
                     }
                     $attr = $placeId->attributes();
-                    $idType = trim((string)$attr->type);
-                    $id = $idType ? "($idType)$placeIdStr" : $placeIdStr;
+                    $idType = mb_strtolower(
+                        trim((string)($attr->type) ?? ''),
+                        'UTF-8'
+                    );
+                    $prependType = !in_array($idType, $this->placeIDTypes);
+                    $id = $prependType ? "($idType)$placeIdStr" : $placeIdStr;
                     if ($idType === 'prt') {
                         $locationInfo['type'] = $idType;
                         $locationInfo['id'] = $id;
