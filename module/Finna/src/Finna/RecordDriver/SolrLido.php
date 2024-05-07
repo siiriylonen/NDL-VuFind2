@@ -1277,7 +1277,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                             $places[] = implode(', ', $partOfPlaceName);
                         }
                     }
-                } elseif ($place && $placeIdStr = (string)$placeId) {
+                } elseif ($place && $placeId) {
                     $displayPlace = [
                         'placeName' => $place,
                     ];
@@ -1287,7 +1287,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     );
                     $prependType = !in_array($idTypeFirst, $this->placeIDTypes);
                     $displayPlace['type'] = $idTypeFirst;
-                    $displayPlace['id'] = $prependType ? "($idTypeFirst)$placeIdStr" : $placeIdStr;
+                    $displayPlace['id'] = $prependType ? "($idTypeFirst)$placeId" : (string)$placeId;
                     foreach ($placenode->place->placeID ?? [] as $item) {
                         $details = [];
                         $id = (string)$item;
