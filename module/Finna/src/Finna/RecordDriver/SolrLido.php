@@ -1129,7 +1129,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             $term = $set->relatedWorkRelType->term ?? '';
             if (in_array($term, $allowedTypes)) {
                 foreach ($set->relatedWork->displayObject ?? [] as $object) {
-                    if (trim((string)$object ?? '')) {
+                    if ('' !== trim((string)$object)) {
                         $results[] = $object;
                     }
                 }
