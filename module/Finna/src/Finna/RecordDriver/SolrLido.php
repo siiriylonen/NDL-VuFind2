@@ -1122,7 +1122,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         $results = [];
         $allowedTypes = ['Kokoelma', 'kuuluu kokoelmaan', 'kokoelma', 'Alakokoelma',
             'Erityiskokoelma'];
-        $language = $this->getLocale();
         foreach (
             $this->getXmlRecord()->lido->descriptiveMetadata->objectRelationWrap->relatedWorksWrap
             ->relatedWorkSet ?? [] as $set
@@ -1136,7 +1135,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 }
             }
         }
-        $results = $this->getAllLanguageSpecificItems($results, $language);
+        $results = $this->getAllLanguageSpecificItems($results, $this->getLocale());
         return $results;
     }
 
