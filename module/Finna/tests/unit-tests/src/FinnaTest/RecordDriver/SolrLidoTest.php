@@ -670,9 +670,9 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
             [
                 'heading' => ['Lohja'],
                 'type' => 'mjr',
-                'id' => '(mjr)123456',
+                'id' => '123456',
                 'ids' => [
-                    '(mjr)123456',
+                    '123456',
                     'extraid',
                 ],
             ],
