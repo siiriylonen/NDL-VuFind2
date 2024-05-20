@@ -2070,7 +2070,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      */
     public function getSubjectPlaces(bool $extended = false, bool $prependType = true)
     {
-        $prependType = true;
         $results = [];
         $xpath = 'lido/descriptiveMetadata/objectRelationWrap/subjectWrap/'
             . 'subjectSet/subject/subjectPlace';
