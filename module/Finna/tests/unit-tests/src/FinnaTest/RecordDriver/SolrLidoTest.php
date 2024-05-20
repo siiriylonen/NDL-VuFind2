@@ -661,7 +661,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 'heading' => ['Etelä-Suomi'],
-                'type' => 'uri',
+                'type' => 'URI',
                 'id' => 'http://www.yso.fi/onto/yso/p105917',
                 'ids' => [
                     'http://www.yso.fi/onto/yso/p105917',
