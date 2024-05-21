@@ -4,8 +4,8 @@
   <?php if ($event != $data[0]): ?><br><?php endif; ?>
   <?php if (!empty($event['name'])): ?><?=$this->escapeHtml($event['name'])?><br><?php endif; ?>
   <?php if (!empty($event['date'])): ?><?=$this->escapeHtml($event['date'])?><br><?php endif; ?>
-  <?php if (!empty($event['methods'])): ?>
-    <?php foreach ($event['methods'] as $methodsEvent): ?>
+  <?php if (!empty($event['methodsExtended'])): ?>
+    <?php foreach ($event['methodsExtended'] as $methodsEvent): ?>
       <?php
           $id = $methodsEvent['id'] ?? null;
           $source = $methodsEvent['source'] ?? null;
@@ -17,8 +17,8 @@
       <?php endif; ?>
     <?php endforeach; ?>
   <?php endif; ?>
-  <?php if (!empty($event['materials'])): ?>
-    <?php foreach ($event['materials'] as $materialsEvent): ?>
+  <?php if (!empty($event['materialsExtended'])): ?>
+    <?php foreach ($event['materialsExtended'] as $materialsEvent): ?>
       <?php
           $id = $materialsEvent['id'] ?? null;
           $source = $materialsEvent['source'] ?? null;
