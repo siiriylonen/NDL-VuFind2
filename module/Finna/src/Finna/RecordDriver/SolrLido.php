@@ -1145,7 +1145,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     }
 
     /**
-     * Return an array of attributes from an element as associative array.
+     * Return attributes of an element as an associative array.
      * - id            Id attribute
      * - source        Source attribute
      *
