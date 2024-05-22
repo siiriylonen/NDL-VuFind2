@@ -54,9 +54,7 @@ use function in_array;
  */
 class SolrEad3 extends SolrEad
 {
-    use Feature\SolrFinnaTrait {
-        getSupportedCitationFormats as getSupportedCitationFormatsFinna;
-    }
+    use Feature\SolrFinnaTrait;
 
     // Image types
     public const IMAGE_MEDIUM = 'medium';
@@ -2180,11 +2178,7 @@ class SolrEad3 extends SolrEad
      */
     protected function getSupportedCitationFormats()
     {
-        $supportedFormats = $this->getSupportedCitationFormatsFinna();
-        if (isset($this->fields['hierarchy_top_id'])) {
-            $supportedFormats[] = 'Archive';
-        }
-        return $supportedFormats;
+        return parent::getSupportedCitationFormats();
     }
 
     /**
