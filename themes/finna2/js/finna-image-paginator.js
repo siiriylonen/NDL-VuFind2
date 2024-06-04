@@ -540,18 +540,24 @@ FinnaPaginator.prototype.changeTriggerImage = function changeTriggerImage(imageP
   function setImageProperties(image) {
     $(image).css('opacity', '');
     _.setDimensions();
-    if (image.naturalWidth && image.naturalWidth === 10 && image.naturalHeight === 10) {
-      _.trigger.addClass('no-image').trigger('removeclick');
-      $(image).attr('alt', '');
-      if (_.settings.isList) {
-        if (_.images.length < 2) {
-          _.settings.enableImageZoom = false;
+    var width = image.naturalWidth;
+    var height = image.naturalHeight;
+    if (width) {
+      if (width === 10 && height === 10) {
+        _.trigger.addClass('no-image').trigger('removeclick');
+        $(image).attr('alt', '');
+        if (_.settings.isList) {
+          if (_.images.length < 2) {
+            _.settings.enableImageZoom = false;
+          }
+          $(image).parents('.grid').addClass('no-image');
         }
-        $(image).parents('.grid').addClass('no-image');
-      }
-      if (!_.settings.isList && _.images.length <= 1) {
-        _.root.css('display', 'none');
-        _.root.siblings('.image-details-container:not(:has(.image-rights))').addClass('hidden');
+        if (!_.settings.isList && _.images.length <= 1) {
+          _.root.css('display', 'none');
+          _.root.siblings('.image-details-container:not(:has(.image-rights))').addClass('hidden');
+        }
+      } else if (_.root.parents().hasClass('record-main') && width < 400 && height < 400) {
+        image.style.objectFit = 'none';
       }
     } else if (_.trigger.hasClass('no-image')) {
       _.trigger.removeClass('no-image');
