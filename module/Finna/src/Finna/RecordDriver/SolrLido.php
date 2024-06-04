@@ -1135,8 +1135,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 }
             }
         }
-        $results = $this->getAllLanguageSpecificItems($results, $this->getLocale());
-        return $results;
+        return $this->getAllLanguageSpecificItems($results, $this->getLocale());
     }
 
     /**
