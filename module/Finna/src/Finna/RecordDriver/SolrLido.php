@@ -212,7 +212,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      *
      * @var array
      */
-    protected $placeIDTypes = ['uri', 'url'];
+    protected $uniquePlaceIDTypes = ['uri', 'url'];
 
     /**
      * Array of excluded subject types
@@ -1314,14 +1314,14 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         'placeName' => $place,
                     ];
                     $idTypeFirst = trim((string)($placeId->attributes()->type ?? ''));
-                    $prependType = !in_array(strtolower($idTypeFirst), $this->placeIDTypes);
+                    $prependType = !in_array(strtolower($idTypeFirst), $this->uniquePlaceIDTypes);
                     $displayPlace['type'] = $idTypeFirst;
                     $displayPlace['id'] = $prependType ? "($idTypeFirst)$placeId" : (string)$placeId;
                     foreach ($placenode->place->placeID ?? [] as $item) {
                         $details = [];
                         $id = (string)$item;
                         $idType = trim((string)($item->attributes()->type ?? ''));
-                        $prependType = !in_array(strtolower($idType), $this->placeIDTypes);
+                        $prependType = !in_array(strtolower($idType), $this->uniquePlaceIDTypes);
                         $displayPlace['ids'][] = $prependType ? "($idType)$id" : $id;
                         $typeDesc = $idType ? 'place_id_type_' . $idType : '';
                         $details[] = $typeDesc;
@@ -2086,8 +2086,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 foreach ($subjectPlace->place->placeID ?? [] as $placeId) {
                     $id = (string)$placeId;
                     $type = trim((string)($placeId->attributes()->type ?? ''));
-                    $isTypeInArray = in_array(strtolower($type), $this->placeIDTypes);
-                    if ($type && !$isTypeInArray && $prependType) {
+                    if ($type && $prependType && !in_array(strtolower($type), $this->uniquePlaceIDTypes)) {
                         $id = "($type)$id";
                     }
                     $typeDesc = $this->translate('place_id_type_' . $type, [], '');
@@ -2341,7 +2340,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                     $attr = $placeId->attributes();
                     $idType = trim((string)($attr->type) ?? '');
-                    $prependType = !in_array(strtolower($idType), $this->placeIDTypes);
+                    $prependType = !in_array(strtolower($idType), $this->uniquePlaceIDTypes);
                     $id = $prependType ? "($idType)$placeIdStr" : $placeIdStr;
                     $locationInfo['ids'][] = $id;
                 }
