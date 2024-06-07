@@ -62,4 +62,21 @@ class SolrDefault extends \VuFind\RecordDriver\SolrDefault
         parent::__construct($mainConfig, $recordConfig, $searchSettings);
         $this->searchSettings = $searchSettings;
     }
+
+    /**
+     * Return the collection search ID for this record.
+     *
+     * @return string
+     */
+    public function getCollectionSearchId(): string
+    {
+        if ($this->mainConfig->Hierarchy->showFullHierarchyTree) {
+            $id = $this->getUniqueID();
+            $topId = $this->getHierarchyTopID()[0] ?? '';
+            if ($topId && $topId !== $id) {
+                return $topId;
+            }
+        }
+        return $this->getUniqueID();
+    }
 }
