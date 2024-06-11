@@ -54,8 +54,6 @@ use function in_array;
  */
 class SolrEad3 extends SolrEad
 {
-    use Feature\SolrFinnaTrait;
-
     // Image types
     public const IMAGE_MEDIUM = 'medium';
     public const IMAGE_LARGE = 'large';
@@ -2166,19 +2164,6 @@ class SolrEad3 extends SolrEad
             }
         }
         return $results;
-    }
-
-    /**
-     * Get an array of strings representing citation formats supported
-     * by this record's data (empty if none).  For possible legal values,
-     * see /application/themes/root/helpers/Citation.php, getCitation()
-     * method.
-     *
-     * @return array Strings representing citation formats.
-     */
-    protected function getSupportedCitationFormats()
-    {
-        return parent::getSupportedCitationFormats();
     }
 
     /**
