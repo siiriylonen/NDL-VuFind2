@@ -70,13 +70,13 @@ class SolrDefault extends \VuFind\RecordDriver\SolrDefault
      */
     public function getCollectionSearchId(): string
     {
-        if ($this->mainConfig->Hierarchy->showFullHierarchyTree) {
-            $id = $this->getUniqueID();
-            $topId = $this->getHierarchyTopID()[0] ?? '';
-            if ($topId && $topId !== $id) {
+        $id = $this->getUniqueID();
+        if ($this->mainConfig->Hierarchy->showFullHierarchyTree ?? false) {
+            $topId = $this->getHierarchyTopID()[0] ?? $id;
+            if ($topId !== $id) {
                 return $topId;
             }
         }
-        return $this->getUniqueID();
+        return $id;
     }
 }
