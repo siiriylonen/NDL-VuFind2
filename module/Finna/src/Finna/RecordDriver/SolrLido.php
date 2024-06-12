@@ -1314,14 +1314,18 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         'placeName' => $place,
                     ];
                     $idTypeFirst = trim((string)($placeId->attributes()->type ?? ''));
-                    $prependType = !in_array(strtolower($idTypeFirst), $this->uniquePlaceIDTypes);
+                    $prependType = !empty($idTypeFirst)
+                        ? !in_array(strtolower($idTypeFirst), $this->uniquePlaceIDTypes)
+                        : false;
                     $displayPlace['type'] = $idTypeFirst;
                     $displayPlace['id'] = $prependType ? "($idTypeFirst)$placeId" : (string)$placeId;
                     foreach ($placenode->place->placeID ?? [] as $item) {
                         $details = [];
                         $id = (string)$item;
                         $idType = trim((string)($item->attributes()->type ?? ''));
-                        $prependType = !in_array(strtolower($idType), $this->uniquePlaceIDTypes);
+                        $prependType = !empty($idType)
+                        ? !in_array(strtolower($idType), $this->uniquePlaceIDTypes)
+                        : false;
                         $displayPlace['ids'][] = $prependType ? "($idType)$id" : $id;
                         $typeDesc = $idType ? 'place_id_type_' . $idType : '';
                         $details[] = $typeDesc;
@@ -2340,7 +2344,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                     $attr = $placeId->attributes();
                     $idType = trim((string)($attr->type) ?? '');
-                    $prependType = !in_array(strtolower($idType), $this->uniquePlaceIDTypes);
+                    $prependType = !empty($idType) ? !in_array(strtolower($idType), $this->uniquePlaceIDTypes) : false;
                     $id = $prependType ? "($idType)$placeIdStr" : $placeIdStr;
                     $locationInfo['ids'][] = $id;
                 }
