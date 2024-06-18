@@ -370,11 +370,17 @@ FinnaPaginator.prototype.onLeafletImageClick = function onLeafletImageClick(imag
       if (imageHeight >= boundHeight) {
         newHeight = boundHeight - (boundHeight / 100 * offsetPercentage);
         heightPercentage = 100 - (newHeight / imageHeight * 100);
+      } else {
+        newHeight = boundHeight - (imageHeight / 100 * offsetPercentage);
+        heightPercentage = 100 - (newHeight / boundHeight * 100);
       }
 
       if (imageWidth >= boundWidth) {
         newWidth = boundWidth - (boundWidth / 100 * offsetPercentage);
         widthPercentage = 100 - (newWidth / imageWidth * 100);
+      } else {
+        newWidth = boundWidth - (imageWidth / 100 * offsetPercentage);
+        widthPercentage = 100 - (newWidth / boundWidth * 100);
       }
 
       if (heightPercentage > widthPercentage) {
@@ -561,7 +567,6 @@ FinnaPaginator.prototype.changeTriggerImage = function changeTriggerImage(imageP
       } else if (_.root.parents().hasClass('record-main') && (width / containerWidth < 0.6) && (height / containerHeight < 0.6)) {
         _.trigger.css('aspect-ratio', 'auto');
         $('.image-description').css('text-align', 'center');
-        _.settings.enableImageZoom = false;
       }
     } else if (_.trigger.hasClass('no-image')) {
       _.trigger.removeClass('no-image');
