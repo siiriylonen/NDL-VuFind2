@@ -1314,18 +1314,15 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                         'placeName' => $place,
                     ];
                     $idTypeFirst = trim((string)($placeId->attributes()->type ?? ''));
-                    $prependType = !empty($idTypeFirst)
-                        ? !in_array(strtolower($idTypeFirst), $this->uniquePlaceIDTypes)
-                        : false;
+                    $prependType = $idTypeFirst !== ''
+                        && !in_array(strtolower($idTypeFirst), $this->uniquePlaceIDTypes);
                     $displayPlace['type'] = $idTypeFirst;
                     $displayPlace['id'] = $prependType ? "($idTypeFirst)$placeId" : (string)$placeId;
                     foreach ($placenode->place->placeID ?? [] as $item) {
                         $details = [];
                         $id = (string)$item;
                         $idType = trim((string)($item->attributes()->type ?? ''));
-                        $prependType = !empty($idType)
-                            ? !in_array(strtolower($idType), $this->uniquePlaceIDTypes)
-                            : false;
+                        $prependType = $idType !== '' && !in_array(strtolower($idType), $this->uniquePlaceIDTypes);
                         $displayPlace['ids'][] = $prependType ? "($idType)$id" : $id;
                         $typeDesc = $idType ? 'place_id_type_' . $idType : '';
                         $details[] = $typeDesc;
@@ -2344,7 +2341,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                     $attr = $placeId->attributes();
                     $idType = trim((string)($attr->type) ?? '');
-                    $prependType = !empty($idType) ? !in_array(strtolower($idType), $this->uniquePlaceIDTypes) : false;
+                    $prependType = $idType !== '' && !in_array(strtolower($idType), $this->uniquePlaceIDTypes);
                     $id = $prependType ? "($idType)$placeIdStr" : $placeIdStr;
                     $locationInfo['ids'][] = $id;
                 }
