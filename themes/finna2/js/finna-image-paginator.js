@@ -542,6 +542,8 @@ FinnaPaginator.prototype.changeTriggerImage = function changeTriggerImage(imageP
     _.setDimensions();
     var width = image.naturalWidth;
     var height = image.naturalHeight;
+    var containerWidth = img.parents('.recordcover-container').width();
+    var containerHeight = img.parents('.recordcover-container').height();
     if (width) {
       if (width === 10 && height === 10) {
         _.trigger.addClass('no-image').trigger('removeclick');
@@ -556,8 +558,9 @@ FinnaPaginator.prototype.changeTriggerImage = function changeTriggerImage(imageP
           _.root.css('display', 'none');
           _.root.siblings('.image-details-container:not(:has(.image-rights))').addClass('hidden');
         }
-      } else if (_.root.parents().hasClass('record-main') && width < 400 && height < 400) {
-        image.style.objectFit = 'none';
+      } else if (_.root.parents().hasClass('record-main') && (width / containerWidth < 0.6) && (height / containerHeight < 0.6)) {
+        _.trigger.css('aspect-ratio', 'auto');
+        $('.image-description').css('text-align', 'center');
       }
     } else if (_.trigger.hasClass('no-image')) {
       _.trigger.removeClass('no-image');
