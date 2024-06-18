@@ -561,6 +561,7 @@ FinnaPaginator.prototype.changeTriggerImage = function changeTriggerImage(imageP
       } else if (_.root.parents().hasClass('record-main') && (width / containerWidth < 0.6) && (height / containerHeight < 0.6)) {
         _.trigger.css('aspect-ratio', 'auto');
         $('.image-description').css('text-align', 'center');
+        _.settings.enableImageZoom = false;
       }
     } else if (_.trigger.hasClass('no-image')) {
       _.trigger.removeClass('no-image');
