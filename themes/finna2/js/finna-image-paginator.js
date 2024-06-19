@@ -371,7 +371,7 @@ FinnaPaginator.prototype.onLeafletImageClick = function onLeafletImageClick(imag
         newHeight = boundHeight - (boundHeight / 100 * offsetPercentage);
         heightPercentage = 100 - (newHeight / imageHeight * 100);
       } else {
-        newHeight = boundHeight - (imageHeight / 100);
+        newHeight = boundHeight - imageHeight / 100;
         heightPercentage = 100 - (newHeight / boundHeight * 100);
       }
 
@@ -379,7 +379,7 @@ FinnaPaginator.prototype.onLeafletImageClick = function onLeafletImageClick(imag
         newWidth = boundWidth - (boundWidth / 100 * offsetPercentage);
         widthPercentage = 100 - (newWidth / imageWidth * 100);
       } else {
-        newWidth = boundWidth - (imageWidth / 100);
+        newWidth = boundWidth - imageWidth / 100;
         widthPercentage = 100 - (newWidth / boundWidth * 100);
       }
 
