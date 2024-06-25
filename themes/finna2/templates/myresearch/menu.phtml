@@ -28,15 +28,15 @@
           'translation' => 'Checked Out Items',
           'statusKey' => 'checkedout',
         ],
-        'historicloans' => [
-          'url' => 'checkouts-history',
-          'translation' => 'Loan History',
-          'show' => $this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams),
-        ],
         'holds' => [
           'url' => 'holds-list',
           'translation' => 'Holds and Recalls',
           'statusKey' => 'holds',
+        ],
+        'historicloans' => [
+          'url' => 'checkouts-history',
+          'translation' => 'Loan History',
+          'show' => $this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams),
         ],
         'storageretrievalrequests' => [
           'url' => 'myresearch-storageretrievalrequests',
@@ -100,8 +100,8 @@
     $desktopList = [
       'r2-accessrights',
       'checkedout',
-      'historicloans',
       'holds',
+      'historicloans',
       'storageretrievalrequests',
       'illrequests',
       'fines',

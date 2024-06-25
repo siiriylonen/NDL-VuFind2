@@ -128,6 +128,12 @@
                   <span class="checkedout-status status hidden"><?=$this->icon('spinner') ?></span>
                 </a>
               </li>
+              <li>
+                <a <?=$this->url('holds-list') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('holds-list')?>">
+                  <?=$this->transEsc('Holds and Recalls')?>
+                  <span class="holds-status status hidden"><?=$this->icon('spinner') ?></span>
+                </a>
+              </li>
               <?php if ($this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams)): ?>
                 <li role="none">
                   <a <?=$this->url('checkouts-history') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-historicloans')?>">
@@ -135,12 +141,6 @@
                   </a>
                 </li>
               <?php endif; ?>
-              <li>
-                <a <?=$this->url('holds-list') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('holds-list')?>">
-                  <?=$this->transEsc('Holds and Recalls')?>
-                  <span class="holds-status status hidden"><?=$this->icon('spinner') ?></span>
-                </a>
-              </li>
               <?php if ($this->ils()->checkFunction('StorageRetrievalRequests', $capabilityParams)): ?>
                 <li>
                   <a <?=$this->url('myresearch-storageretrievalrequests') === $_SERVER['REQUEST_URI'] ? 'aria-current="page"' : ''?> role="menuitem" href="<?=$this->url('myresearch-storageretrievalrequests')?>">
