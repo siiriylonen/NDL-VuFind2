@@ -72,7 +72,12 @@
       <?=$this->partial('myresearch/profile-messages.phtml', ['messages' => $this->profile['messages'] ?? []]); ?>
       <?php if (is_array($this->profile)): ?>
         <div class="logged-in-as">
-          <?=$this->icon('profile', 'profile-icon') ?><span class="sr-only"><?=$this->transEsc('logged_in_as')?>: </span><?=$this->escapeHtml($user->getDisplayName()) ?>
+          <div><?=$this->icon('profile', 'profile-icon') ?><span class="sr-only"><?=$this->transEsc('logged_in_as')?>: </span><?=$this->escapeHtml($user->getDisplayName()) ?></div>
+          <?php if ($user->getDisplayName() !== $user->getUsername()): ?>
+            <div><span class="profile-title"><?=$this->transEsc('account_username')?>: </span><span><?=$this->escapeHtml($user->getUsername())?></span></div>
+          <?php endif; ?>
+          <div><span class="profile-title"><?=$this->transEsc('account_creation_date')?>: </span><span><?=date('d.m.Y', strtotime($user->created))?></span></div>
+          <div><span class="profile-title"><?=$this->transEsc('account_login_method')?>: </span><span><?=$this->transEsc('login_method_' . $user->auth_method)?></span></div>
         </div>
         <div class="myresearch-profile-header"><h3><?=$this->transEsc('Library Card Settings');?></h3></div>
         <div class="myresearch-profile-list library-profile">
