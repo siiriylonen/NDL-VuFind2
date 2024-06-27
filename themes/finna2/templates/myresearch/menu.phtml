@@ -33,11 +33,6 @@
           'translation' => 'Holds and Recalls',
           'statusKey' => 'holds',
         ],
-        'historicloans' => [
-          'url' => 'checkouts-history',
-          'translation' => 'Loan History',
-          'show' => $this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams),
-        ],
         'storageretrievalrequests' => [
           'url' => 'myresearch-storageretrievalrequests',
           'translation' => 'Storage Retrieval Requests',
@@ -49,6 +44,11 @@
           'translation' => 'Interlibrary Loan Requests',
           'show' => $this->ils()->checkFunction('ILLRequests', $capabilityParams),
           'statusKey' => 'illrequests',
+        ],
+        'historicloans' => [
+          'url' => 'checkouts-history',
+          'translation' => 'Loan History',
+          'show' => $this->ils()->checkCapability('getMyTransactionHistory', $capabilityParams),
         ],
         'fines' => [
           'url' => 'myresearch-fines',
@@ -101,9 +101,9 @@
       'r2-accessrights',
       'checkedout',
       'holds',
-      'historicloans',
       'storageretrievalrequests',
       'illrequests',
+      'historicloans',
       'fines',
       'librarycards',
       'profile',
