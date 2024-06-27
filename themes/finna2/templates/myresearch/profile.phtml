@@ -72,7 +72,7 @@
       <?=$this->partial('myresearch/profile-messages.phtml', ['messages' => $this->profile['messages'] ?? []]); ?>
       <?php if (is_array($this->profile)): ?>
         <div class="logged-in-as">
-          <div><?=$this->icon('profile', 'profile-icon') ?><span class="sr-only"><?=$this->transEsc('logged_in_as')?>: </span><?=$this->escapeHtml($user->getDisplayName()) ?></div>
+          <div class="display-name"><?=$this->icon('profile', 'profile-icon') ?><span class="sr-only"><?=$this->transEsc('logged_in_as')?>: </span><?=$this->escapeHtml($user->getDisplayName()) ?></div>
           <?php if ($user->getDisplayName() !== $user->getUsername()): ?>
             <div><span class="profile-title"><?=$this->transEsc('account_username')?>: </span><span><?=$this->escapeHtml($user->getUsername())?></span></div>
           <?php endif; ?>
