@@ -93,6 +93,7 @@ trait FinnaUserTrait
     public function getUsername(): string
     {
         [, $username] = explode(':', $this->username);
+        $username = trim(substr($username, strpos($username, '.') + 1));
         return $username;
     }
 
