@@ -71,8 +71,8 @@
           <?php if ($user->getDisplayName() !== $user->getUsername()): ?>
             <div><span class="profile-title"><?=$this->transEsc('account_username')?>: </span><span><?=$this->escapeHtml($user->getUsername())?></span></div>
           <?php endif; ?>
-          <div><span class="profile-title"><?=$this->transEsc('account_login_method')?>: </span><span><?=$this->transEsc('login_method_' . $user->auth_method)?></span></div>
-          <div><span class="profile-title"><?=$this->transEsc('account_creation_date')?>: </span><span><?=date('d.m.Y', strtotime($user->created))?></span></div>
+          <div><span class="profile-title"><?=$this->transEsc('account_login_method')?>: </span><span><?=$this->transEscWithPrefix('login_method_', $user->auth_method)?></span></div>
+          <div><span class="profile-title"><?=$this->transEsc('account_creation_date')?>: </span><span> <?=$this->dateTime()->convertToDisplayDate('U', strtotime($user->created))?></span></div>
         </div>
         <?php if (count($cards) > 1): ?>
           <div class="myresearch-profile-list library-card-holder">
