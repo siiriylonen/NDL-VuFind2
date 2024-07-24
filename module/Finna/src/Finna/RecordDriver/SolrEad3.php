@@ -229,9 +229,15 @@ class SolrEad3 extends SolrEad
             ) {
                 return;
             }
-            $downloadOnly = false;
+            $format = '';
+            $displayAsLink = true;
             if (str_starts_with($role, 'audio') || str_starts_with($role, 'video')) {
-                $downloadOnly = ((string)$attr->actuate === 'onrequest' && (string)$attr->show === 'none');
+                $displayAsLink = !((string)$attr->actuate === 'onrequest' && (string)$attr->show === 'none');
+                $format = substr($role, strpos($role, '/') + 1);
+            }
+            if ($role === 'image/tiff') {
+                $displayAsLink = false;
+                $format = 'tiff';
             }
             $lang = (string)$attr->lang;
             $preferredLang = $lang && in_array($lang, $preferredLangCodes);
@@ -243,7 +249,8 @@ class SolrEad3 extends SolrEad
                 $urlData = [
                     'url' => $url,
                     'desc' => (string)$desc,
-                    'downloadOnly' => $downloadOnly,
+                    'format' => $format,
+                    'displayAsLink' => $displayAsLink,
                 ];
                 if ($preferredLang) {
                     $urls['localeurls'][] = $urlData;
@@ -270,6 +277,16 @@ class SolrEad3 extends SolrEad
         }
 
         return $this->resolveUrlTypes($urls['localeurls'] ?? $urls['urls']);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return array
+     */
+    public function getDocuments(): array
+    {
+        return $this->getURLs();
     }
 
     /**
