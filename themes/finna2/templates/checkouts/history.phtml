@@ -27,6 +27,23 @@
     </div>
     <div class="useraccount-header">
       <h2><?=$this->transEsc('Loan History')?> (<?=$recordCount;?>)</h2>
+      <?php if (!empty($this->transactions)): ?>
+        <div class="dropdown loan-history-download">
+          <button class="btn btn-primary dropdown-toggle download" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <?=$this->icon('history-export')?> <span class="hidden-xs"><?=$this->transEsc('loan_history_download')?></span> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right download">
+            <li>
+              <a data-lightbox href="<?=$this->url('myresearch-savehistoricloans') ?>"><?=$this->transEsc('loan_history_save')?></a>
+            </li>
+            <?php foreach (['csv', 'ods', 'xlsx'] as $format): ?>
+              <li>
+                <a href="<?=$this->url('myresearch-downloadloanhistory', [], ['query' => ['format' => $format]])?>"><?=$this->transEsc('loan_history_download_' . $format)?></a>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      <?php endif; ?>
     </div>
     <?php if (isset($this->noSupport)): ?>
       <?php if ($user->getLibraryCards()->count() > 1): ?>
@@ -83,9 +100,6 @@
                               <li><a href="#" class="confirm_purge_no"><?=$this->transEsc('confirm_dialog_no')?></a></li>
                             </ul>
                           <?php endif; ?>
-                        </div>
-                        <div class="btn-group">
-                          <a class="btn btn-primary btn-finna-toolbar" data-lightbox role="button" href="<?=$this->url('myresearch-savehistoricloans') ?>"><?=$this->transEsc('loan_history_save')?></a>
                         </div>
                       </div>
                       <div class="sort-col">
@@ -165,18 +179,6 @@
                 <?php endforeach; ?>
               </table>
               <div class="loan-history-buttons-bottom">
-                <div class="dropdown loan-history-download">
-                  <button class="btn btn-default dropdown-toggle download" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?=$this->icon('download')?> <?=$this->transEsc('loan_history_download')?> <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu download">
-                    <?php foreach (['csv', 'ods', 'xlsx'] as $format): ?>
-                      <li>
-                        <a href="<?=$this->url('myresearch-downloadloanhistory', [], ['query' => ['format' => $format]])?>"><?=$this->transEsc('loan_history_download_' . $format)?></a>
-                      </li>
-                    <?php endforeach; ?>
-                  </ul>
-                </div>
                 <?php if ($purgeAllAllowed): ?>
                   <div class="dropdown loan-history-purge-all">
                     <input type="submit" id="purgeAll" name="purgeAll" value="<?=$this->transEscAttr('loan_history_purge')?>" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" data-lightbox-ignore>
