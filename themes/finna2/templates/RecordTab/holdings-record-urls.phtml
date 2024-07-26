@@ -20,10 +20,11 @@
   </div>
   <div class="holdings-urls">
     <?php foreach ($urls ?? [] as $current): ?>
-      <?php if (!empty($current['downloadOnly'])) {
-          $icon = $this->icon('download');
-        } else {
+      <?php
+        if (empty($current['downloadOnly'])) {
           $icon = $this->icon('external-link');
+        } else {
+          $icon = $this->icon('download');
         }
       ?>
       <?php if (!$this->driver->tryMethod('urlBlocked', [$current['url'], $current['desc']])): ?>
