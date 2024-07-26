@@ -14,7 +14,7 @@
         $format = $document['format'] ?? null;
     ?>
     <?php ob_start(); ?>
-    <?php if (empty($document['displayAsLink'])): ?>
+    <?php if (!isset($document['downloadOnly']) && empty($document['displayAsLink'])): ?>
         <?php $aAttrs = [
             'download' => '',
             'rel' => 'nofollow',
@@ -38,7 +38,7 @@
         $descriptionDefault = ($document['displayAsLink'] ?? false) ? $this->translate('external_online_link') : null;
         ?>
         <a <?=$this->htmlAttributes($aAttrs)?>>
-            <?=$this->icon('external-link')?>
+            <?=$downloadOnly ? $this->icon('download') : $this->icon('external-link')?>
             <?=$this->transEscWithPrefix('link_', $description, [], $descriptionDefault)?>
         </a>
     <?php endif; ?>
