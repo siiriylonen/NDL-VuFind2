@@ -556,14 +556,6 @@
   }
 }
 
-.template-dir-holds {
-  .toolbar {
-    @media (max-width: @screen-xs) {
-      flex-direction: column-reverse;
-    }
-  }
-}
-
 .template-dir-myresearch .toolbar, .template-dir-checkouts .toolbar, .template-dir-holds .toolbar {
   margin: 0;
   margin-top: 5px;
@@ -588,6 +580,14 @@
       &:nth-child(2) {
         width: 100%;
       }
+    }
+  }
+}
+
+form#renewals {
+  .toolbar {
+    @media (max-width: @screen-xs) {
+      flex-direction: column-reverse;
     }
   }
 }
