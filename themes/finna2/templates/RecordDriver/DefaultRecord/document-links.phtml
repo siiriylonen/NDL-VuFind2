@@ -12,9 +12,10 @@
         $copyright = $rights['copyright'] ?? '';
         $link = $rights['link'] ?? '';
         $format = $document['format'] ?? null;
+        $linkType = $document['linkType'] ?? 'external-link';
     ?>
     <?php ob_start(); ?>
-    <?php if (!isset($document['downloadOnly']) && empty($document['displayAsLink'])): ?>
+    <?php if ($linkType === 'proxy'): ?>
         <?php $aAttrs = [
             'download' => '',
             'rel' => 'nofollow',
@@ -32,13 +33,13 @@
         if ($posterUrl = $document['posterUrl'] ?? null) {
             $aAttrs['data-poster-url'] = $posterUrl;
         }
-        if ($downloadOnly = $document['downloadOnly'] ?? null) {
-            $aAttrs['download'] = $downloadOnly;
+        if ($linkType === 'download') {
+            $aAttrs['download'] = true;
         }
-        $descriptionDefault = ($document['displayAsLink'] ?? false) ? $this->translate('external_online_link') : null;
+        $descriptionDefault = $this->translate('external_online_link') ?? null;
         ?>
         <a <?=$this->htmlAttributes($aAttrs)?>>
-            <?=$downloadOnly ? $this->icon('download') : $this->icon('external-link')?>
+            <?=$this->icon($linkType)?>
             <?=$this->transEscWithPrefix('link_', $description, [], $descriptionDefault)?>
         </a>
     <?php endif; ?>
