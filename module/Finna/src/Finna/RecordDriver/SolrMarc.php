@@ -1131,17 +1131,16 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
                     $roles = array_map([$this, 'stripTrailingPunctuation'], $roles);
                     $role = implode(', ', $roles);
                     $role = mb_strtolower($role, 'UTF-8');
-                    if ($fieldCode === '700' || $fieldCode === '710') {
-                        if (
-                            $role
-                            && isset($this->mainConfig->Record->presenter_roles)
-                            && in_array(
-                                trim($role, ' .'),
-                                $this->mainConfig->Record->presenter_roles->toArray()
-                            )
-                        ) {
-                            continue;
-                        }
+                    if (
+                        ($fieldCode === '700' || $fieldCode === '710')
+                        && $role
+                        && isset($this->mainConfig->Record->presenter_roles)
+                        && in_array(
+                            trim($role, ' .'),
+                            $this->mainConfig->Record->presenter_roles->toArray()
+                        )
+                    ) {
+                        continue;
                     }
                     $subfields = $this->getSubfieldArray($field, ['a', 'b', 'c']);
                     if (empty($subfields)) {
