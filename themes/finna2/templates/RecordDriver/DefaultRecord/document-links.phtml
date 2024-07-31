@@ -36,7 +36,7 @@
         if ($linkType === 'download') {
             $aAttrs['download'] = true;
         }
-        $descriptionDefault = $this->translate('external_online_link') ?? null;
+        $descriptionDefault = $linkType !== 'download' ? $this->translate($this->translate('external_online_link')) : null;
         ?>
         <a <?=$this->htmlAttributes($aAttrs)?>>
             <?=$this->icon($linkType)?>
