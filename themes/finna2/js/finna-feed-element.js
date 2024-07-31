@@ -179,6 +179,7 @@ class FinnaFeedElement extends HTMLElement {
           }
         }
         if (slider) {
+          this.previousElementSibling.classList.add('sr-only');
           this.classList.add('carousel-slider');
           if (settings.backgroundColor) {
             this.classList.add('slider-with-background');

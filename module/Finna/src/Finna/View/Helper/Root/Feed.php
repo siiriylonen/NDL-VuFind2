@@ -69,12 +69,8 @@ class Feed extends \Laminas\View\Helper\AbstractHelper
     {
         $feedConfig = $this->config[$id];
         if (isset($feedConfig) && $feedConfig['active']) {
-            if (isset($feedConfig['title']) && $feedConfig['title'] !== 'rss') {
-                $title = $feedConfig['title'];
-            } else {
-                $title = 'Image Carousel';
-            }
-            return $this->getView()->render('Helpers/feed.phtml', ['id' => $id, 'title' => $title]);
+            $title = $feedConfig['title'];
         }
+        return $this->getView()->render('Helpers/feed.phtml', ['id' => $id, 'title' => $title ?? '']);
     }
 }

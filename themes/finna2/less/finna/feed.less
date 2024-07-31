@@ -10,6 +10,12 @@
         }
     }
 }
+.feed-header {
+    display: inline-block;
+    color: @list-feed-header-color;
+    padding: @list-feed-header-padding;
+    background: @list-feed-header-background;
+}
 .feed-container .list-feed {
     background: @list-feed-background;
     padding: @list-feed-padding;
@@ -22,12 +28,6 @@
     }
     .title {
         font-weight: normal;
-    }
-    .feed-header {
-        display: inline-block;
-        color: @list-feed-header-color;
-        padding: @list-feed-header-padding;
-        background: @list-feed-header-background;
     }
     .more-link {
         margin-top: 15px;
@@ -561,6 +561,12 @@
     }
 }
 
+.carousel-header {
+    background: @carousel-header-background;
+    display: inline-block;
+    padding: @carousel-header-padding;
+    color: @carousel-header-color;
+}
 finna-feed {
     display: block;
     .feed-content-container {
@@ -568,12 +574,6 @@ finna-feed {
         flex-direction: row;
         align-items: center;
         position: relative;
-    }
-    .carousel-header {
-        background: @carousel-header-background;
-        display: inline-block;
-        padding: @carousel-header-padding;
-        color: @carousel-header-color;
     }
     .carousel-hover-title {
         font-size: 14px;
@@ -875,9 +875,6 @@ finna-feed.carousel-slider.splide--ltr {
         .carousel-pagination-wrapper {
             position: relative;
         }
-    }
-    .carousel-header {
-        display: none;
     }
     .slider-image, .slider-text-part {
         height: 100%;
