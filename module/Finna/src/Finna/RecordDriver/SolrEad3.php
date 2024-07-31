@@ -1256,11 +1256,7 @@ class SolrEad3 extends SolrEad
                 if (in_array($type, self::ACCESS_RESTRICT_TYPES)) {
                     switch ($type) {
                         case 'ahaa:KR7':
-                            $label = $this->getDisplayLabel(
-                                $access->p->name,
-                                'part',
-                                true
-                            );
+                            $label = $this->getDisplayLabel($access->p->name, 'part');
                             break;
                         case 'ahaa:KR9':
                             $label = [(string)($access->p->date ?? '')];
