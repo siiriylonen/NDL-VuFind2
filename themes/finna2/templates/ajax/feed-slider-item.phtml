@@ -15,7 +15,7 @@
         <h2 class="slider-header"><?=$feedTitleEsc;?></h2>
       <?php endif; ?>
       <?php if (!empty($item['title'])): ?>
-        <h3 class="slider-title"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
+        <h3 class="slider-title" aria-hidden="true"><?=$this->escapeHtml($this->truncate($item['title'], 70))?></h3>
       <?php endif; ?>
       <div class="text">
         <p><?=$this->cleanHtml($item['description'] ?? '') ?></p>
