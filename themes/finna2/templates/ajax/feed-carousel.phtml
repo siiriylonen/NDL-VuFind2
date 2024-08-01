@@ -2,8 +2,11 @@
 <?php
   $hasLinkText = isset($this->linkText);
   $linkTextEsc = $this->transEsc($this->linkText ? $this->linkText : 'To the record');
-  $feedTitleEsc = !empty($this->translateTitle) ? $this->transEsc($this->translateTitle) : $this->escapeHtml($this->title ?? '');
+  $feedTitleEsc = isset($this->translateTitle) ? $this->transEsc($this->translateTitle) : $this->escapeHtml($this->title);
+  if ($feedTitleEsc && $this->type !== 'slider'):
 ?>
+  <h2 class="carousel-header"><?=$feedTitleEsc?></h2>
+<?php endif; ?>
 <?php if (isset($this->description)): ?>
   <p class="additional-description"><?=$this->translate($this->description) // HTML, intentionally left unescaped ?></p>
 <?php endif; ?>

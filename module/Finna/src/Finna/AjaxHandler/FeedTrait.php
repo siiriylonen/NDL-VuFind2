@@ -105,7 +105,7 @@ trait FeedTrait
         if (isset($config->title)) {
             if ($config->title == 'rss') {
                 $feed['title'] = $channel->getTitle();
-            } else {
+            } elseif ($type == 'slider') {
                 $feed['translateTitle'] = $config->title;
             }
         }
