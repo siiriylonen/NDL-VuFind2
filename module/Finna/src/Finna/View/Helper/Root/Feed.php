@@ -71,7 +71,10 @@ class Feed extends \Laminas\View\Helper\AbstractHelper
         if (isset($feedConfig) && $feedConfig['active']) {
             $title = ($feedConfig['title'] !== 'rss') ? $feedConfig['title'] : '';
             $type = $feedConfig['type'];
-            return $this->getView()->render('Helpers/feed.phtml', ['id' => $id, 'translateTitle' => $title, 'type' => $type]);
+            return $this->getView()->render(
+                'Helpers/feed.phtml',
+                ['id' => $id, 'translateTitle' => $title, 'type' => $type]
+            );
         }
     }
 }
