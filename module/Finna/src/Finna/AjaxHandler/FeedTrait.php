@@ -103,7 +103,11 @@ trait FeedTrait
         ];
 
         if (isset($config->title)) {
-            $feed['title'] = $config->title;
+            if ($config->title == 'rss') {
+                $feed['title'] = $channel->getTitle();
+            } else {
+                $feed['translateTitle'] = $config->title;
+            }
         }
 
         if (isset($config->description)) {

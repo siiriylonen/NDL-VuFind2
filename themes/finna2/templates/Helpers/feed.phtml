@@ -1,4 +1,4 @@
 <!-- START of: finna - Helpers/feed.phtml -->
-<h2 class="carousel-header feed-header"><?=$this->transEsc($this->title); ?></h2>
+<h2 class="carousel-header feed-header<?php if ($this->type === 'slider' || $this->title === 'Image Carousel'):?> sr-only<?php endif;?>"><?=$this->transEsc($this->title); ?></h2>
 <finna-feed class="feed-container" feed-id="<?= $this->escapeHtmlAttr($this->id); ?>" ></finna-feed>
 <!-- END of: finna - Helpers/feed.phtml -->
