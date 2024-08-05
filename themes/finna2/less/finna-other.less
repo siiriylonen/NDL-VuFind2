@@ -426,8 +426,20 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
 }
 
 // Hierarchy tree
-.hierarchy-tree-search-form .btn {
-    &:extend(.form-control);
+.hierarchy-tree-container .hierarchy-tree-search-form {
+    .collection-list-controls;
+    align-items: normal;
+    gap: 0;
+    .search-query {
+        height: 40px;
+        border-right: none;
+        @media (min-width: @screen-sm) {
+          width: 250px;
+        }
+    }
+    .js-load-indicator {
+        margin: 10px;
+    }
 }
 .hierarchy-tree__item-container .icon {
     display: none;
