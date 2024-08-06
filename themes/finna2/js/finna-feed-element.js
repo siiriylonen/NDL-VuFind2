@@ -141,7 +141,7 @@ class FinnaFeedElement extends HTMLElement {
       if (!hasContent) {
         this.classList.add('hidden');
         if (titleElement) {
-          titleElement.classList.add('sr-only');
+          titleElement.classList.add('hidden');
         }
         this.innerHTML = `<!-- No content received -->`;
         return;
@@ -365,7 +365,7 @@ class FinnaFeedElement extends HTMLElement {
           console.error(responseJSON);
           const titleElement = holder.previousElementSibling;
           if (titleElement) {
-            titleElement.classList.add('sr-only');
+            titleElement.classList.add('hidden');
           }
           holder.innerHTML
             = `<!-- Feed could not be loaded: ${responseJSON.data || ''} -->`;
