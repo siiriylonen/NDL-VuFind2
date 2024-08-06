@@ -37,12 +37,10 @@
         <select class="form-control hidden js-search-type" name="type">
           <option value="AllFields"><?=$this->transEsc('All Fields')?></option>
         </select>
-        <span class="input-group-btn">
-          <button class="btn btn-primary js-submit" type="submit" name="submit">
-            <span class="sr-only"><?=$this->transEsc('Search')?></span>
-            <?=$this->icon('search') ?>
-          </button>
-        </span>
+        <button class="btn btn-primary js-submit" type="submit" name="submit">
+          <span class="sr-only"><?=$this->transEsc('Search')?></span>
+          <?=$this->icon('search') ?>
+        </button>
         <span class="hidden js-load-indicator"><?=$this->icon('spinner') ?></span>
       </div>
       <div class="js-search-error alert alert-danger hidden"><?=$this->transEsc('An error has occurred')?></div>
