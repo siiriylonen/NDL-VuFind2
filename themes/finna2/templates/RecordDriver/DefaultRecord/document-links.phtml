@@ -15,7 +15,7 @@
         $linkType = $document['linkType'] ?? 'external-link';
     ?>
     <?php ob_start(); ?>
-    <?php if ($linkType === 'proxy'): ?>
+    <?php if ($linkType === 'proxy-link'): ?>
         <?php $aAttrs = [
             'download' => '',
             'rel' => 'nofollow',

@@ -234,7 +234,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
                         'url' => 'https://linkkiPDF.fi',
                         'format' => 'pdf',
                         'rights' => [],
-                        'linkType' => 'proxy',
+                        'linkType' => 'proxy-link',
                     ],
                     2 => [
                         'description' => 'DocxTesti.docx',
@@ -246,7 +246,7 @@ class SolrLidoTest extends \PHPUnit\Framework\TestCase
                                 0 => 'Tekstitiedoston tarkempi käyttöoikeuskuvaus',
                             ],
                         ],
-                        'linkType' => 'proxy',
+                        'linkType' => 'proxy-link',
                     ],
                 ],
             ],
