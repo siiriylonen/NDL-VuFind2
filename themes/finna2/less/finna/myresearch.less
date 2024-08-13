@@ -109,9 +109,6 @@
         height: fit-content;
       }
     }
-    @media (max-width: @screen-xs) {
-      flex-direction: column-reverse;
-    }
     .btn-finna-toolbar {
       margin: 3px 0px;
       @media (max-width: @screen-md) {
@@ -119,7 +116,7 @@
       }
     }
     .btn-group {
-      margin-right: 20px;
+      margin-right: 15px;
       .btn {
         margin-right: 1px;
         &:last-child {
@@ -586,6 +583,14 @@
       &:nth-child(2) {
         width: 100%;
       }
+    }
+  }
+}
+
+form#renewals, form#update_holds {
+  .toolbar {
+    @media (max-width: @screen-xs) {
+      flex-direction: column-reverse;
     }
   }
 }
