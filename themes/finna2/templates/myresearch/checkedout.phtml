@@ -67,8 +67,8 @@
                     <div class="checkboxFilter mylist-select-all">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" name="selectAll" class="checkbox-select-all" aria-label="<?=$this->transEscAttr('Select All');?>">
-                          <?=$this->transEsc('Select All')?>
+                          <input type="checkbox" name="selectAll" class="checkbox-select-all" aria-label="<?=$this->transEsc($this->ilsPaging ? 'select_all_on_page' : 'Select All');?>">
+                          <?=$this->transEsc($this->ilsPaging ? 'select_all_on_page' : 'Select All');?>
                           <span class="selected"></span> <span class="loans-renewal-available"></span>
                         </label>
                       </div>

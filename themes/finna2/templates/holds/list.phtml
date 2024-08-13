@@ -37,8 +37,6 @@
         <div class="sort-col sort-col-mobile">
           <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $sortList])?>
         </div>
-      <?php endif; ?>
-      <?php if (!empty($this->recordList)): ?>
         <?php if ($this->cancelForm || $this->updateForm): ?>
           <div class="myaccount-sticky-header"></div>
           <div class="toolbar-sticky-container">
@@ -87,6 +85,11 @@
           <div class="myresearch-table" aria-label="<?=$this->transEscAttr('Your Holds and Recalls')?>">
             <div class="toolbar no-list-functions">
               <div class="myresearch-notification"><?=$this->transEsc('Cannot update any of the holds')?></div>
+              <?php if (!empty($this->recordList)): ?>
+                <div class="sort-col hidden-xs">
+                  <?=$this->context($this)->renderInContext('myresearch/controls/sort.phtml', ['sortList' => $sortList])?>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
         <?php endif; ?>

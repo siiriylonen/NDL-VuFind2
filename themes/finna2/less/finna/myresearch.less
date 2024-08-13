@@ -104,10 +104,13 @@
     flex-direction: row;
     align-items: center;
     &.no-list-functions {
+      justify-content: space-between;
       .myresearch-notification {
         height: fit-content;
-        align-self: center;
       }
+    }
+    @media (max-width: @screen-xs) {
+      flex-direction: column-reverse;
     }
     .btn-finna-toolbar {
       margin: 3px 0px;
@@ -583,14 +586,6 @@
       &:nth-child(2) {
         width: 100%;
       }
-    }
-  }
-}
-
-form#renewals {
-  .toolbar {
-    @media (max-width: @screen-xs) {
-      flex-direction: column-reverse;
     }
   }
 }
