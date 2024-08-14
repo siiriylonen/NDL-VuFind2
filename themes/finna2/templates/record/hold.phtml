@@ -9,7 +9,6 @@
 
     // Make sure extra hold fields is an array (might not be if ILS connection failed):
     $this->extraHoldFields ??= [];
-    $pickUpLocation = in_array('pickUpLocation', $this->extraHoldFields);
 ?>
 <h2><?=$this->transEsc('request_place_text')?></h2>
 <?php if ($this->helpText): ?>
@@ -32,7 +31,7 @@
       <?=$this->record($this->driver)->getFormatList()?>
     </div>
 
-    <?php if ($pickUpLocation): ?>
+    <?php if (in_array('pickUpLocation', $this->extraHoldFields)): ?>
       <?php
         // Empty string as home library means that default pick up location should be
         // used. null means that there should be no default
