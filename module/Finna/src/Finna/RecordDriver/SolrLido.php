@@ -572,7 +572,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 }
                 // Representation is a document or wanted to be displayed also as an document
                 $displayAsLink = in_array($type, $this->displayExternalLinks);
-                if (in_array($type, $documentTypeKeys) || ($displayAsLink)) {
+                if (in_array($type, $documentTypeKeys) || $displayAsLink) {
                     $documentDesc = $description;
                     $linkType = $displayAsLink ? 'external-link' : 'proxy-link';
                     if ($displayAsLink && !$documentDesc) {
