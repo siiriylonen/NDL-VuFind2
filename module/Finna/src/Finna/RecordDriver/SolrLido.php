@@ -571,12 +571,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                 }
                 // Representation is a document or wanted to be displayed also as an document
-                if (
-                    in_array($type, $documentTypeKeys)
-                    || ($displayAsLink = in_array($type, $this->displayExternalLinks))
-                ) {
+                $displayAsLink = in_array($type, $this->displayExternalLinks);
+                if (in_array($type, $documentTypeKeys) || $displayAsLink) {
                     $documentDesc = $description;
-                    if ($displayAsLink ??= false && !$documentDesc) {
+                    $linkType = $displayAsLink ? 'external-link' : 'proxy-link';
+                    if ($displayAsLink && !$documentDesc) {
                         $host = $this->safeParseUrl($url, PHP_URL_HOST);
                         $documentDesc = new TranslatableString(
                             "external_$host",
@@ -590,7 +589,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                             $format,
                             $documentDesc,
                             $documentRights,
-                            $displayAsLink
+                            $linkType,
                         )
                     ) {
                         $documentUrls = array_merge($documentUrls, $document);
@@ -945,11 +944,11 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     /**
      * Function to return document in associative array
      *
-     * @param string $url           Url of the document
-     * @param string $format        Format of the document
-     * @param string $description   Description of the document
-     * @param array  $rights        Array of document rights
-     * @param bool   $displayAsLink Display the document as a link, default is false
+     * @param string $url         Url of the document
+     * @param string $format      Format of the document
+     * @param string $description Description of the document
+     * @param array  $rights      Array of document rights
+     * @param bool   $linkType    Type of document link, default is 'proxy-link'.
      *
      * @return array
      */
@@ -958,7 +957,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         string $format,
         string $description,
         array $rights,
-        bool $displayAsLink = false
+        string $linkType = 'proxy-link'
     ): array {
         $format = strtolower($format);
         // Do not display text/html mediatype
@@ -970,7 +969,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
             'url' => $url,
             'format' => $format,
             'rights' => $rights,
-            'displayAsLink' => $displayAsLink,
+            'linkType' => $linkType,
         ];
     }
 
