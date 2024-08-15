@@ -124,6 +124,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     protected $documentTypes = [
         'preview_text' => 'document',
         'provided_text' => 'document',
+        'provided_video' => 'video',
     ];
 
     /**
@@ -155,6 +156,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         'preview_audio' => 'displayLink',
         'preview_text' => 'displayLink',
         'provided_text' => 'displayLink',
+        'provided_video' => 'displayLink',
     ];
 
     /**
