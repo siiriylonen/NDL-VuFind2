@@ -229,9 +229,14 @@ class SolrEad3 extends SolrEad
             ) {
                 return;
             }
-            $downloadOnly = false;
+            $linkType = 'external-link';
             if (str_starts_with($role, 'audio') || str_starts_with($role, 'video')) {
-                $downloadOnly = ((string)$attr->actuate === 'onrequest' && (string)$attr->show === 'none');
+                if ((string)$attr->actuate === 'onrequest' && (string)$attr->show === 'none') {
+                    $linkType = 'download';
+                }
+            }
+            if ($role === 'image/tiff') {
+                $linkType = 'download';
             }
             $lang = (string)$attr->lang;
             $preferredLang = $lang && in_array($lang, $preferredLangCodes);
@@ -243,7 +248,7 @@ class SolrEad3 extends SolrEad
                 $urlData = [
                     'url' => $url,
                     'desc' => (string)$desc,
-                    'downloadOnly' => $downloadOnly,
+                    'linkType' => $linkType,
                 ];
                 if ($preferredLang) {
                     $urls['localeurls'][] = $urlData;
