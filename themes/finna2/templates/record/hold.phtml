@@ -27,8 +27,7 @@
 
     <div class="form-group item-format">
       <label class="control-label"><?=$this->transEsc('Format')?>:</label>
-      </br>
-      <?=$this->record($this->driver)->getFormatList()?>
+      <p class="form-control-static"><?=$this->record($this->driver)->getFormatList()?></p>
     </div>
 
     <?php if (in_array('pickUpLocation', $this->extraHoldFields)): ?>
