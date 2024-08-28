@@ -1,4 +1,4 @@
-/*global grecaptcha, isPhoneNumberValid, loadCovers */
+/*global bootstrap, grecaptcha, isPhoneNumberValid, loadCovers */
 /*exported VuFind, bulkFormHandler, deparam, escapeHtmlAttr, extractClassParams, getFocusableNodes, getUrlRoot, htmlEncode, phoneNumberFormHandler, recaptchaOnLoad, resetCaptcha, setupMultiILSLoginFields, unwrapJQuery */
 
 var VuFind = (function VuFind() {
@@ -15,21 +15,62 @@ var VuFind = (function VuFind() {
   var _elementBase;
   var _iconsCache = {};
 
-  // Emit a custom event
-  // Recommendation: prefix with vf-
-  var emit = function emit(name, detail) {
-    if (typeof detail === 'undefined') {
-      document.dispatchEvent(new Event(name));
-    } else {
-      var event = document.createEvent('CustomEvent');
-      event.initCustomEvent(name, true, true, detail); // name, canBubble, cancelable, detail
-      document.dispatchEvent(event);
+  // Event controls
+
+  let listeners = {};
+  function unlisten(event, fn) {
+    if (typeof listeners[event] === "undefined") {
+      return;
     }
-  };
-  // Listen shortcut to put everyone on the same element
-  var listen = function listen(name, func) {
-    document.addEventListener(name, func, false);
-  };
+
+    const index = listeners[event].indexOf(fn);
+
+    if (index > -1) {
+      listeners[event].splice(index, 1);
+    }
+  }
+
+  // Add a function to call when an event is emitted
+  //
+  // Options:
+  // - once: remove this listener after it's been called
+  function listen(event, fn, { once = false } = {}) {
+    if (typeof listeners[event] === "undefined") {
+      listeners[event] = [];
+    }
+
+    listeners[event].push(fn);
+    const removeListener = () => unlisten(event, fn);
+
+    if (once) {
+      // Remove a "once" listener after calling
+      // Add the function to remove the listener
+      // to the array, listeners are called in order
+      listeners[event].push(removeListener);
+    }
+
+    // Return a function to disable the listener
+    // Makes it easier to control activating and deactivating listeners
+    // This is common for similar libraries
+    return removeListener;
+  }
+
+  // Broadcast an event, passing arguments to all listeners
+  function emit(event, ...args) {
+    // No listeners for this event
+    if (typeof listeners[event] === "undefined") {
+      return;
+    }
+
+    // iterate over a copy of the listeners array
+    // this prevents listeners from being skipped
+    // if the listener before it is removed during execution
+    for (const fn of Array.from(listeners[event])) {
+      fn(...args);
+    }
+  }
+
+  // Module control
 
   var register = function register(name, module) {
     if (_submodules.indexOf(name) === -1) {
@@ -284,6 +325,9 @@ var VuFind = (function VuFind() {
       const scriptEl = document.createElement('script');
       scriptEl.innerHTML = script.innerHTML;
       scriptEl.setAttribute('nonce', getCspNonce());
+      if (script.src) {
+        scriptEl.src = script.src;
+      }
       newElm.appendChild(scriptEl);
     });
   }
@@ -322,7 +366,7 @@ var VuFind = (function VuFind() {
     })
       .then(response => {
         if (!response.ok) {
-          throw new Error(VuFind.translate('error_occurred'));
+          throw new Error(translate('error_occurred'));
         }
         return response.text();
       })
@@ -334,7 +378,7 @@ var VuFind = (function VuFind() {
       })
       .catch(error => {
         console.error('Request failed:', error);
-        setInnerHtml(element, VuFind.translate('error_occurred'));
+        setInnerHtml(element, translate('error_occurred'));
         if (typeof success === 'function') {
           success(null, error);
         }
@@ -364,9 +408,11 @@ var VuFind = (function VuFind() {
       link.addEventListener('click', function toggleQRCode() {
         var holder = this.nextElementSibling;
         if (holder.querySelectorAll('img').length === 0) {
-          // We need to insert the QRCode image
-          var template = holder.querySelector('.qrCodeImgTag').innerHTML;
-          holder.innerHTML = template;
+          // Replace the QRCode template with the image:
+          const templateEl = holder.querySelector('.qrCodeImgTag');
+          if (templateEl) {
+            templateEl.parentNode.innerHTML = templateEl.innerHTML;
+          }
         }
       });
     });
@@ -375,30 +421,12 @@ var VuFind = (function VuFind() {
   /**
    * Initialize result page scripts.
    *
-   * @param {string|JQuery} container
+   * @param {string|Element} _container
    */
-  var initResultScripts = function initResultScripts(container) {
-    let jqContainer = typeof container === 'string' ? $(container) : container;
-    if (typeof this.openurl !== 'undefined') {
-      this.openurl.init(jqContainer);
-    }
-    if (typeof this.itemStatuses !== 'undefined') {
-      this.itemStatuses.init(jqContainer);
-    }
-    if (typeof this.saveStatuses !== 'undefined') {
-      this.saveStatuses.init(jqContainer);
-    }
-    if (typeof this.recordVersions !== 'undefined') {
-      this.recordVersions.init(jqContainer);
-    }
-    if (typeof this.cart !== 'undefined') {
-      this.cart.registerToggles(jqContainer);
-    }
-    if (typeof this.embedded !== 'undefined') {
-      this.embedded.init(jqContainer);
-    }
-    this.lightbox.bind(jqContainer);
-    setupQRCodeLinks(jqContainer[0]);
+  var initResultScripts = function initResultScripts(_container) {
+    let container = typeof _container === 'string' ? document.querySelector(_container) : _container;
+    emit('results-init', {container: container});
+    setupQRCodeLinks(container);
     if (typeof loadCovers === 'function') {
       loadCovers();
     }
@@ -421,6 +449,43 @@ var VuFind = (function VuFind() {
     setupQRCodeLinks();
   };
 
+  function getBootstrapMajorVersion() {
+    // Bootstrap 5 defines bootstrap global, while 3 doesn't, so we can use that as
+    // an easy way to determine the version:
+    return typeof bootstrap === 'undefined' ? 3 : 5;
+  }
+
+  /**
+   * Disable transition effects and return the previous state
+   *
+   * @param {Element} elem Element to handle (not used with Bootstrap 3)
+   */
+  function disableTransitions(elem) {
+    if (getBootstrapMajorVersion() === 3) {
+      const oldState = $.support.transition;
+      $.support.transition = false;
+      return oldState;
+    }
+    const oldState = elem.style.transitionDuration;
+    elem.style.transitionDuration = '0s';
+    return oldState;
+  }
+
+  /**
+   * Restore transition effects to the given state
+   *
+   * @param {Element} elem Element to handle (not used with Bootstrap 3)
+   * @param {(string|boolean)} state State from previous call to disableTransitions
+   */
+  function restoreTransitions(elem, state) {
+    if (getBootstrapMajorVersion() === 3) {
+      $.support.transition = state;
+      return;
+    }
+
+    elem.style.transitionDuration = state;
+  }
+
   //Reveal
   return {
     defaultSearchBackend: defaultSearchBackend,
@@ -430,11 +495,12 @@ var VuFind = (function VuFind() {
     addTranslations: addTranslations,
     init: init,
     emit: emit,
+    listen: listen,
+    unlisten: unlisten,
     evalCallback: evalCallback,
     getCspNonce: getCspNonce,
     icon: icon,
     isPrinting: isPrinting,
-    listen: listen,
     refreshPage: refreshPage,
     register: register,
     setCspNonce: setCspNonce,
@@ -449,7 +515,10 @@ var VuFind = (function VuFind() {
     setupQRCodeLinks: setupQRCodeLinks,
     setInnerHtml: setInnerHtml,
     setOuterHtml: setOuterHtml,
-    setElementContents: setElementContents
+    setElementContents: setElementContents,
+    getBootstrapMajorVersion: getBootstrapMajorVersion,
+    disableTransitions: disableTransitions,
+    restoreTransitions: restoreTransitions
   };
 })();
 
@@ -637,8 +706,13 @@ function bulkFormHandler(event, data) {
     VuFind.lightbox.alert(VuFind.translate('bulk_noitems_advice'), 'danger');
     return false;
   }
-  if (event.originalEvent !== undefined) {
-    let limit = event.originalEvent.submitter.dataset.itemLimit;
+  // originalEvent check can be removed and event.submitter can directly used once jQuery is no longer used in the lightbox
+  const submitter = event.originalEvent.submitter !== undefined && event.originalEvent.submitter !== null
+    ? event.originalEvent.submitter
+    : (event.submitter !== undefined && event.submitter !== null ? event.submitter : null);
+
+  if (submitter !== null) {
+    let limit = submitter.dataset.itemLimit;
     if (numberOfSelected > limit) {
       VuFind.lightbox.alert(
         VuFind.translate('bulk_limit_exceeded', {'%%count%%': numberOfSelected, '%%limit%%': limit}),
@@ -657,51 +731,17 @@ function bulkFormHandler(event, data) {
 
 // Ready functions
 function setupOffcanvas() {
-  if ($('.sidebar').length > 0 && $(document.body).hasClass("vufind-offcanvas")) {
-    $('[data-toggle="vufind-offcanvas"]').on("click", function offcanvasClick(e) {
-      e.preventDefault();
-      $('body.vufind-offcanvas').toggleClass('active');
-    });
-  }
-}
+  const sidebar = document.querySelector('.sidebar');
+  const body = document.body;
 
-/**
- * Handle arrow keys to jump to next record
- */
-function keyboardShortcuts() {
-  var $searchform = $('#searchForm_lookfor');
-  if ($('.pager').length > 0) {
-    $(window).on("keydown", function shortcutKeyDown(e) {
-      if (!$searchform.is(':focus')) {
-        var $target = null;
-        switch (e.keyCode) {
-        case 37: // left arrow key
-          $target = $('.pager').find('a.previous');
-          if ($target.length > 0) {
-            $target[0].click();
-            return;
-          }
-          break;
-        case 38: // up arrow key
-          if (e.ctrlKey) {
-            $target = $('.pager').find('a.backtosearch');
-            if ($target.length > 0) {
-              $target[0].click();
-              return;
-            }
-          }
-          break;
-        case 39: //right arrow key
-          $target = $('.pager').find('a.next');
-          if ($target.length > 0) {
-            $target[0].click();
-            return;
-          }
-          break;
-        case 40: // down arrow key
-          break;
-        }
-      }
+  if (sidebar && body.classList.contains("vufind-offcanvas")) {
+    const offcanvasToggle = document.querySelectorAll('[data-toggle="vufind-offcanvas"]');
+
+    offcanvasToggle.forEach((element) => {
+      element.addEventListener("click", function offcanvasClick(e) {
+        e.preventDefault();
+        body.classList.toggle('active');
+      });
     });
   }
 }
@@ -711,12 +751,15 @@ function unwrapJQuery(node) {
 }
 
 function setupJumpMenus(_container) {
-  var container = _container || $('body');
-  container.find('select.jumpMenu').on("change", function jumpMenu() {
-    // Check if jumpMenu is still enabled (search.js may have disabled it):
-    if ($(this).hasClass('jumpMenu')) {
-      $(this).parent('form').trigger("submit");
-    }
+  var container = unwrapJQuery(_container || document.body);
+  var selects = container.querySelectorAll('select.jumpMenu');
+  selects.forEach((select) => {
+    select.addEventListener('change', function jumpMenu() {
+      // Check if jumpMenu is still enabled (search.js may have disabled it):
+      if (select.classList.contains('jumpMenu')) {
+        select.parentElement.submit();
+      }
+    });
   });
 }
 
@@ -747,13 +790,12 @@ function setupMultiILSLoginFields(loginMethods, idPrefix) {
   }).trigger("change");
 }
 
-$(function commonDocReady() {
+document.addEventListener('DOMContentLoaded', () => {
+  VuFind.emit("ready");
   // Start up all of our submodules
   VuFind.init();
   // Off canvas
   setupOffcanvas();
-  // Keyboard shortcuts in detail view
-  keyboardShortcuts();
 
   // support "jump menu" dropdown boxes
   setupJumpMenus();
@@ -761,6 +803,9 @@ $(function commonDocReady() {
   // Print
   var url = window.location.href;
   if (url.indexOf('?print=') !== -1 || url.indexOf('&print=') !== -1) {
-    $("link[media='print']").attr("media", "all");
+    var printStylesheets = document.querySelectorAll('link[media="print"]');
+    printStylesheets.forEach((stylesheet) => {
+      stylesheet.media = 'all';
+    });
   }
 });
