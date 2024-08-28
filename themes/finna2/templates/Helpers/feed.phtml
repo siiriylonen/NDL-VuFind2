@@ -1,6 +1,8 @@
 <!-- START of: finna - Helpers/feed.phtml -->
-<?php if ($this->translateTitle !== ''): ?>
-    <h2 class="carousel-header feed-header<?php if ($this->type === 'slider'):?> sr-only<?php endif;?>"><?=$this->transEsc($this->translateTitle); ?></h2>
-<?php endif; ?>
-<finna-feed class="feed-container" feed-id="<?= $this->escapeHtmlAttr($this->id); ?>" ></finna-feed>
+<div>
+    <?php if ($this->translateTitle !== ''): ?>
+        <h2 class="carousel-header feed-header<?php if ($this->type === 'slider'):?> sr-only<?php endif;?>"><?=$this->transEsc($this->translateTitle); ?></h2>
+    <?php endif; ?>
+    <finna-feed class="feed-container" feed-id="<?= $this->escapeHtmlAttr($this->id); ?>" ></finna-feed>
+</div>
 <!-- END of: finna - Helpers/feed.phtml -->
