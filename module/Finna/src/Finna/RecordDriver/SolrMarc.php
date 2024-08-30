@@ -1148,7 +1148,8 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
             $fields = $this->getMarcReader()->getFields($fieldCode);
             if (is_array($fields)) {
                 foreach ($fields as $field) {
-                    // Leave out 700 fields containing subfield 't' (these go to the contents list)
+                    // Leave out 700 fields containing subfield 't' (these go to the
+                    // contents list)
                     if ($fieldCode == '700' && $this->getSubfield($field, 't')) {
                         continue;
                     }
@@ -1250,7 +1251,8 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
                     if ($getSecondaryPresentersOnly && in_array($fieldCode, ['100', '110'])) {
                         continue;
                     }
-                    // Leave out 700 fields containing subfield 't' (these go to the contents list)
+                    // Leave out 700 fields containing subfield 't' (these go to the
+                    // contents list)
                     if ($fieldCode == '700' && $this->getSubfield($field, 't')) {
                         continue;
                     }
