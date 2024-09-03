@@ -5,7 +5,7 @@
  *
  * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2022.
+ * Copyright (C) The National Library of Finland 2022-2024.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -29,6 +29,7 @@
 
 namespace FinnaConsole\Command\Users;
 
+use Finna\Db\Service\FinnaUserServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,20 +53,12 @@ class ListProtected extends Command
     protected static $defaultName = 'users/list_protected';
 
     /**
-     * User table
-     *
-     * @var \VuFind\Db\Table\User
-     */
-    protected $table;
-
-    /**
      * Constructor
      *
-     * @param \Finna\Db\Table\User $table User table
+     * @param FinnaUserServiceInterface $userService User database service
      */
-    public function __construct(\VuFind\Db\Table\User $table)
+    public function __construct(protected FinnaUserServiceInterface $userService)
     {
-        $this->table = $table;
         parent::__construct();
     }
 
@@ -89,8 +82,8 @@ class ListProtected extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->table->select(['finna_protected' => 1]) as $user) {
-            $output->writeln($user->id . ' (' . $user->username . ')');
+        foreach ($this->userService->getProtectedUsers() as $user) {
+            $output->writeln($user->getId() . ' (' . $user->getUsername() . ')');
         }
         return 0;
     }

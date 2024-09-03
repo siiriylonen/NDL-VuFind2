@@ -7,7 +7,7 @@
     // Only display home library form if we have multiple pickup locations:
     $showHomeLibForm = (isset($this->pickup) && count($this->pickup) > 1);
     $user = $this->auth()->getUserObject();
-    $cards = $user->getLibraryCards();
+    $cards = $this->libraryCards()->getCardsForUser($user);
     $patron = $user ? $this->auth()->getILSPatron() : false;
     $capabilityParams = $patron ? ['patron' => $patron] : [];
     $updateAddress = $this->ils()->checkFunction('updateAddress', $capabilityParams);
@@ -73,8 +73,8 @@
           <?php if ($user->getDisplayName() !== $user->getUsername()): ?>
             <div><span class="profile-title"><?=$this->transEsc('account_username')?>: </span><span><?=$this->escapeHtml($user->getUsername())?></span></div>
           <?php endif; ?>
-          <div><span class="profile-title"><?=$this->transEsc('account_login_method')?>: </span><span><?=$this->transEscWithPrefix('login_method_', $user->auth_method)?></span></div>
-          <div><span class="profile-title"><?=$this->transEsc('account_creation_date')?>: </span><span><?=$this->dateTime()->convertToDisplayDate('Y-m-d', $user->created)?></span></div>
+          <div><span class="profile-title"><?=$this->transEsc('account_login_method')?>: </span><span><?=$this->transEscWithPrefix('login_method_', $user->getAuthMethod())?></span></div>
+          <div><span class="profile-title"><?=$this->transEsc('account_creation_date')?>: </span><span><?=$this->dateTime()->convertToDisplayDate('U', $user->getCreated()->getTimestamp())?></span></div>
         </div>
       </div>
       <?php if (is_array($this->profile)): ?>
@@ -118,7 +118,7 @@
           <?php
             $selectedCard = null;
             foreach ($cards as $card) {
-                if (strcasecmp($card->cat_username, $user->cat_username) === 0) {
+                if (strcasecmp($card->getCatUsername(), $user->getCatUsername()) === 0) {
                     $selectedCard = $card;
                     break;
                 }
@@ -308,12 +308,12 @@
     <div class="myresearch-profile-list library-profile">
       <?= $this->partial('myresearch/profile-my-information.phtml', ['user' => $user, 'cards' => $cards, 'hideDueDateReminder' => $this->hideDueDateReminder, 'hideProfileEmailAddress' => $this->hideProfileEmailAddress]); ?>
     </div>
-    <?php if ($this->auth()->getManager()->supportsPersistentLogin($user->auth_method)): ?>
+    <?php if ($this->auth()->getManager()->supportsPersistentLogin($user->getAuthMethod())): ?>
       <div class="myresearch-profile-header">
         <h3><?=$this->transEsc('Saved Logins')?></h3>
       </div>
       <div class="myresearch-profile-list library-profile login-tokens-section">
-        <?php $tokens = $user->getLoginTokens($user->id); ?>
+        <?php $tokens = $this->auth()->getLoginTokens($user->getId()); ?>
         <?php if (!$tokens): ?>
           <div class="my-profile-col"><?=$this->transEsc('No saved logins')?></div>
         <?php else: ?>

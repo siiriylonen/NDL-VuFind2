@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Factory for update search hashes task.
+ * Database user service factory
  *
  * PHP version 8
  *
- * Copyright (C) The National Library of Finland 2015-2020.
+ * Copyright (C) The National Library of Finland 2024.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -21,32 +21,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Service
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @package  Database
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
+ * @link     https://vufind.org/wiki/development:plugins:database_gateways Wiki
  */
 
-namespace FinnaConsole\Command\Util;
+namespace Finna\Db\Service;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
-use Laminas\ServiceManager\Factory\FactoryInterface;
-use Psr\Container\ContainerExceptionInterface as ContainerException;
-use Psr\Container\ContainerInterface;
+use VuFind\Db\Service\AbstractDbServiceFactory;
 
 /**
- * Factory for update search hashes task.
+ * Database user service factory
  *
  * @category VuFind
- * @package  Service
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @package  Database
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
+ * @link     https://vufind.org/wiki/development:plugins:database_gateways Wiki
  */
-class UpdateSearchHashesFactory implements FactoryInterface
+class UserServiceFactory extends AbstractDbServiceFactory
 {
     /**
      * Create an object
@@ -60,17 +58,20 @@ class UpdateSearchHashesFactory implements FactoryInterface
      * @throws ServiceNotFoundException if unable to resolve the service.
      * @throws ServiceNotCreatedException if an exception is raised when
      * creating a service.
-     * @throws ContainerException if any other error occurs
+     * @throws ContainerException&\Throwable if any other error occurs
      */
     public function __invoke(
         ContainerInterface $container,
         $requestedName,
         array $options = null
     ) {
-        return new $requestedName(
-            $container->get(\VuFind\Db\Table\PluginManager::class)->get('Search'),
-            $container->get(\VuFind\Search\Results\PluginManager::class),
-            ...($options ?? [])
-        );
+        if (!empty($options)) {
+            throw new \Exception('Unexpected options sent to factory!');
+        }
+        $sessionManager = $container->get(\Laminas\Session\SessionManager::class);
+        $session = new \Laminas\Session\Container('Account', $sessionManager);
+        $config = $container->get(\VuFind\Config\PluginManager::class)->get('config')->toArray();
+        $hmac = $container->get(\VuFind\Crypt\HMAC::class);
+        return parent::__invoke($container, $requestedName, [$session, $config, $hmac]);
     }
 }

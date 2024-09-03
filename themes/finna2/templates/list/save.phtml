@@ -12,8 +12,8 @@
     <select class="form-control" id="save_list" name="list">
     <?php if ($this->lists): ?>
       <?php foreach ($this->lists as $list): ?>
-        <option value="<?=$this->escapeHtmlAttr($list['id']) ?>"<?php if ($list['id'] == $this->userlist()->lastUsed()): ?> selected="selected"<?php endif; ?>>
-          <?=$this->escapeHtml($list['title'])?><?php if ($list['public']):?> (<?=mb_strtolower($this->transEsc('public_list_indicator'), 'utf-8')?>)<?php endif; ?>
+        <option value="<?=$this->escapeHtmlAttr($list->getId()) ?>"<?php if ($list->getId() == $this->userlist()->lastUsed()): ?> selected="selected"<?php endif; ?>>
+          <?=$this->escapeHtml($list->getTitle())?><?php if ($list->isPublic()):?> (<?=mb_strtolower($this->transEsc('public_list_indicator'), 'utf-8')?>)<?php endif; ?>
         </option>
       <?php endforeach; ?>
     <?php else: ?>

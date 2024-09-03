@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Factory for Favorites search results objects.
+ * ResultFeed helper factory.
  *
  * PHP version 8
  *
  * Copyright (C) Villanova University 2018.
+ * Copyright (C) The National Library of Finland 2024.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -21,29 +22,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Search_Favorites
+ * @package  View_Helpers
  * @author   Demian Katz <demian.katz@villanova.edu>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
 
-namespace Finna\Search\Favorites;
+namespace Finna\View\Helper\Root;
 
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerExceptionInterface as ContainerException;
 use Psr\Container\ContainerInterface;
+use VuFind\Db\Service\CommentsServiceInterface;
 
 /**
- * Factory for Favorites search results objects.
+ * ResultFeed helper factory.
  *
  * @category VuFind
- * @package  Search_Favorites
+ * @package  View_Helpers
  * @author   Demian Katz <demian.katz@villanova.edu>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class ResultsFactory extends \VuFind\Search\Results\ResultsFactory
+class ResultFeedFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -57,7 +62,7 @@ class ResultsFactory extends \VuFind\Search\Results\ResultsFactory
      * @throws ServiceNotFoundException if unable to resolve the service.
      * @throws ServiceNotCreatedException if an exception is raised when
      * creating a service.
-     * @throws ContainerException if any other error occurs
+     * @throws ContainerException&\Throwable if any other error occurs
      */
     public function __invoke(
         ContainerInterface $container,
@@ -65,16 +70,14 @@ class ResultsFactory extends \VuFind\Search\Results\ResultsFactory
         array $options = null
     ) {
         if (!empty($options)) {
-            throw new \Exception('Unexpected options sent to factory!');
+            throw new \Exception('Unexpected options sent to factory.');
         }
-        $tm = $container->get(\VuFind\Db\Table\PluginManager::class);
-        $obj = parent::__invoke(
-            $container,
-            $requestedName,
-            [$tm->get('Resource'), $tm->get('UserList'), $tm->get('UserResource')]
+        $dbServiceManager = $container->get(\VuFind\Db\Service\PluginManager::class);
+        $helper = new $requestedName(
+            $container->get('ViewRenderer')->plugin('record'),
+            $dbServiceManager->get(CommentsServiceInterface::class)
         );
-        $init = new \LmcRbacMvc\Initializer\AuthorizationServiceInitializer();
-        $init($container, $obj);
-        return $obj;
+        $helper->registerExtensions($container);
+        return $helper;
     }
 }
