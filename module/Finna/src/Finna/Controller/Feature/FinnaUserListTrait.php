@@ -120,7 +120,7 @@ trait FinnaUserListTrait
             'title' => 'sort_title',
             'author' => 'sort_author',
             'year desc' => 'sort_year',
-            'year' => 'sort_year asc',
+            'year' => 'sort_year_asc',
             'format' => 'sort_format',
         ];
     }
