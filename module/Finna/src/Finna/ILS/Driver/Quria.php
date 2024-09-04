@@ -431,6 +431,7 @@ class Quria extends AxiellWebServices
                     }
                     $availabilityInfo = [
                         'available' => $nofAvailableForLoan,
+                        'displayText' => $status,
                         'reservations' => $branch->nofReservations ?? 0,
                         'ordered' => $nofOrdered,
                         'total' => $nofTotal,
@@ -442,11 +443,9 @@ class Quria extends AxiellWebServices
                         'barcode' => $id,
                         'item_id' => $reservableId,
                         'holdings_id' => $group ?? '',
-                        'availability' => $this->availabilityStatusManager->createAvailabilityStatus(
-                            $available,
-                            $status
-                        ),
+                        'availability' => $this->availabilityStatusManager->createAvailabilityStatus($available),
                         'availabilityInfo' => $availabilityInfo,
+                        'status' => $status,
                         'location' => $group ?? $branchName,
                         'organisation_id' => $organisationId,
                         'branch' => $branchName,

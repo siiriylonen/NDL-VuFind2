@@ -1233,6 +1233,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
                         }
                         $availabilityInfo = [
                             'available' => $nofAvailableForLoan,
+                            'displayText' => $status,
                             'reservations' => $branch->nofReservations ?? 0,
                             'ordered' => $nofOrdered,
                             'total' => $nofTotal,
@@ -1244,11 +1245,9 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
                             'barcode' => $id,
                             'item_id' => $reservableId,
                             'holdings_id' => $group,
-                            'availability' => $this->availabilityStatusManager->createAvailabilityStatus(
-                                $available,
-                                $status
-                            ),
+                            'availability' => $this->availabilityStatusManager->createAvailabilityStatus($available),
                             'availabilityInfo' => $availabilityInfo,
+                            'status' => $status,
                             'location' => $group,
                             'organisation_id' => $organisationId,
                             'branch' => $branchName,
