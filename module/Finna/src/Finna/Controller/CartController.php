@@ -103,7 +103,7 @@ class CartController extends \VuFind\Controller\CartController
         $view->useCaptcha = $this->captcha()->active('email');
 
         // Process form submission:
-        if (!($submitDisabled ?? false) && $this->formWasSubmitted('submit', $view->useCaptcha)) {
+        if (!($submitDisabled ?? false) && $this->formWasSubmitted(null, $view->useCaptcha)) {
             // Attempt to send the email and show an appropriate flash message:
             try {
                 // If we got this far, we're ready to send the email:

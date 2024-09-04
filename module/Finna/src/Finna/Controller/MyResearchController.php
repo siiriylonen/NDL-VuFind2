@@ -384,7 +384,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         }
 
         // Process form submission:
-        if ($this->formWasSubmitted('submit')) {
+        if ($this->formWasSubmitted()) {
             // Connect to the ILS:
             $catalog = $this->getILS();
 
@@ -556,7 +556,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         // to the save screen
         if ($view instanceof \Laminas\Http\PhpEnvironment\Response) {
             if (
-                $this->formWasSubmitted('submit')
+                $this->formWasSubmitted()
                 && ($listId = $this->params()->fromQuery('saveListId'))
             ) {
                 $saveUrl = $this->url()->fromRoute('list-save', ['id' => $listId]);
@@ -567,7 +567,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         // to the save screen
         if ($view instanceof \Laminas\Http\PhpEnvironment\Response) {
             if (
-                $this->formWasSubmitted('submit')
+                $this->formWasSubmitted()
                 && ($this->params()->fromQuery('saveHistoricLoans'))
             ) {
                 $saveUrl = $this->url()->fromRoute('myresearch-savehistoricloans');

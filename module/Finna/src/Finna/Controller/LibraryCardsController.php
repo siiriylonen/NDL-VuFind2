@@ -154,7 +154,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
         }
 
         // Process form submission:
-        if ($this->formWasSubmitted('submit')) {
+        if ($this->formWasSubmitted()) {
             if ($redirect = $this->processPasswordChange($user, $card)) {
                 return $redirect;
             }
@@ -218,7 +218,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
         // If we have a submitted form
         if (
             $recoveryConfig
-            && $this->formWasSubmitted('submit', $view->useCaptcha)
+            && $this->formWasSubmitted(null, $view->useCaptcha)
         ) {
             // Check if we have a submitted form, and use the information
             // to get the user's information
@@ -298,7 +298,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
         );
         $view->useCaptcha = $this->captcha()->active('passwordRecovery');
         // If we have a submitted form
-        if ($this->formWasSubmitted('submit', $view->useCaptcha)) {
+        if ($this->formWasSubmitted(null, $view->useCaptcha)) {
             $email = trim($this->params()->fromPost('email'));
             if (empty($email)) {
                 $this->flashMessenger()->addErrorMessage('no_email_address');
@@ -458,7 +458,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
         $view->registrationHelpText = $registerConfig['registrationHelpText'] ?? '';
 
         // If we have a submitted form
-        if ($this->formWasSubmitted('submit')) {
+        if ($this->formWasSubmitted()) {
             $missingFields = false;
             foreach ($fields as $id => $field) {
                 // Don't let the user override the email address
@@ -622,7 +622,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
         );
         $view->useCaptcha = $this->captcha()->active('changePassword');
         // Check Captcha
-        if ($this->formWasSubmitted('submit', $view->useCaptcha)) {
+        if ($this->formWasSubmitted(null, $view->useCaptcha)) {
             $password = $this->params()->fromPost('password', '');
             $password2 = $this->params()->fromPost('password2', '');
             if ($password !== $password2) {

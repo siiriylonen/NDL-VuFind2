@@ -171,7 +171,7 @@ class ListController extends \VuFind\Controller\AbstractBase
         }
 
         // Process form submission:
-        if ($this->formWasSubmitted('submit')) {
+        if ($this->formWasSubmitted()) {
             $this->processSave($user, $sourceListId, $targetListId);
 
             // Display a success status message:
