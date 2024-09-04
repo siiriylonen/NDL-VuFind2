@@ -31,7 +31,7 @@ $this->headScript()->prependScript("var listId = {$list->getId()}; var publicLis
         </div>
       <?php endif ?>
       <div class="public-list-info">
-        <div><?= $this->transEsc('modified'); ?>: <?=$this->dateTime()->convertToDisplayDate('U', $list->getFinnaUpdated()?->getTimestamp() ?: $list->getCreated()->getTimestamp()); ?></div>
+        <div><?= $this->transEsc('modified'); ?>: <?=($list->getFinnaUpdated() ?? $list->getCreated())->format($this->config()->dateFormat()); ?></div>
       </div>
     </div>
 </div>
