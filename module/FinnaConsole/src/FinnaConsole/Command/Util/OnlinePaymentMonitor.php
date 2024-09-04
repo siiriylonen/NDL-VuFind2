@@ -33,10 +33,15 @@ namespace FinnaConsole\Command\Util;
 use Finna\Db\Entity\FinnaTransactionEntityInterface;
 use Finna\Db\Service\FinnaTransactionEventLogServiceInterface;
 use Finna\Db\Service\FinnaTransactionServiceInterface;
+use Finna\OnlinePayment\OnlinePaymentEventLogTrait;
+use Finna\OnlinePayment\OnlinePaymentHandlerTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use VuFind\Auth\ILSAuthenticator;
+use VuFind\Db\Service\UserCardServiceInterface;
 use VuFind\Db\Service\UserServiceInterface;
 
 use function intval;
@@ -51,17 +56,13 @@ use function intval;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
+#[AsCommand(
+    name: 'util/online_payment_monitor'
+)]
 class OnlinePaymentMonitor extends AbstractUtilCommand
 {
     use OnlinePaymentEventLogTrait;
     use OnlinePaymentHandlerTrait;
-
-    /**
-     * The name of the command (the part after "public/index.php")
-     *
-     * @var string
-     */
-    protected static $defaultName = 'util/online_payment_monitor';
 
     /**
      * Number of hours before considering unregistered transactions to be expired.

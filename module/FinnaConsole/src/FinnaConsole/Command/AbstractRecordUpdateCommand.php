@@ -51,13 +51,6 @@ use function get_class;
 abstract class AbstractRecordUpdateCommand extends Command
 {
     /**
-     * The name of the command (the part after "public/index.php")
-     *
-     * @var string
-     */
-    protected static $defaultName = null;
-
-    /**
      * Table display name
      *
      * @var string

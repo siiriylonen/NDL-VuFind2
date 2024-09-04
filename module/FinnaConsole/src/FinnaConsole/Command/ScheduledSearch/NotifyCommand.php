@@ -35,6 +35,7 @@ namespace FinnaConsole\Command\ScheduledSearch;
 use DateTime;
 use Exception;
 use Finna\Db\Service\FinnaSearchServiceInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -65,19 +66,13 @@ use function count;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
+#[AsCommand(
+    name: 'scheduledsearch/notify'
+)]
 class NotifyCommand extends \VuFindConsole\Command\ScheduledSearch\NotifyCommand
 {
     use \FinnaConsole\Command\Util\ConsoleLoggerTrait;
     use \FinnaConsole\Command\Util\ViewPathTrait;
-
-    /**
-     * The name of the command (the part after "public/index.php")
-     *
-     * Used via reflection, don't remove even though it's the same as in parent class
-     *
-     * @var string
-     */
-    protected static $defaultName = 'scheduledsearch/notify';
 
     /**
      * Local configuration directory name

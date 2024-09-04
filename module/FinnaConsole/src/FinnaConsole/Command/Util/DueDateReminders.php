@@ -40,6 +40,7 @@ use Laminas\Mvc\I18n\Translator;
 use Laminas\View\Renderer\PhpRenderer;
 use Laminas\View\Resolver\AggregateResolver;
 use Laminas\View\Resolver\TemplatePathStack;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,16 +62,12 @@ use function in_array;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
+#[AsCommand(
+    name: 'util/due_date_reminders'
+)]
 class DueDateReminders extends AbstractUtilCommand
 {
     use EmailWithRetryTrait;
-
-    /**
-     * The name of the command (the part after "public/index.php")
-     *
-     * @var string
-     */
-    protected static $defaultName = 'util/due_date_reminders';
 
     /**
      * Date format for due dates in database.

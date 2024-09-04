@@ -32,6 +32,7 @@ namespace FinnaConsole\Command\Util;
 use DateTime;
 use Finna\Db\Service\FinnaCommentsServiceInterface;
 use Finna\Db\Service\FinnaRatingsServiceInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,15 +53,11 @@ use function count;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
+#[AsCommand(
+    name: 'util/import_comments'
+)]
 class ImportComments extends AbstractUtilCommand
 {
-    /**
-     * The name of the command (the part after "public/index.php")
-     *
-     * @var string
-     */
-    protected static $defaultName = 'util/import_comments';
-
     /**
      * Log file
      *

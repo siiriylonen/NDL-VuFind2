@@ -39,6 +39,7 @@ use Laminas\I18n\Translator\Translator;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\View\Resolver\AggregateResolver;
 use Laminas\View\Resolver\TemplatePathStack;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -63,17 +64,13 @@ use function in_array;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
+#[AsCommand(
+    name: 'util/account_expiration_reminders'
+)]
 class AccountExpirationReminders extends AbstractUtilCommand
 {
     use \VuFind\I18n\Translator\TranslatorAwareTrait;
     use EmailWithRetryTrait;
-
-    /**
-     * The name of the command (the part after "public/index.php")
-     *
-     * @var string
-     */
-    protected static $defaultName = 'util/account_expiration_reminders';
 
     /**
      * Current view local configuration directory.
