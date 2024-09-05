@@ -100,7 +100,7 @@
     flex-direction: row;
     align-items: center;
     &.no-list-functions {
-      justify-content: space-between;
+      flex-direction: column-reverse;
       .myresearch-notification {
         height: fit-content;
       }
@@ -227,7 +227,7 @@
       .dropdown-menu > li > a {
         max-width: 270px;
       }
-      .dropdown-toggle span, .dropdown-menu > li > a {
+      .dropdown-toggle span:not('.icon'), .dropdown-menu > li > a {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
