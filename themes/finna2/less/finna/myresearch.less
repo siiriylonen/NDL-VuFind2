@@ -100,8 +100,11 @@
     flex-direction: row;
     align-items: center;
     &.no-list-functions {
-      flex-direction: column-reverse;
-      align-items: flex-start;
+      justify-content: space-between;
+      @media(max-width: @screen-sm) {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+      }
       .myresearch-notification {
         height: fit-content;
       }
