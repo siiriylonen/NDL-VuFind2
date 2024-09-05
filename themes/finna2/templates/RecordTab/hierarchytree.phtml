@@ -44,7 +44,7 @@
       </div>
       <div class="js-search-error alert alert-danger hidden"><?=$this->transEsc('An error has occurred')?></div>
       <div class="js-no-results alert alert-danger hidden"><?=$this->transEsc('nohit_heading')?></div>
-      <div class="js-limit-reached alert alert-danger hidden">
+      <div class="js-limit-reached alert alert-info hidden" role="alert">
         <?=$this->translate('tree_search_limit_reached_html', ['%%limit%%' => $this->tab->getSearchLimit()])?>
       </div>
     <?php endif; ?>
