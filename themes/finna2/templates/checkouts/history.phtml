@@ -29,7 +29,7 @@
       <h2><?=$this->transEsc('Loan History')?> (<?=$recordCount;?>)</h2>
     </div>
     <?php if (isset($this->noSupport)): ?>
-      <?php if ($user->getLibraryCards()->count() > 1): ?>
+      <?php if (count($this->libraryCards()->getCardsForUser($user)) > 1): ?>
         <div class="support-notice">
           <p><?=$this->transEsc('no_ils_support_description') ?></p>
         </div>
@@ -90,7 +90,7 @@
                               <button class="btn btn-primary dropdown-toggle download" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <?=$this->transEsc('loan_history_download')?> <span class="caret"></span>
                               </button>
-                              <ul class="dropdown-menu dropdown-menu-right download">
+                              <ul class="dropdown-menu dropdown-menu-<?php if ($purgeSelectedAllowed): ?>right<?php else: ?>left<?php endif;?> download">
                                 <li>
                                   <a data-lightbox href="<?=$this->url('myresearch-savehistoricloans') ?>"><?=$this->transEsc('loan_history_save')?></a>
                                 </li>
