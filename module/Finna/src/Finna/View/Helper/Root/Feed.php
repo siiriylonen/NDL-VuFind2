@@ -67,8 +67,8 @@ class Feed extends \Laminas\View\Helper\AbstractHelper
      */
     public function __invoke($id)
     {
-        $feedConfig = $this->config[$id];
-        if (isset($feedConfig) && $feedConfig['active']) {
+        $feedConfig = $this->config[$id] ?? '';
+        if ($feedConfig['active'] ?? false) {
             $title = ($feedConfig['title'] !== 'rss') ? $feedConfig['title'] : '';
             $type = $feedConfig['type'];
             return $this->getView()->render(
