@@ -2,6 +2,7 @@
 <?php
   $hasIcon = !empty($item['icon']['name']);
   $hasImg = !empty($item['image']['url']);
+  $feedTitleEsc = !empty($this->translateTitle) ? $this->transEsc($this->translateTitle) : $this->escapeHtml($this->title ?? '');
 ?>
 <?php if ($hasImg): ?>
   <div class="slider-image" aria-hidden="true">
