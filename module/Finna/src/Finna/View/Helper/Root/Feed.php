@@ -69,7 +69,7 @@ class Feed extends \Laminas\View\Helper\AbstractHelper
     {
         $feedConfig = $this->config[$id] ?? '';
         if ($feedConfig['active'] ?? false) {
-            $title = ($feedConfig['title'] !== 'rss') ? $feedConfig['title'] : '';
+            $title = $feedConfig['title'] !== 'rss' ? $feedConfig['title'] : '';
             $type = $feedConfig['type'];
             return $this->getView()->render(
                 'Helpers/feed.phtml',
