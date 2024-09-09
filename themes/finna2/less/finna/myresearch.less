@@ -101,6 +101,7 @@
     align-items: center;
     &.no-list-functions {
       justify-content: space-between;
+      align-items: baseline;
       @media(max-width: @screen-sm) {
         flex-direction: column-reverse;
         align-items: flex-start;
@@ -460,7 +461,7 @@
 }
 
 .toolbar .list-functions .sort-col {
-    @media(max-width: @screen-sm) {
+    @media(max-width: @screen-xs-max) {
       display: none;
     }
   }
