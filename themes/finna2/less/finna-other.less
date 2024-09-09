@@ -432,12 +432,20 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
     .search-query {
         height: 40px;
         border-right: none;
+        border-radius: 4px 0 0 4px;
         @media (min-width: @screen-sm) {
           width: 250px;
         }
     }
     .js-load-indicator {
         margin: 10px;
+    }
+    button.btn-primary {
+        width: auto;
+        padding: 0 10px;
+        font-size: @font-size-base;
+        font-weight: @btn-font-weight;
+        border-radius: 0 4px 4px 0;
     }
 }
 .hierarchy-tree__item-container .icon {
