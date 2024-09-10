@@ -738,7 +738,7 @@ class Feed implements
         // attributes in div & p elements
         $dom = new \DOMDocument();
         $saveErrors = libxml_use_internal_errors(true);
-        $dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+        $dom->loadHTML(htmlspecialchars_decode(htmlentities($content, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')));
         $domx = new \DOMXPath($dom);
 
         // Process style attributes:
