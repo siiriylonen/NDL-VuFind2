@@ -426,6 +426,8 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
 
 // Hierarchy tree
 .hierarchy-tree-container .hierarchy-tree-search-form {
+    width: 250px;
+    margin: 0;
     .collection-list-controls;
     align-items: normal;
     gap: 0;
@@ -433,9 +435,6 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
         height: 40px;
         border-right: none;
         border-radius: 4px 0 0 4px;
-        @media (min-width: @screen-sm) {
-          width: 220px;
-        }
     }
     .js-load-indicator {
         margin: 10px;
@@ -457,11 +456,20 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
 .hierarchy-tree .hierarchy-tree__search-match > .hierarchy-tree__item-container > a {
     color: @link-color;
 }
-#tree-preview > a {
-    .btn;
-    .btn-primary;
-    margin-bottom: 15px;
+.collection-hierarchytree {
+    .tree-panel {
+        padding: 0 15px 0 0;
+    }
+    #tree-preview {
+        padding: 0;
+        & > a {
+            .btn;
+            .btn-primary;
+            margin-bottom: 15px;
+        }
+    }
 }
+
 
 // Collection hierarchy tree width
 /*.collection-hierarchytree {
