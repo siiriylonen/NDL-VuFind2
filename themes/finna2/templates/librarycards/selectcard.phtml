@@ -29,8 +29,7 @@
               <div class="library-card">
                 <?=$selectedCard ? $this->icon('library-card-selected', 'selected-icon') : '<span class="selected-icon"></span>'?>
                 <a aria-describedby="select-card-label-dropdown" role="menuitem" href="<?=$this->url('librarycards-selectcard')?>?cardID=<?=$this->escapeHtmlAttr($card->getId())?>" data-clear-account-cache>
-                  <?=$selectedCard ? '<span class="sr-only">(' . $this->transEsc('selected') . ')</span> ' : '';?>
-                  <?=$display ?>
+                  <?=$selectedCard ? '<span class="sr-only">(' . $this->transEsc('selected') . ')</span> ' : '' ?><?=$display ?>
                 </a>
                 <div class="barcode-container">
                   <?php $barcode = $record['barcode'] ?? $username;?>
