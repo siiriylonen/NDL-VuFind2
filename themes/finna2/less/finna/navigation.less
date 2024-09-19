@@ -152,15 +152,49 @@
     #select-card-label-dropdown {
       display: none;
     }
+    .library-card {
+      display: flex;
+      flex-direction: row;
+      padding: 0 15px;
+      word-wrap: anywhere;
+      .selected-icon {
+        padding: 0 0 7px 0;
+        padding-right: 15px;
+        width: 10px;
+        align-self: center;
+        color: @brand-primary;
+      }
+      > a, .barcode-container {
+        margin: 0 0 7px 0;
+        border-bottom: 1px solid @gray-lighter;
+        color: @text-color;
+      }
+      > a {
+        justify-content: left;
+        padding-right: 15px;
+      }
+      .barcode-container {
+        height: auto;
+        display: flex;
+        align-items: center;
+        width: 20%;
+        a {
+          justify-content: center;
+        }
+        .barcode-icon {
+          margin-left: 0;
+          color: @text-color;
+        }
+      }
+    }
+    > :last-child a, > :last-child .barcode-container {
+      border-bottom: 0;
+    }
     > a {
       justify-content: left;
     }
     > a:not(.card-header) {
       padding-left: 32px;
-    }
-    .icon {
-      margin-left: -1.25em;
-      color: @brand-primary;
     }
   }
   > li {
