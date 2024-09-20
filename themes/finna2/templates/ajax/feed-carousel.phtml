@@ -2,7 +2,7 @@
 <?php
   $hasLinkText = isset($this->linkText);
   $linkTextEsc = $this->transEsc($this->linkText ? $this->linkText : 'To the record');
-  if (!empty($this->title)):
+  if (!$this->translateTitle):
 ?>
   <h2 class="carousel-header <?php if ($this->type === 'slider'):?> sr-only<?php endif;?>"><?=$this->escapeHtml($this->title)?></h2>
 <?php endif; ?>
