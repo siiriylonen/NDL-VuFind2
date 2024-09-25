@@ -33,6 +33,9 @@ use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface as ContainerException;
 use Psr\Container\ContainerInterface;
+use VuFind\Db\Service\UserListServiceInterface;
+use VuFind\Db\Service\UserResourceServiceInterface;
+use VuFind\Favorites\FavoritesService;
 
 /**
  * Factory for GetImageInformation AJAX handler.
@@ -69,14 +72,15 @@ class GetImageInformationFactory implements \Laminas\ServiceManager\Factory\Fact
         if (!empty($options)) {
             throw new \Exception('Unexpected options passed to factory.');
         }
-        $tablePluginManager = $container->get(\VuFind\Db\Table\PluginManager::class);
+        $dbServicePm = $container->get(\VuFind\Db\Service\PluginManager::class);
         $result = new $requestedName(
             $container->get(\VuFind\Session\Settings::class),
             $container->get(\VuFind\Config\PluginManager::class)->get('config'),
             $container->get(\VuFind\Record\Loader::class),
-            $tablePluginManager->get(\VuFind\Db\Table\User::class),
-            $tablePluginManager->get(\VuFind\Db\Table\UserList::class),
             $container->get(\VuFind\Auth\Manager::class)->getUserObject(),
+            $dbServicePm->get(UserListServiceInterface::class),
+            $dbServicePm->get(UserResourceServiceInterface::class),
+            $container->get(FavoritesService::class),
             $container->get('ViewRenderer')->plugin('record')
         );
         $result->setStatisticsEventHandler(

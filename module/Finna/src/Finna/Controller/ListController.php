@@ -31,9 +31,14 @@
 namespace Finna\Controller;
 
 use Laminas\Stdlib\Parameters;
+use VuFind\Db\Entity\UserEntityInterface;
+use VuFind\Db\Service\TagServiceInterface;
+use VuFind\Db\Service\UserListService;
+use VuFind\Db\Service\UserListServiceInterface;
 use VuFind\Exception\ListPermission as ListPermissionException;
 use VuFind\Exception\RecordMissing as RecordMissingException;
 
+use function assert;
 use function is_object;
 
 /**
@@ -62,7 +67,7 @@ class ListController extends \VuFind\Controller\AbstractBase
             return $this->notFoundAction();
         }
         try {
-            $list = $this->getTable('UserList')->getExisting($lid);
+            $list = $this->getDbService(UserListServiceInterface::class)->getUserListById($lid);
             if (!$list->isPublic()) {
                 return $this->createNoAccessView();
             }
@@ -113,8 +118,7 @@ class ListController extends \VuFind\Controller\AbstractBase
 
             $listTags = null;
             if ($this->listTagsEnabled()) {
-                $listTags = $this->getTable('Tags')
-                    ->getForList($listObj->id, $listObj->user_id);
+                $listTags = $this->getDbService(TagServiceInterface::class)->getListTags($listObj, $listObj->getUser());
             }
 
             $view = $this->createViewModel(
@@ -155,7 +159,7 @@ class ListController extends \VuFind\Controller\AbstractBase
             return $this->notFoundAction();
         }
         try {
-            $list = $this->getTable('UserList')->getExisting($sourceListId);
+            $list = $this->getDbService(UserListService::class)->getUserListById($sourceListId);
             if (!$list->isPublic()) {
                 return $this->createNoAccessView();
             }
@@ -169,7 +173,7 @@ class ListController extends \VuFind\Controller\AbstractBase
         }
 
         // Process form submission:
-        if ($this->formWasSubmitted('submit')) {
+        if ($this->formWasSubmitted()) {
             $this->processSave($user, $sourceListId, $targetListId);
 
             // Display a success status message:
@@ -183,10 +187,11 @@ class ListController extends \VuFind\Controller\AbstractBase
             $this->flashMessenger()->addMessage($message, 'success');
             return $this->redirect()->toRoute('list-page', ['lid' => $sourceListId]);
         }
+        $userListService = $this->getDbService(\VuFind\Db\Service\UserListServiceInterface::class);
         $view = $this->createViewModel(
             [
                 'listId' => $sourceListId,
-                'lists' => $user->getLists(),
+                'lists' => $userListService->getUserListsByUser($user),
             ]
         );
         $view->setTemplate('list/save');
@@ -196,9 +201,9 @@ class ListController extends \VuFind\Controller\AbstractBase
     /**
      * ProcessSave -- store the results of the Save action.
      *
-     * @param VuFind\Db\Row\User $user         User
-     * @param int                $sourceListId Source list id
-     * @param int                $targetListId Target list id
+     * @param UserEntityInterface $user         User
+     * @param int                 $sourceListId Source list id
+     * @param int                 $targetListId Target list id
      *
      * @return void
      */
@@ -218,8 +223,8 @@ class ListController extends \VuFind\Controller\AbstractBase
         )->getResults();
 
         // Perform the save operation:
-        $favorites = $this->serviceLocator
-            ->get(\VuFind\Favorites\FavoritesService::class);
+        $favorites = $this->serviceLocator->get(\VuFind\Favorites\FavoritesService::class);
+        assert($favorites instanceof \Finna\Favorites\FavoritesService);
         $favorites->saveMany(['list' => $targetListId], $user, $records);
     }
 
