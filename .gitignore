@@ -10,12 +10,11 @@
 .vagrant
 .vscode/*
 /downloads
-/Gruntfile.local.js
 /solr/vendor
 /themes/minktest
 /vendor
 ChangeLog
-TAGS
+/TAGS
 composer.phar
 env.bat
 env.sh
@@ -65,6 +64,7 @@ themes/custom/css/finna.css
 vufind.bat
 public/swagger-ui
 tests/phpcs.cache.json
+themes/bootstrap5/scss/vendor/bootstrap
 local/DirLocations.ini
 local/config/vufind/*.ini
 local/config/vufind/*.json

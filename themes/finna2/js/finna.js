@@ -2,6 +2,20 @@
 /*exported finna */
 var finna = (function finnaModule() {
 
+  /**
+   * Object which holds resolves, key is the name for the promise to resolve.
+   */
+  let resolves = {};
+
+  /**
+   * Object which holds promises, key is the name for the promise to wait for.
+   *
+   * @var {Object}
+   */
+  let promises = {
+    lazyImages: new Promise((resolve) => { resolves.lazyImages = resolve; })
+  };
+
   var my = {
     init: function init() {
       // List of modules to be inited
@@ -28,7 +42,8 @@ var finna = (function finnaModule() {
         'multiSelect',
         'finnaMovement',
         'mdEditable',
-        'a11y'
+        'a11y',
+        'finnaDatepicker',
       ];
 
       $.each(modules, function initModule(ind, module) {
@@ -36,7 +51,15 @@ var finna = (function finnaModule() {
           finna[module].init();
         }
       });
-    }
+    },
+    resolvePromise: (name) => {
+      if (resolves[name]) {
+        resolves[name]();
+      }
+    },
+    getPromise: (name) => {
+      return promises[name];
+    },
   };
 
   return my;
