@@ -7,11 +7,11 @@
         <span class="hide-video-information"><?=$this->icon('image-information-hide') ?> <?=$this->transEsc($this->hideButtonText ?? 'Hide information')?></span>
     </button>
     <div id="video_details_<?=$i?>" class="collapse">
-        <table class="table-condensed">
-        <tr>
-            <th><?=$this->transEsc('image_identifier')?></th>
-            <td><?=$this->transEsc($url['identifier'])?></td>
-        </tr>
+        <table class="table-condensed" role="presentation">
+            <tr>
+                <th><?=$this->transEsc('image_identifier')?></th>
+                <td><?=$this->transEsc($url['identifier'])?></td>
+            </tr>
         </table>
     </div>
     </div>
