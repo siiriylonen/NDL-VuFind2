@@ -33,7 +33,7 @@
                 </a>
                 <div class="barcode-container">
                   <?php $barcode = $record['barcode'] ?? $username;?>
-                  <a href="<?=$this->url('barcode-show') ?>?code=<?=$this->escapeHtmlAttr(urlencode($barcode)) ?>" aria-label="<?=$this->transEscAttr('Show')?> <?=$this->transEscAttr('show_barcode_title')?>: <?=$display?>">
+                  <a href="<?=$this->url('barcode-show') ?>?code=<?=$this->escapeHtmlAttr(urlencode($barcode)) ?>" aria-label="<?=$this->transEscAttr('show_barcode_title')?>: <?=$display?>">
                   <?=$this->icon('library-card-barcode', 'barcode-icon')?>
                 </a>
                 </div>
