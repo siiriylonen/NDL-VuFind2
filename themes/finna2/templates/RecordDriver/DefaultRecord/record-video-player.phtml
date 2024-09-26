@@ -88,7 +88,7 @@
           if ($format):
         ?>
         <div class="open-link">
-          <a href="<?=$this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $url['format'], 'type' => 'document']])?>" rel="nofollow" download>
+          <a href="<?=$this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $i, 'format' => $format, 'type' => 'document']])?>" rel="nofollow" download>
               <?=$this->icon('download')?>
               <?=$this->transEsc('Download video') ?>
           </a>
