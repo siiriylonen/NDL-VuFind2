@@ -1,18 +1,8 @@
 <!-- START of: finna - RecordDriver/DefaultRecord/audio-information.phtml -->
-<?php
-    $format = $url['codec'] ?? null;
-?>
 <div class="open-link download-audio">
-    <?php if ($format): ?>
-        <a href="<?=$this->url('record-downloadfile', [], ['query' => ['id' => $this->driver->getUniqueID(), 'index' => $ind, 'format' => $format, 'type' => 'document']])?>" rel="nofollow" download>
-            <?=$this->icon('download')?>
-            <?=$this->transEsc('Download recording') ?>
-        </a>
-    <?php else: ?>
-        <a href="<?=$url['url'] ?>" target="_blank" rel="nofollow" download>
-            <?=$this->icon('download') ?> <?=$this->transEsc('Download recording') ?>
-        </a>
-    <?php endif; ?>
+    <a href="<?=$url['url'] ?>" target="_blank" rel="nofollow" download>
+        <?=$this->icon('download') ?> <?=$this->transEsc('Download recording') ?>
+    </a>
 </div>
 <?php if (!empty($url['identifier'])): ?>
     <div class="audio-details-container text-left" data-img-index="<?=$ind?>">
