@@ -161,20 +161,22 @@
       padding: 0 15px;
       word-wrap: anywhere;
       .selected-icon {
-        padding: 0 0 7px 0;
         padding-right: 15px;
         width: 10px;
         align-self: center;
         color: $brand-primary;
       }
       > a, .barcode-container {
-        margin: 0 0 7px 0;
         border-bottom: 1px solid $gray-lighter;
         color: $text-color;
+        span {
+          padding: 3px 0px;
+        }
       }
-      > a {
-        justify-content: left;
-        padding-right: 15px;
+      .card-name span {
+          display: inline-flex;
+          line-height: 1.5;
+          align-items: center;
       }
       .barcode-container {
         height: auto;
@@ -187,6 +189,7 @@
         .barcode-icon {
           margin-left: 0;
           color: $text-color;
+          font-size: 20px;
         }
       }
     }
