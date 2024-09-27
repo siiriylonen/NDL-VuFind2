@@ -28,11 +28,11 @@
             <?php $selectedCard = (!isset($this->displaySelected) || $this->displaySelected) && (strcasecmp($card->getCatUsername(), $this->user->getCatUsername() ?? '') === 0); ?>
               <div class="library-card">
                 <?=$selectedCard ? $this->icon('library-card-selected', 'selected-icon') : '<span class="selected-icon"></span>'?>
-                <a aria-describedby="select-card-label-dropdown" role="menuitem" href="<?=$this->url('librarycards-selectcard')?>?cardID=<?=$this->escapeHtmlAttr($card->getId())?>" data-clear-account-cache>
-                  <?=$selectedCard ? '<span class="sr-only">(' . $this->transEsc('selected') . ')</span> ' : '' ?><?=$display ?>
+                <a class="card-name" aria-describedby="select-card-label-dropdown" role="menuitem" href="<?=$this->url('librarycards-selectcard')?>?cardID=<?=$this->escapeHtmlAttr($card->getId())?>" data-clear-account-cache>
+                  <?=$selectedCard ? '<span class="sr-only">(' . $this->transEsc('selected') . ')</span> ' : '' ?><span><?=$display ?></span>
                 </a>
                 <div class="barcode-container">
-                  <?php $barcode = $record['barcode'] ?? $username;?>
+                  <?php $barcode = $card['barcode'] ?? $username;?>
                   <a href="<?=$this->url('barcode-show') ?>?code=<?=$this->escapeHtmlAttr(urlencode($barcode)) ?>" aria-label="<?=$this->transEscAttr('show_barcode_title')?>: <?=$display?>">
                   <?=$this->icon('library-card-barcode', 'barcode-icon')?>
                 </a>
