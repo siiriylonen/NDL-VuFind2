@@ -4,7 +4,6 @@
 ?>
 <div class="audio-accordion">
 <?php foreach ($audioUrls as $ind => $url):
-    $format = $this->driver->tryMethod('getRecordFormat', [], '');
     $showDetails = $format === 'lido' ? true : false;
   ?>
   <div class="audio-item-wrapper">
