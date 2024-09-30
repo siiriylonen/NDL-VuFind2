@@ -21,9 +21,16 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask("finna:lessToSass", function finnaLessToSassFunc() {
+    const exclude = grunt.option('exclude');
+    const excludedFiles = exclude ? exclude.split(',') : [];
+
     const sharedFileOpts = {
         expand: true,
         src: ['*.less', '**/*.less'],
+        filter: function(filepath) {
+          console.log(filepath);
+          return !excludedFiles.includes(filepath);
+        },
         ext: '.scss'
     };
 
