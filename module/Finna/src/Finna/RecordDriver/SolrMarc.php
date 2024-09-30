@@ -1112,20 +1112,21 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
     /**
      * Get all authors and primary presenters
      *
-     * @param bool $extended Whether to return extended author information (optional)
+     * @return array
+     */
+    public function getPrimaryAuthors(): array
+    {
+        return array_column($this->getPrimaryAuthorsExtended(), 'name');
+    }
+
+    /**
+     * Return extended author information
      *
      * @return array
      */
-    public function getPrimaryAuthors(bool $extended = false): array
+    public function getPrimaryAuthorsExtended(): array
     {
-        $result = [];
-        if ($extended) {
-            return $this->getAuthorFields(true);
-        }
-        foreach ($this->getAuthorFields(true) as $field) {
-            $result[] = $field['name'];
-        }
-        return $result;
+        return $this->getAuthorFields(true);
     }
 
     /**
@@ -1145,7 +1146,7 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Laminas\Log\Log
      *
      * @return array
      */
-    public function getAuthorFields(bool $getPrimaryPresenters = false): array
+    private function getAuthorFields(bool $getPrimaryPresenters = false): array
     {
         $result = [];
         foreach (['100', '110', '700', '710'] as $fieldCode) {
