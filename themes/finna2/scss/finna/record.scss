@@ -124,7 +124,7 @@ a.authority {
   clear: left;
 }
 
-.record-image-container {
+.record-image-container, .resource-details {
   margin-bottom: 20px;
 }
 
@@ -419,9 +419,6 @@ a.authority {
   background: $body-bg;
   text-transform: uppercase;
 }
-.video-details-container {
-  margin-bottom: 10px;
-}
 .show-details-button, .hide-details-button {
   width: 100%;
   font-size: .9em;
@@ -518,6 +515,9 @@ a.authority {
   .image-dimensions {
     color: $gray-mid-light;
     font-size: .8em;
+  }
+  > span.file-size {
+    color: $gray-slightly-lighter;
   }
 }
 
