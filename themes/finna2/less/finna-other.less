@@ -428,8 +428,6 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
 
 // Hierarchy tree
 .hierarchy-tree-container .hierarchy-tree-search-form {
-    .collection-list-controls;
-    flex-direction: row;
     width: 250px;
     margin: 0;
     align-items: normal;
@@ -448,6 +446,9 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
         font-size: @font-size-base;
         font-weight: @btn-font-weight;
         border-radius: 0 4px 4px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 .hierarchy-tree__item-container .icon {
