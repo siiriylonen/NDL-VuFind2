@@ -24,6 +24,13 @@
               if ($target && $targetCount > 1) {
                 $display .= ' (' . $this->transEsc("source_$target", null, $target) . ')';
               }
+              $barcode = $card['barcode'] ?? $username;
+              if ($this->user->getCatUsername() === $card->getCatUsername()) {
+                $profile = $this->ils()->getMyProfile($this->user->toArray());
+                if (!empty($profile['barcode'])) {
+                    $barcode = $profile['barcode'];
+                }
+              }
             ?>
             <?php $selectedCard = (!isset($this->displaySelected) || $this->displaySelected) && (strcasecmp($card->getCatUsername(), $this->user->getCatUsername() ?? '') === 0); ?>
               <div class="library-card">
@@ -32,7 +39,6 @@
                   <?=$selectedCard ? '<span class="sr-only">(' . $this->transEsc('selected') . ')</span> ' : '' ?><span><?=$display ?></span>
                 </a>
                 <div class="barcode-container">
-                  <?php $barcode = $card['barcode'] ?? $username;?>
                   <a href="<?=$this->url('barcode-show') ?>?code=<?=$this->escapeHtmlAttr(urlencode($barcode)) ?>" aria-label="<?=$this->transEscAttr('show_barcode_title')?>: <?=$display?>">
                   <?=$this->icon('library-card-barcode', 'barcode-icon')?>
                 </a>
