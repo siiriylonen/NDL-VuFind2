@@ -3,7 +3,7 @@
   // Get search results
   $results = $this->tab->getResults();
   $params = $this->tab->getParams();
-  $searchDetails = ['results' => $results, 'params' => $params, 'indexStart' => 1, 'isCollection' => $this->driver->isCollection()];
+  $searchDetails = ['results' => $results, 'params' => $params, 'indexStart' => 1, 'isCollection' => true];
 ?>
 <div class="collection-list-controls">
   <div class="filter-input">
@@ -27,8 +27,8 @@
     </form>
   </div>
   <div class="sort-and-view-buttons">
-    <?=$this->render('RecordTab/controls/view.phtml', $searchDetails)?>
-    <?=$this->render('RecordTab/controls/sort.phtml', $searchDetails)?>
+    <?=$this->render('search/controls/view.phtml', $searchDetails)?>
+    <?=$this->render('search/controls/sort.phtml', $searchDetails)?>
   </div>
 </div>
 
