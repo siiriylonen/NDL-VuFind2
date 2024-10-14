@@ -487,6 +487,13 @@ finna.organisationInfo = (function finnaOrganisationInfo() {
     }
     detailsEl.querySelectorAll('[data-truncate]').forEach((elem) => {
       VuFind.truncate.initTruncate(elem);
+      const buttonWrapper = elem.parentElement.querySelector('.more-less-btn-wrapper');
+      var lessBtn = buttonWrapper.querySelector('.less-btn');
+      var moreBtn = buttonWrapper.querySelector('.more-btn');
+      moreBtn.addEventListener('click', () => {
+        lessBtn.blur();
+        elem.focus();
+      });
     });
     finna.layout.initToolTips($(detailsEl));
     initWeekNavi(container, params, locationId);
