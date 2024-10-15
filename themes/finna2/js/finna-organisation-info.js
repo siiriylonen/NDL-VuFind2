@@ -489,10 +489,8 @@ finna.organisationInfo = (function finnaOrganisationInfo() {
       VuFind.truncate.initTruncate(elem);
       const buttonWrapper = elem.parentElement.querySelector('.more-less-btn-wrapper');
       if (buttonWrapper) {
-        var lessBtn = buttonWrapper.querySelector('.less-btn');
         var moreBtn = buttonWrapper.querySelector('.more-btn');
         moreBtn.addEventListener('click', () => {
-          lessBtn.blur();
           elem.focus();
         });
       }
