@@ -9,24 +9,24 @@
     : null;
 ?>
 <div class="view-option-container text-right">
-    <span class="hidden-sm hidden-xs hidden-md button-label"><?=$this->transEsc('show_as')?></span>
-    <span class="sr-only hidden-lg hidden-md"><?=$this->transEsc('show_as')?></span>
-    <?php if ($viewOptionsIcons ?? false): ?>
-      <div class="view-options">
+  <span class="hidden-sm hidden-xs hidden-md button-label"><?=$this->transEsc('show_as')?></span>
+  <span class="sr-only hidden-lg hidden-md"><?=$this->transEsc('show_as')?></span>
+  <?php if ($viewOptionsIcons ?? false): ?>
+    <div class="view-options">
+      <?php foreach ($viewList as $viewType => $viewData): ?>
+        <div class="view-button <?= $viewData['selected'] ? 'selected' : '' ?>">
+          <a href="<?=$this->results->getUrlQuery()->setViewParam($viewType)?>" title="<?=$this->transEsc('Show As ' . $viewData['desc'])?>" aria-label="<?=$this->transEsc('Show As ' . $viewData['desc'])?>"><?= $this->icon('view-' . $viewType, 'icon-' . $viewType) ?></a>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php else: ?>
+    <div class="view-dropdown">
+      <div class="dropdown">
         <?php foreach ($viewList as $viewType => $viewData): ?>
-          <div class="view-button <?= $viewData['selected'] ? 'selected' : '' ?>">
-            <a href="<?=$this->results->getUrlQuery()->setViewParam($viewType)?>" title="<?=$this->transEsc('Show As ' . $viewData['desc'])?>" aria-label="<?=$this->transEsc('Show As ' . $viewData['desc'])?>"><?= $this->icon('view-' . $viewType, 'icon-' . $viewType) ?></a>
-          </div>
+          <?php if ($viewData['selected']): ?>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-label="<?=$this->transEsc('show_as') . ': ' . $this->transEsc('Show As ' . $viewData['desc'])?>"><?=$this->icon('view-' . $viewType, 'icon-' . $viewType) ?> <span class="<?=($isCollection ?? false) ? 'hidden-xs hidden-sm' : '' ?>"><?=$this->transEsc('Show As ' . $viewData['desc'])?></span> <?=$this->icon('dropdown-open') ?></a>
+          <?php endif; ?>
         <?php endforeach; ?>
-      </div>
-    <?php else: ?>
-      <div class="view-dropdown">
-        <div class="dropdown">
-          <?php foreach ($viewList as $viewType => $viewData): ?>
-            <?php if ($viewData['selected']): ?>
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-label="<?=$this->transEsc('show_as') . ': ' . $this->transEsc('Show As ' . $viewData['desc'])?>"><?=$this->icon('view-' . $viewType, 'icon-' . $viewType) ?> <span class="<?=($isCollection ?? false) ? 'hidden-xs hidden-sm' : '' ?>"><?=$this->transEsc('Show As ' . $viewData['desc'])?></span> <?=$this->icon('dropdown-open') ?></a>
-            <?php endif; ?>
-          <?php endforeach; ?>
 
         <ul class="dropdown-menu" role="menu" aria-labelledby="show-as-label">
           <?php foreach ($viewList as $viewType => $viewData): ?>
