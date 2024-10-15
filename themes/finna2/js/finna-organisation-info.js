@@ -487,14 +487,6 @@ finna.organisationInfo = (function finnaOrganisationInfo() {
     }
     detailsEl.querySelectorAll('[data-truncate]').forEach((elem) => {
       VuFind.truncate.initTruncate(elem);
-      const buttonWrapper = elem.parentElement.querySelector('.more-less-btn-wrapper');
-      if (buttonWrapper) {
-        var moreBtn = buttonWrapper.querySelector('.more-btn');
-        moreBtn.addEventListener('click', () => {
-          // Focus set in truncate.js shifted from .less-btn to opened truncated element
-          elem.focus();
-        });
-      }
     });
     finna.layout.initToolTips($(detailsEl));
     initWeekNavi(container, params, locationId);
