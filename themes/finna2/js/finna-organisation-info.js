@@ -491,6 +491,7 @@ finna.organisationInfo = (function finnaOrganisationInfo() {
       if (buttonWrapper) {
         var moreBtn = buttonWrapper.querySelector('.more-btn');
         moreBtn.addEventListener('click', () => {
+          // Focus set in truncate.js shifted from .less-btn to opened truncated element
           elem.focus();
         });
       }
