@@ -24,13 +24,7 @@
               if ($target && $targetCount > 1) {
                 $display .= ' (' . $this->transEsc("source_$target", null, $target) . ')';
               }
-              $barcode = $card['barcode'] ?? $username;
-              if ($this->user->getCatUsername() === $card->getCatUsername()) {
-                $profile = $this->ils()->getMyProfile($this->user->toArray());
-                if (!empty($profile['barcode'])) {
-                    $barcode = $profile['barcode'];
-                }
-              }
+              $barcode = $this->libraryCards()->getLibraryCardBarcode($card, $this->patron, $this->ils());
             ?>
             <?php $selectedCard = (!isset($this->displaySelected) || $this->displaySelected) && (strcasecmp($card->getCatUsername(), $this->user->getCatUsername() ?? '') === 0); ?>
               <div class="library-card">
@@ -38,11 +32,13 @@
                 <a class="card-name" aria-describedby="select-card-label-dropdown" role="menuitem" href="<?=$this->url('librarycards-selectcard')?>?cardID=<?=$this->escapeHtmlAttr($card->getId())?>" data-clear-account-cache>
                   <?=$selectedCard ? '<span class="sr-only">(' . $this->transEsc('selected') . ')</span> ' : '' ?><span><?=$display ?></span>
                 </a>
-                <div class="barcode-container">
-                  <a href="<?=$this->url('barcode-show') ?>?code=<?=$this->escapeHtmlAttr(urlencode($barcode)) ?>" aria-label="<?=$this->transEscAttr('show_barcode_title')?>: <?=$display?>">
-                  <?=$this->icon('library-card-barcode', 'barcode-icon')?>
-                </a>
-                </div>
+                <?php if ($barcode): ?>
+                  <div class="barcode-container">
+                    <a href="<?=$this->url('barcode-show') ?>?code=<?=$this->escapeHtmlAttr(urlencode($barcode)) ?>" aria-label="<?=$this->transEscAttr('show_barcode_title')?>: <?=$display?>">
+                      <?=$this->icon('library-card-barcode', 'barcode-icon')?>
+                    </a>
+                  </div>
+                <?php endif; ?>
               </div>
           <?php endforeach; ?>
         <?php endif; ?>
