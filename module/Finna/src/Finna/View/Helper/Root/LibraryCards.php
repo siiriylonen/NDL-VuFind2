@@ -85,7 +85,6 @@ class LibraryCards extends \VuFind\View\Helper\Root\LibraryCards
             }
         }
         if ($barcode) {
-            $card['card_name'] = $barcode;
             $this->putCachedData($cardName, $barcode);
         }
         return $barcode;
