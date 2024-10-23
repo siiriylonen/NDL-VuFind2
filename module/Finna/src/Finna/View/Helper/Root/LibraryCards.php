@@ -60,32 +60,25 @@ class LibraryCards extends \VuFind\View\Helper\Root\LibraryCards
     }
 
     /**
-     * Get library card's barcode
+     * Get barcode from profile
      *
-     * @param Finna\Db\Row\UserCard $card   Card to get barcode for
-     * @param array                 $patron Patron
-     * @param VuFind\ILS\Connection $ils    ILS connection
+     * @param string                $cardName Card's name
+     * @param array                 $patron   Patron
+     * @param VuFind\ILS\Connection $ils      ILS connection
      *
-     * @return array
+     * @return string
      */
-    public function getLibraryCardBarcode($card, $patron, $ils): string
+    public function getProfileBarcode($cardName, $patron, $ils): string
     {
-        $cardName = $card['cat_username'] ?? '';
-        if ($barcodes = $this->getCachedData($cardName)) {
-            return $barcodes;
+        if ($barcode = $this->getCachedData($cardName)) {
+            return $barcode;
         }
-        $barcode = $card['barcode'] ?? '';
-        if (
-            $patron
-            && $patron['cat_username'] === $cardName
-        ) {
-            $profile = $ils->getMyProfile($patron);
-            if (!empty($profile['barcode'])) {
-                $barcode = $profile['barcode'];
+        $profile = $ils->getMyProfile($patron);
+        $barcode = '';
+        if (!empty($profile['barcode'])) {
+            if ($barcode = $profile['barcode']) {
+                $this->putCachedData($cardName, $barcode);
             }
-        }
-        if ($barcode) {
-            $this->putCachedData($cardName, $barcode);
         }
         return $barcode;
     }
