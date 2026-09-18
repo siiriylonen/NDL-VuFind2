@@ -284,6 +284,12 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc implements \Psr\Log\LoggerA
                         }
                     }
                     $tmp['value'] = implode(' ', $line);
+                } elseif ($value == '774') {
+                    // Use general field title instead of subfield i
+                    $tmp['title'] = 'note_774';
+                    // Always use title as link instead of subfield w
+                    $tmp['link']['type'] = 'title';
+                    $tmp['link']['value'] = $tmp['value'];
                 } elseif ($value == '773') {
                     $relation =
                         $this->relationMappings[$this->stripTrailingPunctuation($this->getSubfield($field, 'i'), ':')]
