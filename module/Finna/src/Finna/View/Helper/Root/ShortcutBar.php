@@ -74,7 +74,7 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
     }
 
     /**
-     * Get settings for the items within a browse bar.
+     * Get settings for the items within a shortcut bar.
      *
      * @param array $items The item array.
      *
@@ -116,9 +116,9 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
     }
 
     /**
-     * Render a browse bar component.
+     * Render a shortcut bar component.
      *
-     * @param string $name Name of the rendered browse bar.
+     * @param string $name Name of the rendered shortcut bar.
      *
      * @return string
      */
@@ -148,9 +148,9 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
     }
 
     /**
-     * Get settings for specific browse bar from BrowseBar.yaml.
+     * Get settings for specific shortcut bar from ShortcutBar.yaml.
      *
-     * @param string $name Name of the called browse bar.
+     * @param string $name Name of the called shortcut bar.
      *
      * @return array
      */
