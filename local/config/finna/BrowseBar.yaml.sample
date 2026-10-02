@@ -15,7 +15,7 @@
 #   - url: href of the link <a> element
 #   - route: href of the link <a> element, internal route
 #   - icon: icon used for the item, using the icon helper
-#   - iconElement: icon used for the item, using font awesome
+#   - iconElement: icon used for the item, using the <i> element
 #   - dropdownItems: items to be shown in a dropdown menu. Dropdown menu items can use the same keys as items, excluding type.
 #
 
