@@ -66,7 +66,7 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
      * @param RouteHelper $routeHelper URL helper
      */
     public function __construct(
-        YamlReader  $yamlReader,
+        YamlReader $yamlReader,
         RouteHelper $routeHelper,
     ) {
         $this->yamlReader = $yamlReader;
@@ -91,7 +91,9 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
             }
             if ($route = $item['route'] ?? '') {
                 $itemSettings['href'] = $this->routeHelper->getUrlFromRoute(
-                    $route, $item['routeParams'] ?? [], $item['queryParams'] ?? []
+                    $route,
+                    $item['routeParams'] ?? [],
+                    $item['queryParams'] ?? []
                 );
             }
             $itemSettings['label'] = $item['label'] ?? 'link';
