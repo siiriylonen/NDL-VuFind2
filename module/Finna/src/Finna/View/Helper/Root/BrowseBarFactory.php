@@ -69,6 +69,7 @@ class BrowseBarFactory implements \Laminas\ServiceManager\Factory\FactoryInterfa
         }
         return new $requestedName(
             $container->get(\VuFind\Config\YamlReader::class),
+            $container->get(\VuFind\Http\RouteHelper::class),
         );
     }
 }

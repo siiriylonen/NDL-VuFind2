@@ -30,6 +30,7 @@
 namespace Finna\View\Helper\Root;
 
 use VuFind\Config\YamlReader;
+use VuFind\Http\RouteHelper;
 
 /**
  * BrowseBar plugin.
@@ -42,6 +43,8 @@ use VuFind\Config\YamlReader;
  */
 class BrowseBar extends \Laminas\View\Helper\AbstractHelper
 {
+    use \VuFind\I18n\Translator\TranslatorAwareTrait;
+
     /**
      * YAML reader.
      *
@@ -50,14 +53,24 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
     protected $yamlReader;
 
     /**
+     * Url helper.
+     *
+     * @var RouteHelper
+     */
+    protected $routeHelper;
+
+    /**
      * Constructor.
      *
-     * @param YamlReader $yamlReader YAML reader
+     * @param YamlReader  $yamlReader  YAML reader
+     * @param RouteHelper $routeHelper URL helper
      */
     public function __construct(
-        YamlReader $yamlReader,
+        YamlReader  $yamlReader,
+        RouteHelper $routeHelper,
     ) {
         $this->yamlReader = $yamlReader;
+        $this->routeHelper = $routeHelper;
     }
 
     /**
@@ -69,20 +82,24 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
      */
     public function getBrowseBarItems(array $items): array
     {
-        $itemsSettings = [];
+        $browseBarItems = [];
+        $lng = trim($this->translator->getLocale());
         foreach ($items as $item) {
-            $itemSettings = [
-                'link' => $item['link'] ?? '',
-                'label' => $item['label'] ?? 'link',
-            ];
-            $iconText = '';
-            if (isset($item['icon'])) {
-                $iconText = 'icon';
-            } elseif (isset($item['iconElement'])) {
-                $iconText = 'iconElement';
+            $itemSettings = [];
+            if ($url = $item['url'] ?? '') {
+                $itemSettings['href'] = $url[$lng] ?? $url['fi'] ?? $url;
             }
-            if ($iconText) {
-                $itemSettings[$iconText] = $item[$iconText];
+            if ($route = $item['route'] ?? '') {
+                $itemSettings['href'] = $this->routeHelper->getUrlFromRoute(
+                    $route, $item['routeParams'] ?? [], $item['queryParams'] ?? []
+                );
+            }
+            $itemSettings['label'] = $item['label'] ?? 'link';
+            if (isset($item['icon'])) {
+                $itemSettings['icon'] = $item['icon'];
+            }
+            if (isset($item['iconElement'])) {
+                $itemSettings['iconElement'] = $item['iconElement'];
             }
             if ($item['type'] ?? '' === 'dropdown') {
                 $dropdownItems = $this->getBrowseBarItems($item['dropdownItems']);
@@ -91,9 +108,9 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
                 }
             }
             $itemSettings['type'] = $item['type'] ?? '';
-            $itemsSettings[] = $itemSettings;
+            $browseBarItems[] = $itemSettings;
         }
-        return $itemsSettings;
+        return $browseBarItems;
     }
 
     /**

@@ -6,7 +6,7 @@
  * @param string    attributes      Attributes applied to the container of scrollable list element.
  * @param array     items           Items (links) in scrollable list.
  *  @param string    type            'link' or 'dropdown' for dropdown menu button, 'link' as default.
- *  @param string    link            'href' attribute.
+ *  @param string    href            'href' attribute.
  *  @param string    label           Link text.
  *  @param string    icon            Icon on the left side of link text, using iconHelper (optional).
  *  @param string    iconElement     Icon on the left side of link text, using i-element (optional).
@@ -35,7 +35,7 @@
         <li class="list-scrollable__list-item js-list-item scrollable-list-item">
           <?php $__type = $__item['type'] ?? 'link'; ?>
           <?php if ($__type === 'dropdown'): ?>
-            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="<?=$__item['link'] ?? ''?>" role="button">
+            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
               <?php if (isset($__item['icon'])): ?>
                 <?= $this->icon($__item['icon']) ?>
               <?php elseif (isset($__item['iconElement'])): ?>
@@ -47,7 +47,7 @@
             <ul class="dropdown-menu">
               <?php foreach ($__item['dropdownItems'] ?? [] as $__dropdownItem): ?>
                 <li>
-                  <a class="dropdown-item" href="<?=$__dropdownItem['link'] ?? ''?>" >
+                  <a class="dropdown-item" href="<?=$__dropdownItem['href'] ?? ''?>" >
                     <?php if (isset($__dropdownItem['icon'])): ?>
                       <?= $this->icon($__dropdownItem['icon']) ?>
                     <?php elseif (isset($__dropdownItem['iconElement'])): ?>
@@ -59,7 +59,7 @@
               <?php endforeach; ?>
             </ul>
           <?php else: ?>
-            <a href="<?=$__item['link'] ?? ''?>">
+            <a href="<?=$__item['href'] ?? ''?>">
               <?php if (isset($__item['icon'])): ?>
                 <?= $this->icon($__item['icon']) ?>
               <?php elseif (isset($__item['iconElement'])): ?>
@@ -78,7 +78,7 @@
 </div>
 <?php
   $script = <<<JS
-      finna.scrollableList.initScrollableList(document.querySelector('.scrollable-list-container'));
+      finna.scrollableList.initScrollableList();
       JS;
 ?>
 <?=$this->assetManager()->outputInlineScriptString($script);?>
