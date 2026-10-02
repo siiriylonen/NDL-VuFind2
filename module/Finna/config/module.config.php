@@ -369,12 +369,12 @@ $config = [
         'factories' => [
             'Finna\View\Helper\Root\BiblioworksChatbot' =>
                 'Finna\View\Helper\Root\BiblioworksChatbotFactory',
-            'Finna\View\Helper\Root\BrowseBar' =>
-                'Finna\View\Helper\Root\BrowseBarFactory',
+            'Finna\View\Helper\Root\ShortcutBar' =>
+                'Finna\View\Helper\Root\ShortcutBarFactory',
         ],
         'aliases' => [
             'biblioworksChatbot' => 'Finna\View\Helper\Root\BiblioworksChatbot',
-            'browseBar' => 'Finna\View\Helper\Root\BrowseBar',
+            'shortcutBar' => 'Finna\View\Helper\Root\ShortcutBar',
         ],
     ],
     'service_manager' => [

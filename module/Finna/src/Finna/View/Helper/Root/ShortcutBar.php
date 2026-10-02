@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BrowseBar plugin.
+ * ShortcutBar plugin.
  *
  * PHP version 8
  *
@@ -21,7 +21,7 @@
  * <https://www.gnu.org/licenses/>.
  *
  * @category VuFind
- * @package  BrowseBar
+ * @package  ShortcutBar
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
@@ -33,15 +33,15 @@ use VuFind\Config\YamlReader;
 use VuFind\Http\RouteHelper;
 
 /**
- * BrowseBar plugin.
+ * ShortcutBar plugin.
  *
  * @category VuFind
- * @package  BrowseBar
+ * @package  ShortcutBar
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
-class BrowseBar extends \Laminas\View\Helper\AbstractHelper
+class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
 {
     use \VuFind\I18n\Translator\TranslatorAwareTrait;
 
@@ -80,9 +80,9 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
      *
      * @return array
      */
-    public function getBrowseBarItems(array $items): array
+    public function getShortcutBarItems(array $items): array
     {
-        $browseBarItems = [];
+        $shortcutBarItems = [];
         $lng = trim($this->translator->getLocale());
         foreach ($items as $item) {
             $itemSettings = [];
@@ -104,15 +104,15 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
                 $itemSettings['iconElement'] = $item['iconElement'];
             }
             if ($item['type'] ?? '' === 'dropdown') {
-                $dropdownItems = $this->getBrowseBarItems($item['dropdownItems']);
+                $dropdownItems = $this->getShortcutBarItems($item['dropdownItems']);
                 if ($dropdownItems) {
                     $itemSettings['dropdownItems'] = $dropdownItems;
                 }
             }
             $itemSettings['type'] = $item['type'] ?? '';
-            $browseBarItems[] = $itemSettings;
+            $shortcutBarItems[] = $itemSettings;
         }
-        return $browseBarItems;
+        return $shortcutBarItems;
     }
 
     /**
@@ -122,9 +122,9 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
      *
      * @return string
      */
-    public function renderBrowseBar(string $name)
+    public function renderShortcutBar(string $name)
     {
-        $settings = $this->getBrowseBarSettings($name);
+        $settings = $this->getShortcutBarSettings($name);
         if (!$settings && !$settings['items']) {
             return;
         }
@@ -134,7 +134,7 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
                 $attributeSettings[$key] = $attribute;
             }
         }
-        $items = $this->getBrowseBarItems($settings['items']);
+        $items = $this->getShortcutBarItems($settings['items']);
         $component = $this->getView()->plugin('component');
         return $component(
             'finna-scrollable-list',
@@ -154,9 +154,9 @@ class BrowseBar extends \Laminas\View\Helper\AbstractHelper
      *
      * @return array
      */
-    public function getBrowseBarSettings(string $name): array
+    public function getShortcutBarSettings(string $name): array
     {
-        $browseBarSettings = $this->yamlReader->get('BrowseBar.yaml')[$name] ?? [];
-        return $browseBarSettings;
+        $shortcutBarSettings = $this->yamlReader->get('ShortcutBar.yaml')[$name] ?? [];
+        return $shortcutBarSettings;
     }
 }

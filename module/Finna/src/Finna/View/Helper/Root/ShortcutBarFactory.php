@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BrowseBar factory.
+ * ShortcutBar factory.
  *
  * PHP version 8
  *
@@ -21,7 +21,7 @@
  * <https://www.gnu.org/licenses/>.
  *
  * @category VuFind
- * @package  BrowseBar
+ * @package  ShortcutBar
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
@@ -35,15 +35,15 @@ use Psr\Container\ContainerExceptionInterface as ContainerException;
 use Psr\Container\ContainerInterface;
 
 /**
- * Menu factory.
+ * ShortcutBar factory.
  *
  * @category VuFind
- * @package  BrowseBar
+ * @package  ShortcutBar
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class BrowseBarFactory implements \Laminas\ServiceManager\Factory\FactoryInterface
+class ShortcutBarFactory implements \Laminas\ServiceManager\Factory\FactoryInterface
 {
     /**
      * Create an object.
