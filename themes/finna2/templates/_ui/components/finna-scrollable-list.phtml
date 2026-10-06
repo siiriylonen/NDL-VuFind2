@@ -19,7 +19,7 @@
  * - iconElement
  */
   $__title = $title ?? '';
-  $__headingLevel = $headingLevel ?? 2;
+  $__headingLevel = $headingLevel ?: 2;
 ?>
 <?php $__attributes = $this->htmlAttributes($attributes ?? []); ?>
 <div<?= $__attributes->add('class', ['scrollable-list-container']) ?>>
