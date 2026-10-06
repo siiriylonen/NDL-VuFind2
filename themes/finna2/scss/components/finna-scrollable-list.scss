@@ -182,11 +182,11 @@
 
 // ShortcutBar
 .shortcut-bar-scrollable-list.scrollable-list-container {
-  padding: 0.4em;
   margin: 0em;
-  background-color: $finna-shortcut-bar-background;
   .link-list.list-scrollable {
+    padding: 0.4em;
     margin-bottom: 0em;
+    background-color: $finna-shortcut-bar-background;
     ul.list-scrollable__list {
       gap: 1rem;
       padding-right: 0.25rem;

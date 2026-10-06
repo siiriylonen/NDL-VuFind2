@@ -129,11 +129,13 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
             return;
         }
         $attributeSettings = [];
+        $attributeSettings['class'] = '';
         if ($attributes = $settings['attributes']) {
             foreach ($attributes as $key => $attribute) {
                 $attributeSettings[$key] = $attribute;
             }
         }
+        $attributeSettings['class'] .= ' shortcut-bar-scrollable-list';
         $items = $this->getShortcutBarItems($settings['items']);
         $component = $this->getView()->plugin('component');
         return $component(
