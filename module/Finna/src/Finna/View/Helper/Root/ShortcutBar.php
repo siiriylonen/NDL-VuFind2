@@ -74,6 +74,44 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
     }
 
     /**
+     * Returns a shortcut bar.
+     *
+     * @param string $name Name of the rendered shortcut bar.
+     *
+     * @return string
+     */
+    public function __invoke(string $name)
+    {
+        $settings = $this->getShortcutBarSettings($name);
+        if (!$settings || !$settings['items']) {
+            return;
+        }
+        $attributeSettings = [];
+        $attributeSettings['class'] = '';
+        if ($attributes = $settings['attributes']) {
+            foreach ($attributes as $key => $attribute) {
+                if ($key === 'aria-label') {
+                    $attributeSettings[$key] = $this->translate($attribute);
+                    continue;
+                }
+                $attributeSettings[$key] = $attribute;
+            }
+        }
+        $attributeSettings['class'] .= ' shortcut-bar-scrollable-list';
+        $items = $this->getShortcutBarItems($settings['items']);
+        $component = $this->getView()->plugin('component');
+        return $component(
+            'finna-scrollable-list',
+            [
+                'title' => $settings['title'] ?? '',
+                'headingLevel' => $settings['headingLevel'] ?? '',
+                'attributes' => $attributeSettings,
+                'items' => $items,
+            ]
+        );
+    }
+
+    /**
      * Get settings for the items within a shortcut bar.
      *
      * @param array $items The item array.
@@ -113,40 +151,6 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
             $shortcutBarItems[] = $itemSettings;
         }
         return $shortcutBarItems;
-    }
-
-    /**
-     * Render a shortcut bar component.
-     *
-     * @param string $name Name of the rendered shortcut bar.
-     *
-     * @return string
-     */
-    public function renderShortcutBar(string $name)
-    {
-        $settings = $this->getShortcutBarSettings($name);
-        if (!$settings && !$settings['items']) {
-            return;
-        }
-        $attributeSettings = [];
-        $attributeSettings['class'] = '';
-        if ($attributes = $settings['attributes']) {
-            foreach ($attributes as $key => $attribute) {
-                $attributeSettings[$key] = $attribute;
-            }
-        }
-        $attributeSettings['class'] .= ' shortcut-bar-scrollable-list';
-        $items = $this->getShortcutBarItems($settings['items']);
-        $component = $this->getView()->plugin('component');
-        return $component(
-            'finna-scrollable-list',
-            [
-                'title' => $settings['title'] ?? '',
-                'headingLevel' => $settings['headingLevel'] ?? '',
-                'attributes' => $attributeSettings,
-                'items' => $items,
-            ]
-        );
     }
 
     /**

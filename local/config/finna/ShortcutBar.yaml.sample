@@ -25,14 +25,9 @@ ShortcutBar:
   title:
   headingLevel:
   attributes:
-    class: browse-bar-scrollable-list
+    aria-label: 'Shortcuts'
+    role: 'navigation'
   items:
-    - label: 'About'
-      route: content-page
-      routeParams:
-        page: about
-    - label: 'Feedback'
-      route: feedback-home
     - url: Search/Results?lookfor=&amp;type=AllFields&amp;filter%5B%5D=~format_ext_str_mv%3A%220%2FImage%2F%22&amp;filter%5B%5D=free_online_boolean%3A1
       label: format_Image_plural
       icon: image
