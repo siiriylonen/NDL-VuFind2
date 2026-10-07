@@ -114,7 +114,7 @@ $finna-searchtools-color: $body-bg !default;
 //== ShortcutBar
 $finna-shortcut-bar-link-padding: $btn-padding-y $btn-padding-x !default;
 $finna-shortcut-bar-link-text-decoration: none !default;
-$finna-shortcut-bar-link-color: #fff !default;
+$finna-shortcut-bar-link-color: contrast($action-link-color) !default;
 $finna-shortcut-bar-link-hover-color: #fff !default;
 $finna-shortcut-bar-link-border-radius: 1rem !default;
 $finna-shortcut-bar-link-background-color: $action-link-color !default;

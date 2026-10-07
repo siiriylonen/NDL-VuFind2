@@ -22,7 +22,7 @@
  *
  * @category VuFind
  * @package  ShortcutBar
- * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
+ * @author   Siiri Ylönen <siiri.ylonen@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
@@ -37,7 +37,7 @@ use VuFind\Http\RouteHelper;
  *
  * @category VuFind
  * @package  ShortcutBar
- * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
+ * @author   Siiri Ylönen <siiri.ylonen@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
