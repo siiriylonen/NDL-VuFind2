@@ -194,14 +194,14 @@
       li.list-scrollable__list-item {
         margin: 0em;
         > a {
-          padding: 0.35em 0.8em;
+          padding: $finna-shortcut-bar-link-padding;
           color: $finna-shortcut-bar-link-color;
-          text-decoration: none;
-          border-radius: 16px;
+          border-radius: $finna-shortcut-bar-link-border-radius;
           background-color: $finna-shortcut-bar-link-background-color;
           transition: background-color 0.3s ease;
           &:hover {
             color: $finna-shortcut-bar-link-hover-color;
+            text-decoration: $finna-shortcut-bar-link-text-decoration;
             background-color: $finna-shortcut-bar-link-background-hover-color;
           }
         }
