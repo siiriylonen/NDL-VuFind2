@@ -12,7 +12,7 @@
 # Array keys for every shortcut bar item could be:
 #   - type: 'link' or 'dropdown' for dropdown menu button, 'link' by default
 #   - label: translation key or item label
-#   - url: href of the link <a> element
+#   - url: href of the link <a> element, the special characters in the url must be encoded in a href applicable form
 #   - route: href of the link <a> element, internal route
 #   - icon: icon used for the item, using the icon helper
 #   - iconElement: icon used for the item, using the <i> element
@@ -42,7 +42,7 @@ ShortcutBar:
       iconElement: fa fa-box-open
       dropdownItems:
         - label: format_Document_plural
-          url: Search/Results?type=AllFields&filter[]=~format%3A"0%2FDocument%2F"
+          url: Search/Results?type=AllFields&amp;filter%5B%5D=~format%3A%220%2FDocument%2F"
           iconElement: fa fa-file-lines
         - label: format_Book/Book_plural
           url: Search/Results?type=AllFields&amp;filter%5B%5D=~format%3A%220%2FBook%2F%22

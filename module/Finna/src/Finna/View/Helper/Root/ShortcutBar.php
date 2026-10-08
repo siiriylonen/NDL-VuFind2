@@ -83,7 +83,7 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
     public function __invoke(string $name)
     {
         $settings = $this->getShortcutBarSettings($name);
-        if (!$settings || !$settings['items']) {
+        if (!$settings || !isset($settings['items'])) {
             return;
         }
         $attributeSettings = [];
