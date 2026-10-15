@@ -66,7 +66,7 @@ return [
             'Finna\View\Helper\Root\SearchMemory' => 'VuFind\View\Helper\Root\SearchMemoryFactory',
             'Finna\View\Helper\Root\SearchTabs' => 'Finna\View\Helper\Root\SearchTabsFactory',
             'Finna\View\Helper\Root\SearchTabsRecommendations' => 'Finna\View\Helper\Root\SearchTabsRecommendationsFactory',
-            'Finna\View\Helper\Root\ShortcutBar' => 'Finna\View\Helper\Root\ShortcutBarFactory',
+            \Finna\View\Helper\Root\ShortcutBar::class => \Finna\View\Helper\Root\ShortcutBarFactory::class,
             \Finna\View\Helper\Root\SiteStatus::class => \Finna\View\Helper\Root\SiteStatusFactory::class,
             'Finna\View\Helper\Root\StreetSearch' => 'Laminas\ServiceManager\Factory\InvokableFactory',
             'Finna\View\Helper\Root\StripTags' => 'Laminas\ServiceManager\Factory\InvokableFactory',

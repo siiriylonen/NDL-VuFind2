@@ -83,11 +83,12 @@ class ShortcutBar extends \Laminas\View\Helper\AbstractHelper
     public function __invoke(string $name)
     {
         $settings = $this->getShortcutBarSettings($name);
-        if (!$settings || !isset($settings['items'])) {
+        if (!isset($settings['items'])) {
             return;
         }
-        $attributeSettings = [];
-        $attributeSettings['class'] = '';
+        $attributeSettings = [
+            'class' => '',
+        ];
         if ($attributes = $settings['attributes']) {
             foreach ($attributes as $key => $attribute) {
                 if ($key === 'aria-label') {
