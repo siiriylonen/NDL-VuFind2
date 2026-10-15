@@ -138,7 +138,7 @@ return [
             'searchbox' => 'Finna\View\Helper\Root\SearchBox',
             'searchMemory' => 'Finna\View\Helper\Root\SearchMemory',
             'searchTabsRecommendations' => 'Finna\View\Helper\Root\SearchTabsRecommendations',
-            'shortcutBar' => 'Finna\View\Helper\Root\ShortcutBar',
+            'shortcutBar' => \Finna\View\Helper\Root\ShortcutBar::class,
             'siteStatus' => \Finna\View\Helper\Root\SiteStatus::class,
             'streetSearch' => 'Finna\View\Helper\Root\StreetSearch',
             'syndeticsPlus' => \Finna\View\Helper\Root\SyndeticsPlus::class,
