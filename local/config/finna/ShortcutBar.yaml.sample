@@ -12,7 +12,7 @@
 # Array keys for every shortcut bar item could be:
 #   - type: 'link' or 'dropdown' for dropdown menu button, 'link' by default
 #   - label: translation key or item label
-#   - url: href of the link <a> element, the special characters in the url must be encoded in a href applicable form
+#   - url: href of the link <a> element, the special characters in the url must be encoded in an href applicable form
 #   - route: href of the link <a> element, internal route
 #   - icon: icon used for the item, using the icon helper
 #   - iconElement: icon used for the item, using the <i> element
