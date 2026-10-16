@@ -35,13 +35,13 @@
         <li class="list-scrollable__list-item js-list-item scrollable-list-item">
           <?php $__type = $__item['type'] ?? 'link'; ?>
           <?php if ($__type === 'dropdown'): ?>
-            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+            <a class="dropdown-toggle icon-link" data-bs-toggle="dropdown" href="#" role="button">
               <?php if (isset($__item['icon'])): ?>
-                <?= $this->icon($__item['icon']) ?>
+                <?= $this->icon($__item['icon'], 'icon-link__icon') ?>
               <?php elseif (isset($__item['iconElement'])): ?>
-                <span><i class="icon icon--font <?= $__item['iconElement'] ?>" aria-hidden="true"></i></span>
+                <span class="icon-link__icon"><i class="icon icon--font <?= $__item['iconElement'] ?>" aria-hidden="true"></i></span>
               <?php endif; ?>
-              <?= $this->transEsc($__item['label'] ?? ''); ?>
+              <span class="icon-link__label"><?= $this->transEsc($__item['label'] ?? ''); ?></span>
               <?= $this->icon('collapse'); ?>
             </a>
             <ul class="dropdown-menu">
@@ -53,19 +53,19 @@
                     <?php elseif (isset($__dropdownItem['iconElement'])): ?>
                       <span><i class="icon icon--font <?= $__dropdownItem['iconElement'] ?>" aria-hidden="true"></i></span>
                     <?php endif; ?>
-                    <?= $this->transEsc($__dropdownItem['label'] ?? ''); ?>
+                    <span><?= $this->transEsc($__dropdownItem['label'] ?? ''); ?></span>
                   </a>
                 </li>
               <?php endforeach; ?>
             </ul>
           <?php else: ?>
-            <a href="<?=$__item['href'] ?? ''?>">
+            <a class="icon-link" href="<?=$__item['href'] ?? ''?>">
               <?php if (isset($__item['icon'])): ?>
-                <?= $this->icon($__item['icon']) ?>
+                <?= $this->icon($__item['icon'], 'icon-link__icon') ?>
               <?php elseif (isset($__item['iconElement'])): ?>
-                <span><i class="icon icon--font <?= $__item['iconElement'] ?>" aria-hidden="true"></i></span>
+                <span class="icon-link__icon"><i class="icon icon--font <?= $__item['iconElement'] ?>" aria-hidden="true"></i></span>
               <?php endif; ?>
-              <?= $this->transEsc($__item['label'] ?? ''); ?>
+              <span class="icon-link__label"><?= $this->transEsc($__item['label'] ?? ''); ?></span>
             </a>
           <?php endif; ?>
         </li>
