@@ -62,7 +62,7 @@ a.authority-link {
 }
 
 .authority-recommend {
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
   .authoritybox {
     display: flex;
     flex-direction: row;
@@ -71,7 +71,9 @@ a.authority-link {
     overflow: hidden;
     border: 1px solid $border-color;
     border-radius: $border-radius-large;
-    border-top-left-radius: 0;
+    &.filtered {
+      border-top-left-radius: 0;
+    }
     div:first-child {
       padding-right: 0.3em;
     }
