@@ -432,6 +432,7 @@ return [
             'phone' => 'FontAwesome:phone-square',
             'popover-collapse' => 'FontAwesome:chevron-up',
             'popover-expand' => 'FontAwesome:chevron-down',
+            'popup-link' => 'FinnaIcons:arrow-right',
             'pinterest' => 'FinnaIcons:pinterest',
             'print' => 'FinnaIcons:print',
             'profile' => 'Alias:user',
