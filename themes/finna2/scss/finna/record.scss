@@ -262,6 +262,9 @@
       font-size: $font-size-small;
       word-break: normal;
     }
+    .hide-info.less-link {
+      display: inline;
+    }
   }
   a.copyright-description,
   .iconlabel,
