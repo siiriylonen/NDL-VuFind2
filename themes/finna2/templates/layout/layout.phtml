@@ -257,6 +257,11 @@
       <?=$this->render($template)?>
     <?php endif; ?>
     </section>
+    <?php if (in_array($this->templateName, ['results', 'search', 'home']) && ($template = $this->content()->findTemplateForLng('content/Additions/results-pre'))): ?>
+      <div class="container results-pre">
+        <?=$this->render($template)?>
+      </div>
+    <?php endif; ?>
     <?=$this->breadcrumbs()->render(); ?>
     <?php $finnaFilters = ''; ?>
     <?php if (!empty($this->layout()->finnaFilters)): ?>
